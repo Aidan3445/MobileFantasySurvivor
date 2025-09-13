@@ -15,30 +15,38 @@ export default function Page() {
 
 function Content() {
   return (
-    <View className='flex-1 items-center justify-center bg-background'>
-      <View className='py-12 md:py-24 lg:py-32 xl:py-48'>
-        <View className='px-4 md:px-6'>
-          <View className='flex flex-col items-center gap-4 text-center'>
-            <Text
-              role='heading'
-              className='text-3xl text-center native:text-5xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl'
-            >
-              Welcome to Project ACME
-            </Text>
-            <Text className='mx-auto max-w-[700px] text-lg text-center text-gray-500 md:text-xl dark:text-gray-400'>
-              Discover and collaborate on acme. Explore our services now.
-            </Text>
-
-            <View className='gap-4'>
-              <Link
-                suppressHighlighting
-                className='flex h-9 items-center justify-center overflow-hidden rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-gray-50 web:shadow ios:shadow transition-colors hover:bg-gray-900/90 active:bg-gray-400/90 web:focus-visible:outline-none web:focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300'
-                href='/'
-              >
-                Explore
-              </Link>
-            </View>
+    <View className='flex-1 items-center justify-center bg-background px-6'>
+      <View className='bg-white rounded-3xl p-8 shadow-lg max-w-md w-full'>
+        <View className='items-center mb-8'>
+          <View className='bg-primary/10 rounded-full p-6 mb-4'>
+            <Text className='text-4xl'>🏆</Text>
           </View>
+          <Text className='text-4xl font-bold text-primary text-center mb-4'>
+            Fantasy Survivor
+          </Text>
+          <Text className='text-secondary text-lg text-center'>
+            Compete, predict, and win in the ultimate fantasy survival game!
+          </Text>
+        </View>
+
+        <View className='gap-y-4'>
+          <View className='bg-accent/20 rounded-2xl p-4 border border-accent/50'>
+            <Text className='text-primary font-semibold text-lg mb-2'>🎯 Predict Outcomes</Text>
+            <Text className='text-secondary'>Make your picks and see how well you know the game</Text>
+          </View>
+
+          <View className='bg-accent/20 rounded-2xl p-4 border border-accent/50'>
+            <Text className='text-primary font-semibold text-lg mb-2'>🏅 Compete & Win</Text>
+            <Text className='text-secondary'>Climb the leaderboard and prove you're the best</Text>
+          </View>
+
+          <Link
+            suppressHighlighting
+            className='bg-primary rounded-2xl py-4 mt-6 shadow-sm flex items-center justify-center'
+            href='/playground'
+          >
+            <Text className='text-white text-lg font-semibold'>Start Playing</Text>
+          </Link>
         </View>
       </View>
     </View>
@@ -48,29 +56,23 @@ function Content() {
 function Header() {
   const { top } = useSafeAreaInsets();
   return (
-    <View style={{ paddingTop: top }}>
-      <View className='px-4 lg:px-6 h-14 flex items-center flex-row justify-between '>
-        <Link className='font-bold flex-1 items-center justify-center' href='/'>
-          ACME
-        </Link>
-        <View className='flex flex-row gap-4 sm:gap-6'>
+    <View style={{ paddingTop: top }} className='bg-white border-b border-accent/30'>
+      <View className='px-6 h-16 flex items-center flex-row justify-between'>
+        <View className='flex-row items-center'>
+          <Text className='text-2xl font-bold text-primary'>Fantasy Survivor</Text>
+        </View>
+        <View className='flex flex-row gap-4'>
           <Link
-            className='text-md font-medium hover:underline web:underline-offset-4'
-            href='/'
+            className='text-secondary font-medium'
+            href='/leagues'
           >
-            About
+            Leagues
           </Link>
           <Link
-            className='text-md font-medium hover:underline web:underline-offset-4'
-            href='/'
+            className='text-secondary font-medium'
+            href='/profile'
           >
-            Product
-          </Link>
-          <Link
-            className='text-md font-medium hover:underline web:underline-offset-4'
-            href='/'
-          >
-            Pricing
+            Profile
           </Link>
         </View>
       </View>
