@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 import { Flame, Trophy, UserCircle2 } from 'lucide-react-native';
-import tailwindConfig from '../../../tailwind.config.js'; // adjust path as needed
+import tailwindConfig from '@/tailwind.config.cjs'; // adjust path as needed
 import { Image } from 'react-native';
 
 const HomeImage = require('~/assets/Icon.png');
@@ -14,7 +14,7 @@ export default function TabLayout() {
         headerShown: false,
         tabBarActiveTintColor: colors!.primary,
         tabBarInactiveTintColor: colors!.secondary,
-        tabBarStyle: { backgroundColor: colors!.navigation, height: 64 },
+        tabBarStyle: { backgroundColor: colors!.navigation, height: 80 },
         tabBarLabelStyle: { fontSize: 12 },
       }}>
       <Tabs.Screen
@@ -23,8 +23,9 @@ export default function TabLayout() {
           title: 'Home',
           tabBarIcon: ({ color }) => (
             <Image
+              className='w-8 h-8'
               source={HomeImage}
-              style={{ width: 32, height: 32, tintColor: color }} />
+              style={{ tintColor: color }} />
           )
         }} />
       <Tabs.Screen
