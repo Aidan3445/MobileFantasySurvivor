@@ -18,7 +18,7 @@ export default function TabLayout() {
         tabBarLabelStyle: { fontSize: 12 },
       }}>
       <Tabs.Screen
-        name="index"
+        name='index'
         options={{
           title: 'Home',
           tabBarIcon: ({ color }) => (
@@ -28,7 +28,7 @@ export default function TabLayout() {
           )
         }} />
       <Tabs.Screen
-        name="playground"
+        name='playground'
         options={{
           title: 'Playground',
           tabBarIcon: ({ color }) => (
@@ -36,7 +36,7 @@ export default function TabLayout() {
           )
         }} />
       <Tabs.Screen
-        name="leagues"
+        name='leagues'
         options={{
           title: 'Leagues',
           tabBarIcon: ({ color }) => (
@@ -44,7 +44,7 @@ export default function TabLayout() {
           )
         }} />
       <Tabs.Screen
-        name="profile"
+        name='profile'
         options={{
           title: 'Profile',
           tabBarIcon: ({ color }) => (
