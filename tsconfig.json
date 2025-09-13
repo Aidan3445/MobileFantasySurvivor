@@ -2,10 +2,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    }
+      "~/*": [ "./src/*" ]
+    },
   },
   "extends": "expo/tsconfig.base",
   "include": [
@@ -13,5 +11,5 @@
     "**/*.ts",
     "**/*.tsx",
     "nativewind-env.d.ts"
-  ]
+  ],
 }
