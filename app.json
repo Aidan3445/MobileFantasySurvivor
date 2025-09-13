@@ -14,5 +14,14 @@
     ]
   ],
   "name": "mobile-fantasy-survivor",
-  "slug": "mobile-fantasy-survivor"
+  "slug": "mobile-fantasy-survivor",
+  "extra": {
+    "router": {
+      "origin": "https://n"
+    },
+    "eas": {
+      "projectId": "86931bb6-a035-48fe-8856-ff9c5684bc8e"
+    }
+  },
+  "owner": "aidan3445"
 }
