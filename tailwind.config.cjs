@@ -11,7 +11,7 @@ module.exports = {
         navigation: '#CBFFC2',
         background: '#E5BC8F',
         card: '#EED8BE',
-
+        muted: '#F5F5F4',
       }
     },
   },

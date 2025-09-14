@@ -32,7 +32,7 @@ export default function ActiveLeagues() {
   };
 
   return (
-    <View className='bg-card rounded-lg w-90p overflow-hidden py-1'>
+    <View className='bg-card rounded-lg overflow-hidden py-1'>
       <Carousel
         ref={ref}
         width={PAGE_WIDTH}

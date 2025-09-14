@@ -112,6 +112,10 @@ export default [
         require: 'readonly',
         __dirname: 'readonly',
         process: 'readonly',
+        setInterval: 'readonly',
+        setTimeout: 'readonly',
+        clearInterval: 'readonly',
+        clearTimeout: 'readonly',
       },
     },
     plugins: {

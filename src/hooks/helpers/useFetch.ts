@@ -1,6 +1,6 @@
 import { useAuth } from '@clerk/clerk-expo';
 
-export function useFetch() {
+export function useFetch(debug = false) {
   const { getToken } = useAuth();
 
   return async (
@@ -9,8 +9,7 @@ export function useFetch() {
       method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
       headers?: Record<string, string>;
       body?: any;
-    },
-    debug = false
+    }
   ) => {
     if (debug) console.log('Fetching:', endpoint, options ?? 'No-opt');
 
