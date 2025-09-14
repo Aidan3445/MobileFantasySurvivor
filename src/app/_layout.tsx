@@ -6,7 +6,7 @@ import QueryClientContextProvider from '~/context/reactQueryContext';
 
 export default function RootLayout() {
   return (
-    <ClerkProvider tokenCache={tokenCache}>
+    <ClerkProvider tokenCache={tokenCache} telemetry={false}>
       <QueryClientContextProvider>
         <Slot />
       </QueryClientContextProvider>

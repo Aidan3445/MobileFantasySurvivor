@@ -4,7 +4,7 @@ import ActiveLeagues from '~/components/home/activeleagues/view';
 
 export default function Page() {
   return (
-    <View className='flex flex-1'>
+    <View className='page'>
       <ActiveLeagues />
     </View>
   );

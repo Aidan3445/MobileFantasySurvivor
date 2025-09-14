@@ -9,7 +9,9 @@ module.exports = {
         secondary: '#B58553',
         accent: '#DCC0A2',
         navigation: '#CBFFC2',
-        background: '#E5BC8F'
+        background: '#E5BC8F',
+        card: '#EED8BE',
+
       }
     },
   },

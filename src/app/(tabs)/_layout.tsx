@@ -1,8 +1,7 @@
 import { Tabs } from 'expo-router';
 import { Flame, Trophy, UserCircle2 } from 'lucide-react-native';
 import { Image } from 'react-native';
-import tailwindConfig from '@/tailwind.config.cjs'; // adjust path as needed
-
+import tailwindConfig from '@/tailwind.config.cjs';
 const HomeImage = require('~/assets/Icon.png');
 
 const colors = tailwindConfig.theme!.extend!.colors! as Record<string, string>;
