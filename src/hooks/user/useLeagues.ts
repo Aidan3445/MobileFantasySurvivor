@@ -24,12 +24,12 @@ export function useLeagues() {
       };
       return leagues;
     },
-    refetchInterval: 30000,
     staleTime: Infinity,
     gcTime: 24 * 60 * 60 * 1000, // 24 hours
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
+    refetchInterval: false,
     enabled: true
   });
 }
