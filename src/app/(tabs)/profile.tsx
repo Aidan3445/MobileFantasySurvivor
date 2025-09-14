@@ -1,5 +1,5 @@
 import { Text, View } from 'react-native';
-import SignOutButton from '~/app/components/auth/SignOutButton';
+import SignOutButton from '~/components/auth/SignOutButton';
 
 export default function ProfileScreen() {
   return (

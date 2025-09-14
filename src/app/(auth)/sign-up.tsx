@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useSignUp } from '@clerk/clerk-expo';
 import { Link, useRouter } from 'expo-router';
-import Header from '~/app/components/auth/header';
+import Header from '~/components/auth/header';
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();

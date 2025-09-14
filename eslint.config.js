@@ -28,6 +28,8 @@ export default [
         require: 'readonly',
         module: 'readonly',
         console: 'readonly',
+        fetch: 'readonly',
+        RequestInit: 'readonly',
       },
     },
     plugins: {

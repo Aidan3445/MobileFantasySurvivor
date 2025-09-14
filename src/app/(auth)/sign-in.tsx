@@ -2,7 +2,7 @@ import { useSignIn } from '@clerk/clerk-expo';
 import { Link, useRouter } from 'expo-router';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React from 'react';
-import Header from '~/app/components/auth/header';
+import Header from '~/components/auth/header';
 
 
 export default function Page() {

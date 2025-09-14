@@ -23,5 +23,13 @@
       "projectId": "86931bb6-a035-48fe-8856-ff9c5684bc8e"
     }
   },
-  "owner": "aidan3445"
+  "owner": "aidan3445",
+  "expo": {
+    "ios": {
+      "bundleIdentifier": "com.aidan3445.mobilefantasysurvivor",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    }
+  }
 }
