@@ -12,9 +12,8 @@ export function useFetch() {
     },
     debug = false
   ) => {
-    if (debug) {
-      console.log('Fetching:', endpoint, options ?? 'No-opt');
-    }
+    if (debug) console.log('Fetching:', endpoint, options ?? 'No-opt');
+
 
     const token = await getToken();
     if (!token) {

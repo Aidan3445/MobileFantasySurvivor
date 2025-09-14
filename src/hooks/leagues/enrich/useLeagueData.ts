@@ -31,7 +31,6 @@ export function useLeagueData(overrideHash?: string) {
   const membersArray = useMemo(() => leagueMembers?.members ?? [], [leagueMembers?.members]);
 
   const scoreData = useMemo(() => {
-    console.log('Recalculating scores');
     if (!league || !membersArray.length || !seasonData || !selectionTimeline ||
       !basePredictions || !leagueRules || !leagueSettings) {
       return {
@@ -41,8 +40,6 @@ export function useLeagueData(overrideHash?: string) {
         loggedInIndex: -1,
       };
     }
-
-    console.log({ league });
 
     const { scores, currentStreaks } = compileScores(
       seasonData.baseEvents,

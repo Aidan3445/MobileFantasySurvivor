@@ -2,7 +2,7 @@ import { View, Text } from 'react-native';
 import { Flame } from 'lucide-react-native';
 import { cn } from '~/lib/util';
 import { useLeagueData } from '~/hooks/leagues/enrich/useLeagueData';
-import { alternateTableRowColors, divideY } from '~/lib/ui';
+import MemberRow from '~/components/hub/scoreboard/row';
 
 interface ScoreboardProps {
   overrideHash?: string;
@@ -26,8 +26,8 @@ export default function Scoreboard({
 
   return (
     <View className={cn('bg-accent rounded-lg overflow-hidden', className)}>
-      <View className='min-w-full'>
-        <View className='flex-row px-2 bg-white'>
+      <View>
+        <View className='flex-row px-1 bg-white gap-x-1'>
           <View className='w-11 items-center justify-center'>
             <Text className='text-center font-medium'>Place</Text>
           </View>
@@ -53,30 +53,19 @@ export default function Scoreboard({
             const castaway = castawayId !== undefined ?
               (castaways?.find((c) => c.castawayId === castawayId)) : undefined;
             return (
-              <View
-                key={index}
-                className={cn('flex-row px-2 py-1 border-primary',
-                  alternateTableRowColors(index),
-                  divideY(index))}>
-                <View className='w-11 items-center justify-center'>
-                  <Text className='text-center'>{index + 1}</Text>
-                </View>
-                <View className='w-8 items-center justify-center'>
-                  <Text className='text-center'>{scores.slice().pop() ?? 0}</Text>
-                </View>
-                <View className='flex-1 items-center justify-center'>
-                  <Text className='text-center font-medium'>{member.displayName}</Text>
-                </View>
-                <View className='w-24 items-center justify-center'>
-                  <Text className='text-center text-sm'>
-                    {castaway?.shortName ?? 'None'}
-                  </Text>
-                </View>
-              </View>
+              <MemberRow
+                key={member.memberId}
+                member={member}
+                points={scores.slice().pop() ?? 0}
+                place={index + 1}
+                castaway={castaway}
+                color={member.color}
+                doubleBelow={!!maxRows && index >= maxRows}
+              />
             );
           })}
         </View>
       </View>
-    </View >
+    </View>
   );
 }

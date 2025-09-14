@@ -1,4 +1,4 @@
-/* eslint-disable react-native/no-inline-styles */
+
 'use client';
 
 import { useRef } from 'react';
@@ -33,13 +33,6 @@ export default function ActiveLeagues() {
 
   return (
     <View className='bg-card rounded-lg w-90p overflow-hidden py-1'>
-      <View className='w-full items-end pr-1 pb-1'>
-        <Link href='/leagues' className='rounded-lg bg-white px-2'>
-          <Text className='text-primary font-semibold text-lg m-4'>
-            View All
-          </Text>
-        </Link>
-      </View>
       <Carousel
         ref={ref}
         width={PAGE_WIDTH}
@@ -47,14 +40,21 @@ export default function ActiveLeagues() {
         data={leagues ?? []}
         onProgressChange={progress}
         renderItem={({ item }) => (<ActiveLeague league={item.league} />)} />
-      <Pagination.Basic
-        progress={progress}
-        data={leagues ?? []}
-        dotStyle={{ backgroundColor: colors.secondary, borderRadius: 50 }}
-        activeDotStyle={{ backgroundColor: colors.primary, borderRadius: 50 }}
-        containerStyle={{ gap: 5 }}
-        onPress={onPressPagination}
-      />
+      <View className='relative items-center'>
+        <Pagination.Basic
+          progress={progress}
+          data={leagues ?? []}
+          dotStyle={{ backgroundColor: colors.secondary, borderRadius: 50 }}
+          activeDotStyle={{ backgroundColor: colors.primary, borderRadius: 50 }}
+          containerStyle={{ gap: 5, marginTop: 4 }}
+          onPress={onPressPagination}
+        />
+        <Link href='/leagues' className='absolute rounded-md bg-white px-2 bottom-0 right-1'>
+          <Text className='text-primary font-semibold text-sm m-4'>
+            View All
+          </Text>
+        </Link>
+      </View>
     </View>
   );
 }
