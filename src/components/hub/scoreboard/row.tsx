@@ -89,7 +89,7 @@ export default function MemberRow({
   }, [castaway, tribesTimeline]);
 
   return (
-    <View className={cn('flex-row p-1 gap-x-1', divideY(place - 1), doubleBelow && 'border-dashed')}>
+    <View className={cn('flex-row p-1 gap-x-1 h-7', divideY(place - 1), doubleBelow && 'border-dashed')}>
       <View
         className='w-11 items-center justify-center rounded'
         style={{ backgroundColor: color }}>

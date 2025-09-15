@@ -3,6 +3,7 @@ import { Eye } from 'lucide-react-native';
 import { Pressable, Text, View } from 'react-native';
 import Scoreboard from '~/components/hub/scoreboard/view';
 import { DraftCountdown } from '~/components/predraft/countdown/view';
+import { MAX_LEAGUE_MEMBERS_HOME_DISPLAY } from '~/lib/leagues';
 import { type League } from '~/types/leagues';
 
 interface ActiveLeagueProps {
@@ -27,7 +28,7 @@ export default function ActiveLeague({ league }: ActiveLeagueProps) {
       <View className='w-[100%] h-0 border border-primary' />
       {league.status === 'Active'
         ? (
-          <Scoreboard overrideHash={league.hash} maxRows={5} />
+          <Scoreboard overrideHash={league.hash} maxRows={MAX_LEAGUE_MEMBERS_HOME_DISPLAY} />
         ) : (
           <DraftCountdown overrideHash={league.hash} />
         )}

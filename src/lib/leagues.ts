@@ -4,6 +4,8 @@ export const LeagueStatuses = ['Predraft', 'Draft', 'Active', 'Inactive'] as con
 export const LeagueMemberRoles = ['Owner', 'Admin', 'Member'] as const;
 export const ShauhinModeTimings = ['After Premiere', 'After Merge', 'Before Finale', 'Custom'] as const;
 
+export const MAX_LEAGUE_MEMBERS_HOME_DISPLAY = 5;
+
 export const LEAGUE_NAME_MIN_LENGTH = 3;
 export const LEAGUE_NAME_MAX_LENGTH = 64;
 export const DEFAULT_SURVIVAL_CAP = 5;

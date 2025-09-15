@@ -6,21 +6,30 @@ import Carousel, { Pagination } from 'react-native-reanimated-carousel';
 import { Link } from 'expo-router';
 import ActiveLeague from '~/components/home/activeleagues/activeLeague';
 import { useCarousel } from '~/hooks/ui/useCarousel';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
+import { MAX_LEAGUE_MEMBERS_HOME_DISPLAY } from '~/lib/leagues';
 
 
 export default function ActiveLeagues() {
   const { data: leagues } = useLeagues();
-  const { PAGE_WIDTH, props, progressProps, setCarouselData } = useCarousel(leagues);
+  const { props, progressProps, setCarouselData } = useCarousel(leagues);
 
   useEffect(() => {
     setCarouselData(leagues ?? []);
   }, [leagues, setCarouselData]);
 
+  const carouselHeight = useMemo(() => {
+    const maxLeagueMembers = leagues?.reduce((max, league) => Math.max(max, league.memberCount), 0) ?? 0;
+    if (maxLeagueMembers < MAX_LEAGUE_MEMBERS_HOME_DISPLAY) {
+      return Math.max(140, 24.5 * maxLeagueMembers + 55);
+    }
+    return 24.5 * MAX_LEAGUE_MEMBERS_HOME_DISPLAY + 55;
+  }, [leagues]);
+
   return (
     <View className='bg-card rounded-lg pb-1 overflow-hidden'>
       <Carousel
-        height={PAGE_WIDTH / 2}
+        height={carouselHeight}
         renderItem={({ item }) => (<ActiveLeague league={item.league} />)}
         {...props} />
       <View className='relative items-center'>

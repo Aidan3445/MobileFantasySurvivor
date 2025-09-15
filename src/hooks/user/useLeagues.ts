@@ -8,7 +8,12 @@ import { useFetch } from '~/hooks/helpers/useFetch';
   */
 export function useLeagues() {
   const fetchData = useFetch();
-  return useQuery<{ league: League, member: LeagueMember, castaway: CurrentSelection }[]>({
+  return useQuery<{
+    league: League,
+    member: LeagueMember,
+    castaway: CurrentSelection,
+    memberCount: number
+  }[]>({
     queryKey: ['leagues'],
     queryFn: async () => {
       const response = await fetchData('/api/leagues');
@@ -19,7 +24,8 @@ export function useLeagues() {
         leagues: {
           league: League,
           member: LeagueMember,
-          castaway: CurrentSelection
+          castaway: CurrentSelection,
+          memberCount: number
         }[]
       };
       return leagues;
