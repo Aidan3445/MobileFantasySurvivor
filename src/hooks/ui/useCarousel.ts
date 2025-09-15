@@ -25,7 +25,7 @@ export function useCarousel<T>(data: T[] = []) {
     });
   };
 
-  const props = { ref, data: carouselData, progress, onProgressChange: progress, width: PAGE_WIDTH };
+  const props = { ref, data: carouselData, progress, onProgressChange: progress, width: PAGE_WIDTH - 12 };
   return {
     setCarouselData,
     ref,

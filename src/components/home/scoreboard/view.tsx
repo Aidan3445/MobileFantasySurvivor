@@ -9,7 +9,7 @@ export function CastawayScoreboard() {
 
   if (isLoading) {
     return (
-      <View className='bg-card rounded-lg overflow-hidden py-1'>
+      <View className='bg-card rounded-lg py-1 shadow'>
         <Text className='text-center text-muted-foreground'>Loading...</Text>
       </View>
     );
@@ -17,7 +17,7 @@ export function CastawayScoreboard() {
 
   if (error || !scoreData || scoreData.length === 0) {
     return (
-      <View className='bg-card rounded-lg overflow-hidden py-1'>
+      <View className='bg-card rounded-lg py-1 shadow'>
         <Text className='text-center text-muted-foreground mb-4'>
           No active leagues with scoring data.
         </Text>

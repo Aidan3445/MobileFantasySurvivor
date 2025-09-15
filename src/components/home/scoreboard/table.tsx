@@ -86,26 +86,43 @@ export default function ScoreboardTable({ scoreData, someHidden, overrideBaseRul
 
   if (!selectedSeasonData) {
     return (
-      <View className='bg-card rounded-xl p-6'>
+      <View className='bg-card rounded-xl p-6 shadow'>
         <Text className='text-center text-muted-foreground'>No seasons available.</Text>
       </View>
     );
   }
 
   return (
-    <View className={cn('bg-accent rounded-lg overflow-hidden', className)}>
-      <View className='flex-row px-1 bg-white gap-x-1'>
-        {!allZero ? (
-          <>
-            <View className='w-11 items-center justify-center py-1'>
-              <Text className='text-center font-medium'>Place</Text>
-            </View>
-            <View className='w-8 items-center justify-center py-1'>
-              <Flame size={16} className='text-muted-foreground' />
-            </View>
+    <View className={cn('shadow', className)}>
+      <View className='bg-accent rounded-lg overflow-hidden'>
+        <View className='flex-row px-1 bg-white gap-x-1'>
+          {!allZero ? (
+            <>
+              <View className='w-11 items-center justify-center py-1'>
+                <Text className='text-center font-medium'>Place</Text>
+              </View>
+              <View className='w-8 items-center justify-center py-1'>
+                <Flame size={16} className='text-muted-foreground' />
+              </View>
+              <View className='flex-1 items-center justify-center py-1'>
+                <Text className='text-center font-medium'>
+                  Castaway - {selectedSeasonData.data.season.name}
+                </Text>
+                <SelectSeason
+                  seasons={scoreData.map(s => ({
+                    value: s.season.name,
+                    label: s.season.name,
+                  }))}
+                  value={selectedSeasonData.data.season.name}
+                  setValue={selectSeason}
+                  someHidden={someHidden}
+                />
+              </View>
+            </>
+          ) : (
             <View className='flex-1 items-center justify-center py-1'>
               <Text className='text-center font-medium'>
-                Castaway - {selectedSeasonData.data.season.name}
+                {selectedSeasonData.data.season?.name} Castaways
               </Text>
               <SelectSeason
                 seasons={scoreData.map(s => ({
@@ -117,31 +134,16 @@ export default function ScoreboardTable({ scoreData, someHidden, overrideBaseRul
                 someHidden={someHidden}
               />
             </View>
-          </>
-        ) : (
-          <View className='flex-1 items-center justify-center py-1'>
-            <Text className='text-center font-medium'>
-              {selectedSeasonData.data.season?.name} Castaways
-            </Text>
-            <SelectSeason
-              seasons={scoreData.map(s => ({
-                value: s.season.name,
-                label: s.season.name,
-              }))}
-              value={selectedSeasonData.data.season.name}
-              setValue={selectSeason}
-              someHidden={someHidden}
-            />
-          </View>
-        )}
+          )}
+        </View>
+        <ScoreboardBody
+          sortedCastaways={selectedSeasonData.sortedCastaways}
+          castawayColors={selectedSeasonData.castawayColors}
+          castawaySplitIndex={selectedSeasonData.castawaySplitIndex}
+          data={selectedSeasonData.data}
+          allZero={allZero}
+        />
       </View>
-      <ScoreboardBody
-        sortedCastaways={selectedSeasonData.sortedCastaways}
-        castawayColors={selectedSeasonData.castawayColors}
-        castawaySplitIndex={selectedSeasonData.castawaySplitIndex}
-        data={selectedSeasonData.data}
-        allZero={allZero}
-      />
-    </View >
+    </View>
   );
 }

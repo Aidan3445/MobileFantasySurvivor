@@ -18,7 +18,7 @@ export default function ActiveLeagues() {
   }, [leagues, setCarouselData]);
 
   return (
-    <View className='bg-card rounded-lg overflow-hidden py-1'>
+    <View className='bg-card rounded-lg  py-1 shadow'>
       <Carousel
         height={PAGE_WIDTH / 2}
         renderItem={({ item }) => (<ActiveLeague league={item.league} />)}
