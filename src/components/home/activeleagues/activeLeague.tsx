@@ -16,7 +16,7 @@ export default function ActiveLeague({ league }: ActiveLeagueProps) {
         key={league.hash}
         href={`/leagues/${league.hash}`}
         asChild>
-        <Pressable className='px-2 pt-1 active:bg-accent/50 flex-row items-center justify-between'>
+        <Pressable className='px-2 py-1 bg-white active:bg-muted flex-row items-center justify-between'>
           <Text className='font-semibold flex-1'>{league.name}</Text>
           <View className='rounded-lg bg-secondary p-1 mr-2'>
             <Text className='text-xs font-semibold'>{league.season}</Text>
@@ -24,16 +24,12 @@ export default function ActiveLeague({ league }: ActiveLeagueProps) {
           <Eye />
         </Pressable>
       </Link>
-      <View className='w-[100%] h-0 border border-primary my-1' />
+      <View className='w-[100%] h-0 border border-primary' />
       {league.status === 'Active'
         ? (
-          <View className='mx-1'>
-            <Scoreboard overrideHash={league.hash} maxRows={5} />
-          </View>
+          <Scoreboard overrideHash={league.hash} maxRows={5} />
         ) : (
-          <View>
-            <DraftCountdown overrideHash={league.hash} />
-          </View>
+          <DraftCountdown overrideHash={league.hash} />
         )}
     </View>
   );

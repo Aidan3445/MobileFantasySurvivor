@@ -38,16 +38,15 @@ export default function ScoreboardBody({
   return (
     <View className='pb-1 bg-card'>
       <Carousel
-        height={28 * (sortedCastaways.length - castawaySplitIndex) - 7}
+        height={24.5 * castawaySplitIndex}
         {...props}
         renderItem={({ item, index: col }) => (
-          <View className='bg-accent'>
+          <View className=''>
             {item.map(([castawayId, scores], index) => {
               const castaway = castawayData?.castaways.find(c => c.castawayId === castawayId);
               const points = scores.slice().pop() ?? 0;
               const color = colors[castawayId] ?? '#AAAAAA';
               const place = col * castawaySplitIndex + index + 1;
-
               return (
                 <View
                   key={castawayId}
@@ -89,7 +88,7 @@ export default function ScoreboardBody({
             })}
             {/* If odd number of castaways, add an empty row for alignment to first half only (col 0) */}
             {sortedCastaways.length % 2 === 1 && col === 1 && (
-              <View className='h-7 border-t border-t-primary' />
+              <View className='h-7 border-t border-t-primary bg-red-500' />
             )}
           </View>
         )} />

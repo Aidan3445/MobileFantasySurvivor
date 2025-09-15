@@ -9,7 +9,7 @@ export function CastawayScoreboard() {
 
   if (isLoading) {
     return (
-      <View className='bg-card rounded-lg py-1 shadow'>
+      <View className='bg-card rounded-lg py-1'>
         <Text className='text-center text-muted-foreground'>Loading...</Text>
       </View>
     );

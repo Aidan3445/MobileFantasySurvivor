@@ -86,14 +86,14 @@ export default function ScoreboardTable({ scoreData, someHidden, overrideBaseRul
 
   if (!selectedSeasonData) {
     return (
-      <View className='bg-card rounded-xl p-6 shadow'>
+      <View className='bg-card rounded-xl p-6'>
         <Text className='text-center text-muted-foreground'>No seasons available.</Text>
       </View>
     );
   }
 
   return (
-    <View className={cn('shadow', className)}>
+    <View className={cn('', className)}>
       <View className='bg-accent rounded-lg overflow-hidden'>
         <View className='flex-row px-1 bg-white gap-x-1'>
           {!allZero ? (

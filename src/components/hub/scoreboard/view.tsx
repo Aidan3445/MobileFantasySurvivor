@@ -25,7 +25,7 @@ export default function Scoreboard({
   } = useLeagueData(overrideHash);
 
   return (
-    <View className={cn('bg-accent rounded-lg overflow-hidden', className)}>
+    <View className={cn('', className)}>
       <View className='flex-row px-1 bg-white gap-x-1'>
         <View className='w-11 items-center justify-center'>
           <Text className='text-center font-medium'>Place</Text>
