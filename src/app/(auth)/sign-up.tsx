@@ -70,7 +70,7 @@ export default function SignUpScreen() {
   if (pendingVerification) {
     return (
       <View className='flex-1 bg-background justify-center px-6'>
-        <View className='bg-white rounded-3xl p-8 shadow-lg focus:-translate-y-40 transition-transform duration-[275ms] ease-out'>
+        <View className='bg-white rounded-3xl p-8 shadow-lg focus:-translate-y-40 transition-keyboard'>
           <View className='items-center mb-8'>
             <Text className='text-3xl font-bold text-primary mb-2'>Check Your Email</Text>
             <Text className='text-secondary text-lg text-center'>We sent you a verification code</Text>
@@ -100,7 +100,7 @@ export default function SignUpScreen() {
   return (
     <View className='flex-1 bg-background justify-around p-6'>
       <Header />
-      <View className='bg-white rounded-3xl p-8 shadow-lg focus:-translate-y-[23rem] transition-transform duration-[275ms] ease-out'>
+      <View className='bg-white rounded-3xl p-8 shadow-lg focus:-translate-y-[23rem] transition-keyboard'>
         <View className='items-center mb-8'>
           <Text className='text-3xl font-bold text-primary mb-2'>Join Us!</Text>
           <Text className='text-secondary text-lg'>Create your account</Text>

@@ -18,8 +18,7 @@ export function useSeasonsData(includeInactive: boolean, seasonId?: number) {
   return useQuery<SeasonsDataQuery[]>({
     queryKey: ['seasons', seasonId, includeInactive],
     queryFn: async () => {
-      const res = await fetchData(`/api/seasons/seasonsData?includeInactive=${includeInactive}${seasonId ? `&seasonId=${seasonId}` : ''}`,
-        undefined, true);
+      const res = await fetchData(`/api/seasons/seasonsData?includeInactive=${includeInactive}${seasonId ? `&seasonId=${seasonId}` : ''}`);
       if (!res.ok) {
         throw new Error('Failed to fetch season data');
       }

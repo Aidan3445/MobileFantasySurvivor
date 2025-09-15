@@ -12,6 +12,7 @@ module.exports = {
         background: '#E5BC8F',
         card: '#EED8BE',
         muted: '#F5F5F4',
+        "muted-foreground": "#5E5955",
       }
     },
   },

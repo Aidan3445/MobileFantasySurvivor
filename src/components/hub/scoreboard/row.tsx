@@ -90,7 +90,6 @@ export default function MemberRow({
 
   return (
     <View className={cn('flex-row p-1 gap-x-1', divideY(place - 1), doubleBelow && 'border-dashed')}>
-      {/* Place */}
       <View
         className='w-11 items-center justify-center rounded'
         style={{ backgroundColor: color }}>
@@ -100,8 +99,6 @@ export default function MemberRow({
           {place}
         </Text>
       </View>
-
-      {/* Points */}
       <View
         className='w-8 items-center justify-center rounded'
         style={{ backgroundColor: color }}>
@@ -111,8 +108,6 @@ export default function MemberRow({
           {points}
         </Text>
       </View>
-
-      {/* Member Name */}
       <View
         className={cn(
           'flex-1 items-center justify-center rounded',
@@ -125,8 +120,6 @@ export default function MemberRow({
           {member.displayName}
         </Text>
       </View>
-
-      {/* Castaway */}
       <View
         className='w-24 rounded'
         style={{ backgroundColor: castaway?.eliminatedEpisode ? '#AAAAAA' : castaway?.tribe?.color }}>
@@ -136,16 +129,12 @@ export default function MemberRow({
             style={{ color: getContrastingColor(castaway?.eliminatedEpisode ? '#AAAAAA' : castaway?.tribe?.color ?? '#AAAAAA') }}>
             {castaway?.shortName || 'None'}
           </Text>
-
           <View className='flex-row items-center'>
-            {/* Tribe circles */}
             {castawayTribes.length > 1 && castawayTribes.map(({ tribe, episode }) => (
               <Pressable key={`${tribe.tribeName}-${episode}`} className='mr-1'>
                 <Circle size={16} fill={tribe.tribeColor} />
               </Pressable>
             ))}
-
-            {/* History button */}
             <Pressable
               className='mr-1'
               onPress={() => setShowHistory(!showHistory)}>
@@ -155,8 +144,6 @@ export default function MemberRow({
                   ? 'black'
                   : getContrastingColor(castaway?.tribe?.color ?? '#AAAAAA')} />
             </Pressable>
-
-            {/* Survival streak */}
             {leagueSettings && leagueSettings.survivalCap > 0 && (
               <Pressable onPress={() => setShowStreak(!showStreak)}>
                 <View className='w-4 items-center justify-center'>
@@ -174,8 +161,6 @@ export default function MemberRow({
           </View>
         </View>
       </View>
-
-      {/* History Modal/Overlay - you'd need to implement a modal component */}
       {showHistory && (
         <View className='absolute top-full right-0 bg-white border border-gray-300 rounded p-2 z-10'>
           <Text className='font-semibold text-center mb-2'>Selection History</Text>
@@ -195,8 +180,6 @@ export default function MemberRow({
           ))}
         </View>
       )}
-
-      {/* Streak Modal/Overlay */}
       {showStreak && (
         <View className='absolute top-full right-0 bg-white border border-gray-300 rounded p-2 z-10'>
           <Text className='text-xs'>Survival streak: {currentStreak ?? 0}</Text>

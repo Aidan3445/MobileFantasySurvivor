@@ -43,7 +43,7 @@ export default function Page() {
   return (
     <View className='flex-1 bg-background justify-around p-6'>
       <Header />
-      <View className='bg-white rounded-3xl p-8 shadow-lg focus:-translate-y-96 transition-transform duration-[275ms] ease-out'>
+      <View className='bg-white rounded-3xl p-8 shadow-lg focus:-translate-y-96 transition-keyboard'>
         <View className='items-center mb-8'>
           <Text className='text-3xl font-bold text-primary mb-2'>Welcome Back!</Text>
           <Text className='text-secondary text-lg'>Sign in to continue</Text>
