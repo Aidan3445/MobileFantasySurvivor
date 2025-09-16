@@ -42,7 +42,7 @@ export default function JoinLeagueForm() {
         <TextInput
           className={cn('border border-primary rounded-lg p-4 text-lg leading-5 placeholder:text-muted-foreground',
             joinCode.length === 0 && 'italic')}
-          placeholder={'Ender league code...'}
+          placeholder={'Enter league code...'}
           autoCapitalize='words'
           onChangeText={setJoinCode}
           value={joinCode}
