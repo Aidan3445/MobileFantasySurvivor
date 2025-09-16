@@ -8,9 +8,10 @@ import { getContrastingColor } from '@uiw/color-convert';
 
 interface LeagueMemberProps {
   control: Control<any>;
+  formPrefix?: string;
 }
 
-export default function LeagueMember({ control }: LeagueMemberProps) {
+export default function LeagueMember({ control, formPrefix }: LeagueMemberProps) {
   return (
     <View className='flex-1 justify-end items-center p-6 mb-14'>
       <Text className='text-center text-xl text-muted-foreground'>
@@ -21,7 +22,7 @@ export default function LeagueMember({ control }: LeagueMemberProps) {
       </Text>
       <Controller
         control={control}
-        name='newMember.displayName'
+        name={formPrefix ? `${formPrefix}.displayName` : 'displayName'}
         render={({ field: { onChange, onBlur, value } }) => (
           <View className='w-full'>
             <TextInput
@@ -41,7 +42,7 @@ export default function LeagueMember({ control }: LeagueMemberProps) {
       />
       <Controller
         control={control}
-        name='newMember.color'
+        name={formPrefix ? `${formPrefix}.color` : 'color'}
         render={({ field: { onChange, onBlur, value } }) => (
           <View className='w-72 flex-row flex-wrap justify-center gap-1'>
             {twentyColors.map((color) => (

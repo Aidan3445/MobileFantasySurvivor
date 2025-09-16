@@ -9,7 +9,7 @@ import { type LeagueInsert, LeagueInsertZod } from '~/types/leagues';
 import { useFetch } from '~/hooks/helpers/useFetch';
 
 export function useCreateLeague(onSubmit?: () => void) {
-  const postData = useFetch('POST', true);
+  const postData = useFetch('POST');
   const router = useRouter();
   const queryClient = useQueryClient();
   const { user } = useUser();

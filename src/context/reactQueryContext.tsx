@@ -1,21 +1,32 @@
 'use client';
 
-import { isServer, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { isServer, QueryClient } from '@tanstack/react-query';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
 import { type ReactNode } from 'react';
+import { reviveDates } from '~/lib/util';
 
 function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
       queries: {
-        // With SSR, we usually want to set some default staleTime
-        // above 0 to avoid refetching immediately on the client
         staleTime: 60 * 1000,
+        gcTime: Infinity,
       },
     },
   });
 }
 
 let browserQueryClient: QueryClient | undefined = undefined;
+
+const persister = createAsyncStoragePersister({
+  storage: AsyncStorage,
+  deserialize: (data) => {
+    const parsed = JSON.parse(data);
+    return reviveDates(parsed);
+  },
+});
 
 function getQueryClient() {
   if (isServer) {
@@ -39,8 +50,10 @@ export default function Provider({ children }: { children: ReactNode }) {
   const queryClient = getQueryClient();
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <PersistQueryClientProvider
+      client={queryClient}
+      persistOptions={{ persister, maxAge: Infinity }}>
       {children}
-    </QueryClientProvider>
+    </PersistQueryClientProvider>
   );
 }

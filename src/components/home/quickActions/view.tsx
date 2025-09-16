@@ -17,8 +17,8 @@ export default function QuickActions() {
       <Pressable
         className='flex-1 bg-secondary rounded-lg p-4 flex-row items-center justify-center active:bg-secondary/80'
         onPress={() => router.push('/leagues/join')}>
-        <Users size={20} color='black' />
-        <Text className='text-black font-semibold ml-2'>Join League</Text>
+        <Users size={20} color='white' />
+        <Text className='text-white font-semibold ml-2'>Join League</Text>
       </Pressable>
     </View>
   );

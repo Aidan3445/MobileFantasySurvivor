@@ -1,4 +1,5 @@
 'use client';
+
 import { View, Text, Pressable } from 'react-native';
 import Carousel, { Pagination } from 'react-native-reanimated-carousel';
 import { LeagueInsertZod } from '~/types/leagues';
@@ -6,11 +7,11 @@ import { useCarousel } from '~/hooks/ui/useCarousel';
 import { useCreateLeague } from '~/hooks/leagues/useCreateLeague';
 import { cn } from '~/lib/util';
 import { ArrowLeft } from 'lucide-react-native';
-import LeagueName from '~/components/leagues/hub/actions/create/leagueName';
+import LeagueName from '~/components/leagues/actions/create/leagueName';
 import Header from '~/components/home/header/view';
 import { type ReactNode } from 'react';
-import DraftDate from '~/components/leagues/hub/actions/create/draftDate';
-import LeagueMember from '~/components/leagues/hub/actions/create/leagueMember';
+import DraftDate from '~/components/leagues/actions/create/draftDate';
+import LeagueMember from '~/components/leagues/actions/create/leagueMember';
 
 interface CreateLeagueFormProps {
   onSubmit?: () => void;
@@ -40,7 +41,7 @@ export default function CreateLeagueForm({ onSubmit }: CreateLeagueFormProps) {
       {
         name: 'newMember',
         content: (
-          <LeagueMember control={reactForm.control} />
+          <LeagueMember control={reactForm.control} formPrefix='newMember' />
         ),
         optional: false,
         isLast: true,
@@ -65,8 +66,7 @@ export default function CreateLeagueForm({ onSubmit }: CreateLeagueFormProps) {
                 <Pressable
                   onPress={item.isLast ? handleSubmit : () => ref.current?.next()}
                   disabled={buttonDisabled}
-                  className={cn('bg-primary rounded-md px-4 py-2 absolute bottom-4 w-1/2',
-                    buttonDisabled ? 'opacity-50' : 'opacity-100')}>
+                  className={cn('bg-primary rounded-md px-4 py-2 absolute bottom-4 w-1/2 disabled:opacity-50')}>
                   <Text className='text-white text-center font-semibold'>
                     {item.isLast ? 'Create League' : !fieldTouched && item.optional ? 'Skip' : 'Next'}
                   </Text>
@@ -87,9 +87,9 @@ export default function CreateLeagueForm({ onSubmit }: CreateLeagueFormProps) {
           );
         }}
         {...props} />
-      <View className='h-7'>
+      < View className='h-7' >
         <Pagination.Basic {...progressProps} containerStyle={{ ...progressProps.containerStyle, marginBottom: 30 }} />
-      </View>
+      </View >
     </View >
   );
 }
