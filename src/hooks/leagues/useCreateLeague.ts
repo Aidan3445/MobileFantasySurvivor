@@ -9,7 +9,7 @@ import { type LeagueInsert, LeagueInsertZod } from '~/types/leagues';
 import { useFetch } from '~/hooks/helpers/useFetch';
 
 export function useCreateLeague(onSubmit?: () => void) {
-  const postData = useFetch('POST');
+  const postData = useFetch('POST', true);
   const router = useRouter();
   const queryClient = useQueryClient();
   const { user } = useUser();
@@ -35,22 +35,22 @@ export function useCreateLeague(onSubmit?: () => void) {
     }
     try {
       const response = await postData('/api/leagues/create', { body: data });
-      if (response.status !== 200) {
+      if (response.status !== 201) {
         const errorData = await response.json();
         console.error('Error creating league:', errorData);
         Alert.alert('Error', errorData.message || 'Failed to create league');
         return;
       }
 
-      const responseData = await response.json() as { hash: string };
-      const newHash = responseData.hash;
+      const { newHash } = await response.json() as { newHash: string };
 
       if (!newHash) throw new Error('Failed to create league');
 
+      reactForm.reset();
       onSubmit?.();
       await queryClient.invalidateQueries({ queryKey: ['leagues'] });
       Alert.alert('Success', `League created: ${data.leagueName}`);
-      router.push(`/leagues/${newHash}/predraft`);
+      router.push(`/leagues/${newHash}`);
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to create league');
