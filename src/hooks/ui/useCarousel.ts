@@ -2,9 +2,7 @@ import { useRef, useState } from 'react';
 import { Dimensions } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import { type ICarouselInstance } from 'react-native-reanimated-carousel';
-import tailwindConfig from '@/tailwind.config.cjs';
-
-const colors = tailwindConfig.theme!.extend!.colors! as Record<string, string>;
+import { colors } from '~/lib/colors';
 
 const PAGE_WIDTH = Dimensions.get('window').width;
 const PAGE_HEIGHT = Dimensions.get('window').height;
@@ -38,6 +36,7 @@ export function useCarousel<T>(data: T[] = []) {
       dotStyle: { backgroundColor: colors.secondary, borderRadius: 50 },
       activeDotStyle: { backgroundColor: colors.primary, borderRadius: 50 },
       containerStyle: { gap: 5 },
+      onPressPagination,
       ...props
     }
   };

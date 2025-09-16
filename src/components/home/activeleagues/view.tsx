@@ -22,9 +22,9 @@ export default function ActiveLeagues() {
   const carouselHeight = useMemo(() => {
     const maxLeagueMembers = leagues?.reduce((max, league) => Math.max(max, league.memberCount), 0) ?? 0;
     if (maxLeagueMembers < MAX_LEAGUE_MEMBERS_HOME_DISPLAY) {
-      return Math.max(150, 24.5 * maxLeagueMembers + 55);
+      return Math.max(150, 28 * maxLeagueMembers + 55);
     }
-    return 24.5 * MAX_LEAGUE_MEMBERS_HOME_DISPLAY + 55;
+    return 28 * MAX_LEAGUE_MEMBERS_HOME_DISPLAY + 55;
   }, [leagues]);
 
   return (

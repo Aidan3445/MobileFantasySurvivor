@@ -1,10 +1,8 @@
 import { Tabs, usePathname } from 'expo-router';
 import { Flame, Trophy, UserCircle2 } from 'lucide-react-native';
 import { Image } from 'react-native';
-import tailwindConfig from '@/tailwind.config.cjs';
+import { colors } from '~/lib/colors';
 const HomeImage = require('~/assets/Icon.png');
-
-const colors = tailwindConfig.theme!.extend!.colors! as Record<string, string>;
 
 export default function TabLayout() {
   const pathname = usePathname();
@@ -15,9 +13,9 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors!.primary,
-        tabBarInactiveTintColor: colors!.secondary,
-        tabBarStyle: { backgroundColor: colors!.navigation, height: 80 },
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.secondary,
+        tabBarStyle: { backgroundColor: colors.navigation, height: 80 },
         tabBarLabelStyle: { fontSize: 12 },
       }}>
       <Tabs.Screen
@@ -46,7 +44,10 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => (
             <Trophy color={isLeaguesPath ? colors!.primary : color} size={32} />
           ),
-          tabBarLabelStyle: { fontSize: 12, color: isLeaguesPath ? colors!.primary : undefined },
+          tabBarLabelStyle: {
+            fontSize: 12,
+            color: isLeaguesPath ? colors!.primary : colors!.secondary
+          },
           href: { pathname: '/leagues' }
         }} />
       <Tabs.Screen

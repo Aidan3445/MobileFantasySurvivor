@@ -46,7 +46,7 @@ export default function ScoreboardTable({ scoreData, someHidden, overrideBaseRul
       .map(([castawayId, scores]) => [Number(castawayId), scores] as [number, number[]]);
 
     const castawayColors: Record<string, string> =
-      data.castaways.sort(({ fullName: a }, { fullName: b }) => a.localeCompare(b))
+      data.castaways.sort(({ fullName: a }, { fullName: b }) => a.length - b.length)
         .reduce((acc, { castawayId }, index) => {
           acc[castawayId] = newtwentyColors[index % newtwentyColors.length]!;
           return acc;

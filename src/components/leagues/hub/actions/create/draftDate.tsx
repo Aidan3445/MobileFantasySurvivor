@@ -2,6 +2,7 @@ import { type Control, Controller } from 'react-hook-form';
 import { View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Text } from 'react-native-gesture-handler';
+import { colors } from '~/lib/colors';
 
 interface DraftDateProps {
   control: Control<any>;
@@ -23,19 +24,38 @@ export default function DraftDate({ control }: DraftDateProps) {
           <View className='w-full flex-row justify-center'>
             <DateTimePicker
               minimumDate={new Date()}
+              maximumDate={new Date(Date.now() + 15778476000)} // 6 months from now
               value={value ?? new Date()}
               onChange={(_, date) => {
                 onChange(date);
                 onBlur();
               }}
+              accentColor={colors.secondary}
               mode='date' />
             <DateTimePicker
               minimumDate={new Date()}
               value={value ?? new Date()}
+              onChange={(_, date) => {
+                onChange((prev: Date) => {
+                  // Merge date and time
+                  if (!date) return prev;
+                  const newDate = new Date(prev ?? Date.now());
+                  newDate.setHours(date.getHours());
+                  newDate.setMinutes(date.getMinutes());
+                  newDate.setSeconds(0);
+                  newDate.setMilliseconds(0);
+                  return newDate;
+                });
+                onBlur();
+              }}
+              accentColor={colors.secondary}
               mode='time' />
           </View>
         )}
       />
+      <Text className='text-center text-xs text-muted-foreground italic'>
+        Tip: Try drafting after the premiere to meet the castaways first!
+      </Text>
     </View>
   );
 }

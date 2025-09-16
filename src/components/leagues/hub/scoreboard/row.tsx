@@ -89,7 +89,7 @@ export default function MemberRow({
   }, [castaway, tribesTimeline]);
 
   return (
-    <View className={cn('flex-row p-1 gap-x-1 h-7', divideY(place - 1), doubleBelow && 'border-dashed')}>
+    <View className={cn('flex-row p-1 gap-x-1 h-8', divideY(place - 1), doubleBelow && 'border-dashed')}>
       <View
         className='w-11 items-center justify-center rounded'
         style={{ backgroundColor: color }}>
@@ -111,11 +111,11 @@ export default function MemberRow({
       <View
         className={cn(
           'flex-1 items-center justify-center rounded',
-          member.loggedIn && 'border-white border leading-0'
+          member.loggedIn && 'border-white border'
         )}
         style={{ backgroundColor: color }}>
         <Text
-          className={cn('text-center', member.loggedIn && 'font-bold')}
+          className={cn('text-center')}
           style={{ color: getContrastingColor(color) }}>
           {member.displayName}
         </Text>
@@ -123,7 +123,7 @@ export default function MemberRow({
       <View
         className='w-24 rounded'
         style={{ backgroundColor: castaway?.eliminatedEpisode ? '#AAAAAA' : castaway?.tribe?.color }}>
-        <View className='flex-row items-center'>
+        <View className='flex-row items-center p-0.5'>
           <Text
             className='flex-1 text-center text-sm'
             style={{ color: getContrastingColor(castaway?.eliminatedEpisode ? '#AAAAAA' : castaway?.tribe?.color ?? '#AAAAAA') }}>
