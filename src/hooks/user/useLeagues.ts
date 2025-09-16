@@ -7,7 +7,7 @@ import { useFetch } from '~/hooks/helpers/useFetch';
   * Fetches the leagues for the current user.
   */
 export function useLeagues() {
-  const fetchData = useFetch();
+  const fetchData = useFetch('GET');
   return useQuery<{
     league: League,
     member: LeagueMember,
@@ -30,11 +30,10 @@ export function useLeagues() {
       };
       return leagues;
     },
-    staleTime: Infinity,
+    staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 24 * 60 * 60 * 1000, // 24 hours
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
+    refetchOnReconnect: true,
+    refetchOnMount: true,
     refetchInterval: false,
     enabled: true
   });

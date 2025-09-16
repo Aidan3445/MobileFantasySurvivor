@@ -43,7 +43,7 @@ export function useFetch(fetchMethod: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
       ...(body && { body: JSON.stringify(body) }),
     });
 
-    if (debug) console.log(`Response from ${endpoint}:`, response.status, response.statusText);
+    if (debug) console.log(`Response from ${endpoint}: `, response.status, response.statusText);
 
     return response;
   };
