@@ -10,6 +10,7 @@ import LeagueName from '~/components/leagues/hub/actions/create/leagueName';
 import Header from '~/components/home/header/view';
 import { type ReactNode } from 'react';
 import DraftDate from '~/components/leagues/hub/actions/create/draftDate';
+import LeagueMember from '~/components/leagues/hub/actions/create/leagueMember';
 
 interface CreateLeagueFormProps {
   onSubmit?: () => void;
@@ -39,12 +40,7 @@ export default function CreateLeagueForm({ onSubmit }: CreateLeagueFormProps) {
       {
         name: 'newMember',
         content: (
-          <View className='flex-1 justify-center items-center p-6'>
-            <Text className='text-2xl font-bold mb-6'>MEMBER</Text>
-            <Text className='text-center text-muted-foreground mb-8'>
-              Set your display name and color
-            </Text>
-          </View>
+          <LeagueMember control={reactForm.control} />
         ),
         optional: false,
         isLast: true,

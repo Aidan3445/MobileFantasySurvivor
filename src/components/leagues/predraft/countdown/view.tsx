@@ -43,11 +43,11 @@ export function DraftCountdown({ overrideHash }: DraftCountdownProps) {
   return (
     <View className='w-full p-2 bg-card rounded-xl'>
       {/* Header section */}
-      <View className='flex-row w-full items-start'>
+      <View className='flex-row w-full items-center'>
         <View className='flex-1'>
-          <View className='flex-row flex-wrap items-baseline gap-x-2'>
-            <Text className='text-lg font-bold text-accent-foreground'>Draft Countdown</Text>
-            <Text className='text-sm text-muted-foreground'>
+          <View className='flex-col items-baseline gap-y-0'>
+            <Text className='text-lg font-bold text-accent-foreground leading-none'>Draft Countdown</Text>
+            <Text className='text-sm text-muted-foreground leading-none'>
               {leagueSettings?.draftDate
                 ? (leagueSettings.draftDate.getTime() > Date.now()
                   ? `Starts at: ${leagueSettings.draftDate.toLocaleString()}`
@@ -58,7 +58,7 @@ export function DraftCountdown({ overrideHash }: DraftCountdownProps) {
         </View>
 
         {editable && (
-          <Pressable onPress={onDraftJoin} className='p-2 rounded-md bg-navigation active:bg-navigation/70'>
+          <Pressable onPress={onDraftJoin} className='p-1 rounded-md bg-navigation active:bg-navigation/70'>
             <Text className='text-accent-foreground'>
               Start Draft Now
             </Text>
@@ -75,7 +75,7 @@ export function DraftCountdown({ overrideHash }: DraftCountdownProps) {
             <Pressable
               className='w-full p-2 rounded-xl bg-navigation active:bg-navigation/70'
               onPress={onDraftJoin}>
-              <Text className='text-primary text-2xl text-center font-semibold'>
+              <Text className='text-primary text-2xl text-center font-semibold p-1'>
                 Join now!
               </Text>
             </Pressable>

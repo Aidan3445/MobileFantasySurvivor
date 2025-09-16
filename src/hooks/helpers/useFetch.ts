@@ -19,7 +19,8 @@ export function useFetch(fetchMethod: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
       body?: any;
     }
   ) => {
-    if (debug) console.log('Fetching:', endpoint, options ?? 'No-opt');
+    const opts = { method: fetchMethod, ...options };
+    if (debug) console.log('Fetching:', endpoint, opts);
 
 
     const token = await getToken();
@@ -30,7 +31,7 @@ export function useFetch(fetchMethod: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
 
     if (debug) console.log(`Auth token acquired: ${token.substring(0, 10)}...`);
 
-    const { method = 'GET', headers = {}, body } = options || {};
+    const { method, headers = {}, body } = opts || {};
 
     const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}${endpoint}`, {
       method: method || fetchMethod,
