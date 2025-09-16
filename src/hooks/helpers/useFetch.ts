@@ -1,6 +1,14 @@
 import { useAuth } from '@clerk/clerk-expo';
 
-export function useFetch(debug = false) {
+/**
+  * A custom hook to perform authenticated fetch requests.
+  * It automatically includes the user's auth token in the request headers.
+  * @param fetchMethod - The HTTP method to use for the request (default is 'GET').
+  * this will be overridden by [options.method] if provided for a specific request.
+  * @param debug - If true, logs debug information to the console (default is false).
+  * @returns A function that takes an endpoint and options, performs the fetch, and returns the response.
+  */
+export function useFetch(fetchMethod: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET', debug = false) {
   const { getToken } = useAuth();
 
   return async (
@@ -25,7 +33,7 @@ export function useFetch(debug = false) {
     const { method = 'GET', headers = {}, body } = options || {};
 
     const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}${endpoint}`, {
-      method,
+      method: method || fetchMethod,
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',

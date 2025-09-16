@@ -1,9 +1,9 @@
 'use client';
 
-import { Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { useLeagues } from '~/hooks/user/useLeagues';
 import Carousel, { Pagination } from 'react-native-reanimated-carousel';
-import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 import ActiveLeague from '~/components/home/activeleagues/activeLeague';
 import { useCarousel } from '~/hooks/ui/useCarousel';
 import { useEffect, useMemo } from 'react';
@@ -11,6 +11,7 @@ import { MAX_LEAGUE_MEMBERS_HOME_DISPLAY } from '~/lib/leagues';
 
 
 export default function ActiveLeagues() {
+  const router = useRouter();
   const { data: leagues } = useLeagues();
   const { props, progressProps, setCarouselData } = useCarousel(leagues);
 
@@ -33,12 +34,14 @@ export default function ActiveLeagues() {
         renderItem={({ item }) => (<ActiveLeague league={item.league} />)}
         {...props} />
       <View className='relative items-center'>
-        <Pagination.Basic {...progressProps} />
-        <Link href='/leagues' className='absolute rounded-md bg-white px-2 bottom-0 right-1'>
-          <Text className='text-primary font-semibold text-sm m-4'>
+        <Pagination.Basic {...progressProps} containerStyle={{ ...progressProps.containerStyle, marginBottom: 3 }} />
+        <Pressable
+          className='absolute rounded-md bg-white px-2 bottom-0 right-1'
+          onPress={() => router.push('/leagues')}>
+          <Text className='text-primary font-semibold text-sm'>
             View All
           </Text>
-        </Link>
+        </Pressable>
       </View>
     </View>
   );

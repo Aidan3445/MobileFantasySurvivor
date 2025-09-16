@@ -1,4 +1,4 @@
-import { Tabs } from 'expo-router';
+import { Tabs, usePathname } from 'expo-router';
 import { Flame, Trophy, UserCircle2 } from 'lucide-react-native';
 import { Image } from 'react-native';
 import tailwindConfig from '@/tailwind.config.cjs';
@@ -7,6 +7,10 @@ const HomeImage = require('~/assets/Icon.png');
 const colors = tailwindConfig.theme!.extend!.colors! as Record<string, string>;
 
 export default function TabLayout() {
+  const pathname = usePathname();
+
+  const isLeaguesPath = pathname.startsWith('/leagues');
+
   return (
     <Tabs
       screenOptions={{
@@ -33,15 +37,17 @@ export default function TabLayout() {
           title: 'Playground',
           tabBarIcon: ({ color }) => (
             <Flame color={color} size={32} />
-          )
+          ),
         }} />
       <Tabs.Screen
-        name='leagues'
+        name='leagues/index'
         options={{
           title: 'Leagues',
           tabBarIcon: ({ color }) => (
-            <Trophy color={color} size={32} />
-          )
+            <Trophy color={isLeaguesPath ? colors!.primary : color} size={32} />
+          ),
+          tabBarLabelStyle: { fontSize: 12, color: isLeaguesPath ? colors!.primary : undefined },
+          href: { pathname: '/leagues' }
         }} />
       <Tabs.Screen
         name='profile'
@@ -51,6 +57,16 @@ export default function TabLayout() {
             <UserCircle2 color={color} size={32} />
           )
         }} />
+      {/* Hidden screens */}
+      <Tabs.Screen
+        name='leagues/create'
+        options={{ href: null }} />
+      <Tabs.Screen
+        name='leagues/join'
+        options={{ href: null }} />
+      <Tabs.Screen
+        name='leagues/[hash]'
+        options={{ href: null }} />
     </Tabs>
   );
 }

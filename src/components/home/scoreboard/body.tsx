@@ -92,7 +92,7 @@ export default function ScoreboardBody({
             )}
           </View>
         )} />
-      <Pagination.Basic {...progressProps} />
+      <Pagination.Basic {...progressProps} containerStyle={{ ...progressProps.containerStyle, marginVertical: 4 }} />
     </View >
   );
 }

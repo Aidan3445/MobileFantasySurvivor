@@ -2,7 +2,7 @@ import { View, Text } from 'react-native';
 import { Flame } from 'lucide-react-native';
 import { cn } from '~/lib/util';
 import { useLeagueData } from '~/hooks/leagues/enrich/useLeagueData';
-import MemberRow from '~/components/hub/scoreboard/row';
+import MemberRow from '~/components/leagues/hub/scoreboard/row';
 
 interface ScoreboardProps {
   overrideHash?: string;

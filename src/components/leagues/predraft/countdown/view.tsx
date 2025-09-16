@@ -5,15 +5,15 @@ import { useLeagueMembers } from '~/hooks/leagues/useLeagueMembers';
 import { useLeague } from '~/hooks/leagues/useLeague';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import Clock from '~/components/predraft/countdown/clock';
 import { useFetch } from '~/hooks/helpers/useFetch';
+import Clock from '~/components/leagues/predraft/countdown/clock';
 
 interface DraftCountdownProps {
   overrideHash?: string;
 }
 
 export function DraftCountdown({ overrideHash }: DraftCountdownProps) {
-  const putData = useFetch(true);
+  const putData = useFetch('PUT');
   const queryClient = useQueryClient();
   const { data: league } = useLeague(overrideHash);
   const { data: leagueSettings } = useLeagueSettings(overrideHash);
@@ -28,9 +28,7 @@ export function DraftCountdown({ overrideHash }: DraftCountdownProps) {
   const onDraftJoin = async () => {
     if (!league) return;
     if (league.status === 'Predraft') {
-      const res = await putData(`/api/leagues/${league.hash}/status`, {
-        method: 'PUT'
-      });
+      const res = await putData(`/api/leagues/${league.hash}/status`);
       if (res.status !== 200) {
         // You might want to use a proper alert/toast component
         console.error(`Failed to join draft: ${res.statusText}`);

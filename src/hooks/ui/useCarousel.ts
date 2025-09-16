@@ -37,7 +37,7 @@ export function useCarousel<T>(data: T[] = []) {
     progressProps: {
       dotStyle: { backgroundColor: colors.secondary, borderRadius: 50 },
       activeDotStyle: { backgroundColor: colors.primary, borderRadius: 50 },
-      containerStyle: { gap: 5, marginTop: 4 },
+      containerStyle: { gap: 5 },
       ...props
     }
   };
