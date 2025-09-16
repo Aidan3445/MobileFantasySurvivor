@@ -76,7 +76,7 @@ export function useJoinLeague(onSubmit?: () => void) {
       router.push(`/leagues/${hash}`);
     } catch (error) {
       console.error(error);
-      Alert.alert('Error', 'Failed to create league');
+      Alert.alert('Error', 'Failed to join league');
     }
   });
 
