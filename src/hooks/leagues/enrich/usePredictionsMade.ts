@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import { useLeagueMembers } from '~/hooks/leagues/useLeagueMembers';
-import { useBasePredictions } from '~/hooks/leagues/useBasePredictions';
-import { useCustomEvents } from '~/hooks/leagues/useCustomEvents';
+import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
+import { useBasePredictions } from '~/hooks/leagues/query/useBasePredictions';
+import { useCustomEvents } from '~/hooks/leagues/query/useCustomEvents';
 import { type Prediction } from '~/types/events';
 
 /**

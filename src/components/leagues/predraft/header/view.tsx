@@ -3,7 +3,7 @@
 import { useRouter } from 'expo-router';
 import { ArrowLeft, Settings } from 'lucide-react-native';
 import { Pressable, Text, View } from 'react-native';
-import { useLeague } from '~/hooks/leagues/useLeague';
+import { useLeague } from '~/hooks/leagues/query/useLeague';
 
 interface PredraftHeaderProps {
   inSettings?: boolean;

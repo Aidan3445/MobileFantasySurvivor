@@ -1,8 +1,8 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useFetch } from '~/hooks/helpers/useFetch';
-import { useLeague } from '~/hooks/leagues/useLeague';
-import { useLeagueMembers } from '~/hooks/leagues/useLeagueMembers';
-import { useLeagueSettings } from '~/hooks/leagues/useLeagueSettings';
+import { useLeague } from '~/hooks/leagues/query/useLeague';
+import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
+import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
 import { useEffect, useMemo, useState } from 'react';
 import { Alert } from 'react-native';
 

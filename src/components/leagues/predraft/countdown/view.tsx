@@ -1,8 +1,8 @@
 import { View, Text, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useLeagueSettings } from '~/hooks/leagues/useLeagueSettings';
-import { useLeagueMembers } from '~/hooks/leagues/useLeagueMembers';
-import { useLeague } from '~/hooks/leagues/useLeague';
+import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
+import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
+import { useLeague } from '~/hooks/leagues/query/useLeague';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { useFetch } from '~/hooks/helpers/useFetch';

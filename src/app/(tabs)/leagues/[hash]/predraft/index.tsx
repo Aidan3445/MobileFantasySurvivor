@@ -1,4 +1,5 @@
 import { ScrollView, Text, View } from 'react-native';
+import BaseEventRules from '~/components/leagues/customization/events/base/view';
 import SurvivalStreaks from '~/components/leagues/customization/settings/survivalStreak/view';
 import { DraftCountdown } from '~/components/leagues/predraft/countdown/view';
 import PredraftHeader from '~/components/leagues/predraft/header/view';
@@ -18,6 +19,7 @@ export default function PredraftScreen() {
             <Text className='text-white text-2xl font-bold text-center'>League Scoring</Text>
           </View>
           <SurvivalStreaks />
+          <BaseEventRules />
         </View>
       </ScrollView >
     </View>

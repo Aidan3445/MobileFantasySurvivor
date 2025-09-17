@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { type SelectionTimelines } from '~/types/leagues';
-import { useLeague } from '~/hooks/leagues/useLeague';
+import { useLeague } from '~/hooks/leagues/query/useLeague';
 import { useMemo } from 'react';
 import { useFetch } from '~/hooks/helpers/useFetch';
 

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useKeyEpisodes } from '~/hooks/seasons/useKeyEpisodes';
-import { useLeague } from '~/hooks/leagues/useLeague';
+import { useLeague } from '~/hooks/leagues/query/useLeague';
 
 /**
  * Core hook to determine if an episode is airing for a specific season

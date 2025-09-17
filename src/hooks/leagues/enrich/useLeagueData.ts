@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
-import { useLeague } from '~/hooks/leagues/useLeague';
+import { useLeague } from '~/hooks/leagues/query/useLeague';
 import { useSeasonsData } from '~/hooks/seasons/useSeasonsData';
-import { useSelectionTimeline } from '~/hooks/leagues/useSelectionTimeline';
-import { useCustomEvents } from '~/hooks/leagues/useCustomEvents';
-import { useBasePredictions } from '~/hooks/leagues/useBasePredictions';
-import { useLeagueRules } from '~/hooks/leagues/useRules';
-import { useLeagueSettings } from '~/hooks/leagues/useLeagueSettings';
+import { useSelectionTimeline } from '~/hooks/leagues/query/useSelectionTimeline';
+import { useCustomEvents } from '~/hooks/leagues/query/useCustomEvents';
+import { useBasePredictions } from '~/hooks/leagues/query/useBasePredictions';
+import { useLeagueRules } from '~/hooks/leagues/query/useRules';
+import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
 import { compileScores } from '~/lib/scores';
-import { useLeagueMembers } from '~/hooks/leagues/useLeagueMembers';
+import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
 
 /**
   * Fetch and manage league data including scores, members, seasons, and settings.

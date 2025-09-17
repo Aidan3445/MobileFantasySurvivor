@@ -4,7 +4,7 @@ import { View, Text, Pressable } from 'react-native';
 import Carousel, { Pagination } from 'react-native-reanimated-carousel';
 import { LeagueInsertZod } from '~/types/leagues';
 import { useCarousel } from '~/hooks/ui/useCarousel';
-import { useCreateLeague } from '~/hooks/leagues/useCreateLeague';
+import { useCreateLeague } from '~/hooks/leagues/mutation/useCreateLeague';
 import { cn } from '~/lib/utils';
 import { ArrowLeft } from 'lucide-react-native';
 import LeagueName from '~/components/leagues/actions/create/leagueName';

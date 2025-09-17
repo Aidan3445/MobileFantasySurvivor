@@ -1,7 +1,7 @@
 import { Flame, Lock, LockOpen } from 'lucide-react-native';
 import { Text, View, Pressable, Switch } from 'react-native';
 import Slider from '@react-native-community/slider';
-import { useSurvivalStreak } from '~/hooks/leagues/useSurvivalStreak';
+import { useSurvivalStreak } from '~/hooks/leagues/mutation/useSurvivalStreak';
 import { MAX_SURVIVAL_CAP } from '~/lib/leagues';
 import { cn } from '~/lib/utils';
 import { colors } from '~/lib/colors';
@@ -27,7 +27,7 @@ export default function SurvivalStreaks() {
 
   return (
     <View className='p-2 bg-card rounded-xl w-full'>
-      <View className='flex-row items-center justify-between mb-2'>
+      <View className='flex-row items-center justify-between'>
         <Text className='text-lg font-bold text-card-foreground'>
           Survival Streaks
         </Text>
@@ -42,9 +42,9 @@ export default function SurvivalStreaks() {
               }
             }}>
             {locked ? (
-              <Lock size={24} className='text-primary' />
+              <Lock size={24} color={colors.primary} />
             ) : (
-              <LockOpen size={24} className='text-primary' />
+              <LockOpen size={24} color={colors.secondary} />
             )}
           </Pressable>
         )}
@@ -52,26 +52,8 @@ export default function SurvivalStreaks() {
       <Text className='text-sm text-muted-foreground mb-2'>
         The Survival Streak rewards players for picking a castaway that survives each episode.
       </Text>
-      {!locked && (
-        <View className='flex-row gap-2 mb-4'>
-          <Pressable
-            className={`flex-1 bg-red-500 rounded-lg p-3 ${!settingsChanged && 'opacity-50'}`}
-            disabled={!settingsChanged}
-            onPress={resetSettings}
-          >
-            <Text className='text-white font-semibold text-center'>Cancel</Text>
-          </Pressable>
-          <Pressable
-            className={`flex-1 bg-primary rounded-lg p-3 ${!settingsChanged && 'opacity-50'}`}
-            disabled={!settingsChanged}
-            onPress={handleSubmit}
-          >
-            <Text className='text-white font-semibold text-center'>Save</Text>
-          </Pressable>
-        </View>
-      )}
       <View className='gap-2'>
-        <View className=''>
+        <View>
           <Text className='text-card-foreground font-bold leading-none'>How it works</Text>
           <Text className='text-card-foreground text-sm'>
             Each episode your pick survives, their streak grows:
@@ -89,6 +71,24 @@ export default function SurvivalStreaks() {
             If your pick is eliminated, you must choose a new unclaimed castaway, and your streak resets.
           </Text>
         </View>
+        {!locked && (
+          <View className='flex-row gap-2'>
+            <Pressable
+              className={`flex-1 bg-red-500 rounded-lg p-3 ${!settingsChanged && 'opacity-50'}`}
+              disabled={!settingsChanged}
+              onPress={resetSettings}
+            >
+              <Text className='text-white font-semibold text-center'>Cancel</Text>
+            </Pressable>
+            <Pressable
+              className={`flex-1 bg-primary rounded-lg p-3 ${!settingsChanged && 'opacity-50'}`}
+              disabled={!settingsChanged}
+              onPress={handleSubmit}
+            >
+              <Text className='text-white font-semibold text-center'>Save</Text>
+            </Pressable>
+          </View>
+        )}
         <View className='p-2 rounded-lg border border-primary'>
           <View className='flex-row items-center'>
             <Text className='text-black font-bold mr-4'>Streak Cap</Text>

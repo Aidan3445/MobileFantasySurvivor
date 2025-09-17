@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useLeague } from '~/hooks/leagues/useLeague';
+import { useLeague } from '~/hooks/leagues/query/useLeague';
 
 /**
  * Hook to get dynamic refresh configuration based on episode airing status

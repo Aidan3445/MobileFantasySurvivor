@@ -2,7 +2,7 @@
 
 import { Text, View } from 'react-native';
 import { Redirect, useLocalSearchParams } from 'expo-router';
-import { useLeague } from '~/hooks/leagues/useLeague';
+import { useLeague } from '~/hooks/leagues/query/useLeague';
 
 export default function LeagueDetailScreen() {
   const { hash } = useLocalSearchParams<{ hash: string }>();

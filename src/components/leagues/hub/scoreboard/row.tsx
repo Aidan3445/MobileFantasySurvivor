@@ -7,7 +7,7 @@ import { type EnrichedCastaway } from '~/types/castaways';
 import { useMemo, useState } from 'react';
 import { useTribesTimeline } from '~/hooks/seasons/useTribesTimeline';
 import { type Tribe } from '~/types/tribes';
-import { useLeagueSettings } from '~/hooks/leagues/useLeagueSettings';
+import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
 import { divideY } from '~/lib/ui';
 
 interface MemberRowProps {

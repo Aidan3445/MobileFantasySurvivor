@@ -3,7 +3,7 @@ import { Link as LinkIcon, Share } from 'lucide-react-native';
 import { TextInput, Text, View, Pressable, Alert, Share as RNShare } from 'react-native';
 import { useMemo, useState } from 'react';
 import { cn } from '~/lib/utils';
-import { useLeague } from '~/hooks/leagues/useLeague';
+import { useLeague } from '~/hooks/leagues/query/useLeague';
 import * as Clipboard from 'expo-clipboard';
 
 export default function InviteLink() {

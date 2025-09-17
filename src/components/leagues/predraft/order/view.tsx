@@ -4,7 +4,8 @@ import { getContrastingColor } from '@uiw/color-convert';
 import { cn } from '~/lib/utils';
 import { GripVertical, Lock, LockOpen } from 'lucide-react-native';
 import DraggableFlatList, { type RenderItemParams } from 'react-native-draggable-flatlist';
-import { type MemberWithId, useUpdateDraftOrder } from '~/hooks/leagues/useUpdateDraftOrder';
+import { type MemberWithId, useUpdateDraftOrder } from '~/hooks/leagues/mutation/useUpdateDraftOrder';
+import { colors } from '~/lib/colors';
 
 interface DraftOrderProps {
   className?: string;
@@ -68,9 +69,9 @@ export default function DraftOrder({ className }: DraftOrderProps) {
                 }
               }}>
               {orderLocked ? (
-                <Lock size={24} className='text-primary' />
+                <Lock size={24} color={colors.primary} />
               ) : (
-                <LockOpen size={24} className='text-primary' />
+                <LockOpen size={24} color={colors.secondary} />
               )}
             </Pressable>
           )}
