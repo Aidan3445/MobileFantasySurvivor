@@ -13,6 +13,9 @@ module.exports = {
         card: '#EED8BE',
         muted: '#F5F5F4',
         "muted-foreground": "#5E5955",
+        positive: "#28A53F",
+        destructive: "#FF3B30",
+        neutral: "#4b5563"
       }
     },
   },
