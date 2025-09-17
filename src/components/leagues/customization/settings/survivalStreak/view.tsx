@@ -5,13 +5,11 @@ import { useSurvivalStreak } from '~/hooks/leagues/mutation/useSurvivalStreak';
 import { MAX_SURVIVAL_CAP } from '~/lib/leagues';
 import { cn } from '~/lib/utils';
 import { colors } from '~/lib/colors';
+import { Controller } from 'react-hook-form';
 
 export default function SurvivalStreaks() {
   const {
-    survivalCapValue,
-    setSurvivalCapValue,
-    preserveStreakValue,
-    setPreserveStreakValue,
+    reactForm,
     locked,
     setLocked,
     settingsChanged,
@@ -19,11 +17,15 @@ export default function SurvivalStreaks() {
     resetSettings,
     leagueMembers
   } = useSurvivalStreak();
+
   const displaySurvivalCap = (value: number) => {
     if (value === 0) return 'Off';
     if (value === MAX_SURVIVAL_CAP) return 'Unlimited';
     return value.toString();
   };
+
+  const survivalCapValue = reactForm.watch('survivalCap');
+  const preserveStreakValue = reactForm.watch('preserveStreak');
 
   return (
     <View className='p-2 bg-card rounded-xl w-full'>
@@ -38,7 +40,6 @@ export default function SurvivalStreaks() {
                 setLocked(false);
               } else {
                 resetSettings();
-                setLocked(true);
               }
             }}>
             {locked ? (
@@ -83,7 +84,7 @@ export default function SurvivalStreaks() {
             <Pressable
               className={`flex-1 bg-primary rounded-lg p-3 ${!settingsChanged && 'opacity-50'}`}
               disabled={!settingsChanged}
-              onPress={handleSubmit}
+              onPress={() => handleSubmit()}
             >
               <Text className='text-white font-semibold text-center'>Save</Text>
             </Pressable>
@@ -104,15 +105,21 @@ export default function SurvivalStreaks() {
             )}
           </View>
           {!locked && (
-            <Slider
-              minimumValue={0}
-              maximumValue={MAX_SURVIVAL_CAP}
-              step={1}
-              value={survivalCapValue}
-              onValueChange={setSurvivalCapValue}
-              minimumTrackTintColor={colors.primary}
-              maximumTrackTintColor={colors.secondary}
-              thumbTintColor={colors.muted}
+            <Controller
+              control={reactForm.control}
+              name='survivalCap'
+              render={({ field }) => (
+                <Slider
+                  minimumValue={0}
+                  maximumValue={MAX_SURVIVAL_CAP}
+                  step={1}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  minimumTrackTintColor={colors.primary}
+                  maximumTrackTintColor={colors.secondary}
+                  thumbTintColor={colors.muted}
+                />
+              )}
             />
           )}
           <Text className='text-black text-sm'>
@@ -134,11 +141,18 @@ export default function SurvivalStreaks() {
               </Text>
             </View>
             {!locked && (
-              <Switch
-                value={preserveStreakValue}
-                onValueChange={setPreserveStreakValue}
-                trackColor={{ false: colors.destructive, true: colors.positive }}
-                thumbColor={colors.muted}
+              <Controller
+                control={reactForm.control}
+                name='preserveStreak'
+                render={({ field }) => (
+                  <Switch
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    trackColor={{ false: colors.destructive, true: colors.positive }}
+                    ios_backgroundColor={colors.destructive}
+                    thumbColor={colors.muted}
+                  />
+                )}
               />
             )}
           </View>

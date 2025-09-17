@@ -6,37 +6,41 @@ import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
 import { DEFAULT_SURVIVAL_CAP } from '~/lib/leagues';
 import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { LeagueSurvivalUpdateZod, type LeagueSurvivalUpdate } from '~/types/leagues';
 
 export function useSurvivalStreak() {
   const putData = useFetch('PUT');
   const queryClient = useQueryClient();
-
   const { data: league } = useLeague();
   const { data: leagueMembers } = useLeagueMembers();
-  const { data: leagueSettings } = useLeagueSettings();
-
+  const { data: settings } = useLeagueSettings();
   const [locked, setLocked] = useState(true);
-  const [survivalCapValue, setSurvivalCapValue] = useState<number>(DEFAULT_SURVIVAL_CAP);
-  const [preserveStreakValue, setPreserveStreakValue] = useState<boolean>(true);
 
-  const survivalCap = leagueSettings?.survivalCap ?? DEFAULT_SURVIVAL_CAP;
-  const preserveStreak = leagueSettings?.preserveStreak ?? true;
+  const reactForm = useForm<LeagueSurvivalUpdate>({
+    defaultValues: {
+      survivalCap: settings?.survivalCap ?? DEFAULT_SURVIVAL_CAP,
+      preserveStreak: settings?.preserveStreak ?? true
+    },
+    resolver: zodResolver(LeagueSurvivalUpdateZod)
+  });
 
   useEffect(() => {
-    setSurvivalCapValue(survivalCap);
-    setPreserveStreakValue(preserveStreak);
-  }, [survivalCap, preserveStreak]);
+    reactForm.setValue('survivalCap', settings?.survivalCap ?? DEFAULT_SURVIVAL_CAP);
+    reactForm.setValue('preserveStreak', settings?.preserveStreak ?? true);
+  }, [settings?.survivalCap, settings?.preserveStreak, reactForm]);
 
-  const settingsChanged = survivalCapValue !== survivalCap || preserveStreakValue !== preserveStreak;
+  const settingsChanged = reactForm.formState.isDirty;
 
-  const handleSubmit = async () => {
+  const handleSubmit = reactForm.handleSubmit(async (data) => {
     if (!league || !settingsChanged) return;
 
     try {
       const response = await putData(`/api/leagues/${league.hash}/settings`, {
         body: {
-          survivalCap: survivalCapValue,
-          preserveStreak: preserveStreakValue
+          survivalCap: data.survivalCap,
+          preserveStreak: data.preserveStreak
         }
       });
 
@@ -54,28 +58,22 @@ export function useSurvivalStreak() {
       }
 
       await queryClient.invalidateQueries({ queryKey: ['leagueSettings', league.hash] });
-
       Alert.alert('Success', 'Survival streak settings saved');
       setLocked(true);
+      reactForm.reset(data); // Reset form with new values as default
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to save survival streak settings');
     }
-  };
+  });
 
   const resetSettings = () => {
-    setSurvivalCapValue(survivalCap);
-    setPreserveStreakValue(preserveStreak);
+    reactForm.reset();
     setLocked(true);
   };
 
   return {
-    survivalCap,
-    preserveStreak,
-    survivalCapValue,
-    setSurvivalCapValue,
-    preserveStreakValue,
-    setPreserveStreakValue,
+    reactForm,
     locked,
     setLocked,
     settingsChanged,
