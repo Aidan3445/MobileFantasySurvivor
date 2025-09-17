@@ -13,7 +13,7 @@ export default function PredraftHeader({ inSettings }: PredraftHeaderProps) {
   const { data: league } = useLeague();
   const router = useRouter();
   return (
-    <View className='absolute top-0 w-full h-24 bg-secondary justify-end items-center pb-4'>
+    <View className='absolute top-0 w-full h-24 bg-secondary justify-end items-center pb-4 z-10'>
       <Text className='text-white text-2xl font-bold'>
         {league?.name ?? 'League'}
       </Text>

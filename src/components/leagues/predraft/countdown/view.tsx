@@ -56,11 +56,10 @@ export function DraftCountdown({ overrideHash }: DraftCountdownProps) {
             </Text>
           </View>
         </View>
-
         {editable && (
           <Pressable onPress={onDraftJoin} className='p-1 rounded-md bg-navigation active:bg-navigation/70'>
             <Text className='text-accent-foreground'>
-              Start Draft Now
+              Draft Now
             </Text>
           </Pressable>
         )}
@@ -68,19 +67,15 @@ export function DraftCountdown({ overrideHash }: DraftCountdownProps) {
 
       {/* Countdown/Join button section */}
       <View className='bg-primary rounded-2xl p-2 mt-2 shadow-sm'>
-        {leagueSettings?.draftDate && leagueSettings.draftDate.getTime() > Date.now() ? (
-          <Text className='text-primary-foreground text-2xl text-center'>8:00:00</Text>
-        ) : (
-          <Clock endDate={leagueSettings?.draftDate ?? null} replacedBy={
-            <Pressable
-              className='w-full p-2 rounded-xl bg-navigation active:bg-navigation/70'
-              onPress={onDraftJoin}>
-              <Text className='text-primary text-2xl text-center font-semibold p-1'>
-                Join now!
-              </Text>
-            </Pressable>
-          } />
-        )}
+        <Clock endDate={leagueSettings?.draftDate ?? null} replacedBy={
+          <Pressable
+            className='w-full p-2 rounded-xl bg-navigation active:bg-navigation/70'
+            onPress={onDraftJoin}>
+            <Text className='text-primary text-2xl text-center font-semibold p-1'>
+              Join now!
+            </Text>
+          </Pressable>
+        } />
       </View>
     </View>
   );
