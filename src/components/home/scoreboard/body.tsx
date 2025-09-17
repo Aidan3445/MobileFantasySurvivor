@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { type SeasonsDataQuery } from '~/types/seasons';
 import { useCarousel } from '~/hooks/ui/useCarousel';
 import Carousel, { Pagination } from 'react-native-reanimated-carousel';
-import { cn } from '~/lib/util';
+import { cn } from '~/lib/utils';
 import { divideY } from '~/lib/ui';
 import { getContrastingColor } from '@uiw/color-convert';
 

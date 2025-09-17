@@ -5,7 +5,7 @@ import KeyboardContainer from '~/components/common/keyboardContainer';
 import Header from '~/components/home/header/view';
 import LeagueMember from '~/components/leagues/actions/create/leagueMember';
 import { useJoinLeague } from '~/hooks/leagues/useJoinLeague';
-import { cn } from '~/lib/util';
+import { cn } from '~/lib/utils';
 
 export default function JoinLeagueScreen() {
   const { reactForm, handleSubmit, getPublicLeague } = useJoinLeague();

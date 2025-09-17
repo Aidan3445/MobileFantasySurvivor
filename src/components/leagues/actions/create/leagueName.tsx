@@ -3,7 +3,7 @@ import { TextInput, View } from 'react-native';
 import { Text } from 'react-native-gesture-handler';
 import { LEAGUE_NAME_MAX_LENGTH } from '~/lib/leagues';
 import { useEffect, useState } from 'react';
-import { cn } from '~/lib/util';
+import { cn } from '~/lib/utils';
 
 const placeholderOptions = [
   'Jeff Probst Fan Club',

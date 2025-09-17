@@ -2,7 +2,7 @@
 
 import { Pressable, TextInput, View } from 'react-native';
 import Header from '~/components/home/header/view';
-import { cn } from '~/lib/util';
+import { cn } from '~/lib/utils';
 import { Text } from 'react-native-gesture-handler';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';

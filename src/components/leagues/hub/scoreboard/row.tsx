@@ -1,6 +1,6 @@
 import { View, Text, Pressable } from 'react-native';
 import { MoveRight, Circle, Flame, History, Skull } from 'lucide-react-native';
-import { cn } from '~/lib/util';
+import { cn } from '~/lib/utils';
 import { getContrastingColor } from '@uiw/color-convert';
 import { type LeagueMember } from '~/types/leagueMembers';
 import { type EnrichedCastaway } from '~/types/castaways';

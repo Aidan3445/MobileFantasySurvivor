@@ -1,7 +1,7 @@
 'use client';
 import { View, Text, Pressable } from 'react-native';
 import { getContrastingColor } from '@uiw/color-convert';
-import { cn } from '~/lib/util';
+import { cn } from '~/lib/utils';
 import { GripVertical, Lock, LockOpen } from 'lucide-react-native';
 import DraggableFlatList, { type RenderItemParams } from 'react-native-draggable-flatlist';
 import { type MemberWithId, useUpdateDraftOrder } from '~/hooks/leagues/useUpdateDraftOrder';

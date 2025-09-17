@@ -10,7 +10,7 @@ import { defaultBaseRules } from '~/lib/leagues';
 import { type Tribe } from '~/types/tribes';
 import { type EnrichedCastaway } from '~/types/castaways';
 import { useEliminations } from '~/hooks/seasons/useEliminations';
-import { findTribeCastaways } from '~/lib/util';
+import { findTribeCastaways } from '~/lib/utils';
 
 /**
   * Custom hook to get enriched data for a list of events.

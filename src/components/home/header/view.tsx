@@ -1,6 +1,6 @@
 import { View, Image } from 'react-native';
 import React from 'react';
-import { cn } from '~/lib/util';
+import { cn } from '~/lib/utils';
 const LogoImage = require('~/assets/Logo.png');
 
 interface HeaderProps {

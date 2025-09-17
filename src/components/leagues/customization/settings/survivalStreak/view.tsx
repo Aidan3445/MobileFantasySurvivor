@@ -3,7 +3,7 @@ import { Text, View, Pressable, Switch } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { useSurvivalStreak } from '~/hooks/leagues/useSurvivalStreak';
 import { MAX_SURVIVAL_CAP } from '~/lib/leagues';
-import { cn } from '~/lib/util';
+import { cn } from '~/lib/utils';
 import { colors } from '~/lib/colors';
 
 export default function SurvivalStreaks() {

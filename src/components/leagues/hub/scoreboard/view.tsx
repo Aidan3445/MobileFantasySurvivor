@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native';
 import { Flame } from 'lucide-react-native';
-import { cn } from '~/lib/util';
+import { cn } from '~/lib/utils';
 import { useLeagueData } from '~/hooks/leagues/enrich/useLeagueData';
 import MemberRow from '~/components/leagues/hub/scoreboard/row';
 

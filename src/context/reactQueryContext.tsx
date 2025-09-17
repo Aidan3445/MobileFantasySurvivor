@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
 import { type ReactNode } from 'react';
-import { reviveDates } from '~/lib/util';
+import { reviveDates } from '~/lib/utils';
 
 function makeQueryClient() {
   return new QueryClient({

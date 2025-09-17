@@ -8,7 +8,7 @@ import { newtwentyColors } from '~/lib/colors';
 import { type BaseEventRules } from '~/types/leagues';
 import ScoreboardBody from '~/components/home/scoreboard/body';
 import SelectSeason from '~/components/home/scoreboard/selectSeason';
-import { cn } from '~/lib/util';
+import { cn } from '~/lib/utils';
 
 export interface ScoreboardTableProps {
   scoreData: SeasonsDataQuery[];

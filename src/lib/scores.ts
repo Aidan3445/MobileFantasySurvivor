@@ -1,5 +1,5 @@
 import { defaultBaseRules, defaultBasePredictionRules, defaultShauhinModeSettings } from '~/lib/leagues';
-import { findTribeCastaways } from '~/lib/util';
+import { findTribeCastaways } from '~/lib/utils';
 import { type Predictions, type Eliminations, type Events, type CustomEvents, type ReferenceType, type Scores, type ScoringBaseEventName, type Streaks } from '~/types/events';
 import { type SelectionTimelines, type LeagueRules } from '~/types/leagues';
 import { type TribesTimeline } from '~/types/tribes';
