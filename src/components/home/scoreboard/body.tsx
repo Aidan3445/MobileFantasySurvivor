@@ -1,4 +1,5 @@
 'use client';
+
 import { View, Text } from 'react-native';
 import { useEffect, useState } from 'react';
 import { type SeasonsDataQuery } from '~/types/seasons';
@@ -88,7 +89,7 @@ export default function ScoreboardBody({
             })}
             {/* If odd number of castaways, add an empty row for alignment to first half only (col 0) */}
             {sortedCastaways.length % 2 === 1 && col === 1 && (
-              <View className='h-7 border-t border-t-primary bg-red-500' />
+              <View className='h-7 border-t border-t-primary' />
             )}
           </View>
         )} />
