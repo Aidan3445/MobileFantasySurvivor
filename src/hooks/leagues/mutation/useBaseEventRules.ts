@@ -46,10 +46,10 @@ export function useBaseEventRules() {
     if (!league || !rulesChanged) return;
 
     try {
-      const response = await putData(`/api/leagues/${league.hash}/rules`, {
+      const response = await putData(`/api/leagues/${league.hash}/rules/base`, {
         body: {
-          baseEventRules: data.baseEventRules,
-          basePredictionRules: data.basePredictionRules
+          baseRules: data.baseEventRules,
+          predictionRules: data.basePredictionRules
         }
       });
 

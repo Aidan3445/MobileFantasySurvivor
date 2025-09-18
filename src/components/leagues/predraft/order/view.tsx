@@ -80,16 +80,14 @@ export default function DraftOrder({ className }: DraftOrderProps) {
       {!orderLocked && (
         <View className='flex-row gap-2 mb-4'>
           <Pressable
-            className={`flex-1 bg-red-500 rounded-lg p-3 ${!orderChanged && 'opacity-50'}`}
-            disabled={!orderChanged}
+            className={'flex-1 bg-primary rounded-lg p-3'}
             onPress={() => {
               resetOrder();
-            }}
-          >
+            }}>
             <Text className='text-white font-semibold text-center'>Cancel</Text>
           </Pressable>
           <Pressable
-            className={`flex-1 bg-primary rounded-lg p-3 ${!orderChanged && 'opacity-50'}`}
+            className={'flex-1 bg-primary rounded-lg p-3 disabled:opacity-50'}
             disabled={!orderChanged}
             onPress={handleSubmit} >
             <Text className='text-white font-semibold text-center'>Save</Text>

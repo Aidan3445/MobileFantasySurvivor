@@ -75,22 +75,19 @@ export default function SurvivalStreaks() {
         {!locked && (
           <View className='flex-row gap-2'>
             <Pressable
-              className={`flex-1 bg-red-500 rounded-lg p-3 ${!settingsChanged && 'opacity-50'}`}
-              disabled={!settingsChanged}
-              onPress={resetSettings}
-            >
+              className={'flex-1 bg-primary rounded-lg p-3'}
+              onPress={resetSettings}>
               <Text className='text-white font-semibold text-center'>Cancel</Text>
             </Pressable>
             <Pressable
-              className={`flex-1 bg-primary rounded-lg p-3 ${!settingsChanged && 'opacity-50'}`}
+              className={'flex-1 bg-primary rounded-lg p-3 disabled:opacity-50'}
               disabled={!settingsChanged}
-              onPress={() => handleSubmit()}
-            >
+              onPress={() => handleSubmit()}>
               <Text className='text-white font-semibold text-center'>Save</Text>
             </Pressable>
           </View>
         )}
-        <View className='p-2 rounded-lg border border-primary'>
+        <View className='p-2 rounded-lg bg-accent'>
           <View className='flex-row items-center'>
             <Text className='text-black font-bold mr-4'>Streak Cap</Text>
             <Text className={cn('font-semibold text-lg',
@@ -117,10 +114,8 @@ export default function SurvivalStreaks() {
                   onValueChange={field.onChange}
                   minimumTrackTintColor={colors.primary}
                   maximumTrackTintColor={colors.secondary}
-                  thumbTintColor={colors.muted}
-                />
-              )}
-            />
+                  thumbTintColor={colors.muted} />
+              )} />
           )}
           <Text className='text-black text-sm'>
             Set a cap on the maximum points a player can earn from their streak.
@@ -131,7 +126,7 @@ export default function SurvivalStreaks() {
             heavily favor the player who drafts the winner.
           </Text>
         </View>
-        <View className='p-2 rounded-lg border border-primary'>
+        <View className='p-2 rounded-lg bg-accent'>
           <View className='flex-row items-center justify-between'>
             <View className='flex-row items-center flex-1'>
               <Text className='text-black font-bold mr-4'>Preserve Streak</Text>
@@ -150,10 +145,8 @@ export default function SurvivalStreaks() {
                     onValueChange={field.onChange}
                     trackColor={{ false: colors.destructive, true: colors.positive }}
                     ios_backgroundColor={colors.destructive}
-                    thumbColor={colors.muted}
-                  />
-                )}
-              />
+                    thumbColor={colors.muted} />
+                )} />
             )}
           </View>
           <Text className='text-black text-sm mt-1'>
