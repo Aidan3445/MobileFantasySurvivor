@@ -162,7 +162,7 @@ export default function MemberRow({
         </View>
       </View>
       {showHistory && (
-        <View className='absolute top-full right-0 bg-white border border-gray-300 rounded p-2 z-10'>
+        <View className='absolute top-full right-0 bg-white border border-muted rounded p-2 z-10'>
           <Text className='font-semibold text-center mb-2'>Selection History</Text>
           {condensedTimeline.map(({ castaway, start, end }, index) => (
             <View key={index} className='flex-row items-center justify-between mb-1'>
@@ -181,9 +181,9 @@ export default function MemberRow({
         </View>
       )}
       {showStreak && (
-        <View className='absolute top-full right-0 bg-white border border-gray-300 rounded p-2 z-10'>
+        <View className='absolute top-full right-0 bg-white border border-muted rounded p-2 z-10'>
           <Text className='text-xs'>Survival streak: {currentStreak ?? 0}</Text>
-          <View className='h-px bg-gray-300 my-1' />
+          <View className='h-px bg-muted my-1' />
           <View className='flex-row items-center'>
             <Text className='text-xs'>Point cap: {leagueSettings?.survivalCap}</Text>
             <Flame size={12} className='ml-1' />

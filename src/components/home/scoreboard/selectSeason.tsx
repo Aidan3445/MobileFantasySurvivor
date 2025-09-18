@@ -24,7 +24,7 @@ export default function SelectSeason({ seasons, value, setValue, someHidden }: S
 
   const footerComponent = someHidden !== undefined ? (
     <Pressable
-      className='bg-gray-100 py-3 px-2 mt-2 mb-4 rounded active:bg-gray-200'
+      className='bg-muted py-3 px-2 mt-2 mb-4 rounded active:bg-muted/50'
       onPress={() => {
         router.push('/playground');
         closeModal();
@@ -42,7 +42,6 @@ export default function SelectSeason({ seasons, value, setValue, someHidden }: S
         onPress={openModal}>
         <Ellipsis size={20} />
       </Pressable>
-
       <SearchableSelect
         isVisible={isVisible}
         onClose={closeModal}

@@ -55,8 +55,8 @@ export default function InviteLink() {
           onPress={copyLink}>
           <TextInput
             className={cn(
-              'flex-1 border border-gray-300 rounded-lg p-3 pr-12 bg-white',
-              hasCopied && 'bg-white/40'
+              'flex-1 border border-muted rounded-lg p-3 pr-12 bg-white',
+              hasCopied && 'bg-muted/40'
             )}
             editable={false}
             value={link}

@@ -84,7 +84,7 @@ export function BasePredictions({ eventName, reactForm, disabled }: BasePredicti
       {predictionEnabled && (
         <View className='mt-2'>
           {disabled ? (
-            <Text className='text-xs text-gray-500 italic'>
+            <Text className='text-xs text-muted-foreground italic'>
               {predictionTiming?.join(', ') || 'No timing set'}
             </Text>
           ) : (
@@ -107,10 +107,7 @@ export function BasePredictions({ eventName, reactForm, disabled }: BasePredicti
                     onClose={closeModal}
                     options={filterOptions(timingOptions)}
                     selectedValues={field.value}
-                    onToggleSelect={(value) => {
-                      console.log('Toggling value:', value);
-                      field.onChange(value);
-                    }}
+                    onToggleSelect={field.onChange}
                     searchText={searchText}
                     onSearchChange={setSearchText}
                     placeholder='Search timing options...'
