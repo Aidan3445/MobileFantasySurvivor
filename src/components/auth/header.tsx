@@ -13,8 +13,7 @@ export default function Header({ className }: HeaderProps) {
       <Image
         source={LogoImage}
         className='w-72 h-72'
-        resizeMode='contain'
-      />
+        resizeMode='contain' />
     </View>
   );
 }

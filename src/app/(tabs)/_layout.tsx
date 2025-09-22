@@ -69,9 +69,6 @@ export default function TabLayout() {
         name='leagues/join/[hash]'
         options={{ href: null }} />
       <Tabs.Screen
-        name='leagues/[hash]'
-        options={{ href: null }} />
-      <Tabs.Screen
         name='leagues/[hash]/index'
         options={{ href: null }} />
       <Tabs.Screen
