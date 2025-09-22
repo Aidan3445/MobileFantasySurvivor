@@ -4,12 +4,12 @@ import { type ReactElement } from 'react';
 import { Check } from 'lucide-react-native';
 import Modal from '~/components/common/modal';
 
-interface SearchableSelectProps {
+interface SearchableSelectProps<T = string | number> {
   isVisible: boolean;
   onClose: () => void;
-  options: SearchableOption[];
-  selectedValue: string;
-  onSelect: (_: string) => void;
+  options: SearchableOption<T>[];
+  selectedValue: T
+  onSelect: (_: T) => void;
   searchText: string;
   onSearchChange: (_: string) => void;
   placeholder?: string;
@@ -41,7 +41,7 @@ export default function SearchableSelect({
         className='py-4'
         showsVerticalScrollIndicator={false}
         data={options}
-        keyExtractor={(item) => item.value}
+        keyExtractor={(item) => String(item.value)}
         renderItem={({ item }) => (
           <Pressable
             className='flex-row items-center py-3 px-2 active:bg-accent rounded-md my-0.5 bg-background'

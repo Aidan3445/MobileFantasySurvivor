@@ -75,7 +75,7 @@ export default function SurvivalStreaks() {
         {!locked && (
           <View className='flex-row gap-2'>
             <Pressable
-              className={'flex-1 bg-primary rounded-lg p-3'}
+              className={'flex-1 bg-destructive rounded-lg p-3'}
               onPress={resetSettings}>
               <Text className='text-white font-semibold text-center'>Cancel</Text>
             </Pressable>

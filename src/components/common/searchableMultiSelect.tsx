@@ -4,12 +4,12 @@ import { type ReactElement } from 'react';
 import { Check } from 'lucide-react-native';
 import Modal from '~/components/common/modal';
 
-interface SearchableMultiSelectProps {
+interface SearchableMultiSelectProps<T extends string | number> {
   isVisible: boolean;
   onClose: () => void;
-  options: SearchableOption[];
-  selectedValues: string[];
-  onToggleSelect: (_: string[]) => void;
+  options: SearchableOption<T>[];
+  selectedValues: T[];
+  onToggleSelect: (_: T[]) => void;
   searchText: string;
   onSearchChange: (_: string) => void;
   placeholder?: string;
@@ -17,7 +17,7 @@ interface SearchableMultiSelectProps {
   footerComponent?: ReactElement;
 }
 
-export default function SearchableMultiSelect({
+export default function SearchableMultiSelect<T extends string | number>({
   isVisible,
   onClose,
   options,
@@ -28,10 +28,10 @@ export default function SearchableMultiSelect({
   placeholder = 'Search...',
   emptyMessage = 'No options found.',
   footerComponent,
-}: SearchableMultiSelectProps) {
-  const isSelected = (value: string) => selectedValues.includes(value);
+}: SearchableMultiSelectProps<T>) {
+  const isSelected = (value: T) => selectedValues.includes(value);
 
-  const handleToggleSelect = (value: string) => {
+  const handleToggleSelect = (value: T) => {
     if (isSelected(value)) {
       onToggleSelect(selectedValues.filter(v => v !== value));
     } else {
@@ -55,7 +55,7 @@ export default function SearchableMultiSelect({
         className='py-4'
         showsVerticalScrollIndicator={false}
         data={options}
-        keyExtractor={(item) => item.value}
+        keyExtractor={(item) => String(item.value)}
         renderItem={({ item }) => (
           <Pressable
             className='flex-row items-center py-3 px-2 active:bg-accent rounded-md my-0.5 bg-background'

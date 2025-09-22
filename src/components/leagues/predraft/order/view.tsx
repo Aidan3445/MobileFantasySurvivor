@@ -80,7 +80,7 @@ export default function DraftOrder({ className }: DraftOrderProps) {
       {!orderLocked && (
         <View className='flex-row gap-2 mb-4'>
           <Pressable
-            className={'flex-1 bg-primary rounded-lg p-3'}
+            className={'flex-1 bg-destructive rounded-lg p-3'}
             onPress={() => {
               resetOrder();
             }}>

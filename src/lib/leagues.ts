@@ -14,6 +14,7 @@ export const DISPLAY_NAME_MIN_LENGTH = 2;
 export const DISPLAY_NAME_MAX_LENGTH = 32;
 export const ABS_MAX_EVENT_POINTS = 100;
 export const SHAUHIN_MODE_MAX_MAX_BETS_PER_WEEK = 10;
+export const MAX_CUSTOM_EVENT_RULES = 6;
 
 export const defaultBaseRules: BaseEventRules = {
   advFound: 5,

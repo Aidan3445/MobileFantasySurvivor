@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-export interface SearchableOption {
-  value: string;
+export interface SearchableOption<T = string | number> {
+  value: T;
   label: string;
 }
 

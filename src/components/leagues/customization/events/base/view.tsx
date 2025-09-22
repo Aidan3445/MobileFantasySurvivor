@@ -49,7 +49,7 @@ export default function BaseEventRules() {
         {!locked && (
           <View className='flex-row gap-2'>
             <Pressable
-              className='flex-1 bg-red-500 rounded-lg p-3'
+              className='flex-1 bg-destructive rounded-lg p-3'
               onPress={resetSettings}>
               <Text className='text-white font-semibold text-center'>Cancel</Text>
             </Pressable>

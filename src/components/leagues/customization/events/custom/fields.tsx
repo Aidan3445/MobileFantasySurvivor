@@ -36,7 +36,7 @@ export default function CustomEventFields({ reactForm, predictionDefault }: Cust
           name='eventName'
           render={({ field }) => (
             <TextInput
-              className={cn('border border-primary rounded-lg p-1  bg-muted/50 text-lg leading-5 placeholder:text-muted-foreground')}
+              className={cn('border border-primary rounded-lg p-1 bg-muted/50 text-lg leading-5 placeholder:text-muted-foreground')}
               placeholder='Enter the name of the event'
               value={field.value}
               onChangeText={field.onChange} />

@@ -62,7 +62,7 @@ export default function CustomEventCard({
           <Text className='text-card-foreground'>-</Text>
           <View className='flex-row items-center'>
             <Text className={cn(
-              'text-sm font-medium',
+              'text-md font-medium',
               rule.points <= 0 ? 'text-destructive' : 'text-positive'
             )}>
               {rule.points}
