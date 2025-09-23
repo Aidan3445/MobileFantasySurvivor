@@ -7,7 +7,10 @@ import { useFetch } from '~/hooks/helpers/useFetch';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
 import { useLeagueRules } from '~/hooks/leagues/query/useRules';
-import { type ShauhinModeSettings, ShauhinModeSettingsZod } from '~/types/leagues';
+import {
+  type ShauhinModeSettings,
+  ShauhinModeSettingsZod,
+} from '~/types/leagues';
 import { defaultShauhinModeSettings } from '~/lib/leagues';
 
 export function useShauhinMode() {
@@ -28,8 +31,9 @@ export function useShauhinMode() {
 
     if (rules && !rules.shauhinMode) {
       // Ensure that default shauhin mode settings are valid with current rules
-      defaults.enabledBets = defaults.enabledBets.filter((bet) =>
-        rules.basePrediction?.[bet]?.enabled);
+      defaults.enabledBets = defaults.enabledBets.filter(
+        bet => rules.basePrediction?.[bet]?.enabled
+      );
     }
 
     const settings = rules?.shauhinMode ?? defaultShauhinModeSettings;
@@ -38,23 +42,28 @@ export function useShauhinMode() {
 
   const rulesChanged = reactForm.formState.isDirty;
 
-  const handleSubmit = reactForm.handleSubmit(async (data) => {
+  const handleSubmit = reactForm.handleSubmit(async data => {
     if (!league || !rulesChanged) return;
 
     try {
-      const response = await putData(`/api/leagues/${league.hash}/rules/shauhinMode`, {
-        body: { shauhinMode: data }
-      });
+      const response = await putData(
+        `/api/leagues/${league.hash}/rules/shauhinMode`,
+        {
+          body: { shauhinMode: data },
+        }
+      );
 
       if (response.status !== 200) {
         const errorData = await response.json();
         console.error('Error saving Shauhin Mode settings:', errorData);
-        Alert.alert('Error', errorData.message || 'Failed to save Shauhin Mode settings');
+        Alert.alert(
+          'Error',
+          errorData.message || 'Failed to save Shauhin Mode settings'
+        );
         return;
       }
 
-      const { success } = await response.json() as { success: boolean };
-      console.log('Shauhin Mode settings saved successfully:', success);
+      const { success } = (await response.json()) as { success: boolean };
       if (!success) {
         Alert.alert('Error', 'Failed to save Shauhin Mode settings');
         return;
@@ -75,7 +84,8 @@ export function useShauhinMode() {
     setLocked(true);
   };
 
-  const disabled = (!!leagueMembers && leagueMembers.loggedIn?.role !== 'Owner') ||
+  const disabled =
+    (!!leagueMembers && leagueMembers.loggedIn?.role !== 'Owner') ||
     league?.status === 'Inactive';
 
   return {
@@ -86,6 +96,6 @@ export function useShauhinMode() {
     handleSubmit,
     resetSettings,
     disabled,
-    rules
+    rules,
   };
 }

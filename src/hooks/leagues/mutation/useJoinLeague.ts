@@ -6,7 +6,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useFetch } from '~/hooks/helpers/useFetch';
-import { type LeagueMemberInsert, LeagueMemberInsertZod } from '~/types/leagueMembers';
+import {
+  type LeagueMemberInsert,
+  LeagueMemberInsertZod,
+} from '~/types/leagueMembers';
 import { type PublicLeague } from '~/types/leagues';
 
 export function useJoinLeague(onSubmit?: () => void) {
@@ -32,7 +35,9 @@ export function useJoinLeague(onSubmit?: () => void) {
     queryFn: async () => {
       if (!hash) throw new Error('League hash is required');
 
-      const response = await postData(`/api/leagues/join?hash=${hash}`, { method: 'GET' });
+      const response = await postData(`/api/leagues/join?hash=${hash}`, {
+        method: 'GET',
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch league');
       }
@@ -42,7 +47,7 @@ export function useJoinLeague(onSubmit?: () => void) {
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
-  const handleSubmit = reactForm.handleSubmit(async (data) => {
+  const handleSubmit = reactForm.handleSubmit(async data => {
     if (!user) {
       Alert.alert('Error', 'You must be logged in to create a league');
       return;
@@ -55,8 +60,8 @@ export function useJoinLeague(onSubmit?: () => void) {
       const response = await postData('/api/leagues/join', {
         body: {
           hash,
-          newMember: data
-        }
+          newMember: data,
+        },
       });
       if (response.status !== 201) {
         const errorData = await response.json();
@@ -65,7 +70,7 @@ export function useJoinLeague(onSubmit?: () => void) {
         return;
       }
 
-      const { success } = await response.json() as { success: boolean };
+      const { success } = (await response.json()) as { success: boolean };
 
       if (!success) throw new Error('Failed to join league');
 

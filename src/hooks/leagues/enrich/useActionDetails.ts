@@ -16,9 +16,9 @@ import { type ScoringBaseEventName } from '~/types/events';
 import { useRouter } from 'expo-router';
 
 /**
-  * Custom hook to get league action details
-  * @param {string} overrideHash Optional hash to override the URL parameter.
-  */
+ * Custom hook to get league action details
+ * @param {string} overrideHash Optional hash to override the URL parameter.
+ */
 export function useLeagueActionDetails(overrideHash?: string) {
   const { data: league } = useLeague(overrideHash);
   const { data: rules } = useLeagueRules(overrideHash);
@@ -26,16 +26,20 @@ export function useLeagueActionDetails(overrideHash?: string) {
   const { data: leagueMembers } = useLeagueMembers(overrideHash);
   const { data: selectionTimeline } = useSelectionTimeline(overrideHash);
   const { data: predictionTiming } = usePredictionTiming(overrideHash);
-  const { customPredictionsMade, basePredictionsMade } = usePredictionsMade(overrideHash);
+  const { customPredictionsMade, basePredictionsMade } =
+    usePredictionsMade(overrideHash);
 
   const { data: keyEpisodes } = useKeyEpisodes(league?.seasonId ?? null);
 
-  const nextEpisode = useMemo(() =>
-    keyEpisodes?.nextEpisode?.episodeNumber ?? null,
+  const nextEpisode = useMemo(
+    () => keyEpisodes?.nextEpisode?.episodeNumber ?? null,
     [keyEpisodes?.nextEpisode?.episodeNumber]
   );
 
-  const tribeMembers = useEnrichedTribeMembers(league?.seasonId ?? null, nextEpisode);
+  const tribeMembers = useEnrichedTribeMembers(
+    league?.seasonId ?? null,
+    nextEpisode
+  );
   const { data: eliminations } = useEliminations(league?.seasonId ?? null);
 
   const eliminationLookup = useMemo(() => {
@@ -61,9 +65,12 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
     Object.values(tribeMembers).forEach(({ castaways }) => {
       castaways.forEach(castaway => {
-        const selection = selectionTimeline.castawayMembers[castaway.castawayId]?.[nextEpisode];
+        const selection =
+          selectionTimeline.castawayMembers[castaway.castawayId]?.[nextEpisode];
         if (selection) {
-          const member = leagueMembers.members.find(m => m.memberId === selection);
+          const member = leagueMembers.members.find(
+            m => m.memberId === selection
+          );
           if (member) {
             picks.push({ member, castawayFullName: castaway.fullName });
           }
@@ -75,8 +82,15 @@ export function useLeagueActionDetails(overrideHash?: string) {
   }, [nextEpisode, tribeMembers, leagueMembers, selectionTimeline]);
 
   const actionDetails = useMemo(() => {
-    if (!league || !rules || !selectionTimeline || !nextEpisode ||
-      !tribeMembers || !leagueMembers || !eliminationLookup) {
+    if (
+      !league ||
+      !rules ||
+      !selectionTimeline ||
+      !nextEpisode ||
+      !tribeMembers ||
+      !leagueMembers ||
+      !eliminationLookup
+    ) {
       return undefined;
     }
 
@@ -84,20 +98,24 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
     Object.entries(tribeMembers).forEach(([tribeId, { tribe, castaways }]) => {
       const selections = castaways.map(castaway => {
-        const selection = selectionTimeline.castawayMembers[castaway.castawayId]?.[nextEpisode];
-        const eliminatedEpisode = eliminationLookup.get(castaway.castawayId) ?? null;
+        const selection =
+          selectionTimeline.castawayMembers[castaway.castawayId]?.[nextEpisode];
+        const eliminatedEpisode =
+          eliminationLookup.get(castaway.castawayId) ?? null;
 
         const castawayWithTribe: EnrichedCastaway = {
           ...castaway,
           tribe: { name: tribe.tribeName, color: tribe.tribeColor },
-          eliminatedEpisode
+          eliminatedEpisode,
         };
 
-        const member = selection ? leagueMembers.members.find(m => m.memberId === selection) ?? null : null;
+        const member = selection
+          ? (leagueMembers.members.find(m => m.memberId === selection) ?? null)
+          : null;
 
         return {
           castaway: castawayWithTribe,
-          member
+          member,
         };
       });
 
@@ -108,18 +126,32 @@ export function useLeagueActionDetails(overrideHash?: string) {
     });
 
     return details;
-  }, [league, rules, selectionTimeline, nextEpisode, tribeMembers, leagueMembers, eliminationLookup]);
+  }, [
+    league,
+    rules,
+    selectionTimeline,
+    nextEpisode,
+    tribeMembers,
+    leagueMembers,
+    eliminationLookup,
+  ]);
 
   const router = useRouter();
   const [dialogOpen, setDialogOpen] = useState<boolean>();
 
   const { onTheClock, onDeck, onTheClockIndex } = useMemo(() => {
-    if (!leagueMembers?.members || !selectionTimeline?.memberCastaways || !nextEpisode) {
+    if (
+      !leagueMembers?.members ||
+      !selectionTimeline?.memberCastaways ||
+      !nextEpisode
+    ) {
       return { onTheClock: null, onDeck: null, onTheClockIndex: -1 };
     }
 
-    const onTheClockIndex = leagueMembers.members.findIndex(member =>
-      selectionTimeline.memberCastaways[member.memberId]?.[nextEpisode] === undefined
+    const onTheClockIndex = leagueMembers.members.findIndex(
+      member =>
+        selectionTimeline.memberCastaways[member.memberId]?.[nextEpisode] ===
+        undefined
     );
 
     const onTheClock = leagueMembers.members[onTheClockIndex];
@@ -127,25 +159,32 @@ export function useLeagueActionDetails(overrideHash?: string) {
     const loggedInId = leagueMembers.loggedIn?.memberId;
 
     return {
-      onTheClock: onTheClock ? {
-        ...onTheClock,
-        loggedIn: onTheClock.memberId === loggedInId,
-      } : null,
-      onDeck: onDeck ? {
-        ...onDeck,
-        loggedIn: onDeck.memberId === loggedInId,
-      } : null,
-      onTheClockIndex: onTheClockIndex >= 0 ? onTheClockIndex : -1
+      onTheClock: onTheClock
+        ? {
+            ...onTheClock,
+            loggedIn: onTheClock.memberId === loggedInId,
+          }
+        : null,
+      onDeck: onDeck
+        ? {
+            ...onDeck,
+            loggedIn: onDeck.memberId === loggedInId,
+          }
+        : null,
+      onTheClockIndex: onTheClockIndex >= 0 ? onTheClockIndex : -1,
     };
   }, [
     leagueMembers?.members,
     leagueMembers?.loggedIn?.memberId,
     selectionTimeline?.memberCastaways,
-    nextEpisode
+    nextEpisode,
   ]);
 
   useEffect(() => {
-    if ((!!onTheClock?.loggedIn || !!onDeck?.loggedIn) && dialogOpen === undefined) {
+    if (
+      (!!onTheClock?.loggedIn || !!onDeck?.loggedIn) &&
+      dialogOpen === undefined
+    ) {
       setDialogOpen(true);
     }
   }, [dialogOpen, onTheClock?.loggedIn, onDeck?.loggedIn]);
@@ -164,7 +203,10 @@ export function useLeagueActionDetails(overrideHash?: string) {
     if (!rules) return 0;
 
     const enabledBasePredictions = rules.basePrediction
-      ? Object.values(rules.basePrediction).reduce((count, event) => count + Number(event.enabled), 0)
+      ? Object.values(rules.basePrediction).reduce(
+          (count, event) => count + Number(event.enabled),
+          0
+        )
       : 0;
 
     return enabledBasePredictions + (rules.custom?.length ?? 0);
@@ -174,7 +216,7 @@ export function useLeagueActionDetails(overrideHash?: string) {
     if (!nextEpisode) return [];
     return [
       ...(basePredictionsMade?.[nextEpisode] ?? []),
-      ...(customPredictionsMade?.[nextEpisode] ?? [])
+      ...(customPredictionsMade?.[nextEpisode] ?? []),
     ];
   }, [nextEpisode, basePredictionsMade, customPredictionsMade]);
 
@@ -183,9 +225,11 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
     const timingSet = new Set(predictionTiming);
 
-    const filteredCustom = rules.custom?.filter(rule =>
-      rule.eventType === 'Direct' || rule.timing.some(t => timingSet.has(t))
-    ) ?? [];
+    const filteredCustom =
+      rules.custom?.filter(
+        rule =>
+          rule.eventType === 'Direct' || rule.timing.some(t => timingSet.has(t))
+      ) ?? [];
 
     if (rules.basePrediction) {
       const filteredBase = { ...rules.basePrediction };
@@ -194,7 +238,7 @@ export function useLeagueActionDetails(overrideHash?: string) {
         if (rule.enabled && !rule.timing.some(t => timingSet.has(t))) {
           filteredBase[eventName as ScoringBaseEventName] = {
             ...rule,
-            enabled: false
+            enabled: false,
           };
         }
       });
@@ -202,7 +246,7 @@ export function useLeagueActionDetails(overrideHash?: string) {
       return {
         ...rules,
         custom: filteredCustom,
-        basePrediction: filteredBase
+        basePrediction: filteredBase,
       };
     }
 

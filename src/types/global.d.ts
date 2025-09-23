@@ -1,6 +1,6 @@
 import { type QueryClient } from '@tanstack/query-core';
 
-export { };
+export {};
 
 declare global {
   interface CustomJwtSessionClaims {
@@ -10,7 +10,6 @@ declare global {
 
 declare global {
   interface Window {
-    __TANSTACK_QUERY_CLIENT__:
-    QueryClient;
+    __TANSTACK_QUERY_CLIENT__: QueryClient;
   }
 }

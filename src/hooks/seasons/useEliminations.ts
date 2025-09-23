@@ -5,10 +5,10 @@ import { useRefreshConfig } from '~/hooks/helpers/useRefreshConfig';
 import { useFetch } from '~/hooks/helpers/useFetch';
 
 /**
-  * Fetches eliminations data from the API.
-  * @param {number} seasonId The season ID to get eliminations for.
-  * @returnObj `Eliminations`
-  */
+ * Fetches eliminations data from the API.
+ * @param {number} seasonId The season ID to get eliminations for.
+ * @returnObj `Eliminations`
+ */
 export function useEliminations(seasonId: number | null) {
   const fetchData = useFetch();
   const isEpisodeAiring = useIsEpisodeAiringForSeason(seasonId);
@@ -19,12 +19,16 @@ export function useEliminations(seasonId: number | null) {
     queryFn: async () => {
       if (!seasonId) return [];
 
-      const res = await fetchData(`/api/seasons/eliminations?seasonId=${seasonId}`);
+      const res = await fetchData(
+        `/api/seasons/eliminations?seasonId=${seasonId}`
+      );
       if (!res.ok) {
         throw new Error('Failed to fetch eliminations data');
       }
-      const { eliminations } = await res.json() as { eliminations: (Elimination[] | null)[] };
-      return eliminations.map((elimination) => {
+      const { eliminations } = (await res.json()) as {
+        eliminations: (Elimination[] | null)[];
+      };
+      return eliminations.map(elimination => {
         if (elimination === null) return [];
         return elimination;
       });

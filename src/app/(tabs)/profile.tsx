@@ -4,7 +4,7 @@ import SignOutButton from '~/components/auth/SignOutButton';
 export default function ProfileScreen() {
   return (
     <View className='flex-1 items-center justify-center bg-background'>
-      <Text className='text-white text-2xl'>Profile Screen</Text>
+      <Text className='text-2xl text-white'>Profile Screen</Text>
       <SignOutButton />
     </View>
   );

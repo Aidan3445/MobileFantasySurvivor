@@ -26,4 +26,4 @@ export type CastawayInsert = {
   occupation: string;
   imageUrl: string;
   tribe: string;
-}
+};

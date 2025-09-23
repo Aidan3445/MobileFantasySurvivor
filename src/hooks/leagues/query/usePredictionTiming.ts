@@ -6,14 +6,14 @@ import { useFetch } from '~/hooks/helpers/useFetch';
 import { useLocalSearchParams } from 'expo-router';
 
 /**
-  * Fetches prediction timing currently active for a league based on the league hash from the URL parameters.
-  * @param {string} overrideHash Optional hash to override the URL parameter.
-  * @returnObj `PredictionTiming[]`
-  */
+ * Fetches prediction timing currently active for a league based on the league hash from the URL parameters.
+ * @param {string} overrideHash Optional hash to override the URL parameter.
+ * @returnObj `PredictionTiming[]`
+ */
 export function usePredictionTiming(overrideHash?: string) {
   const fetchData = useFetch();
   const params = useLocalSearchParams();
-  const hash = overrideHash ?? params.hash as string;
+  const hash = overrideHash ?? (params.hash as string);
 
   const isEpisodeAiring = useIsEpisodeAiring(overrideHash);
   const refreshConfig = useRefreshConfig(isEpisodeAiring);
@@ -27,11 +27,12 @@ export function usePredictionTiming(overrideHash?: string) {
       if (!response.ok) {
         return [];
       }
-      const { predictionTiming } = await response.json() as { predictionTiming: PredictionTiming[] };
+      const { predictionTiming } = (await response.json()) as {
+        predictionTiming: PredictionTiming[];
+      };
       return predictionTiming;
     },
     enabled: !!hash,
     ...refreshConfig,
   });
 }
-

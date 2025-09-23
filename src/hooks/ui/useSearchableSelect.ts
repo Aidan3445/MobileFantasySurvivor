@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
-export interface SearchableOption<T = string | number> {
+export interface SearchableOption<T extends string | number> {
   value: T;
   label: string;
 }
 
-export function useSearchableSelect() {
+export function useSearchableSelect<T extends string | number>() {
   const [isVisible, setIsVisible] = useState(false);
   const [searchText, setSearchText] = useState('');
 
@@ -15,7 +15,7 @@ export function useSearchableSelect() {
     setSearchText('');
   };
 
-  const filterOptions = (options: SearchableOption[]) =>
+  const filterOptions = (options: SearchableOption<T>[]) =>
     options.filter(option =>
       option.label.toLowerCase().includes(searchText.toLowerCase())
     );

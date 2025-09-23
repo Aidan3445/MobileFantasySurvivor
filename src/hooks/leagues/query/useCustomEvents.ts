@@ -6,14 +6,14 @@ import { useLocalSearchParams } from 'expo-router';
 import { useFetch } from '~/hooks/helpers/useFetch';
 
 /**
-  * Fetches custom events and predictions for a league based on the league hash from the URL parameters.
-  * @param {string} overrideHash Optional hash to override the URL parameter.
-  * @returnObj `CustomEvents`
-  */
+ * Fetches custom events and predictions for a league based on the league hash from the URL parameters.
+ * @param {string} overrideHash Optional hash to override the URL parameter.
+ * @returnObj `CustomEvents`
+ */
 export function useCustomEvents(overrideHash?: string) {
   const fetchData = useFetch();
   const params = useLocalSearchParams();
-  const hash = overrideHash ?? params.hash as string;
+  const hash = overrideHash ?? (params.hash as string);
 
   const isEpisodeAiring = useIsEpisodeAiring(overrideHash);
   const refreshConfig = useRefreshConfig(isEpisodeAiring);
@@ -33,4 +33,3 @@ export function useCustomEvents(overrideHash?: string) {
     ...refreshConfig,
   });
 }
-

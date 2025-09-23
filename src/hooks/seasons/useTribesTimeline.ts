@@ -5,10 +5,10 @@ import { useIsEpisodeAiringForSeason } from '~/hooks/helpers/useIsEpisodeAiring'
 import { useFetch } from '~/hooks/helpers/useFetch';
 
 /**
-  * Fetches tribes timeline data from the API.
-  * @param {number} seasonId The season ID to get tribes timeline for.
-  * @returnObj `TribesTimeline`
-  */
+ * Fetches tribes timeline data from the API.
+ * @param {number} seasonId The season ID to get tribes timeline for.
+ * @returnObj `TribesTimeline`
+ */
 export function useTribesTimeline(seasonId: number | null) {
   const fetchData = useFetch();
   const isEpisodeAiring = useIsEpisodeAiringForSeason(seasonId ?? null);
@@ -19,7 +19,9 @@ export function useTribesTimeline(seasonId: number | null) {
     queryFn: async () => {
       if (!seasonId) return {};
 
-      const res = await fetchData(`/api/seasons/tribesTimeline?seasonId=${seasonId}`);
+      const res = await fetchData(
+        `/api/seasons/tribesTimeline?seasonId=${seasonId}`
+      );
       if (!res.ok) {
         throw new Error('Failed to fetch tribes timeline data');
       }

@@ -6,10 +6,10 @@ import { type Predictions } from '~/types/events';
 import { useFetch } from '~/hooks/helpers/useFetch';
 
 /**
-  * Fetches base event predictions for a league with dynamic refresh rates based on episode air status.
-  * @param {string} overrideHash Optional hash to override the URL parameter.
-  * @returnObj `Prediction[]`
-  */
+ * Fetches base event predictions for a league with dynamic refresh rates based on episode air status.
+ * @param {string} overrideHash Optional hash to override the URL parameter.
+ * @returnObj `Prediction[]`
+ */
 export function useBasePredictions(overrideHash?: string) {
   const fetchData = useFetch();
   const params = useLocalSearchParams();

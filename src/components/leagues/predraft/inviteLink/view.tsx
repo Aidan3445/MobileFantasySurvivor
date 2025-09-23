@@ -1,6 +1,14 @@
 'use client';
 import { Link as LinkIcon, Share } from 'lucide-react-native';
-import { TextInput, Text, View, Pressable, Alert, Share as RNShare } from 'react-native';
+import {
+  TextInput,
+  Text,
+  View,
+  Pressable,
+  Alert,
+  Share as RNShare,
+} from 'react-native';
+import Button from '~/components/common/button';
 import { useMemo, useState } from 'react';
 import { cn } from '~/lib/utils';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
@@ -31,7 +39,7 @@ export default function InviteLink() {
       await RNShare.share({
         message: `Join ${league.name} on Fantasy Survivor! ${link}`,
         url: link, // iOS will use this
-        title: `Join ${league.name}!`
+        title: `Join ${league.name}!`,
       });
     } catch (error) {
       console.error('Error sharing:', error);
@@ -41,21 +49,22 @@ export default function InviteLink() {
   };
 
   return (
-    <View className='p-2 bg-card rounded-xl w-full'>
-      <Text className='text-lg font-bold text-card-foreground mb-1'>
+    <View className='w-full rounded-xl bg-card p-2'>
+      <Text className='text-card-foreground mb-1 text-lg font-bold'>
         Invite friends to play
       </Text>
-      <Text className='text-sm text-muted-foreground mb-3'>
+      <Text className='mb-3 text-sm text-muted-foreground'>
         Copy the link and share with your friends
       </Text>
 
       <View className='flex-row items-center gap-2'>
         <Pressable
-          className='flex-1 relative flex-row items-center'
-          onPress={copyLink}>
+          className='relative flex-1 flex-row items-center'
+          onPress={copyLink}
+        >
           <TextInput
             className={cn(
-              'flex-1 border border-muted rounded-lg p-3 pr-12 bg-white',
+              'flex-1 rounded-lg border border-muted bg-white p-3 pr-12',
               hasCopied && 'bg-muted/40'
             )}
             editable={false}
@@ -63,18 +72,16 @@ export default function InviteLink() {
             multiline={false}
           />
           <View className='absolute right-3'>
-            <LinkIcon
-              size={20}
-              color={hasCopied ? 'gray' : 'black'}
-            />
+            <LinkIcon size={20} color={hasCopied ? 'gray' : 'black'} />
           </View>
         </Pressable>
 
-        <Pressable
-          className='bg-primary rounded-lg p-3 active:bg-primary/80'
-          onPress={shareLink}>
+        <Button
+          className='!active:bg-primary/80 rounded-lg bg-primary p-3'
+          onPress={shareLink}
+        >
           <Share size={20} color='white' />
-        </Pressable>
+        </Button>
       </View>
     </View>
   );

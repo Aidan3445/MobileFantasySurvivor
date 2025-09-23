@@ -6,16 +6,21 @@ import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
 import { useLeagueRules } from '~/hooks/leagues/query/useRules';
 import { defaultBasePredictionRules } from '~/lib/leagues';
 import { type EnrichedCastaway } from '~/types/castaways';
-import { type EnrichedPrediction, type EnrichedEvent, type Prediction, type ScoringBaseEventName } from '~/types/events';
+import {
+  type EnrichedPrediction,
+  type EnrichedEvent,
+  type Prediction,
+  type ScoringBaseEventName,
+} from '~/types/events';
 import { useEliminations } from '~/hooks/seasons/useEliminations';
 
 /**
-  * Custom hook to get enriched data for a list of predictions.
-  * Combines predictions with their respective rules and references.
-  * @param {number} seasonId The season ID to get predictions for.
-  * @param {EnrichedEvent[]} events The list of to use for enriching predictions.
-  * @param {Prediction[]} predictions The list of predictions to enrich.
-  */
+ * Custom hook to get enriched data for a list of predictions.
+ * Combines predictions with their respective rules and references.
+ * @param {number} seasonId The season ID to get predictions for.
+ * @param {EnrichedEvent[]} events The list of to use for enriching predictions.
+ * @param {Prediction[]} predictions The list of predictions to enrich.
+ */
 export function useEnrichPredictions(
   seasonId: number | null,
   events: EnrichedEvent[] | null,
@@ -34,8 +39,12 @@ export function useEnrichPredictions(
     }
 
     const tribesById = new Map(tribes.map(tribe => [tribe.tribeId, tribe]));
-    const castawaysById = new Map(castaways.map(castaway => [castaway.castawayId, castaway]));
-    const membersById = new Map(leagueMembers.members.map(member => [member.memberId, member]));
+    const castawaysById = new Map(
+      castaways.map(castaway => [castaway.castawayId, castaway])
+    );
+    const membersById = new Map(
+      leagueMembers.members.map(member => [member.memberId, member])
+    );
     const eventsById = new Map(events.map(event => [event.eventName, event]));
 
     const eliminationEpisodes = new Map<number, number>();
@@ -52,7 +61,7 @@ export function useEnrichPredictions(
       castawaysById,
       membersById,
       eventsById,
-      eliminationEpisodes
+      eliminationEpisodes,
     };
   }, [tribes, castaways, leagueMembers, events, eliminations]);
 
@@ -65,13 +74,17 @@ export function useEnrichPredictions(
         .sort((a, b) => parseInt(b[0]) - parseInt(a[0]));
 
       for (const [, tribesInEpisode] of sortedTimeline) {
-        for (const [tribeIdStr, tribeMembers] of Object.entries(tribesInEpisode)) {
+        for (const [tribeIdStr, tribeMembers] of Object.entries(
+          tribesInEpisode
+        )) {
           if (tribeMembers.includes(castawayId)) {
             const tribe = lookupMaps.tribesById.get(parseInt(tribeIdStr));
-            return tribe ? {
-              name: tribe.tribeName,
-              color: tribe.tribeColor
-            } : null;
+            return tribe
+              ? {
+                  name: tribe.tribeName,
+                  color: tribe.tribeColor,
+                }
+              : null;
           }
         }
       }
@@ -80,7 +93,13 @@ export function useEnrichPredictions(
   }, [tribesTimeline, lookupMaps]);
 
   const enrichedPredictions = useMemo(() => {
-    if (!seasonId || !predictions || !lookupMaps || !createTribeFinder || !rules) {
+    if (
+      !seasonId ||
+      !predictions ||
+      !lookupMaps ||
+      !createTribeFinder ||
+      !rules
+    ) {
       return [];
     }
 
@@ -98,10 +117,15 @@ export function useEnrichPredictions(
 
         let points: number | null = null;
         if (event.eventSource === 'Base') {
-          const basePredictionRules = rules.basePrediction ?? defaultBasePredictionRules;
-          points = basePredictionRules[prediction.eventName as ScoringBaseEventName]?.points ?? null;
+          const basePredictionRules =
+            rules.basePrediction ?? defaultBasePredictionRules;
+          points =
+            basePredictionRules[prediction.eventName as ScoringBaseEventName]
+              ?.points ?? null;
         } else {
-          points = rules.custom?.find(r => r.eventName === event.eventName)?.points ?? null;
+          points =
+            rules.custom?.find(r => r.eventName === event.eventName)?.points ??
+            null;
         }
 
         if (points === null) continue;
@@ -116,7 +140,7 @@ export function useEnrichPredictions(
       const entry = {
         member,
         hit: prediction.hit,
-        bet: prediction.bet
+        bet: prediction.bet,
       };
 
       if (prediction.hit) {
@@ -126,15 +150,19 @@ export function useEnrichPredictions(
           const castaway = lookupMaps.castawaysById.get(prediction.referenceId);
           if (!castaway) continue;
 
-          const tribe = createTribeFinder(castaway.castawayId, existingPrediction.event.episodeNumber);
+          const tribe = createTribeFinder(
+            castaway.castawayId,
+            existingPrediction.event.episodeNumber
+          );
           if (!tribe) continue;
 
-          const eliminatedEpisode = lookupMaps.eliminationEpisodes.get(castaway.castawayId) ?? null;
+          const eliminatedEpisode =
+            lookupMaps.eliminationEpisodes.get(castaway.castawayId) ?? null;
 
           const castawayWithTribe: EnrichedCastaway = {
             ...castaway,
             tribe,
-            eliminatedEpisode
+            eliminatedEpisode,
           };
 
           existingPrediction.misses.push({
@@ -142,10 +170,9 @@ export function useEnrichPredictions(
             reference: {
               type: 'Castaway',
               name: castaway.fullName,
-              color: castawayWithTribe.tribe?.color ?? '#AAAAAA'
+              color: castawayWithTribe.tribe?.color ?? '#AAAAAA',
             },
           });
-
         } else if (prediction.referenceType === 'Tribe') {
           const tribe = lookupMaps.tribesById.get(prediction.referenceId);
           if (!tribe) continue;
@@ -155,8 +182,8 @@ export function useEnrichPredictions(
             reference: {
               type: 'Tribe',
               name: tribe.tribeName,
-              color: tribe.tribeColor
-            }
+              color: tribe.tribeColor,
+            },
           });
         }
       }

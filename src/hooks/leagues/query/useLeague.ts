@@ -4,15 +4,15 @@ import { type League } from '~/types/leagues';
 import { useFetch } from '~/hooks/helpers/useFetch';
 
 /**
-  * Fetches league data based on the league hash from the URL parameters.
-  * Adjusts stale time and fetch intervals based on the league status and episode airing status.
-  * @param overrideHash Optional hash to override URL parameter.
-  * @returnObj `League & { isEpisodeAiring: boolean }`
-  */
+ * Fetches league data based on the league hash from the URL parameters.
+ * Adjusts stale time and fetch intervals based on the league status and episode airing status.
+ * @param overrideHash Optional hash to override URL parameter.
+ * @returnObj `League & { isEpisodeAiring: boolean }`
+ */
 export function useLeague(overrideHash?: string) {
   const fetchData = useFetch();
   const params = useLocalSearchParams();
-  const hash = overrideHash ?? params.hash as string;
+  const hash = overrideHash ?? (params.hash as string);
 
   return useQuery<League>({
     queryKey: ['league', hash],
@@ -26,7 +26,7 @@ export function useLeague(overrideHash?: string) {
       return response.json();
     },
     enabled: !!hash,
-    staleTime: (query) => {
+    staleTime: query => {
       const data = query.state.data;
       if (!data) return 0;
 
@@ -44,7 +44,7 @@ export function useLeague(overrideHash?: string) {
       }
     },
     gcTime: 10 * 60 * 1000,
-    refetchInterval: (query) => {
+    refetchInterval: query => {
       const data = query.state.data;
       if (!data) return false;
 
@@ -57,11 +57,11 @@ export function useLeague(overrideHash?: string) {
           return false; // No polling for other states
       }
     },
-    refetchOnWindowFocus: (query) => {
+    refetchOnWindowFocus: query => {
       const data = query.state.data;
       return data?.status === 'Draft' || data?.status === 'Predraft';
     },
-    refetchOnReconnect: (query) => {
+    refetchOnReconnect: query => {
       const data = query.state.data;
       return data?.status === 'Draft' || data?.status === 'Predraft';
     },

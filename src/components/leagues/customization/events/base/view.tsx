@@ -1,6 +1,7 @@
 'use client';
 import { Lock, LockOpen } from 'lucide-react-native';
 import { Text, View, Pressable } from 'react-native';
+import Button from '~/components/common/button';
 import { useBaseEventRules } from '~/hooks/leagues/mutation/useBaseEventRules';
 import { colors } from '~/lib/colors';
 import ChallengeScoreSettings from '~/components/leagues/customization/events/base/challenges';
@@ -15,13 +16,13 @@ export default function BaseEventRules() {
     rulesChanged,
     handleSubmit,
     resetSettings,
-    disabled
+    disabled,
   } = useBaseEventRules();
 
   return (
-    <View className='p-2 bg-card rounded-xl w-full'>
+    <View className='w-full rounded-xl bg-card p-2'>
       <View className='flex-row items-center justify-between'>
-        <Text className='text-lg font-bold text-card-foreground'>
+        <Text className='text-card-foreground text-lg font-bold'>
           Official Events
         </Text>
         {!disabled && (
@@ -32,7 +33,8 @@ export default function BaseEventRules() {
               } else {
                 resetSettings();
               }
-            }}>
+            }}
+          >
             {locked ? (
               <Lock size={24} color={colors.primary} />
             ) : (
@@ -41,30 +43,44 @@ export default function BaseEventRules() {
           </Pressable>
         )}
       </View>
-      <Text className='text-sm text-muted-foreground mb-2'>
+      <Text className='mb-2 text-sm text-muted-foreground'>
         These Official Events are automatically scored for your league based on
-        what drafted castaways do in the show. Set the point values for each event.
+        what drafted castaways do in the show. Set the point values for each
+        event.
       </Text>
       <View className='gap-2'>
         {!locked && (
           <View className='flex-row gap-2'>
-            <Pressable
-              className='flex-1 bg-destructive rounded-lg p-3'
-              onPress={resetSettings}>
-              <Text className='text-white font-semibold text-center'>Cancel</Text>
-            </Pressable>
-            <Pressable
-              className={'flex-1 bg-primary rounded-lg p-3 disabled:opacity-50'}
+            <Button
+              className='flex-1 rounded-lg bg-destructive p-3'
+              onPress={resetSettings}
+            >
+              <Text className='text-center font-semibold text-white'>
+                Cancel
+              </Text>
+            </Button>
+            <Button
+              className={'flex-1 rounded-lg bg-primary p-3'}
               disabled={!rulesChanged}
-              onPress={() => handleSubmit()}>
-              <Text className='text-white font-semibold text-center'>Save</Text>
-            </Pressable>
+              onPress={() => handleSubmit()}
+            >
+              <Text className='text-center font-semibold text-white'>Save</Text>
+            </Button>
           </View>
         )}
         <View className='gap-2'>
-          <ChallengeScoreSettings reactForm={reactForm} disabled={locked || disabled} />
-          <AdvantageScoreSettings reactForm={reactForm} disabled={locked || disabled} />
-          <OtherScoreSettings reactForm={reactForm} disabled={locked || disabled} />
+          <ChallengeScoreSettings
+            reactForm={reactForm}
+            disabled={locked || disabled}
+          />
+          <AdvantageScoreSettings
+            reactForm={reactForm}
+            disabled={locked || disabled}
+          />
+          <OtherScoreSettings
+            reactForm={reactForm}
+            disabled={locked || disabled}
+          />
         </View>
       </View>
     </View>

@@ -1,6 +1,7 @@
 'use client';
 
-import { View, Text, Pressable } from 'react-native';
+import { View, Text } from 'react-native';
+import Button from '~/components/common/button';
 import Carousel, { Pagination } from 'react-native-reanimated-carousel';
 import { LeagueInsertZod } from '~/types/leagues';
 import { useCarousel } from '~/hooks/ui/useCarousel';
@@ -27,71 +28,93 @@ export default function CreateLeagueForm({ onSubmit }: CreateLeagueFormProps) {
     isFirst?: boolean;
     isLast?: boolean;
   }[] = [
-      {
-        name: 'leagueName',
-        content: (<LeagueName control={reactForm.control} />),
-        optional: false,
-        isFirst: true,
-      },
-      {
-        name: 'draftDate',
-        content: (<DraftDate control={reactForm.control} />),
-        optional: true,
-      },
-      {
-        name: 'newMember',
-        content: (
-          <LeagueMember control={reactForm.control} formPrefix='newMember' />
-        ),
-        optional: false,
-        isLast: true,
-      },
-    ];
+    {
+      name: 'leagueName',
+      content: <LeagueName control={reactForm.control} />,
+      optional: false,
+      isFirst: true,
+    },
+    {
+      name: 'draftDate',
+      content: <DraftDate control={reactForm.control} />,
+      optional: true,
+    },
+    {
+      name: 'newMember',
+      content: (
+        <LeagueMember
+          control={reactForm.control}
+          formPrefix='newMember'
+          className='mb-14'
+        />
+      ),
+      optional: false,
+      isLast: true,
+    },
+  ];
 
   const { props, progressProps, ref } = useCarousel(pages);
 
   return (
-    <View className='h-90p pt-12 bg-card rounded-lg items-center justify-end overflow-hidden'>
+    <View className='h-90p items-center justify-end overflow-hidden rounded-lg bg-card pt-12'>
       <Header className='flex-1' />
       <Carousel
         loop={false}
         enabled={false}
         renderItem={({ item }) => {
-          const buttonDisabled = !item.optional && !LeagueInsertZod.shape[item.name].safeParse(reactForm.watch(item.name)).success;
+          const buttonDisabled =
+            !item.optional &&
+            !LeagueInsertZod.shape[item.name].safeParse(
+              reactForm.watch(item.name)
+            ).success;
           const fieldTouched = reactForm.formState.touchedFields[item.name];
           return (
             <View className='flex-1'>
               {item.content}
-              <View className='self-center items-center w-90p relative'>
-                <Pressable
-                  onPress={item.isLast ? handleSubmit : () => ref.current?.next()}
+              <View className='w-90p relative items-center self-center'>
+                <Button
+                  onPress={
+                    item.isLast ? handleSubmit : () => ref.current?.next()
+                  }
                   disabled={buttonDisabled}
-                  className={cn('bg-primary rounded-md px-4 py-2 absolute bottom-4 w-1/2 disabled:opacity-50')}>
-                  <Text className='text-white text-center font-semibold'>
-                    {item.isLast ? 'Create League' : !fieldTouched && item.optional ? 'Skip' : 'Next'}
+                  className={cn(
+                    'absolute bottom-4 w-1/2 rounded-md bg-primary px-4 py-2'
+                  )}
+                >
+                  <Text className='text-center font-semibold text-white'>
+                    {item.isLast
+                      ? 'Create League'
+                      : !fieldTouched && item.optional
+                        ? 'Skip'
+                        : 'Next'}
                   </Text>
-                </Pressable>
-                <Pressable
+                </Button>
+                <Button
                   onPress={() => {
                     ref.current?.prev();
                     reactForm.resetField(item.name);
                   }}
-                  className={cn('absolute bottom-2 left-0 p-4 pr-12',
-                    !item.isFirst ? 'opacity-100' : 'opacity-0')}>
-                  <Text className='text-muted-foreground text-center font-semibold'>
+                  className={cn(
+                    'absolute bottom-2 left-0 p-4 pr-12',
+                    !item.isFirst ? 'opacity-100' : 'opacity-0'
+                  )}
+                >
+                  <Text className='text-center font-semibold text-muted-foreground'>
                     <ArrowLeft size={16} />
                   </Text>
-                </Pressable>
+                </Button>
               </View>
             </View>
           );
         }}
-        {...props} />
-      < View className='h-7' >
-        <Pagination.Basic {...progressProps} containerStyle={{ ...progressProps.containerStyle, marginBottom: 30 }} />
-      </View >
-    </View >
+        {...props}
+      />
+      <View className='h-7'>
+        <Pagination.Basic
+          {...progressProps}
+          containerStyle={{ ...progressProps.containerStyle, marginBottom: 30 }}
+        />
+      </View>
+    </View>
   );
 }
-
-

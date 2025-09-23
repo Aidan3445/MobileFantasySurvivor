@@ -3,17 +3,34 @@ import { TextInput, View } from 'react-native';
 import { Text } from 'react-native-gesture-handler';
 import { DISPLAY_NAME_MAX_LENGTH } from '~/lib/leagues';
 import { twentyColors } from '~/lib/colors';
-import { Check } from 'lucide-react-native';
-import { getContrastingColor } from '@uiw/color-convert';
+import { Check, UserX2 } from 'lucide-react-native';
+import { getContrastingColor, hexToRgba, rgbaToHex } from '@uiw/color-convert';
+import { cn } from '~/lib/utils';
 
 interface LeagueMemberProps {
   control: Control<any>;
+  usedColors?: string[];
+  currentColor?: string;
   formPrefix?: string;
+  className?: string;
 }
 
-export default function LeagueMember({ control, formPrefix }: LeagueMemberProps) {
+export default function LeagueMember({
+  control,
+  usedColors,
+  currentColor,
+  formPrefix,
+  className,
+}: LeagueMemberProps) {
+  if (control == null) {
+    console.error(
+      'LeagueMember component requires a control prop from react-hook-form'
+    );
+    return null;
+  }
+
   return (
-    <View className='flex-1 justify-end items-center p-6 mb-14'>
+    <View className={cn('flex-1 items-center justify-end p-6', className)}>
       <Text className='text-center text-xl text-muted-foreground'>
         Choose your display name and color!
       </Text>
@@ -26,7 +43,7 @@ export default function LeagueMember({ control, formPrefix }: LeagueMemberProps)
         render={({ field: { onChange, onBlur, value } }) => (
           <View className='w-full'>
             <TextInput
-              className='border border-primary rounded-lg p-4 text-lg leading-5 placeholder:text-muted-foreground'
+              className='rounded-lg border border-primary p-4 text-lg leading-5 placeholder:text-muted-foreground'
               placeholder='League Name'
               autoCapitalize='words'
               onBlur={onBlur}
@@ -34,7 +51,7 @@ export default function LeagueMember({ control, formPrefix }: LeagueMemberProps)
               value={value}
               maxLength={DISPLAY_NAME_MAX_LENGTH}
             />
-            <Text className='text-sm text-muted-foreground mt-2 text-right'>
+            <Text className='mt-2 text-right text-sm text-muted-foreground'>
               {value.length}/{DISPLAY_NAME_MAX_LENGTH}
             </Text>
           </View>
@@ -45,22 +62,43 @@ export default function LeagueMember({ control, formPrefix }: LeagueMemberProps)
         name={formPrefix ? `${formPrefix}.color` : 'color'}
         render={({ field: { onChange, onBlur, value } }) => (
           <View className='w-72 flex-row flex-wrap justify-center gap-1'>
-            {twentyColors.map((color) => (
-              <View
-                className='h-8 w-12 border border-primary items-center justify-center rounded'
-                style={{ backgroundColor: color }}
-                onTouchEnd={() => {
-                  onChange(color);
-                  onBlur();
-                }}
-                key={color}>
-                {value === color && (
-                  <Check
-                    className='self-center mt-2'
-                    color={getContrastingColor(color)} size={24} />
-                )}
-              </View>
-            ))}
+            {twentyColors.map(color => {
+              let usedColor = false;
+              if (usedColors?.includes(color) && color !== currentColor) {
+                const rgb = hexToRgba(color);
+                const avg = Math.round((rgb.r + rgb.g + rgb.b) / 3);
+                color = rgbaToHex({ r: avg, g: avg, b: avg, a: 1 });
+                usedColor = true;
+              }
+
+              return (
+                <View
+                  className='h-8 w-12 items-center justify-center rounded border border-primary'
+                  style={{ backgroundColor: color }}
+                  onTouchEnd={() => {
+                    if (usedColor) return;
+                    onChange(color);
+                    onBlur();
+                  }}
+                  key={color}
+                >
+                  {value === color && (
+                    <Check
+                      className='mt-2 self-center'
+                      color={getContrastingColor(color)}
+                      size={24}
+                    />
+                  )}
+                  {usedColor && (
+                    <UserX2
+                      className='mt-2 self-center'
+                      color={getContrastingColor(color)}
+                      size={24}
+                    />
+                  )}
+                </View>
+              );
+            })}
           </View>
         )}
       />

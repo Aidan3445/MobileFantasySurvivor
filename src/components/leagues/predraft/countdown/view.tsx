@@ -1,4 +1,5 @@
-import { View, Text, Pressable } from 'react-native';
+import { View, Text } from 'react-native';
+import Button from '~/components/common/button';
 import { useRouter } from 'expo-router';
 import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
@@ -20,10 +21,15 @@ export function DraftCountdown({ overrideHash }: DraftCountdownProps) {
   const { data: leagueMembers } = useLeagueMembers(overrideHash);
   const router = useRouter();
 
-  const editable = useMemo(() =>
-    (leagueMembers?.loggedIn && leagueMembers.loggedIn.role === 'Owner') && leagueSettings &&
-    (leagueSettings.draftDate === null || Date.now() < leagueSettings.draftDate.getTime()),
-    [leagueMembers, leagueSettings]);
+  const editable = useMemo(
+    () =>
+      leagueMembers?.loggedIn &&
+      leagueMembers.loggedIn.role === 'Owner' &&
+      leagueSettings &&
+      (leagueSettings.draftDate === null ||
+        Date.now() < leagueSettings.draftDate.getTime()),
+    [leagueMembers, leagueSettings]
+  );
 
   const onDraftJoin = async () => {
     if (!league) return;
@@ -34,48 +40,56 @@ export function DraftCountdown({ overrideHash }: DraftCountdownProps) {
         console.error(`Failed to join draft: ${res.statusText}`);
         return;
       }
-      await queryClient.invalidateQueries({ queryKey: ['league', league.hash] });
-      await queryClient.invalidateQueries({ queryKey: ['settings', league.hash] });
+      await queryClient.invalidateQueries({
+        queryKey: ['league', league.hash],
+      });
+      await queryClient.invalidateQueries({
+        queryKey: ['settings', league.hash],
+      });
     }
     router.push(`/leagues/${league.hash}/draft`);
   };
 
   return (
-    <View className='w-full p-2 bg-card rounded-xl'>
-      {/* Header section */}
-      <View className='flex-row w-full items-center'>
+    <View className='w-full rounded-xl bg-card p-2'>
+      <View className='w-full flex-row items-center'>
         <View className='flex-1'>
           <View className='flex-col items-baseline gap-y-0'>
-            <Text className='text-lg font-bold text-accent-foreground leading-none'>Draft Countdown</Text>
-            <Text className='text-sm text-muted-foreground leading-none'>
+            <Text className='text-accent-foreground text-lg font-bold leading-none'>
+              Draft Countdown
+            </Text>
+            <Text className='text-sm leading-none text-muted-foreground'>
               {leagueSettings?.draftDate
-                ? (leagueSettings.draftDate.getTime() > Date.now()
+                ? leagueSettings.draftDate.getTime() > Date.now()
                   ? `Starts at: ${leagueSettings.draftDate.toLocaleString()}`
-                  : 'Draft is live')
+                  : 'Draft is live'
                 : 'Draft set to manual start by commissioner'}
             </Text>
           </View>
         </View>
         {editable && (
-          <Pressable onPress={onDraftJoin} className='p-1 rounded-md bg-navigation active:bg-navigation/70'>
-            <Text className='text-accent-foreground'>
-              Draft Now
-            </Text>
-          </Pressable>
+          <Button
+            onPress={onDraftJoin}
+            className='rounded-md bg-navigation p-1'
+          >
+            <Text className='text-accent-foreground'>Draft Now</Text>
+          </Button>
         )}
       </View>
-
-      {/* Countdown/Join button section */}
-      <View className='bg-primary rounded-2xl p-2 mt-2 shadow-sm'>
-        <Clock endDate={leagueSettings?.draftDate ?? null} replacedBy={
-          <Pressable
-            className='w-full p-2 rounded-xl bg-navigation active:bg-navigation/70'
-            onPress={onDraftJoin}>
-            <Text className='text-primary text-2xl text-center font-semibold p-1'>
-              Join now!
-            </Text>
-          </Pressable>
-        } />
+      <View className='mt-2 rounded-2xl bg-primary p-2 shadow-sm'>
+        <Clock
+          endDate={leagueSettings?.draftDate ?? null}
+          replacedBy={
+            <Button
+              className='w-full rounded-xl bg-navigation p-2'
+              onPress={onDraftJoin}
+            >
+              <Text className='p-1 text-center text-2xl font-semibold text-primary'>
+                Join now!
+              </Text>
+            </Button>
+          }
+        />
       </View>
     </View>
   );

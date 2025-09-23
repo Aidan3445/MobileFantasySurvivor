@@ -10,9 +10,14 @@ export function useIsEpisodeAiringForSeason(seasonId: number | null) {
   const { data: keyEpisodes } = useKeyEpisodes(seasonId);
 
   return useMemo(() => {
-    return keyEpisodes?.previousEpisode?.airStatus === 'Airing' ||
-      keyEpisodes?.nextEpisode?.airStatus === 'Airing';
-  }, [keyEpisodes?.previousEpisode?.airStatus, keyEpisodes?.nextEpisode?.airStatus]);
+    return (
+      keyEpisodes?.previousEpisode?.airStatus === 'Airing' ||
+      keyEpisodes?.nextEpisode?.airStatus === 'Airing'
+    );
+  }, [
+    keyEpisodes?.previousEpisode?.airStatus,
+    keyEpisodes?.nextEpisode?.airStatus,
+  ]);
 }
 
 /**

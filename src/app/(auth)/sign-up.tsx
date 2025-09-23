@@ -69,11 +69,15 @@ export default function SignUpScreen() {
 
   if (pendingVerification) {
     return (
-      <View className='flex-1 bg-background justify-center px-6'>
-        <View className='bg-white rounded-3xl p-8 shadow-lg focus:-translate-y-40 transition-keyboard'>
-          <View className='items-center mb-8'>
-            <Text className='text-3xl font-bold text-primary mb-2'>Check Your Email</Text>
-            <Text className='text-secondary text-lg text-center'>We sent you a verification code</Text>
+      <View className='flex-1 justify-center bg-background px-6'>
+        <View className='transition-keyboard rounded-3xl bg-white p-8 shadow-lg focus:-translate-y-40'>
+          <View className='mb-8 items-center'>
+            <Text className='mb-2 text-3xl font-bold text-primary'>
+              Check Your Email
+            </Text>
+            <Text className='text-center text-lg text-secondary'>
+              We sent you a verification code
+            </Text>
           </View>
 
           <View className='gap-y-4'>
@@ -81,15 +85,17 @@ export default function SignUpScreen() {
               value={code}
               autoFocus
               placeholder='Enter verification code'
-              className='bg-accent/20 rounded-2xl px-4 py-4 text-lg border border-accent text-center leading-5 placeholder:text-secondary'
-              onChangeText={(code) => setCode(code)}
+              className='rounded-2xl border border-accent bg-accent/20 px-4 py-4 text-center text-lg leading-5 placeholder:text-secondary'
+              onChangeText={code => setCode(code)}
             />
 
             <TouchableOpacity
               onPress={onVerifyPress}
-              className='bg-primary rounded-2xl py-4 mt-6 shadow-sm'
+              className='mt-6 rounded-2xl bg-primary py-4 shadow-sm'
             >
-              <Text className='text-white text-center text-lg font-semibold'>Verify</Text>
+              <Text className='text-center text-lg font-semibold text-white'>
+                Verify
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -98,12 +104,12 @@ export default function SignUpScreen() {
   }
 
   return (
-    <View className='flex-1 bg-background justify-around p-6'>
+    <View className='flex-1 justify-around bg-background p-6'>
       <Header />
-      <View className='bg-white rounded-3xl p-8 shadow-lg focus:-translate-y-[23rem] transition-keyboard'>
-        <View className='items-center mb-8'>
-          <Text className='text-3xl font-bold text-primary mb-2'>Join Us!</Text>
-          <Text className='text-secondary text-lg'>Create your account</Text>
+      <View className='transition-keyboard rounded-3xl bg-white p-8 shadow-lg focus:-translate-y-[23rem]'>
+        <View className='mb-8 items-center'>
+          <Text className='mb-2 text-3xl font-bold text-primary'>Join Us!</Text>
+          <Text className='text-lg text-secondary'>Create your account</Text>
         </View>
         <View className='gap-y-2'>
           <TextInput
@@ -111,32 +117,40 @@ export default function SignUpScreen() {
             autoCapitalize='none'
             value={username}
             placeholder='Enter username'
-            className='bg-accent/20 rounded-2xl px-4 py-4 text-lg border border-accent leading-5 placeholder:text-secondary'
-            onChangeText={(email) => setUsername(email)}
+            className='rounded-2xl border border-accent bg-accent/20 px-4 py-4 text-lg leading-5 placeholder:text-secondary'
+            onChangeText={email => setUsername(email)}
           />
           <TextInput
             autoCapitalize='none'
             value={emailAddress}
             placeholder='Enter email'
-            className='bg-accent/20 rounded-2xl px-4 py-4 text-lg border border-accent leading-5 placeholder:text-secondary'
-            onChangeText={(email) => setEmailAddress(email)}
+            className='rounded-2xl border border-accent bg-accent/20 px-4 py-4 text-lg leading-5 placeholder:text-secondary'
+            onChangeText={email => setEmailAddress(email)}
           />
           <TextInput
             value={password}
             placeholder='Enter password'
             secureTextEntry={true}
-            className='bg-accent/20 rounded-2xl px-4 py-4 text-lg border border-accent leading-5 placeholder:text-secondary'
-            onChangeText={(password) => setPassword(password)} />
+            className='rounded-2xl border border-accent bg-accent/20 px-4 py-4 text-lg leading-5 placeholder:text-secondary'
+            onChangeText={password => setPassword(password)}
+          />
           <TouchableOpacity
             onPress={onSignUpPress}
-            className='bg-primary rounded-2xl py-4 mt-6 shadow-sm'>
-            <Text className='text-white text-center text-lg font-semibold'>Continue</Text>
+            className='mt-6 rounded-2xl bg-primary py-4 shadow-sm'
+          >
+            <Text className='text-center text-lg font-semibold text-white'>
+              Continue
+            </Text>
           </TouchableOpacity>
         </View>
-        <View className='flex-row justify-center mt-8 items-center'>
-          <Text className='text-secondary text-base'>Already have an account? </Text>
+        <View className='mt-8 flex-row items-center justify-center'>
+          <Text className='text-base text-secondary'>
+            Already have an account?{' '}
+          </Text>
           <Link href='../'>
-            <Text className='text-primary font-semibold text-base'>Sign in</Text>
+            <Text className='text-base font-semibold text-primary'>
+              Sign in
+            </Text>
           </Link>
         </View>
       </View>

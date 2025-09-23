@@ -4,12 +4,15 @@ import { useRefreshConfig } from '~/hooks/helpers/useRefreshConfig';
 import { useFetch } from '~/hooks/helpers/useFetch';
 
 /**
-  * Fetches tribe members data from the API.
-  * @param {number} seasonId The season ID to get tribes timeline for.
-  * @param {number} episodeNumber The episode number to get tribe members for.
-  * @returnObj `Record<tribeId, castawayId[]>`
-  */
-export function useTribeMembers(seasonId: number | null, episodeNumber: number | null) {
+ * Fetches tribe members data from the API.
+ * @param {number} seasonId The season ID to get tribes timeline for.
+ * @param {number} episodeNumber The episode number to get tribe members for.
+ * @returnObj `Record<tribeId, castawayId[]>`
+ */
+export function useTribeMembers(
+  seasonId: number | null,
+  episodeNumber: number | null
+) {
   const fetchData = useFetch();
   const isEpisodeAiring = useIsEpisodeAiringForSeason(seasonId ?? null);
   const refreshConfig = useRefreshConfig(isEpisodeAiring);
@@ -21,7 +24,9 @@ export function useTribeMembers(seasonId: number | null, episodeNumber: number |
         return {};
       }
 
-      const res = await fetchData(`/api/seasons/tribeMembers?seasonId=${seasonId}&episodeNumber=${episodeNumber}`);
+      const res = await fetchData(
+        `/api/seasons/tribeMembers?seasonId=${seasonId}&episodeNumber=${episodeNumber}`
+      );
       if (!res.ok) {
         throw new Error('Failed to fetch tribes timeline data');
       }

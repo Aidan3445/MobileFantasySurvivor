@@ -21,7 +21,7 @@ export type EpisodeInsert = {
   runtime?: number;
   isMerge?: boolean;
   isFinale?: boolean;
-}
+};
 
 export type EpisodeUpdate = {
   episodeId: number;
@@ -31,7 +31,7 @@ export type EpisodeUpdate = {
   runtime?: number;
   isMerge?: boolean;
   isFinale?: boolean;
-}
+};
 
 export type KeyEpisodes = {
   previousEpisode: Episode | null;

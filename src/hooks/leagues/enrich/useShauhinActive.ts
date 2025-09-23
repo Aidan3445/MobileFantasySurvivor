@@ -4,17 +4,21 @@ import { useLeagueRules } from '~/hooks/leagues/query/useRules';
 import { useMemo } from 'react';
 
 /**
-  * Custom hook to determine if Shauhin mode is active in the league.
-  * @param {string} overrideHash Optional hash to override the URL parameter.
-  * @returnObj `isShauhinActive`
-  */
+ * Custom hook to determine if Shauhin mode is active in the league.
+ * @param {string} overrideHash Optional hash to override the URL parameter.
+ * @returnObj `isShauhinActive`
+ */
 export function useShauhinActive(overrideHash?: string) {
   const { data: league } = useLeague(overrideHash);
   const { data: rules } = useLeagueRules(overrideHash);
   const { data: keyEpisodes } = useKeyEpisodes(league?.seasonId ?? null);
 
   const shauhinActive = useMemo(() => {
-    if (!league || !keyEpisodes?.previousEpisode || !rules?.shauhinMode?.enabled) {
+    if (
+      !league ||
+      !keyEpisodes?.previousEpisode ||
+      !rules?.shauhinMode?.enabled
+    ) {
       return false;
     }
 
@@ -30,21 +34,26 @@ export function useShauhinActive(overrideHash?: string) {
       case 'After Premiere':
         return prevEpisodeNumber >= 1;
       case 'After Merge':
-        return mergeEpisodeNumber !== null && prevEpisodeNumber >= mergeEpisodeNumber;
+        return (
+          mergeEpisodeNumber !== null && prevEpisodeNumber >= mergeEpisodeNumber
+        );
       case 'Before Finale':
         return keyEpisodes.nextEpisode?.isFinale === true;
       case 'Custom':
-        return prevEpisodeNumber >= (rules.shauhinMode.customStartWeek ?? Infinity);
+        return (
+          prevEpisodeNumber >= (rules.shauhinMode.customStartWeek ?? Infinity)
+        );
       default:
         return false;
     }
-  }, [league,
+  }, [
+    league,
     keyEpisodes?.previousEpisode,
     keyEpisodes?.mergeEpisode?.episodeNumber,
     keyEpisodes?.nextEpisode?.isFinale,
     rules?.shauhinMode?.enabled,
     rules?.shauhinMode?.startWeek,
-    rules?.shauhinMode?.customStartWeek
+    rules?.shauhinMode?.customStartWeek,
   ]);
 
   return shauhinActive;

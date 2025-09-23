@@ -10,9 +10,9 @@ import { compileScores } from '~/lib/scores';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
 
 /**
-  * Fetch and manage league data including scores, members, seasons, and settings.
-  * @param {string} overrideHash Optional hash to override the URL parameter.
-  */
+ * Fetch and manage league data including scores, members, seasons, and settings.
+ * @param {string} overrideHash Optional hash to override the URL parameter.
+ */
 export function useLeagueData(overrideHash?: string) {
   const { data: league } = useLeague(overrideHash);
   const { data: leagueMembers } = useLeagueMembers(overrideHash);
@@ -23,16 +23,26 @@ export function useLeagueData(overrideHash?: string) {
   const { data: leagueRules } = useLeagueRules(overrideHash);
   const { data: leagueSettings } = useLeagueSettings(overrideHash);
 
-  const seasonData = useMemo(() =>
-    seasonsData?.find((s) => s.season.seasonId === league?.seasonId),
+  const seasonData = useMemo(
+    () => seasonsData?.find(s => s.season.seasonId === league?.seasonId),
     [seasonsData, league?.seasonId]
   );
 
-  const membersArray = useMemo(() => leagueMembers?.members ?? [], [leagueMembers?.members]);
+  const membersArray = useMemo(
+    () => leagueMembers?.members ?? [],
+    [leagueMembers?.members]
+  );
 
   const scoreData = useMemo(() => {
-    if (!league || !membersArray.length || !seasonData || !selectionTimeline ||
-      !basePredictions || !leagueRules || !leagueSettings) {
+    if (
+      !league ||
+      !membersArray.length ||
+      !seasonData ||
+      !selectionTimeline ||
+      !basePredictions ||
+      !leagueRules ||
+      !leagueSettings
+    ) {
       return {
         scores: { Castaway: {}, Tribe: {}, Member: {} },
         currentStreaks: {},
@@ -55,19 +65,25 @@ export function useLeagueData(overrideHash?: string) {
     );
 
     const sortedMemberScores = Object.entries(scores.Member)
-      .sort(([_, scoresA], [__, scoresB]) =>
-        (scoresB.slice().pop() ?? 0) - (scoresA.slice().pop() ?? 0))
+      .sort(
+        ([_, scoresA], [__, scoresB]) =>
+          (scoresB.slice().pop() ?? 0) - (scoresA.slice().pop() ?? 0)
+      )
       .map(([memberId, memberScores]) => {
-        const member = membersArray.find((m) => m.memberId === Number(memberId));
-        return member ? {
-          member,
-          scores: memberScores,
-          currentStreak: currentStreaks[Number(memberId)] ?? 0,
-        } : null;
+        const member = membersArray.find(m => m.memberId === Number(memberId));
+        return member
+          ? {
+              member,
+              scores: memberScores,
+              currentStreak: currentStreaks[Number(memberId)] ?? 0,
+            }
+          : null;
       })
       .filter((item): item is NonNullable<typeof item> => item !== null);
 
-    const loggedInIndex = sortedMemberScores.findIndex(({ member }) => member?.loggedIn);
+    const loggedInIndex = sortedMemberScores.findIndex(
+      ({ member }) => member?.loggedIn
+    );
 
     return {
       scores,
@@ -75,27 +91,39 @@ export function useLeagueData(overrideHash?: string) {
       sortedMemberScores,
       loggedInIndex,
     };
-  }, [league, membersArray, seasonData, selectionTimeline, basePredictions, leagueRules, leagueSettings, customEvents]);
-
-  return useMemo(() => ({
-    ...scoreData,
-    ...seasonData,
+  }, [
     league,
-    leagueMembers,
-    selectionTimeline,
-    customEvents,
-    basePredictions,
-    leagueRules,
-    leagueSettings
-  }), [
-    scoreData,
+    membersArray,
     seasonData,
-    league,
-    leagueMembers,
     selectionTimeline,
-    customEvents,
     basePredictions,
     leagueRules,
-    leagueSettings
+    leagueSettings,
+    customEvents,
   ]);
+
+  return useMemo(
+    () => ({
+      ...scoreData,
+      ...seasonData,
+      league,
+      leagueMembers,
+      selectionTimeline,
+      customEvents,
+      basePredictions,
+      leagueRules,
+      leagueSettings,
+    }),
+    [
+      scoreData,
+      seasonData,
+      league,
+      leagueMembers,
+      selectionTimeline,
+      customEvents,
+      basePredictions,
+      leagueRules,
+      leagueSettings,
+    ]
+  );
 }

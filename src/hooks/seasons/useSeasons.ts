@@ -3,21 +3,23 @@ import { type Season } from '~/types/seasons';
 import { useFetch } from '~/hooks/helpers/useFetch';
 
 /**
-  * Fetches seasons data from the API.
-  * Optimized for essentially static data that never changes.
-  * @param {boolean} includeInactive Whether to include inactive seasons.
-  * @returnObj `Season[]`
-  */
+ * Fetches seasons data from the API.
+ * Optimized for essentially static data that never changes.
+ * @param {boolean} includeInactive Whether to include inactive seasons.
+ * @returnObj `Season[]`
+ */
 export function useSeasons(includeInactive: boolean) {
   const fetchData = useFetch();
   return useQuery<Season[]>({
     queryKey: ['seasons', includeInactive],
     queryFn: async () => {
-      const res = await fetchData(`/api/seasons/seasons?includeInactive=${includeInactive}`);
+      const res = await fetchData(
+        `/api/seasons/seasons?includeInactive=${includeInactive}`
+      );
       if (!res.ok) {
         throw new Error('Failed to fetch seasons data');
       }
-      const { seasons } = await res.json() as { seasons: Season[] };
+      const { seasons } = (await res.json()) as { seasons: Season[] };
       return seasons;
     },
     staleTime: Infinity,
@@ -26,6 +28,6 @@ export function useSeasons(includeInactive: boolean) {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     refetchInterval: false,
-    enabled: true
+    enabled: true,
   });
 }

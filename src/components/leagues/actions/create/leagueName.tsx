@@ -8,7 +8,7 @@ import { cn } from '~/lib/utils';
 const placeholderOptions = [
   'Jeff Probst Fan Club',
   'Torch Snuffers',
-  'Jury\'s Out'
+  'Jury\'s Out',
 ];
 
 interface LeagueNameProps {
@@ -20,7 +20,7 @@ export default function LeagueName({ control }: LeagueNameProps) {
   useEffect(() => {
     // eslint-disable-next-line no-undef
     const interval = setInterval(() => {
-      setPlaceholder((prev) => (prev + 1) % placeholderOptions.length);
+      setPlaceholder(prev => (prev + 1) % placeholderOptions.length);
     }, 2000);
 
     // eslint-disable-next-line no-undef
@@ -28,11 +28,11 @@ export default function LeagueName({ control }: LeagueNameProps) {
   }, [setPlaceholder]);
 
   return (
-    <View className='flex-1 justify-center items-center p-6'>
+    <View className='flex-1 items-center justify-center p-6'>
       <Text className='text-center text-xl text-muted-foreground'>
         Choose a name for your league
       </Text>
-      <Text className='text-center text-sm text-muted-foreground mb-8'>
+      <Text className='mb-8 text-center text-sm text-muted-foreground'>
         You can always change this later.
       </Text>
       <Controller
@@ -41,8 +41,10 @@ export default function LeagueName({ control }: LeagueNameProps) {
         render={({ field: { onChange, onBlur, value } }) => (
           <View className='w-full'>
             <TextInput
-              className={cn('border border-primary rounded-lg p-4 text-lg leading-5 placeholder:text-muted-foreground',
-                value.length === 0 && 'italic')}
+              className={cn(
+                'rounded-lg border border-primary p-4 text-lg leading-5 placeholder:text-muted-foreground',
+                value.length === 0 && 'italic'
+              )}
               placeholder={placeholderOptions[placeholder]}
               autoCapitalize='words'
               onBlur={onBlur}
@@ -50,7 +52,7 @@ export default function LeagueName({ control }: LeagueNameProps) {
               value={value}
               maxLength={LEAGUE_NAME_MAX_LENGTH}
             />
-            <Text className='text-sm text-muted-foreground mt-2 text-right'>
+            <Text className='mt-2 text-right text-sm text-muted-foreground'>
               {value.length}/{LEAGUE_NAME_MAX_LENGTH}
             </Text>
           </View>

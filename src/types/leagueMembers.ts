@@ -1,5 +1,9 @@
 import z from 'zod';
-import { DISPLAY_NAME_MAX_LENGTH, DISPLAY_NAME_MIN_LENGTH, type LeagueMemberRoles } from '~/lib/leagues';
+import {
+  DISPLAY_NAME_MAX_LENGTH,
+  DISPLAY_NAME_MIN_LENGTH,
+  type LeagueMemberRoles,
+} from '~/lib/leagues';
 
 export type LeagueMemberRole = (typeof LeagueMemberRoles)[number];
 
@@ -17,18 +21,25 @@ export type LeagueMemberInsert = {
   color: string;
 };
 
-export const DisplayNameZod = z.string()
-  .min(DISPLAY_NAME_MIN_LENGTH, { message: `Display name must be between ${DISPLAY_NAME_MIN_LENGTH} and ${DISPLAY_NAME_MAX_LENGTH} characters` })
-  .max(DISPLAY_NAME_MAX_LENGTH, { message: `Display name must be between ${DISPLAY_NAME_MIN_LENGTH} and ${DISPLAY_NAME_MAX_LENGTH} characters` });
+export const DisplayNameZod = z
+  .string()
+  .min(DISPLAY_NAME_MIN_LENGTH, {
+    message: `Display name must be between ${DISPLAY_NAME_MIN_LENGTH} and ${DISPLAY_NAME_MAX_LENGTH} characters`,
+  })
+  .max(DISPLAY_NAME_MAX_LENGTH, {
+    message: `Display name must be between ${DISPLAY_NAME_MIN_LENGTH} and ${DISPLAY_NAME_MAX_LENGTH} characters`,
+  });
 export const ColorZod = z.string().regex(/^#[0-9a-f]{6}$/i);
 
-export const LeagueMemberInsertZod = z.object({
-  displayName: DisplayNameZod,
-  color: ColorZod,
-}).transform(data => ({
-  ...data,
-  displayName: data.displayName.trim(),
-}));
+export const LeagueMemberInsertZod = z
+  .object({
+    displayName: DisplayNameZod,
+    color: ColorZod,
+  })
+  .transform(data => ({
+    ...data,
+    displayName: data.displayName.trim(),
+  }));
 
 export type LeagueMemberStatus = {
   currentCastawayId: number | null;

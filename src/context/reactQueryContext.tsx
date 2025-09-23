@@ -22,7 +22,7 @@ let browserQueryClient: QueryClient | undefined = undefined;
 
 const persister = createAsyncStoragePersister({
   storage: AsyncStorage,
-  deserialize: (data) => {
+  deserialize: data => {
     const parsed = JSON.parse(data);
     return reviveDates(parsed);
   },
@@ -52,7 +52,8 @@ export default function Provider({ children }: { children: ReactNode }) {
   return (
     <PersistQueryClientProvider
       client={queryClient}
-      persistOptions={{ persister, maxAge: Infinity }}>
+      persistOptions={{ persister, maxAge: Infinity }}
+    >
       {children}
     </PersistQueryClientProvider>
   );

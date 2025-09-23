@@ -13,7 +13,7 @@ import { BaseEventRulesZod, BasePredictionRulesZod } from '~/types/leagues';
 
 const formSchema = z.object({
   baseEventRules: BaseEventRulesZod,
-  basePredictionRules: BasePredictionRulesZod
+  basePredictionRules: BasePredictionRulesZod,
 });
 
 export function useBaseEventRules() {
@@ -25,14 +25,15 @@ export function useBaseEventRules() {
   const [locked, setLocked] = useState(true);
 
   const currentBaseRules = rules?.base ?? defaultBaseRules;
-  const currentBasePredictionRules = rules?.basePrediction ?? defaultBasePredictionRules;
+  const currentBasePredictionRules =
+    rules?.basePrediction ?? defaultBasePredictionRules;
 
   const reactForm = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
       baseEventRules: currentBaseRules,
-      basePredictionRules: currentBasePredictionRules
+      basePredictionRules: currentBasePredictionRules,
     },
-    resolver: zodResolver(formSchema)
+    resolver: zodResolver(formSchema),
   });
 
   useEffect(() => {
@@ -42,25 +43,28 @@ export function useBaseEventRules() {
 
   const rulesChanged = reactForm.formState.isDirty;
 
-  const handleSubmit = reactForm.handleSubmit(async (data) => {
+  const handleSubmit = reactForm.handleSubmit(async data => {
     if (!league || !rulesChanged) return;
 
     try {
       const response = await putData(`/api/leagues/${league.hash}/rules/base`, {
         body: {
           baseRules: data.baseEventRules,
-          predictionRules: data.basePredictionRules
-        }
+          predictionRules: data.basePredictionRules,
+        },
       });
 
       if (response.status !== 200) {
         const errorData = await response.json();
         console.error('Error saving scoring rules:', errorData);
-        Alert.alert('Error', errorData.message || 'Failed to save scoring rules');
+        Alert.alert(
+          'Error',
+          errorData.message || 'Failed to save scoring rules'
+        );
         return;
       }
 
-      const { success } = await response.json() as { success: boolean };
+      const { success } = (await response.json()) as { success: boolean };
       if (!success) {
         Alert.alert('Error', 'Failed to save scoring rules');
         return;
@@ -81,7 +85,8 @@ export function useBaseEventRules() {
     setLocked(true);
   };
 
-  const disabled = (!!leagueMembers && leagueMembers.loggedIn?.role !== 'Owner') ||
+  const disabled =
+    (!!leagueMembers && leagueMembers.loggedIn?.role !== 'Owner') ||
     league?.status === 'Inactive';
 
   return {
@@ -92,6 +97,6 @@ export function useBaseEventRules() {
     handleSubmit,
     resetSettings,
     leagueMembers,
-    disabled
+    disabled,
   };
 }

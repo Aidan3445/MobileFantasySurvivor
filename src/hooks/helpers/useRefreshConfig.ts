@@ -11,7 +11,7 @@ export function useRefreshConfig(isEpisodeAiring: boolean, hash?: string) {
   return useMemo(() => {
     if (league?.status === 'Predraft' || league?.status === 'Draft') {
       return {
-        staleTime: 15 * 1000,      // 15 seconds
+        staleTime: 15 * 1000, // 15 seconds
         refetchInterval: 30 * 1000, // 30 seconds
         refetchOnWindowFocus: true,
         refetchOnReconnect: true,
@@ -21,7 +21,7 @@ export function useRefreshConfig(isEpisodeAiring: boolean, hash?: string) {
 
     if (isEpisodeAiring) {
       return {
-        staleTime: 30 * 1000,      // 30 seconds
+        staleTime: 30 * 1000, // 30 seconds
         refetchInterval: 60 * 1000, // 1 minute
         refetchOnWindowFocus: true,
         refetchOnReconnect: true,
@@ -29,7 +29,7 @@ export function useRefreshConfig(isEpisodeAiring: boolean, hash?: string) {
       };
     } else {
       return {
-        staleTime: 5 * 60 * 1000,    // 5 minutes
+        staleTime: 5 * 60 * 1000, // 5 minutes
         refetchInterval: 10 * 60 * 1000, // 10 minutes
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
@@ -38,4 +38,3 @@ export function useRefreshConfig(isEpisodeAiring: boolean, hash?: string) {
     }
   }, [isEpisodeAiring, league?.status]);
 }
-

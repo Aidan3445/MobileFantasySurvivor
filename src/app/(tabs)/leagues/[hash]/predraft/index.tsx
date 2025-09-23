@@ -9,7 +9,7 @@ import { DraftCountdown } from '~/components/leagues/predraft/countdown/view';
 import PredraftHeader from '~/components/leagues/predraft/header/view';
 import InviteLink from '~/components/leagues/predraft/inviteLink/view';
 import DraftOrder from '~/components/leagues/predraft/order/view';
-import { usePredraftRefresh } from '~/hooks/leagues/ui/usePredraftRefresh';
+import { usePredraftRefresh } from '~/hooks/helpers/refresh/usePredraftRefresh';
 const LogoImage = require('~/assets/Logo.png');
 
 export default function PredraftScreen() {
@@ -19,30 +19,36 @@ export default function PredraftScreen() {
     <View className='flex-1 items-center justify-center bg-background'>
       <PredraftHeader />
       <ScrollView
-        className='pt-28 w-full'
+        className='w-full pt-28'
         showsVerticalScrollIndicator={false}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} >
-        <View className='px-2 gap-y-4 pb-4'>
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <View className='gap-y-4 px-2 pb-4'>
           {refreshing && (
-            <View className='items-center animate-spin -mt-20'>
+            <View className='-mt-20 animate-spin items-center'>
               <Image
                 source={LogoImage}
-                className='w-14 h-14'
-                resizeMode='contain' />
+                className='h-14 w-14'
+                resizeMode='contain'
+              />
             </View>
           )}
           <InviteLink />
           <DraftCountdown />
           <DraftOrder />
-          <View className='rounded-lg bg-primary justify-center items-center p-4'>
-            <Text className='text-white text-2xl font-bold text-center'>League Scoring</Text>
+          <View className='items-center justify-center rounded-lg bg-primary p-4'>
+            <Text className='text-center text-2xl font-bold text-white'>
+              League Scoring
+            </Text>
           </View>
           <SurvivalStreaks />
           <BaseEventRules />
           <ShauhinMode />
           <CustomEventRules />
         </View>
-      </ScrollView >
+      </ScrollView>
     </View>
   );
 }

@@ -1,4 +1,5 @@
-import { View, Text, Pressable, TextInput, FlatList } from 'react-native';
+import { View, Text, TextInput, FlatList } from 'react-native';
+import Button from '~/components/common/button';
 import { type SearchableOption } from '~/hooks/ui/useSearchableSelect';
 import { type ReactElement } from 'react';
 import { Check } from 'lucide-react-native';
@@ -43,34 +44,42 @@ export default function SearchableMultiSelect<T extends string | number>({
     <Modal isVisible={isVisible} onClose={onClose}>
       <View className='flex-row justify-between gap-2'>
         <TextInput
-          className='flex-1 border border-primary rounded px-3 py-2 placeholder:text-muted-foreground'
+          className='flex-1 rounded border border-primary px-3 py-2 placeholder:text-muted-foreground'
           placeholder={placeholder}
           value={searchText}
-          onChangeText={onSearchChange} />
-        <Pressable className='rounded bg-primary p-1 items-center justify-center' onPress={onClose}>
+          onChangeText={onSearchChange}
+        />
+        <Button
+          className='items-center justify-center rounded bg-primary p-1'
+          onPress={onClose}
+        >
           <Text className='text-white'>Done</Text>
-        </Pressable>
+        </Button>
       </View>
       <FlatList
         className='py-4'
         showsVerticalScrollIndicator={false}
         data={options}
-        keyExtractor={(item) => String(item.value)}
+        keyExtractor={item => String(item.value)}
         renderItem={({ item }) => (
-          <Pressable
-            className='flex-row items-center py-3 px-2 active:bg-accent rounded-md my-0.5 bg-background'
-            onPress={() => handleToggleSelect(item.value)}>
+          <Button
+            className='!active:bg-accent my-0.5 flex-row items-center rounded-md bg-background px-2 py-3'
+            onPress={() => handleToggleSelect(item.value)}
+          >
             <Check
               size={16}
               color={isSelected(item.value) ? 'black' : 'transparent'}
             />
-            <Text className='flex-1 ml-2'>{item.label}</Text>
-          </Pressable>
+            <Text className='ml-2 flex-1'>{item.label}</Text>
+          </Button>
         )}
         ListEmptyComponent={
-          <Text className='text-center text-muted-foreground py-4'>{emptyMessage}</Text>
+          <Text className='py-4 text-center text-muted-foreground'>
+            {emptyMessage}
+          </Text>
         }
-        ListFooterComponent={footerComponent} />
+        ListFooterComponent={footerComponent}
+      />
     </Modal>
   );
 }

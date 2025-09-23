@@ -17,7 +17,12 @@ export interface ScoreboardTableProps {
   className?: string;
 }
 
-export default function ScoreboardTable({ scoreData, someHidden, overrideBaseRules, className }: ScoreboardTableProps) {
+export default function ScoreboardTable({
+  scoreData,
+  someHidden,
+  overrideBaseRules,
+  className,
+}: ScoreboardTableProps) {
   const [selectedSeasonIndex, setSelectedSeasonIndex] = useState(0);
 
   // Calculate scores only for the selected season
@@ -33,24 +38,35 @@ export default function ScoreboardTable({ scoreData, someHidden, overrideBaseRul
       undefined,
       undefined,
       undefined,
-      overrideBaseRules ? {
-        base: overrideBaseRules,
-        basePrediction: null,
-        custom: [],
-        shauhinMode: null
-      } : null
+      overrideBaseRules
+        ? {
+            base: overrideBaseRules,
+            basePrediction: null,
+            custom: [],
+            shauhinMode: null,
+          }
+        : null
     ).scores;
 
     const sortedCastaways = Object.entries(castawayScores)
-      .sort(([_, scoresA], [__, scoresB]) => (scoresB.slice().pop() ?? 0) - (scoresA.slice().pop() ?? 0))
-      .map(([castawayId, scores]) => [Number(castawayId), scores] as [number, number[]]);
+      .sort(
+        ([_, scoresA], [__, scoresB]) =>
+          (scoresB.slice().pop() ?? 0) - (scoresA.slice().pop() ?? 0)
+      )
+      .map(
+        ([castawayId, scores]) =>
+          [Number(castawayId), scores] as [number, number[]]
+      );
 
-    const castawayColors: Record<string, string> =
-      data.castaways.sort(({ fullName: a }, { fullName: b }) => a.length - b.length)
-        .reduce((acc, { castawayId }, index) => {
+    const castawayColors: Record<string, string> = data.castaways
+      .sort(({ fullName: a }, { fullName: b }) => a.length - b.length)
+      .reduce(
+        (acc, { castawayId }, index) => {
           acc[castawayId] = newtwentyColors[index % newtwentyColors.length]!;
           return acc;
-        }, {} as Record<string, string>);
+        },
+        {} as Record<string, string>
+      );
 
     const castawaySplitIndex = Math.ceil(sortedCastaways.length / 2);
 
@@ -58,22 +74,29 @@ export default function ScoreboardTable({ scoreData, someHidden, overrideBaseRul
       sortedCastaways,
       castawayColors,
       castawaySplitIndex,
-      data
+      data,
     };
   }, [scoreData, selectedSeasonIndex, overrideBaseRules]);
 
   // Calculate allZero based on selected season data
   const allZero = useMemo(() => {
-    return selectedSeasonData?.sortedCastaways.every(([_, scores]) => scores.every(score => score === 0)) ?? true;
+    return (
+      selectedSeasonData?.sortedCastaways.every(([_, scores]) =>
+        scores.every(score => score === 0)
+      ) ?? true
+    );
   }, [selectedSeasonData]);
 
   // Season selection handler
-  const selectSeason = useCallback((seasonName: string) => {
-    const index = scoreData.findIndex(s => s.season.name === seasonName);
-    if (index !== -1) {
-      setSelectedSeasonIndex(index);
-    }
-  }, [scoreData]);
+  const selectSeason = useCallback(
+    (seasonName: string) => {
+      const index = scoreData.findIndex(s => s.season.name === seasonName);
+      if (index !== -1) {
+        setSelectedSeasonIndex(index);
+      }
+    },
+    [scoreData]
+  );
 
   // Reset to first season if current selection is invalid
   useEffect(() => {
@@ -82,20 +105,20 @@ export default function ScoreboardTable({ scoreData, someHidden, overrideBaseRul
     }
   }, [scoreData, selectedSeasonIndex]);
 
-
-
   if (!selectedSeasonData) {
     return (
-      <View className='bg-card rounded-xl p-6'>
-        <Text className='text-center text-muted-foreground'>No seasons available.</Text>
+      <View className='rounded-xl bg-card p-6'>
+        <Text className='text-center text-muted-foreground'>
+          No seasons available.
+        </Text>
       </View>
     );
   }
 
   return (
     <View className={cn('', className)}>
-      <View className='bg-accent rounded-lg overflow-hidden'>
-        <View className='flex-row px-1 bg-white gap-x-1'>
+      <View className='overflow-hidden rounded-lg bg-accent'>
+        <View className='flex-row gap-x-1 bg-white px-1'>
           {!allZero ? (
             <>
               <View className='w-11 items-center justify-center py-1'>

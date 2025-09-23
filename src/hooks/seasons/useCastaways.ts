@@ -3,11 +3,11 @@ import { type Castaway } from '~/types/castaways';
 import { useFetch } from '~/hooks/helpers/useFetch';
 
 /**
-  * Fetches castaways data from the API.
-  * Optimized for static data that rarely changes in the database.
-  * @param {number} seasonId The season ID to get castaways for.
-  * @returnObj `Castaway[]`
-  */
+ * Fetches castaways data from the API.
+ * Optimized for static data that rarely changes in the database.
+ * @param {number} seasonId The season ID to get castaways for.
+ * @returnObj `Castaway[]`
+ */
 export function useCastaways(seasonId: number | null) {
   const fetchData = useFetch();
   return useQuery<Castaway[]>({
@@ -15,11 +15,13 @@ export function useCastaways(seasonId: number | null) {
     queryFn: async () => {
       if (!seasonId) return [];
 
-      const res = await fetchData(`/api/seasons/castaways?seasonId=${seasonId}`);
+      const res = await fetchData(
+        `/api/seasons/castaways?seasonId=${seasonId}`
+      );
       if (!res.ok) {
         throw new Error('Failed to fetch castaways data');
       }
-      const { castaways } = await res.json() as { castaways: Castaway[] };
+      const { castaways } = (await res.json()) as { castaways: Castaway[] };
       return castaways;
     },
     staleTime: Infinity,
@@ -27,6 +29,6 @@ export function useCastaways(seasonId: number | null) {
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
-    enabled: !!seasonId
+    enabled: !!seasonId,
   });
 }

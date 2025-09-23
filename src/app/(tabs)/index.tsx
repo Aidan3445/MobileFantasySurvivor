@@ -4,7 +4,7 @@ import ActiveLeagues from '~/components/home/activeleagues/view';
 import Header from '~/components/home/header/view';
 import QuickActions from '~/components/home/quickActions/view';
 import { CastawayScoreboard } from '~/components/home/scoreboard/view';
-import { useHomeRefresh } from '~/hooks/home/useHomeRefresh';
+import { useHomeRefresh } from '~/hooks/helpers/refresh/useHomeRefresh';
 const LogoImage = require('~/assets/Logo.png');
 
 export default function Page() {
@@ -13,16 +13,20 @@ export default function Page() {
   return (
     <View className='flex-1 items-center justify-center bg-background'>
       <ScrollView
-        className='pt-0 w-full'
+        className='w-full pt-0'
         showsVerticalScrollIndicator={false}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} >
-        <View className='page gap-y-4 pt-10 justify-start'>
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <View className='page justify-start gap-y-4 pt-10'>
           {refreshing ? (
-            <View className='items-center animate-spin mb-4'>
+            <View className='mb-4 animate-spin items-center'>
               <Image
                 source={LogoImage}
-                className='w-40 h-40'
-                resizeMode='contain' />
+                className='h-40 w-40'
+                resizeMode='contain'
+              />
             </View>
           ) : (
             <Header className='mb-4' />

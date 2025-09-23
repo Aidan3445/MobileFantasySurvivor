@@ -1,7 +1,12 @@
 import z from 'zod';
 import {
-  type PredictionTimings, ReferenceTypes, BaseEventNames,
-  type ScoringBaseEventNames, type EliminationEventNames, EventSources, type EventTypes
+  type PredictionTimings,
+  ReferenceTypes,
+  BaseEventNames,
+  type ScoringBaseEventNames,
+  type EliminationEventNames,
+  EventSources,
+  type EventTypes,
 } from '~/lib/events';
 import { type Tribe } from '~/types/tribes';
 import { type EnrichedCastaway } from '~/types/castaways';
@@ -43,16 +48,16 @@ export type EnrichedEvent = EventWithReferences & {
   }[];
 };
 
-export type ScoringBaseEventName = typeof ScoringBaseEventNames[number];
-export type EliminationEventName = typeof EliminationEventNames[number];
-export type BaseEventName = typeof BaseEventNames[number];
+export type ScoringBaseEventName = (typeof ScoringBaseEventNames)[number];
+export type EliminationEventName = (typeof EliminationEventNames)[number];
+export type BaseEventName = (typeof BaseEventNames)[number];
 
 export type Elimination = {
   eventId: number;
   castawayId: number;
 };
 
-export type Eliminations = Elimination[][]
+export type Eliminations = Elimination[][];
 
 export type PredictionTiming = (typeof PredictionTimings)[number];
 
@@ -79,12 +84,12 @@ export type EnrichedPrediction = {
   event: EnrichedEvent;
   points: number;
   hits: {
-    member: LeagueMember
+    member: LeagueMember;
     hit: boolean;
     bet: number | null;
   }[];
   misses: {
-    member: LeagueMember
+    member: LeagueMember;
     reference: {
       type: ReferenceType;
       name: string;
@@ -96,13 +101,13 @@ export type EnrichedPrediction = {
 };
 
 /**
-  * Record<episodeNumber, Record<eventId, EventWithReferences>>
-  */
+ * Record<episodeNumber, Record<eventId, EventWithReferences>>
+ */
 export type Events = Record<number, Record<number, EventWithReferences>>;
 
 /**
-  * Record<episodeNumber, Record<eventName, Prediction[]>>
-  */
+ * Record<episodeNumber, Record<eventName, Prediction[]>>
+ */
 export type Predictions = Record<number, Record<string, Prediction[]>>;
 
 export type CustomEvents = {
@@ -110,24 +115,37 @@ export type CustomEvents = {
   predictions: Predictions;
 };
 
-export const BaseEventInsertZod = z.object({
-  episodeId: z.number().int().min(0),
-  eventName: z.enum(BaseEventNames),
-  label: z.string().max(64).nullable().optional(),
-  notes: z.string().array().max(10).nullable().optional(),
-  references: z.object({
-    type: z.enum(ReferenceTypes),
-    id: z.number().int().min(0),
-  }).array().min(1)
-}).refine((data) => {
-  // If eventName is 'tribeUpdate', we need at least one tribe and at least one castaway
-  if (data.eventName === 'tribeUpdate') {
-    const hasTribe = data.references.some((ref) => ref.type === 'Tribe');
-    const hasCastaway = data.references.some((ref) => ref.type === 'Castaway');
-    return hasTribe && hasCastaway;
-  }
-  return true;
-}, { message: 'Tribe Update events must reference at least one tribe and one castaway' });
+export const BaseEventInsertZod = z
+  .object({
+    episodeId: z.number().int().min(0),
+    eventName: z.enum(BaseEventNames),
+    label: z.string().max(64).nullable().optional(),
+    notes: z.string().array().max(10).nullable().optional(),
+    references: z
+      .object({
+        type: z.enum(ReferenceTypes),
+        id: z.number().int().min(0),
+      })
+      .array()
+      .min(1),
+  })
+  .refine(
+    data => {
+      // If eventName is 'tribeUpdate', we need at least one tribe and at least one castaway
+      if (data.eventName === 'tribeUpdate') {
+        const hasTribe = data.references.some(ref => ref.type === 'Tribe');
+        const hasCastaway = data.references.some(
+          ref => ref.type === 'Castaway'
+        );
+        return hasTribe && hasCastaway;
+      }
+      return true;
+    },
+    {
+      message:
+        'Tribe Update events must reference at least one tribe and one castaway',
+    }
+  );
 export type BaseEventInsert = z.infer<typeof BaseEventInsertZod>;
 
 export const CustomEventInsertZod = z.object({
@@ -135,10 +153,13 @@ export const CustomEventInsertZod = z.object({
   customEventRuleId: z.number().int().min(0),
   label: z.string().max(64).nullable().optional(),
   notes: z.string().array().max(10).nullable().optional(),
-  references: z.object({
-    type: z.enum(ReferenceTypes),
-    id: z.number().int().min(0),
-  }).array().min(1)
+  references: z
+    .object({
+      type: z.enum(ReferenceTypes),
+      id: z.number().int().min(0),
+    })
+    .array()
+    .min(1),
 });
 export type CustomEventInsert = z.infer<typeof CustomEventInsertZod>;
 
@@ -161,13 +182,13 @@ export type MakePrediction = {
   timing: PredictionTiming[];
   predictionMade: Prediction | null;
   shauhinEnabled?: boolean;
-}
+};
 
 /**
-  * Record<ReferenceType | 'Member', Record<referneceId, runningScores[]>>
-  */
+ * Record<ReferenceType | 'Member', Record<referneceId, runningScores[]>>
+ */
 export type Scores = Record<ReferenceType | 'Member', Record<number, number[]>>;
 /**
-  * Record<memberId, streakCount>
-  */
+ * Record<memberId, streakCount>
+ */
 export type Streaks = Record<number, number>;

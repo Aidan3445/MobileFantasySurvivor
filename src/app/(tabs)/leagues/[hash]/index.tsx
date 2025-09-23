@@ -8,13 +8,15 @@ export default function LeagueDetailScreen() {
   const { hash } = useLocalSearchParams<{ hash: string }>();
   const { data: league } = useLeague(hash);
 
-  if (!league) return (<Redirect href='/leagues' />);
-  if (league.status === 'Predraft') return (<Redirect href={`/leagues/${hash}/predraft`} />);
-  if (league.status === 'Draft') return (<Redirect href={`/leagues/${hash}/draft`} />);
+  if (!league) return <Redirect href='/leagues' />;
+  if (league.status === 'Predraft')
+    return <Redirect href={`/leagues/${hash}/predraft`} />;
+  if (league.status === 'Draft')
+    return <Redirect href={`/leagues/${hash}/draft`} />;
 
   return (
     <View className='flex-1 items-center justify-center bg-background'>
-      <Text className='text-primary text-2xl font-bold text-center'>
+      <Text className='text-center text-2xl font-bold text-primary'>
         League Hash: {hash}
       </Text>
     </View>

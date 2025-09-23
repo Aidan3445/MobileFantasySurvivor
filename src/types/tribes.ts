@@ -10,8 +10,7 @@ export type TribeInsert = {
   tribeColor: string;
 };
 
-
 /**
-  * Record<episodeNumber, Record<tribeId, castawayId[]>>
-  */
-export type TribesTimeline = Record<number, Record<number, number[]>>
+ * Record<episodeNumber, Record<tribeId, castawayId[]>>
+ */
+export type TribesTimeline = Record<number, Record<number, number[]>>;

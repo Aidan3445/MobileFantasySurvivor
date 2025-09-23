@@ -13,22 +13,26 @@ export default function PredraftHeader({ inSettings }: PredraftHeaderProps) {
   const { data: league } = useLeague();
   const router = useRouter();
   return (
-    <View className='absolute top-0 w-full h-24 bg-secondary justify-end items-center pb-4 z-10'>
-      <Text className='text-white text-2xl font-bold'>
+    <View className='absolute top-0 z-10 h-24 w-full items-center justify-end bg-secondary pb-4'>
+      <Text className='text-2xl font-bold text-white'>
         {league?.name ?? 'League'}
       </Text>
       {inSettings ? (
         <Pressable
-          className='absolute left-4 bottom-0 p-4'
-          onPress={() => router.back()}>
-          <Text className='text-white text-lg'>
+          className='absolute bottom-0 left-4 p-4'
+          onPress={() => router.back()}
+        >
+          <Text className='text-lg text-white'>
             <ArrowLeft color='white' size={24} />
           </Text>
         </Pressable>
       ) : (
         <Pressable
-          className='absolute right-4 bottom-0 p-4'
-          onPress={() => router.push(`/leagues/${league?.hash}/predraft/settings`)}>
+          className='absolute bottom-0 right-4 p-4'
+          onPress={() =>
+            router.push(`/leagues/${league?.hash}/predraft/settings`)
+          }
+        >
           <Settings color='white' size={24} />
         </Pressable>
       )}

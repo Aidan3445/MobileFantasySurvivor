@@ -10,12 +10,13 @@ interface DraftDateProps {
 
 export default function DraftDate({ control }: DraftDateProps) {
   return (
-    <View className='flex-1 justify-center items-center p-6'>
+    <View className='flex-1 items-center justify-center p-6'>
       <Text className='text-center text-xl text-muted-foreground'>
         When do you want to hold your draft?
       </Text>
-      <Text className='text-center text-sm text-muted-foreground mb-8'>
-        You can always change this later, or skip it and start the draft manually.
+      <Text className='mb-8 text-center text-sm text-muted-foreground'>
+        You can always change this later, or skip it and start the draft
+        manually.
       </Text>
       <Controller
         control={control}
@@ -31,7 +32,8 @@ export default function DraftDate({ control }: DraftDateProps) {
                 onBlur();
               }}
               accentColor={colors.secondary}
-              mode='date' />
+              mode='date'
+            />
             <DateTimePicker
               minimumDate={new Date()}
               value={value ?? new Date()}
@@ -49,11 +51,12 @@ export default function DraftDate({ control }: DraftDateProps) {
                 onBlur();
               }}
               accentColor={colors.secondary}
-              mode='time' />
+              mode='time'
+            />
           </View>
         )}
       />
-      <Text className='text-center text-xs text-muted-foreground italic'>
+      <Text className='text-center text-xs italic text-muted-foreground'>
         Tip: Try drafting after the premiere to meet the castaways first!
       </Text>
     </View>

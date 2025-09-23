@@ -6,13 +6,16 @@ import { type Castaway } from '~/types/castaways';
 import { type Tribe } from '~/types/tribes';
 
 /**
-  * Custom hook to get enriched tribe members data.
-  * Combines tribe members with their respective tribe and castaway details.
-  * @param {number} seasonId The season ID to get tribe members for.
-  * @param {number} episode The episode number to get tribe members for.
-  * @returnObj `Record<tribeId, { tribe: Tribe; castaways: Castaway[] }>`
-  */
-export function useEnrichedTribeMembers(seasonId: number | null, episode: number | null) {
+ * Custom hook to get enriched tribe members data.
+ * Combines tribe members with their respective tribe and castaway details.
+ * @param {number} seasonId The season ID to get tribe members for.
+ * @param {number} episode The episode number to get tribe members for.
+ * @returnObj `Record<tribeId, { tribe: Tribe; castaways: Castaway[] }>`
+ */
+export function useEnrichedTribeMembers(
+  seasonId: number | null,
+  episode: number | null
+) {
   const { data: tribeMembers } = useTribeMembers(seasonId, episode);
   const { data: tribes } = useTribes(seasonId);
   const { data: castaways } = useCastaways(seasonId);
@@ -37,7 +40,7 @@ export function useEnrichedTribeMembers(seasonId: number | null, episode: number
       if (members.length > 0) {
         result[parseInt(tribeId)] = {
           tribe,
-          castaways: members
+          castaways: members,
         };
       }
     }

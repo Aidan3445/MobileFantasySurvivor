@@ -28,7 +28,7 @@ export function useCreateLeague(onSubmit?: () => void) {
     reactForm.setValue('newMember.displayName', user?.username ?? '');
   }, [user, reactForm]);
 
-  const handleSubmit = reactForm.handleSubmit(async (data) => {
+  const handleSubmit = reactForm.handleSubmit(async data => {
     if (!user) {
       Alert.alert('Error', 'You must be logged in to create a league');
       return;
@@ -42,7 +42,7 @@ export function useCreateLeague(onSubmit?: () => void) {
         return;
       }
 
-      const { newHash } = await response.json() as { newHash: string };
+      const { newHash } = (await response.json()) as { newHash: string };
 
       if (!newHash) throw new Error('Failed to create league');
 

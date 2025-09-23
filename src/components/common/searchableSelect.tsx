@@ -1,14 +1,15 @@
-import { Text, Pressable, TextInput, FlatList } from 'react-native';
+import { Text, TextInput, FlatList } from 'react-native';
 import { type SearchableOption } from '~/hooks/ui/useSearchableSelect';
 import { type ReactElement } from 'react';
 import { Check } from 'lucide-react-native';
 import Modal from '~/components/common/modal';
+import Button from '~/components/common/button';
 
-interface SearchableSelectProps<T = string | number> {
+interface SearchableSelectProps<T extends string | number> {
   isVisible: boolean;
   onClose: () => void;
   options: SearchableOption<T>[];
-  selectedValue: T
+  selectedValue: T;
   onSelect: (_: T) => void;
   searchText: string;
   onSearchChange: (_: string) => void;
@@ -17,7 +18,7 @@ interface SearchableSelectProps<T = string | number> {
   footerComponent?: ReactElement;
 }
 
-export default function SearchableSelect({
+export default function SearchableSelect<T extends string | number>({
   isVisible,
   onClose,
   options,
@@ -28,11 +29,11 @@ export default function SearchableSelect({
   placeholder = 'Search...',
   emptyMessage = 'No options found.',
   footerComponent,
-}: SearchableSelectProps) {
+}: SearchableSelectProps<T>) {
   return (
     <Modal isVisible={isVisible} onClose={onClose}>
       <TextInput
-        className='border border-primary rounded px-3 py-2 placeholder:text-muted-foreground'
+        className='rounded border border-primary px-3 py-2 placeholder:text-muted-foreground'
         placeholder={placeholder}
         value={searchText}
         onChangeText={onSearchChange}
@@ -41,20 +42,26 @@ export default function SearchableSelect({
         className='py-4'
         showsVerticalScrollIndicator={false}
         data={options}
-        keyExtractor={(item) => String(item.value)}
+        keyExtractor={item => String(item.value)}
         renderItem={({ item }) => (
-          <Pressable
-            className='flex-row items-center py-3 px-2 active:bg-accent rounded-md my-0.5 bg-background'
+          <Button
+            className='!active:bg-accent my-0.5 flex-row items-center rounded-md bg-background px-2 py-3'
             onPress={() => {
               onSelect(item.value);
               onClose();
-            }}>
-            <Check size={16} color={selectedValue === item.value ? 'black' : 'transparent'} />
-            <Text className='flex-1 ml-2'>{item.label}</Text>
-          </Pressable>
+            }}
+          >
+            <Check
+              size={16}
+              color={selectedValue === item.value ? 'black' : 'transparent'}
+            />
+            <Text className='ml-2 flex-1'>{item.label}</Text>
+          </Button>
         )}
         ListEmptyComponent={
-          <Text className='text-center text-muted-foreground py-4'>{emptyMessage}</Text>
+          <Text className='py-4 text-center text-muted-foreground'>
+            {emptyMessage}
+          </Text>
         }
         ListFooterComponent={footerComponent}
       />

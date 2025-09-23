@@ -3,11 +3,11 @@ import { type Episode } from '~/types/episodes';
 import { useFetch } from '~/hooks/helpers/useFetch';
 
 /**
-  * Fetches episodes data from the API.
-  * Optimized for data that updates approximately once per week.
-  * @param seasonId The ID of the season to fetch episodes for.
-  * @returnObj `Episode[]`
-  */
+ * Fetches episodes data from the API.
+ * Optimized for data that updates approximately once per week.
+ * @param seasonId The ID of the season to fetch episodes for.
+ * @returnObj `Episode[]`
+ */
 export function useEpisodes(seasonId: number | null) {
   const fetchData = useFetch();
   return useQuery<Episode[]>({
@@ -19,7 +19,7 @@ export function useEpisodes(seasonId: number | null) {
       if (!res.ok) {
         throw new Error('Failed to fetch episode data');
       }
-      const { episodes } = await res.json() as { episodes: Episode[] };
+      const { episodes } = (await res.json()) as { episodes: Episode[] };
       return episodes.map(ep => ({ ...ep, airDate: new Date(ep.airDate) }));
     },
     staleTime: 2 * 60 * 60 * 1000, // 2 hours
@@ -29,6 +29,6 @@ export function useEpisodes(seasonId: number | null) {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchIntervalInBackground: false,
-    enabled: !!seasonId
+    enabled: !!seasonId,
   });
 }

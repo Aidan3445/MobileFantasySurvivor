@@ -1,4 +1,5 @@
-import { View, Text, Pressable } from 'react-native';
+import { View, Text } from 'react-native';
+import Button from '~/components/common/button';
 import { type UseFormReturn } from 'react-hook-form';
 import { type CustomEventRuleInsert } from '~/types/leagues';
 import CustomEventFields from '~/components/leagues/customization/events/custom/fields';
@@ -17,28 +18,31 @@ export default function CustomEventModal({
   onClose,
   onSubmit,
   reactForm,
-  type
+  type,
 }: CustomEventModalProps) {
   return (
-    <Modal
-      isVisible={isVisible}
-      onClose={onClose}>
-      <Text className='text-xl font-bold mb-4'>{type} a Custom Event</Text>
+    <Modal isVisible={isVisible} onClose={onClose}>
+      <Text className='mb-4 text-xl font-bold'>{type} a Custom Event</Text>
       <CustomEventFields
         reactForm={reactForm}
-        predictionDefault={reactForm.watch('eventType') === 'Prediction'} />
-      <View className='flex-row gap-2 mt-4'>
-        <Pressable
-          className='flex-1 bg-destructive rounded-lg p-3 active:opacity-70'
-          onPress={onClose}>
-          <Text className='text-muted font-medium text-center'>Cancel</Text>
-        </Pressable>
-        <Pressable
-          className='flex-1 bg-primary rounded-lg p-3 disabled:opacity-50 active:opacity-70'
+        predictionDefault={reactForm.watch('eventType') === 'Prediction'}
+      />
+      <View className='mt-4 flex-row gap-2'>
+        <Button
+          className='flex-1 rounded-lg bg-destructive p-3'
+          onPress={onClose}
+        >
+          <Text className='text-center font-medium text-muted'>Cancel</Text>
+        </Button>
+        <Button
+          className='flex-1 rounded-lg bg-primary p-3'
           disabled={!reactForm.formState.isValid}
-          onPress={onSubmit}>
-          <Text className='text-white font-medium text-center'>{type} Event</Text>
-        </Pressable>
+          onPress={onSubmit}
+        >
+          <Text className='text-center font-medium text-white'>
+            {type} Event
+          </Text>
+        </Button>
       </View>
     </Modal>
   );

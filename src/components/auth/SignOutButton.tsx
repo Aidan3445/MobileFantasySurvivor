@@ -24,4 +24,4 @@ export default function SignOutButton() {
       <Text>Sign out</Text>
     </TouchableOpacity>
   );
-};
+}

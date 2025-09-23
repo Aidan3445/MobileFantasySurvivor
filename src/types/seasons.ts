@@ -8,7 +8,7 @@ export type Season = {
   name: string;
   premiereDate: Date;
   finaleDate: Date | null;
-}
+};
 
 export type SeasonsDataQuery = {
   season: Season;
@@ -19,5 +19,4 @@ export type SeasonsDataQuery = {
   tribesTimeline: TribesTimeline;
   eliminations: Eliminations;
   keyEpisodes: KeyEpisodes;
-}
-
+};

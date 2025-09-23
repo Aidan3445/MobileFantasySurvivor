@@ -6,14 +6,14 @@ import { useFetch } from '~/hooks/helpers/useFetch';
 import { useLocalSearchParams } from 'expo-router';
 
 /**
-  * Fetches league member's data from the API.
-  * @param {string} overrideHash Optional hash to override the URL parameter.
-  * @returnObj `LeagueMember[]`
-  */
+ * Fetches league member's data from the API.
+ * @param {string} overrideHash Optional hash to override the URL parameter.
+ * @returnObj `LeagueMember[]`
+ */
 export function useLeagueMembers(overrideHash?: string) {
   const fetchData = useFetch();
   const params = useLocalSearchParams();
-  const hash = overrideHash ?? params?.hash as string;
+  const hash = overrideHash ?? (params?.hash as string);
 
   const isEpisodeAiring = useIsEpisodeAiring(overrideHash);
   const refreshConfig = useRefreshConfig(isEpisodeAiring);
@@ -27,8 +27,10 @@ export function useLeagueMembers(overrideHash?: string) {
       if (!res.ok) {
         throw new Error('Failed to fetch leagueMembers data');
       }
-      const { leagueMembers } = await res.json() as { leagueMembers: LeagueMember[] };
-      const loggedIn = leagueMembers.find((member) => member.loggedIn);
+      const { leagueMembers } = (await res.json()) as {
+        leagueMembers: LeagueMember[];
+      };
+      const loggedIn = leagueMembers.find(member => member.loggedIn);
       return { loggedIn, members: leagueMembers };
     },
     enabled: !!hash,

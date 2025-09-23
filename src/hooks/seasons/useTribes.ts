@@ -3,10 +3,10 @@ import { type Tribe } from '~/types/tribes';
 import { useFetch } from '~/hooks/helpers/useFetch';
 
 /**
-  * Fetches tribes data from the API.
-  * @param {number} seasonId The season ID to get tribes for.
-  * @returnObj `Tribe[]`
-  */
+ * Fetches tribes data from the API.
+ * @param {number} seasonId The season ID to get tribes for.
+ * @returnObj `Tribe[]`
+ */
 export function useTribes(seasonId: number | null) {
   const fetchData = useFetch();
   return useQuery<Tribe[]>({
@@ -18,7 +18,7 @@ export function useTribes(seasonId: number | null) {
       if (!res.ok) {
         throw new Error('Failed to fetch tribes data');
       }
-      const { tribes } = await res.json() as { tribes: Tribe[] };
+      const { tribes } = (await res.json()) as { tribes: Tribe[] };
       return tribes;
     },
     staleTime: Infinity,
@@ -26,6 +26,6 @@ export function useTribes(seasonId: number | null) {
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
-    enabled: !!seasonId
+    enabled: !!seasonId,
   });
 }

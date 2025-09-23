@@ -1,11 +1,11 @@
-import js from "@eslint/js";
-import typescriptEslint from "@typescript-eslint/eslint-plugin";
-import tsParser from "@typescript-eslint/parser";
+import js from '@eslint/js';
+import typescriptEslint from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
 import react from 'eslint-plugin-react';
-import reactHooks from "eslint-plugin-react-hooks";
-import reactNative from "eslint-plugin-react-native";
-import stylisticJs from "@stylistic/eslint-plugin-js";
-import noRelativeImportPaths from "eslint-plugin-no-relative-import-paths";
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactNative from 'eslint-plugin-react-native';
+import stylisticJs from '@stylistic/eslint-plugin-js';
+import noRelativeImportPaths from 'eslint-plugin-no-relative-import-paths';
 
 export default [
   js.configs.recommended,
@@ -48,8 +48,8 @@ export default [
       '@stylistic/js/quote-props': ['error', 'consistent-as-needed'],
       '@stylistic/js/jsx-quotes': ['error', 'prefer-single'],
       'linebreak-style': ['error', 'unix'],
-      'quotes': ['error', 'single'],
-      'semi': ['error', 'always'],
+      quotes: ['error', 'single'],
+      semi: ['error', 'always'],
       '@typescript-eslint/array-type': 'off',
       '@typescript-eslint/consistent-type-definitions': 'off',
       '@typescript-eslint/consistent-type-imports': [
@@ -103,7 +103,12 @@ export default [
   },
   // Configuration for JavaScript config files
   {
-    files: ['babel.config.js', 'metro.config.js', 'tailwind.config.js', 'prettier.config.js'],
+    files: [
+      'babel.config.js',
+      'metro.config.js',
+      'tailwind.config.js',
+      'prettier.config.js',
+    ],
     languageOptions: {
       ecmaVersion: 2023,
       sourceType: 'commonjs',
@@ -122,8 +127,8 @@ export default [
       '@stylistic/js': stylisticJs,
     },
     rules: {
-      'quotes': ['error', 'single'],
-      'semi': ['error', 'always'],
+      quotes: ['error', 'single'],
+      semi: ['error', 'always'],
       '@stylistic/js/quote-props': ['error', 'consistent-as-needed'],
     },
   },

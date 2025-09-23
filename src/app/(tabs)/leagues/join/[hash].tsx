@@ -1,6 +1,7 @@
 'use client';
 
-import { Pressable, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import Button from '~/components/common/button';
 import KeyboardContainer from '~/components/common/keyboardContainer';
 import Header from '~/components/home/header/view';
 import LeagueMember from '~/components/leagues/actions/create/leagueMember';
@@ -12,8 +13,8 @@ export default function JoinLeagueScreen() {
 
   return (
     <KeyboardContainer>
-      <View className='flex-1 bg-background justify-center px-6 py-24'>
-        <View className='h-90p pt-6 bg-card rounded-lg items-center justify-end overflow-hidden'>
+      <View className='flex-1 justify-center bg-background px-6 py-24'>
+        <View className='h-90p items-center justify-end overflow-hidden rounded-lg bg-card pt-6'>
           <View className='flex-1'>
             <Text className='text-center text-2xl font-bold'>
               Join {getPublicLeague?.data?.name ?? 'League'}
@@ -21,14 +22,19 @@ export default function JoinLeagueScreen() {
             <Header />
           </View>
           <View className='flex-1'>
-            <LeagueMember control={reactForm.control} />
-            <View className='self-center items-center w-90p relative'>
-              <Pressable
+            <LeagueMember control={reactForm.control} className='mb-14' />
+            <View className='w-90p relative items-center self-center'>
+              <Button
                 onPress={handleSubmit}
                 disabled={!reactForm.formState.isValid}
-                className={cn('bg-primary rounded-md px-4 py-2 absolute bottom-4 w-1/2 disabled:opacity-50')}>
-                <Text className='text-white text-center font-semibold'>Join League</Text>
-              </Pressable>
+                className={cn(
+                  'absolute bottom-4 w-1/2 rounded-md bg-primary px-4 py-2'
+                )}
+              >
+                <Text className='text-center font-semibold text-white'>
+                  Join League
+                </Text>
+              </Button>
             </View>
           </View>
         </View>

@@ -15,29 +15,45 @@ interface EventFieldProps {
   disabled?: boolean;
 }
 
-export default function EventField({ reactForm, eventName, fieldPath, disabled }: EventFieldProps) {
+export default function EventField({
+  reactForm,
+  eventName,
+  fieldPath,
+  disabled,
+}: EventFieldProps) {
   const currentValue = reactForm.watch(fieldPath);
-  const hasItalicDescription = BaseEventDescriptions.italics?.[eventName as keyof typeof BaseEventDescriptions.italics];
+  const hasItalicDescription =
+    BaseEventDescriptions.italics?.[
+      eventName as keyof typeof BaseEventDescriptions.italics
+    ];
 
   return (
-    <View className='px-2 pb-1 rounded-lg bg-accent gap-1'>
+    <View className='gap-1 rounded-lg bg-accent px-2 pb-1'>
       <View className='flex-row items-center justify-between pt-1'>
-        <Text className='font-semibold text-base flex-1'>
+        <Text className='flex-1 text-base font-semibold'>
           {BaseEventFullName[eventName as keyof typeof BaseEventFullName]}
         </Text>
         {disabled ? (
           <View className='flex-row items-center'>
-            <Text className={cn(
-              'text-lg font-bold mr-1',
-              currentValue <= 0 ? 'text-destructive' : 'text-positive',
-              currentValue === 0 && 'text-neutral')}>
+            <Text
+              className={cn(
+                'mr-1 text-lg font-bold',
+                currentValue <= 0 ? 'text-destructive' : 'text-positive',
+                currentValue === 0 && 'text-neutral'
+              )}
+            >
               {currentValue}
             </Text>
             <Flame
               size={16}
-              color={currentValue <= 0 ?
-                (currentValue < 0 ? colors.destructive : colors.neutral)
-                : colors.positive} />
+              color={
+                currentValue <= 0
+                  ? currentValue < 0
+                    ? colors.destructive
+                    : colors.neutral
+                  : colors.positive
+              }
+            />
           </View>
         ) : (
           <Controller
@@ -45,24 +61,33 @@ export default function EventField({ reactForm, eventName, fieldPath, disabled }
             name={fieldPath}
             render={({ field }) => (
               <TextInput
-                className={cn('border border-primary rounded-lg p-1 w-24 bg-muted/50 text-lg leading-5 placeholder:text-muted-foreground')}
+                className={cn(
+                  'w-24 rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
+                )}
                 value={field.value?.toString() ?? '0'}
-                onChangeText={(text) => {
+                onChangeText={text => {
                   const value = parseInt(text) || 0;
                   field.onChange(value);
                 }}
                 keyboardType='numeric'
-                placeholder='Points' />
-            )} />
+                placeholder='Points'
+              />
+            )}
+          />
         )}
       </View>
 
       <View>
-        <Text className='text-sm text-muted-foreground leading-none'>
-          {BaseEventDescriptions.main[eventName as keyof typeof BaseEventDescriptions.main]}
+        <Text className='text-sm leading-none text-muted-foreground'>
+          {
+            BaseEventDescriptions.main[
+              eventName as keyof typeof BaseEventDescriptions.main
+            ]
+          }
           {hasItalicDescription && (
-            <Text className='text-xs text-muted-foreground italic'>
-              {' '}{hasItalicDescription}
+            <Text className='text-xs italic text-muted-foreground'>
+              {' '}
+              {hasItalicDescription}
             </Text>
           )}
         </Text>
@@ -74,5 +99,4 @@ export default function EventField({ reactForm, eventName, fieldPath, disabled }
       />
     </View>
   );
-};
-
+}

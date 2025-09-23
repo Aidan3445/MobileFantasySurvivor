@@ -12,8 +12,9 @@ export default function Header({ className }: HeaderProps) {
     <View className={cn('items-center', className)}>
       <Image
         source={LogoImage}
-        className={cn('w-40 h-40')}
-        resizeMode='contain' />
+        className={cn('h-40 w-40')}
+        resizeMode='contain'
+      />
     </View>
   );
 }

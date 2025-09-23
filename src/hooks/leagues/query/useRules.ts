@@ -4,14 +4,14 @@ import { useFetch } from '~/hooks/helpers/useFetch';
 import { useLocalSearchParams } from 'expo-router';
 
 /**
-  * Fetches league rules for a league based on the league hash from the URL parameters.
-  * @param {string} overrideHash Optional hash to override the URL parameter.
-  * @returnObj `LeagueRule[]`
-  */
+ * Fetches league rules for a league based on the league hash from the URL parameters.
+ * @param {string} overrideHash Optional hash to override the URL parameter.
+ * @returnObj `LeagueRule[]`
+ */
 export function useLeagueRules(overrideHash?: string) {
   const fetchData = useFetch();
   const params = useLocalSearchParams();
-  const hash = overrideHash ?? params.hash as string;
+  const hash = overrideHash ?? (params.hash as string);
 
   return useQuery<LeagueRules>({
     queryKey: ['rules', hash],
@@ -29,4 +29,3 @@ export function useLeagueRules(overrideHash?: string) {
     refetchInterval: 10 * 60 * 1000, // 10 minutes
   });
 }
-

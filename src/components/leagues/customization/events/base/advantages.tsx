@@ -12,15 +12,21 @@ interface AdvantageScoreSettingsProps {
   reactForm: UseFormReturn<any>;
 }
 
-export default function AdvantageScoreSettings({ disabled, reactForm }: AdvantageScoreSettingsProps) {
+export default function AdvantageScoreSettings({
+  disabled,
+  reactForm,
+}: AdvantageScoreSettingsProps) {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   return (
     <View>
       <Pressable
-        className={cn('flex-row items-center justify-between p-3 bg-secondary rounded-t-lg transition-all rounded-b-lg',
-          !isCollapsed ? 'rounded-b-none duration-75' : 'delay-300')}
-        onPress={() => setIsCollapsed(!isCollapsed)}>
+        className={cn(
+          'flex-row items-center justify-between rounded-b-lg rounded-t-lg bg-secondary p-3 transition-all',
+          !isCollapsed ? 'rounded-b-none duration-75' : 'delay-300'
+        )}
+        onPress={() => setIsCollapsed(!isCollapsed)}
+      >
         <Text className='text-lg font-bold text-muted'>Advantages</Text>
         {isCollapsed ? (
           <ChevronDown size={24} color={colors.muted} />
@@ -30,11 +36,31 @@ export default function AdvantageScoreSettings({ disabled, reactForm }: Advantag
       </Pressable>
 
       <Collapsible collapsed={isCollapsed}>
-        <View className='p-3 border-primary border border-t-0 rounded-b-lg gap-2'>
-          <EventField reactForm={reactForm} eventName='advFound' fieldPath='baseEventRules.advFound' disabled={disabled} />
-          <EventField reactForm={reactForm} eventName='advPlay' fieldPath='baseEventRules.advPlay' disabled={disabled} />
-          <EventField reactForm={reactForm} eventName='badAdvPlay' fieldPath='baseEventRules.badAdvPlay' disabled={disabled} />
-          <EventField reactForm={reactForm} eventName='advElim' fieldPath='baseEventRules.advElim' disabled={disabled} />
+        <View className='gap-2 rounded-b-lg border border-t-0 border-primary p-3'>
+          <EventField
+            reactForm={reactForm}
+            eventName='advFound'
+            fieldPath='baseEventRules.advFound'
+            disabled={disabled}
+          />
+          <EventField
+            reactForm={reactForm}
+            eventName='advPlay'
+            fieldPath='baseEventRules.advPlay'
+            disabled={disabled}
+          />
+          <EventField
+            reactForm={reactForm}
+            eventName='badAdvPlay'
+            fieldPath='baseEventRules.badAdvPlay'
+            disabled={disabled}
+          />
+          <EventField
+            reactForm={reactForm}
+            eventName='advElim'
+            fieldPath='baseEventRules.advElim'
+            disabled={disabled}
+          />
         </View>
       </Collapsible>
     </View>

@@ -4,7 +4,6 @@ import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import Header from '~/components/auth/header';
 
-
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn();
   const router = useRouter();
@@ -41,40 +40,49 @@ export default function Page() {
   };
 
   return (
-    <View className='flex-1 bg-background justify-around p-6'>
+    <View className='flex-1 justify-around bg-background p-6'>
       <Header />
-      <View className='bg-white rounded-3xl p-8 shadow-lg focus:-translate-y-96 transition-keyboard'>
-        <View className='items-center mb-8'>
-          <Text className='text-3xl font-bold text-primary mb-2'>Welcome Back!</Text>
-          <Text className='text-secondary text-lg'>Sign in to continue</Text>
+      <View className='transition-keyboard rounded-3xl bg-white p-8 shadow-lg focus:-translate-y-96'>
+        <View className='mb-8 items-center'>
+          <Text className='mb-2 text-3xl font-bold text-primary'>
+            Welcome Back!
+          </Text>
+          <Text className='text-lg text-secondary'>Sign in to continue</Text>
         </View>
         <View className='gap-y-2'>
           <TextInput
             autoCapitalize='none'
             value={emailAddress}
             placeholder='Enter email'
-            className='bg-accent/20 rounded-2xl px-4 py-4 text-lg border border-accent leading-5'
+            className='rounded-2xl border border-accent bg-accent/20 px-4 py-4 text-lg leading-5'
             placeholderTextColor='#B58553'
-            onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
+            onChangeText={emailAddress => setEmailAddress(emailAddress)}
           />
           <TextInput
             value={password}
             placeholder='Enter password'
             secureTextEntry={true}
-            className='bg-accent/20 rounded-2xl px-4 py-4 text-lg border border-accent leading-5'
+            className='rounded-2xl border border-accent bg-accent/20 px-4 py-4 text-lg leading-5'
             placeholderTextColor='#B58553'
-            onChangeText={(password) => setPassword(password)}
+            onChangeText={password => setPassword(password)}
           />
           <TouchableOpacity
             onPress={onSignInPress}
-            className='bg-primary rounded-2xl py-4 mt-6 shadow-sm'>
-            <Text className='text-white text-center text-lg font-semibold'>Continue</Text>
+            className='mt-6 rounded-2xl bg-primary py-4 shadow-sm'
+          >
+            <Text className='text-center text-lg font-semibold text-white'>
+              Continue
+            </Text>
           </TouchableOpacity>
         </View>
-        <View className='flex-row justify-center mt-8 items-center'>
-          <Text className='text-secondary text-base'>Don't have an account? </Text>
+        <View className='mt-8 flex-row items-center justify-center'>
+          <Text className='text-base text-secondary'>
+            Don't have an account?{' '}
+          </Text>
           <Link href='/sign-up'>
-            <Text className='text-primary font-semibold text-base'>Sign up</Text>
+            <Text className='text-base font-semibold text-primary'>
+              Sign up
+            </Text>
           </Link>
         </View>
       </View>

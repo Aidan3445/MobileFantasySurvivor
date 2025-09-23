@@ -9,7 +9,7 @@ export function CastawayScoreboard() {
 
   if (isLoading) {
     return (
-      <View className='bg-card rounded-lg py-1'>
+      <View className='rounded-lg bg-card py-1'>
         <Text className='text-center text-muted-foreground'>Loading...</Text>
       </View>
     );
@@ -17,8 +17,8 @@ export function CastawayScoreboard() {
 
   if (error || !scoreData || scoreData.length === 0) {
     return (
-      <View className='bg-card rounded-lg py-1 shadow'>
-        <Text className='text-center text-muted-foreground mb-4'>
+      <View className='rounded-lg bg-card py-1 shadow'>
+        <Text className='mb-4 text-center text-muted-foreground'>
           No active leagues with scoring data.
         </Text>
       </View>
@@ -27,7 +27,15 @@ export function CastawayScoreboard() {
 
   const mostRecent6 = scoreData
     .filter(s => s.tribes.length > 0)
-    .sort((a, b) => b.season.premiereDate.getTime() - a.season.premiereDate.getTime());
+    .sort(
+      (a, b) =>
+        b.season.premiereDate.getTime() - a.season.premiereDate.getTime()
+    );
 
-  return (<ScoreboardTable scoreData={mostRecent6} someHidden={scoreData.length > 6} />);
+  return (
+    <ScoreboardTable
+      scoreData={mostRecent6}
+      someHidden={scoreData.length > 6}
+    />
+  );
 }

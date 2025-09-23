@@ -31,20 +31,27 @@ export default function Clock({ endDate, replacedBy }: ClockProps) {
   const minutes = timer ? Math.floor((timer / (1000 * 60)) % 60) : '--';
   const seconds = timer ? Math.floor((timer / 1000) % 60) : '--';
 
-  return (
-    !timer || timer > 0 ? (
-      <View className='w-full flex-row justify-evenly'>
-        <ClockPlace value={days.toString()} label={days === 1 ? 'Day' : 'Days'} />
-        <Text className='text-navigation text-4xl'>:</Text>
-        <ClockPlace value={hours.toString()} label={hours === 1 ? 'Hour' : 'Hours'} />
-        <Text className='text-navigation text-4xl'>:</Text>
-        <ClockPlace value={minutes.toString()} label={minutes === 1 ? 'Minute' : 'Minutes'} />
-        <Text className='text-navigation text-4xl'>:</Text>
-        <ClockPlace value={seconds.toString()} label={seconds === 1 ? 'Second' : 'Seconds'} />
-      </View>
-    ) : (
-      replacedBy
-    )
+  return !timer || timer > 0 ? (
+    <View className='w-full flex-row justify-evenly'>
+      <ClockPlace value={days.toString()} label={days === 1 ? 'Day' : 'Days'} />
+      <Text className='text-4xl text-navigation'>:</Text>
+      <ClockPlace
+        value={hours.toString()}
+        label={hours === 1 ? 'Hour' : 'Hours'}
+      />
+      <Text className='text-4xl text-navigation'>:</Text>
+      <ClockPlace
+        value={minutes.toString()}
+        label={minutes === 1 ? 'Minute' : 'Minutes'}
+      />
+      <Text className='text-4xl text-navigation'>:</Text>
+      <ClockPlace
+        value={seconds.toString()}
+        label={seconds === 1 ? 'Second' : 'Seconds'}
+      />
+    </View>
+  ) : (
+    replacedBy
   );
 }
 
