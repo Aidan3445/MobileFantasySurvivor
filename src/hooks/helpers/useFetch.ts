@@ -8,10 +8,7 @@ import { useAuth } from '@clerk/clerk-expo';
  * @param debug - If true, logs debug information to the console (default is false).
  * @returns A function that takes an endpoint and options, performs the fetch, and returns the response.
  */
-export function useFetch(
-  fetchMethod: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
-  debug = false
-) {
+export function useFetch(fetchMethod: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET', debug = false) {
   const { getToken } = useAuth();
 
   return async (
@@ -35,25 +32,17 @@ export function useFetch(
 
     const { method, headers = {}, body } = opts || {};
 
-    const response = await fetch(
-      `${process.env.EXPO_PUBLIC_API_URL}${endpoint}`,
-      {
-        method: method || fetchMethod,
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          ...headers
-        },
-        ...(body && { body: JSON.stringify(body) })
-      }
-    );
+    const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}${endpoint}`, {
+      method: method || fetchMethod,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        ...headers
+      },
+      ...(body && { body: JSON.stringify(body) })
+    });
 
-    if (debug)
-      console.log(
-        `Response from ${endpoint}: `,
-        response.status,
-        response.statusText
-      );
+    if (debug) console.log(`Response from ${endpoint}: `, response.status, response.statusText);
 
     return response;
   };

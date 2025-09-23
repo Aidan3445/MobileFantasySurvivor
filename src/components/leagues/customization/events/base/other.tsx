@@ -12,10 +12,7 @@ interface OtherScoreSettingsProps {
   reactForm: UseFormReturn<any>;
 }
 
-export default function OtherScoreSettings({
-  disabled,
-  reactForm
-}: OtherScoreSettingsProps) {
+export default function OtherScoreSettings({ disabled, reactForm }: OtherScoreSettingsProps) {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   return (

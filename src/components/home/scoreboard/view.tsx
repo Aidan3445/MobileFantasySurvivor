@@ -27,10 +27,7 @@ export function CastawayScoreboard() {
 
   const mostRecent6 = scoreData
     .filter(s => s.tribes.length > 0)
-    .sort(
-      (a, b) =>
-        b.season.premiereDate.getTime() - a.season.premiereDate.getTime()
-    );
+    .sort((a, b) => b.season.premiereDate.getTime() - a.season.premiereDate.getTime());
 
   return (
     <ScoreboardTable

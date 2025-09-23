@@ -30,12 +30,8 @@ export default function JoinLeagueScreen() {
               <Button
                 onPress={handleSubmit}
                 disabled={!reactForm.formState.isValid}
-                className={cn(
-                  'absolute bottom-4 w-1/2 rounded-md bg-primary px-4 py-2'
-                )}>
-                <Text className='text-center font-semibold text-white'>
-                  Join League
-                </Text>
+                className={cn('absolute bottom-4 w-1/2 rounded-md bg-primary px-4 py-2')}>
+                <Text className='text-center font-semibold text-white'>Join League</Text>
               </Button>
             </View>
           </View>

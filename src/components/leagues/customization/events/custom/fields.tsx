@@ -8,11 +8,7 @@ import SearchableMultiSelect from '~/components/common/searchableMultiSelect';
 import SearchableSelect from '~/components/common/searchableSelect';
 import { useSearchableSelect } from '~/hooks/ui/useSearchableSelect';
 import { cn } from '~/lib/utils';
-import {
-  type EventType,
-  type PredictionTiming,
-  type ReferenceType
-} from '~/types/events';
+import { type EventType, type PredictionTiming, type ReferenceType } from '~/types/events';
 
 interface CustomEventFieldsProps {
   reactForm: UseFormReturn<CustomEventRuleInsert>;
@@ -28,18 +24,9 @@ export default function CustomEventFields({
   const referenceModal = useSearchableSelect<ReferenceType>();
   const timingModal = useSearchableSelect<PredictionTiming>();
 
-  const eventTypeOptions = EventTypes.map(type => ({
-    value: type,
-    label: type
-  }));
-  const referenceTypeOptions = ReferenceTypes.map(type => ({
-    value: type,
-    label: type
-  }));
-  const timingOptions = PredictionTimings.map(timing => ({
-    value: timing,
-    label: timing
-  }));
+  const eventTypeOptions = EventTypes.map(type => ({ value: type, label: type }));
+  const referenceTypeOptions = ReferenceTypes.map(type => ({ value: type, label: type }));
+  const timingOptions = PredictionTimings.map(timing => ({ value: timing, label: timing }));
 
   const selectedEventType = reactForm.watch('eventType');
   const selectedReferences = reactForm.watch('referenceTypes') || [];
@@ -168,9 +155,7 @@ export default function CustomEventFields({
             )}
             onPress={timingModal.openModal}>
             <Text className='text-muted-foreground'>
-              {selectedTimings.length > 0
-                ? selectedTimings.join(', ')
-                : 'Select prediction timing'}
+              {selectedTimings.length > 0 ? selectedTimings.join(', ') : 'Select prediction timing'}
             </Text>
           </Button>
           <Controller

@@ -16,27 +16,17 @@ export function usePredraftRefresh(overrideHash?: string) {
       await Promise.all([
         // Core league data
         queryClient.invalidateQueries({ queryKey: ['league', league.hash] }),
-        queryClient.invalidateQueries({
-          queryKey: ['leagueMembers', league.hash]
-        }),
+        queryClient.invalidateQueries({ queryKey: ['leagueMembers', league.hash] }),
         queryClient.invalidateQueries({ queryKey: ['settings', league.hash] }),
 
         // Rules and customization
         queryClient.invalidateQueries({ queryKey: ['rules', league.hash] }),
-        queryClient.invalidateQueries({
-          queryKey: ['customEvents', league.hash]
-        }),
-        queryClient.invalidateQueries({
-          queryKey: ['basePredictions', league.hash]
-        }),
+        queryClient.invalidateQueries({ queryKey: ['customEvents', league.hash] }),
+        queryClient.invalidateQueries({ queryKey: ['basePredictions', league.hash] }),
 
         // Additional predraft-related queries
-        queryClient.invalidateQueries({
-          queryKey: ['predictionTiming', league.hash]
-        }),
-        queryClient.invalidateQueries({
-          queryKey: ['selectionTimeline', league.hash]
-        })
+        queryClient.invalidateQueries({ queryKey: ['predictionTiming', league.hash] }),
+        queryClient.invalidateQueries({ queryKey: ['selectionTimeline', league.hash] })
       ]);
     } finally {
       setRefreshing(false);

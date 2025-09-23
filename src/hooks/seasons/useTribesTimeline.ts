@@ -19,9 +19,7 @@ export function useTribesTimeline(seasonId: number | null) {
     queryFn: async () => {
       if (!seasonId) return {};
 
-      const res = await fetchData(
-        `/api/seasons/tribesTimeline?seasonId=${seasonId}`
-      );
+      const res = await fetchData(`/api/seasons/tribesTimeline?seasonId=${seasonId}`);
       if (!res.ok) {
         throw new Error('Failed to fetch tribes timeline data');
       }

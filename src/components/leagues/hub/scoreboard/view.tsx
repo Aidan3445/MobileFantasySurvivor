@@ -10,11 +10,7 @@ interface ScoreboardProps {
   className?: string;
 }
 
-export default function Scoreboard({
-  overrideHash,
-  maxRows,
-  className
-}: ScoreboardProps = {}) {
+export default function Scoreboard({ overrideHash, maxRows, className }: ScoreboardProps = {}) {
   const {
     sortedMemberScores,
     loggedInIndex,
@@ -49,17 +45,11 @@ export default function Scoreboard({
           if (
             maxRows
             && index !== loggedInIndex
-            && (loggedInIndex >= maxRows
-              ? index >= maxRows - 1
-              : index >= maxRows)
+            && (loggedInIndex >= maxRows ? index >= maxRows - 1 : index >= maxRows)
           )
             return null;
 
-          const castawayId = selectionTimeline?.memberCastaways?.[
-            member.memberId
-          ]
-            ?.slice()
-            .pop();
+          const castawayId = selectionTimeline?.memberCastaways?.[member.memberId]?.slice().pop();
           const castaway =
             castawayId !== undefined
               ? castaways?.find(c => c.castawayId === castawayId)

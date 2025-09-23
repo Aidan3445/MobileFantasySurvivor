@@ -26,9 +26,7 @@ export default function CustomEventRules() {
     leagueMembers
   } = useCustomEventRules();
 
-  const { props, progressProps, setCarouselData } = useCarousel<
-    CustomEventRule[]
-  >([]);
+  const { props, progressProps, setCarouselData } = useCarousel<CustomEventRule[]>([]);
   useEffect(() => {
     const slides = customRules.reduce((threes, rule, index) => {
       if (index % 3 === 0) threes.push([]);
@@ -73,32 +71,28 @@ export default function CustomEventRules() {
       </View>
       <View className='mb-4 gap-2'>
         <Text className='text-sm leading-relaxed text-muted-foreground'>
-          These <Text className='italic'>Custom Events</Text> let you make your
-          league truly unique! Anything can be scored—from speaking the first
-          word of the episode to orchestrating a blindside.
+          These <Text className='italic'>Custom Events</Text> let you make your league truly unique!
+          Anything can be scored—from speaking the first word of the episode to orchestrating a
+          blindside.
           {'\n'}The possibilities are endless!
         </Text>
         <Text className='text-sm leading-relaxed text-muted-foreground'>
-          Custom events require manual scoring. Once your league drafts, you'll
-          see a new tab on this page where you can score, edit and delete custom
-          events during the season.
+          Custom events require manual scoring. Once your league drafts, you'll see a new tab on
+          this page where you can score, edit and delete custom events during the season.
         </Text>
         <View>
           <Text className='mb-2 text-sm text-muted-foreground'>
-            <Text className='italic'>Custom Events</Text> can be scored in two
-            ways:
+            <Text className='italic'>Custom Events</Text> can be scored in two ways:
           </Text>
           <View className='ml-4 gap-1'>
             <Text className='text-sm text-muted-foreground'>
-              1. <Text className='font-semibold'>Direct</Text>: Points are
-              awarded like <Text className='italic'>Official Events</Text>,
-              based on a player's pick.
+              1. <Text className='font-semibold'>Direct</Text>: Points are awarded like{' '}
+              <Text className='italic'>Official Events</Text>, based on a player's pick.
             </Text>
             <Text className='text-sm text-muted-foreground'>
-              2. <Text className='font-semibold'>Prediction</Text>: Points are
-              awarded to members who correctly predict an event's outcome.
-              Predictions can be made before each episode or at specific times
-              throughout the season.
+              2. <Text className='font-semibold'>Prediction</Text>: Points are awarded to members
+              who correctly predict an event's outcome. Predictions can be made before each episode
+              or at specific times throughout the season.
             </Text>
           </View>
         </View>
@@ -120,9 +114,7 @@ export default function CustomEventRules() {
             />
           )}
           <Text className='font-semibold text-white'>
-            {customRules.length >= 6
-              ? '6 Custom Events Max'
-              : 'Add Custom Event'}
+            {customRules.length >= 6 ? '6 Custom Events Max' : 'Add Custom Event'}
           </Text>
         </Button>
       )}
@@ -151,10 +143,7 @@ export default function CustomEventRules() {
           />
           <Pagination.Basic
             {...progressProps}
-            containerStyle={{
-              ...progressProps.containerStyle,
-              marginBottom: 3
-            }}
+            containerStyle={{ ...progressProps.containerStyle, marginBottom: 3 }}
           />
         </View>
       ) : (

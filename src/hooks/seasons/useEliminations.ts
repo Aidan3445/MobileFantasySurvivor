@@ -19,15 +19,11 @@ export function useEliminations(seasonId: number | null) {
     queryFn: async () => {
       if (!seasonId) return [];
 
-      const res = await fetchData(
-        `/api/seasons/eliminations?seasonId=${seasonId}`
-      );
+      const res = await fetchData(`/api/seasons/eliminations?seasonId=${seasonId}`);
       if (!res.ok) {
         throw new Error('Failed to fetch eliminations data');
       }
-      const { eliminations } = (await res.json()) as {
-        eliminations: (Elimination[] | null)[];
-      };
+      const { eliminations } = (await res.json()) as { eliminations: (Elimination[] | null)[] };
       return eliminations.map(elimination => {
         if (elimination === null) return [];
         return elimination;

@@ -41,9 +41,7 @@ export default function PredraftScreen() {
           <DraftCountdown />
           <DraftOrder />
           <View className='items-center justify-center rounded-lg bg-primary p-4'>
-            <Text className='text-center text-2xl font-bold text-white'>
-              League Scoring
-            </Text>
+            <Text className='text-center text-2xl font-bold text-white'>League Scoring</Text>
           </View>
           <SurvivalStreaks />
           <BaseEventRules />

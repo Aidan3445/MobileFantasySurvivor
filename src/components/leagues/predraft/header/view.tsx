@@ -14,9 +14,7 @@ export default function PredraftHeader({ inSettings }: PredraftHeaderProps) {
   const router = useRouter();
   return (
     <View className='absolute top-0 z-10 h-24 w-full items-center justify-end bg-secondary pb-4'>
-      <Text className='text-2xl font-bold text-white'>
-        {league?.name ?? 'League'}
-      </Text>
+      <Text className='text-2xl font-bold text-white'>{league?.name ?? 'League'}</Text>
       {inSettings ? (
         <Pressable
           className='absolute bottom-0 left-4 p-4'
@@ -31,9 +29,7 @@ export default function PredraftHeader({ inSettings }: PredraftHeaderProps) {
       ) : (
         <Pressable
           className='absolute bottom-0 right-4 p-4'
-          onPress={() =>
-            router.push(`/leagues/${league?.hash}/predraft/settings`)
-          }>
+          onPress={() => router.push(`/leagues/${league?.hash}/predraft/settings`)}>
           <Settings
             color='white'
             size={24}

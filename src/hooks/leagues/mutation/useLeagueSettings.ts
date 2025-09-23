@@ -3,17 +3,14 @@ import { useFetch } from '~/hooks/helpers/useFetch';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
 import { useForm } from 'react-hook-form';
-import {
-  LeagueDetailsUpdateZod,
-  type LeagueDetailsUpdate
-} from '~/types/leagues';
+import { LeagueDetailsUpdateZod, type LeagueDetailsUpdate } from '~/types/leagues';
 import { useEffect, useMemo } from 'react';
 import { Alert } from 'react-native';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLocalSearchParams } from 'expo-router';
 import { useSearchableSelect } from '~/hooks/ui/useSearchableSelect';
 
-export function useLeagueSettings(onSubmit?: () => void) {
+export function useLeagueDetails(onSubmit?: () => void) {
   const putData = useFetch('PUT');
   const queryClient = useQueryClient();
   const { hash } = useLocalSearchParams<{ hash: string }>();
@@ -24,15 +21,9 @@ export function useLeagueSettings(onSubmit?: () => void) {
   const membersList = useMemo(
     () =>
       leagueMembers?.members
-        .map(member => ({
-          value: member.memberId,
-          label: member.displayName,
-          role: member.role
-        }))
+        .map(member => ({ value: member.memberId, label: member.displayName, role: member.role }))
         .filter(
-          member =>
-            member.value !== leagueMembers.loggedIn?.memberId
-            && member.role !== 'Owner'
+          member => member.value !== leagueMembers.loggedIn?.memberId && member.role !== 'Owner'
         ) ?? [],
     [leagueMembers]
   );
@@ -40,8 +31,7 @@ export function useLeagueSettings(onSubmit?: () => void) {
   const reactForm = useForm<LeagueDetailsUpdate>({
     defaultValues: {
       name: league?.name ?? '',
-      admins:
-        membersList.filter(m => m.role === 'Admin').map(m => m.value) ?? []
+      admins: membersList.filter(m => m.role === 'Admin').map(m => m.value) ?? []
     },
     resolver: zodResolver(LeagueDetailsUpdateZod)
   });
@@ -51,8 +41,7 @@ export function useLeagueSettings(onSubmit?: () => void) {
   useEffect(() => {
     if (league) reactForm.setValue('name', league.name);
     if (membersList.length > 0) {
-      const adminIds =
-        membersList.filter(m => m.role === 'Admin').map(m => m.value) ?? [];
+      const adminIds = membersList.filter(m => m.role === 'Admin').map(m => m.value) ?? [];
       reactForm.setValue('admins', adminIds);
     }
   }, [league, membersList, reactForm]);
@@ -71,10 +60,7 @@ export function useLeagueSettings(onSubmit?: () => void) {
       if (response.status !== 200) {
         const errorData = await response.json();
         console.error('Error updating league settings:', errorData);
-        Alert.alert(
-          'Error',
-          errorData.message || 'Failed to update league settings'
-        );
+        Alert.alert('Error', errorData.message || 'Failed to update league settings');
         return;
       }
 
@@ -86,9 +72,7 @@ export function useLeagueSettings(onSubmit?: () => void) {
 
       await queryClient.invalidateQueries({ queryKey: ['league', hash] });
       await queryClient.invalidateQueries({ queryKey: ['settings', hash] });
-      await queryClient.invalidateQueries({
-        queryKey: ['leagueMembers', hash]
-      });
+      await queryClient.invalidateQueries({ queryKey: ['leagueMembers', hash] });
 
       reactForm.reset(data);
       onSubmit?.();
@@ -101,8 +85,7 @@ export function useLeagueSettings(onSubmit?: () => void) {
 
   const resetForm = () => {
     if (league && membersList.length > 0) {
-      const adminIds =
-        membersList.filter(m => m.role === 'Admin').map(m => m.value) ?? [];
+      const adminIds = membersList.filter(m => m.role === 'Admin').map(m => m.value) ?? [];
       reactForm.reset({ name: league.name, admins: adminIds });
     } else {
       reactForm.reset();
@@ -110,9 +93,7 @@ export function useLeagueSettings(onSubmit?: () => void) {
   };
 
   const editable =
-    !!leagueMembers
-    && leagueMembers.loggedIn?.role === 'Owner'
-    && league?.status !== 'Inactive';
+    !!leagueMembers && leagueMembers.loggedIn?.role === 'Owner' && league?.status !== 'Inactive';
 
   const selectedAdminNames = membersList
     .filter(member => selectedAdmins.includes(member.value))

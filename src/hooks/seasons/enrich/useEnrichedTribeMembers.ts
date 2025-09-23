@@ -12,10 +12,7 @@ import { type Tribe } from '~/types/tribes';
  * @param {number} episode The episode number to get tribe members for.
  * @returnObj `Record<tribeId, { tribe: Tribe; castaways: Castaway[] }>`
  */
-export function useEnrichedTribeMembers(
-  seasonId: number | null,
-  episode: number | null
-) {
+export function useEnrichedTribeMembers(seasonId: number | null, episode: number | null) {
   const { data: tribeMembers } = useTribeMembers(seasonId, episode);
   const { data: tribes } = useTribes(seasonId);
   const { data: castaways } = useCastaways(seasonId);

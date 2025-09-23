@@ -24,18 +24,14 @@ export function useSeasonsData(includeInactive: boolean, seasonId?: number) {
       if (!res.ok) {
         throw new Error('Failed to fetch season data');
       }
-      const { seasonsData } = (await res.json()) as {
-        seasonsData: SeasonsDataQuery[];
-      };
+      const { seasonsData } = (await res.json()) as { seasonsData: SeasonsDataQuery[] };
       return seasonsData.map(seasonData => ({
         ...seasonData,
         // Convert date strings to Date objects
         season: {
           ...seasonData.season,
           premiereDate: new Date(seasonData.season.premiereDate),
-          finaleDate: seasonData.season.finaleDate
-            ? new Date(seasonData.season.finaleDate)
-            : null
+          finaleDate: seasonData.season.finaleDate ? new Date(seasonData.season.finaleDate) : null
         },
         episodes: seasonData.episodes.map(episode => ({
           ...episode,

@@ -3,10 +3,7 @@ import Button from '~/components/common/button';
 import { Ellipsis } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import SearchableSelect from '~/components/common/searchableSelect';
-import {
-  type SearchableOption,
-  useSearchableSelect
-} from '~/hooks/ui/useSearchableSelect';
+import { type SearchableOption, useSearchableSelect } from '~/hooks/ui/useSearchableSelect';
 
 interface SelectSeasonProps {
   seasons: SearchableOption<string>[];
@@ -15,21 +12,10 @@ interface SelectSeasonProps {
   someHidden?: boolean;
 }
 
-export default function SelectSeason({
-  seasons,
-  value,
-  setValue,
-  someHidden
-}: SelectSeasonProps) {
+export default function SelectSeason({ seasons, value, setValue, someHidden }: SelectSeasonProps) {
   const router = useRouter();
-  const {
-    isVisible,
-    searchText,
-    setSearchText,
-    openModal,
-    closeModal,
-    filterOptions
-  } = useSearchableSelect<string>();
+  const { isVisible, searchText, setSearchText, openModal, closeModal, filterOptions } =
+    useSearchableSelect<string>();
 
   const footerComponent =
     someHidden !== undefined ? (

@@ -7,10 +7,7 @@ import { useFetch } from '~/hooks/helpers/useFetch';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
 import { useLeagueRules } from '~/hooks/leagues/query/useRules';
-import {
-  type ShauhinModeSettings,
-  ShauhinModeSettingsZod
-} from '~/types/leagues';
+import { type ShauhinModeSettings, ShauhinModeSettingsZod } from '~/types/leagues';
 import { defaultShauhinModeSettings } from '~/lib/leagues';
 
 export function useShauhinMode() {
@@ -46,18 +43,14 @@ export function useShauhinMode() {
     if (!league || !rulesChanged) return;
 
     try {
-      const response = await putData(
-        `/api/leagues/${league.hash}/rules/shauhinMode`,
-        { body: { shauhinMode: data } }
-      );
+      const response = await putData(`/api/leagues/${league.hash}/rules/shauhinMode`, {
+        body: { shauhinMode: data }
+      });
 
       if (response.status !== 200) {
         const errorData = await response.json();
         console.error('Error saving Shauhin Mode settings:', errorData);
-        Alert.alert(
-          'Error',
-          errorData.message || 'Failed to save Shauhin Mode settings'
-        );
+        Alert.alert('Error', errorData.message || 'Failed to save Shauhin Mode settings');
         return;
       }
 
@@ -83,8 +76,7 @@ export function useShauhinMode() {
   };
 
   const disabled =
-    (!!leagueMembers && leagueMembers.loggedIn?.role !== 'Owner')
-    || league?.status === 'Inactive';
+    (!!leagueMembers && leagueMembers.loggedIn?.role !== 'Owner') || league?.status === 'Inactive';
 
   return {
     reactForm,

@@ -5,7 +5,7 @@ import { View, Text, TextInput } from 'react-native';
 import { LEAGUE_NAME_MAX_LENGTH } from '~/lib/leagues';
 import Button from '~/components/common/button';
 import SearchableMultiSelect from '~/components/common/searchableMultiSelect';
-import { useLeagueSettings } from '~/hooks/leagues/mutation/useLeagueSettings';
+import { useLeagueDetails } from '~/hooks/leagues/mutation/useLeagueSettings';
 
 export function LeagueSettings() {
   const {
@@ -17,7 +17,7 @@ export function LeagueSettings() {
     selectedAdmins,
     selectedAdminNames,
     adminsModal
-  } = useLeagueSettings();
+  } = useLeagueDetails();
 
   if (!editable) return null;
 
@@ -32,10 +32,7 @@ export function LeagueSettings() {
         <Controller
           control={reactForm.control}
           name='name'
-          render={({
-            field: { onChange, onBlur, value },
-            fieldState: { error }
-          }) => (
+          render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
             <View>
               <TextInput
                 className='w-full rounded-lg border border-primary p-3 text-lg leading-5 placeholder:text-muted-foreground'
@@ -49,11 +46,7 @@ export function LeagueSettings() {
               <Text className='mt-1 text-right text-sm text-muted-foreground'>
                 {value?.length || 0}/{LEAGUE_NAME_MAX_LENGTH}
               </Text>
-              {error && (
-                <Text className='mt-1 text-sm text-destructive'>
-                  {error.message}
-                </Text>
-              )}
+              {error && <Text className='mt-1 text-sm text-destructive'>{error.message}</Text>}
             </View>
           )}
         />

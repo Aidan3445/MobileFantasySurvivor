@@ -6,8 +6,7 @@ import { Text, View } from 'react-native';
 import Button from '~/components/common/button';
 
 export default function EditMember() {
-  const { reactForm, usedColors, currentColor, handleSubmit, resetForm } =
-    useEditMember();
+  const { reactForm, usedColors, currentColor, handleSubmit, resetForm } = useEditMember();
 
   if (!reactForm.control) {
     return null;

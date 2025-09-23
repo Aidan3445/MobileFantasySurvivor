@@ -14,25 +14,17 @@ export function useKeyEpisodes(seasonId: number | null) {
     queryFn: async () => {
       if (!seasonId) return {} as KeyEpisodes;
 
-      const res = await fetchData(
-        `/api/seasons/episodes/key?seasonId=${seasonId}`
-      );
+      const res = await fetchData(`/api/seasons/episodes/key?seasonId=${seasonId}`);
       if (!res.ok) {
         throw new Error('Failed to fetch episode data');
       }
       const keyEpisodes = (await res.json()) as KeyEpisodes;
       return {
         mergeEpisode: keyEpisodes.mergeEpisode
-          ? {
-              ...keyEpisodes.mergeEpisode,
-              airDate: new Date(keyEpisodes.mergeEpisode.airDate)
-            }
+          ? { ...keyEpisodes.mergeEpisode, airDate: new Date(keyEpisodes.mergeEpisode.airDate) }
           : null,
         nextEpisode: keyEpisodes.nextEpisode
-          ? {
-              ...keyEpisodes.nextEpisode,
-              airDate: new Date(keyEpisodes.nextEpisode.airDate)
-            }
+          ? { ...keyEpisodes.nextEpisode, airDate: new Date(keyEpisodes.nextEpisode.airDate) }
           : null,
         previousEpisode: keyEpisodes.previousEpisode
           ? {
@@ -46,13 +38,10 @@ export function useKeyEpisodes(seasonId: number | null) {
       return determineEpisodeRefreshConfig(query.state.data).staleTime;
     },
     refetchInterval: query => {
-      return determineEpisodeRefreshConfig(query.state.data).refetchInterval as
-        | number
-        | false;
+      return determineEpisodeRefreshConfig(query.state.data).refetchInterval as number | false;
     },
     refetchOnWindowFocus: query => {
-      return determineEpisodeRefreshConfig(query.state.data)
-        .refetchOnWindowFocus;
+      return determineEpisodeRefreshConfig(query.state.data).refetchOnWindowFocus;
     },
     refetchOnReconnect: query => {
       return determineEpisodeRefreshConfig(query.state.data).refetchOnReconnect;
@@ -78,9 +67,7 @@ function determineEpisodeRefreshConfig(keyEpisodes: KeyEpisodes | undefined) {
 
   const now = new Date();
   const episodeStart = keyEpisodes.nextEpisode.airDate;
-  const episodeEnd = new Date(
-    episodeStart.getTime() + keyEpisodes.nextEpisode.runtime * 60 * 1000
-  );
+  const episodeEnd = new Date(episodeStart.getTime() + keyEpisodes.nextEpisode.runtime * 60 * 1000);
 
   // 10 minutes before start to 10 minutes after end
   const windowStart = new Date(episodeStart.getTime() - 10 * 60 * 1000);

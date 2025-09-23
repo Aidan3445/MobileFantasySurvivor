@@ -4,9 +4,7 @@ import Button from '~/components/common/button';
 import { getContrastingColor } from '@uiw/color-convert';
 import { cn } from '~/lib/utils';
 import { GripVertical, Lock, LockOpen } from 'lucide-react-native';
-import DraggableFlatList, {
-  type RenderItemParams
-} from 'react-native-draggable-flatlist';
+import DraggableFlatList, { type RenderItemParams } from 'react-native-draggable-flatlist';
 import {
   type MemberWithId,
   useUpdateDraftOrder
@@ -29,12 +27,7 @@ export default function DraftOrder({ className }: DraftOrderProps) {
     handleSubmit
   } = useUpdateDraftOrder();
 
-  const renderItem = ({
-    item,
-    getIndex,
-    drag,
-    isActive
-  }: RenderItemParams<MemberWithId>) => (
+  const renderItem = ({ item, getIndex, drag, isActive }: RenderItemParams<MemberWithId>) => (
     <Pressable
       onLongPress={orderLocked ? undefined : drag}
       disabled={isActive}
@@ -66,13 +59,9 @@ export default function DraftOrder({ className }: DraftOrderProps) {
     <View className={cn('w-full rounded-xl bg-card p-2', className)}>
       <View className='mb-4 flex-row items-center justify-between'>
         <View className='flex-row items-center gap-6'>
-          <Text className='text-card-foreground text-lg font-bold'>
-            Draft Order
-          </Text>
+          <Text className='text-card-foreground text-lg font-bold'>Draft Order</Text>
           {!orderLocked && (
-            <Text className='text-sm text-muted-foreground'>
-              Tap and hold to drag and reorder
-            </Text>
+            <Text className='text-sm text-muted-foreground'>Tap and hold to drag and reorder</Text>
           )}
         </View>
         <View className='flex-row items-center gap-2'>

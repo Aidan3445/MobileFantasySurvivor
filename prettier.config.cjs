@@ -10,6 +10,7 @@ const config = {
   jsxSingleQuote: true,
   objectWrap: 'collapse',
   proseWrap: 'preserve',
+  printWidth: 100,
   quoteProps: 'consistent',
   requirePragma: false,
   semi: true,

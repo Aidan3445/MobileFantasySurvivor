@@ -14,10 +14,7 @@ export function useCreateLeague(onSubmit?: () => void) {
   const queryClient = useQueryClient();
   const { user } = useUser();
   const reactForm = useForm<LeagueInsert>({
-    defaultValues: {
-      leagueName: '',
-      newMember: { displayName: user?.username || '', color: '' }
-    },
+    defaultValues: { leagueName: '', newMember: { displayName: user?.username || '', color: '' } },
     resolver: zodResolver(LeagueInsertZod)
   });
 

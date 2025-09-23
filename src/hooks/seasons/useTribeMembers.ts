@@ -9,10 +9,7 @@ import { useFetch } from '~/hooks/helpers/useFetch';
  * @param {number} episodeNumber The episode number to get tribe members for.
  * @returnObj `Record<tribeId, castawayId[]>`
  */
-export function useTribeMembers(
-  seasonId: number | null,
-  episodeNumber: number | null
-) {
+export function useTribeMembers(seasonId: number | null, episodeNumber: number | null) {
   const fetchData = useFetch();
   const isEpisodeAiring = useIsEpisodeAiringForSeason(seasonId ?? null);
   const refreshConfig = useRefreshConfig(isEpisodeAiring);

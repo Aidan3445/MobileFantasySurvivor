@@ -54,10 +54,7 @@ export default [
         'warn',
         { prefer: 'type-imports', fixStyle: 'inline-type-imports' }
       ],
-      '@typescript-eslint/no-unused-vars': [
-        'warn',
-        { argsIgnorePattern: '^_' }
-      ],
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/require-await': 'off',
       '@typescript-eslint/no-misused-promises': [
@@ -79,12 +76,7 @@ export default [
   },
   // Configuration for JavaScript config files
   {
-    files: [
-      'babel.config.js',
-      'metro.config.js',
-      'tailwind.config.js',
-      'prettier.config.js'
-    ],
+    files: ['babel.config.js', 'metro.config.js', 'tailwind.config.js', 'prettier.config.js'],
     languageOptions: {
       ecmaVersion: 2023,
       sourceType: 'commonjs',

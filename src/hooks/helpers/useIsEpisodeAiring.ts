@@ -14,10 +14,7 @@ export function useIsEpisodeAiringForSeason(seasonId: number | null) {
       keyEpisodes?.previousEpisode?.airStatus === 'Airing'
       || keyEpisodes?.nextEpisode?.airStatus === 'Airing'
     );
-  }, [
-    keyEpisodes?.previousEpisode?.airStatus,
-    keyEpisodes?.nextEpisode?.airStatus
-  ]);
+  }, [keyEpisodes?.previousEpisode?.airStatus, keyEpisodes?.nextEpisode?.airStatus]);
 }
 
 /**

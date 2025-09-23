@@ -109,17 +109,12 @@ export const BaseEventInsertZod = z
       // If eventName is 'tribeUpdate', we need at least one tribe and at least one castaway
       if (data.eventName === 'tribeUpdate') {
         const hasTribe = data.references.some(ref => ref.type === 'Tribe');
-        const hasCastaway = data.references.some(
-          ref => ref.type === 'Castaway'
-        );
+        const hasCastaway = data.references.some(ref => ref.type === 'Castaway');
         return hasTribe && hasCastaway;
       }
       return true;
     },
-    {
-      message:
-        'Tribe Update events must reference at least one tribe and one castaway'
-    }
+    { message: 'Tribe Update events must reference at least one tribe and one castaway' }
   );
 export type BaseEventInsert = z.infer<typeof BaseEventInsertZod>;
 

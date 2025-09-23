@@ -6,12 +6,7 @@ import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
 import { useEffect, useMemo, useState } from 'react';
 import { Alert } from 'react-native';
 
-export type MemberWithId = {
-  memberId: number;
-  displayName: string;
-  color: string;
-  id: number;
-};
+export type MemberWithId = { memberId: number; displayName: string; color: string; id: number };
 
 export function useUpdateDraftOrder() {
   const putData = useFetch('PUT');
@@ -25,9 +20,7 @@ export function useUpdateDraftOrder() {
   const dbOrder = useMemo(() => {
     if (!leagueMembers?.members) return [];
     const members = leagueMembers.members.map(m => ({ ...m, id: m.memberId }));
-    return members.sort(
-      (a, b) => (a.draftOrder ?? a.memberId) - (b.draftOrder ?? b.memberId)
-    );
+    return members.sort((a, b) => (a.draftOrder ?? a.memberId) - (b.draftOrder ?? b.memberId));
   }, [leagueMembers?.members]);
 
   const [order, setOrder] = useState<MemberWithId[]>([]);
@@ -39,11 +32,8 @@ export function useUpdateDraftOrder() {
   }, [dbOrder]);
 
   const orderChanged = useMemo(() => {
-    if (!dbOrder.length || !order.length || dbOrder.length !== order.length)
-      return false;
-    return dbOrder.some(
-      (member, index) => member.memberId !== order[index]?.memberId
-    );
+    if (!dbOrder.length || !order.length || dbOrder.length !== order.length) return false;
+    return dbOrder.some((member, index) => member.memberId !== order[index]?.memberId);
   }, [dbOrder, order]);
 
   const orderLocked =
@@ -72,9 +62,7 @@ export function useUpdateDraftOrder() {
       }
 
       await Promise.all([
-        queryClient.invalidateQueries({
-          queryKey: ['leagueMembers', league.hash]
-        }),
+        queryClient.invalidateQueries({ queryKey: ['leagueMembers', league.hash] }),
         queryClient.invalidateQueries({ queryKey: ['league', league.hash] })
       ]);
 

@@ -41,18 +41,14 @@ export default function CustomEventCard({
   };
 
   const handleDelete = () => {
-    Alert.alert(
-      'Delete Event',
-      `Are you sure you want to delete "${rule.eventName}"?`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: () => void onDelete(rule.customEventRuleId, rule.eventName)
-        }
-      ]
-    );
+    Alert.alert('Delete Event', `Are you sure you want to delete "${rule.eventName}"?`, [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: () => void onDelete(rule.customEventRuleId, rule.eventName)
+      }
+    ]);
   };
 
   const canEdit = leagueMembers?.loggedIn?.role === 'Owner' && !locked;

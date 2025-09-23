@@ -1,13 +1,6 @@
 'use client';
 import { Link as LinkIcon, Share } from 'lucide-react-native';
-import {
-  TextInput,
-  Text,
-  View,
-  Pressable,
-  Alert,
-  Share as RNShare
-} from 'react-native';
+import { TextInput, Text, View, Pressable, Alert, Share as RNShare } from 'react-native';
 import Button from '~/components/common/button';
 import { useMemo, useState } from 'react';
 import { cn } from '~/lib/utils';
@@ -50,9 +43,7 @@ export default function InviteLink() {
 
   return (
     <View className='w-full rounded-xl bg-card p-2'>
-      <Text className='text-card-foreground mb-1 text-lg font-bold'>
-        Invite friends to play
-      </Text>
+      <Text className='text-card-foreground mb-1 text-lg font-bold'>Invite friends to play</Text>
       <Text className='mb-3 text-sm text-muted-foreground'>
         Copy the link and share with your friends
       </Text>

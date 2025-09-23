@@ -39,9 +39,7 @@ export default function CustomEventModal({
           className='flex-1 rounded-lg bg-primary p-3'
           disabled={!reactForm.formState.isValid}
           onPress={onSubmit}>
-          <Text className='text-center font-medium text-white'>
-            {type} Event
-          </Text>
+          <Text className='text-center font-medium text-white'>{type} Event</Text>
         </Button>
       </View>
     </Modal>

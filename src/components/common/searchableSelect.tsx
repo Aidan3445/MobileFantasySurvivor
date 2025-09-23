@@ -60,9 +60,7 @@ export default function SearchableSelect<T extends string | number>({
           </Button>
         )}
         ListEmptyComponent={
-          <Text className='py-4 text-center text-muted-foreground'>
-            {emptyMessage}
-          </Text>
+          <Text className='py-4 text-center text-muted-foreground'>{emptyMessage}</Text>
         }
         ListFooterComponent={footerComponent}
       />

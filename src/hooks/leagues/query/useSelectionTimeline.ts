@@ -11,19 +11,14 @@ import { useFetch } from '~/hooks/helpers/useFetch';
 export function useSelectionTimeline(overrideHash?: string) {
   const fetchData = useFetch();
   const { data: league } = useLeague(overrideHash);
-  const hash = useMemo(
-    () => overrideHash ?? league?.hash,
-    [overrideHash, league]
-  );
+  const hash = useMemo(() => overrideHash ?? league?.hash, [overrideHash, league]);
 
   return useQuery<SelectionTimelines>({
     queryKey: ['selectionTimeline', hash],
     queryFn: async () => {
       if (!hash) throw new Error('League hash is required');
 
-      const response = await fetchData(
-        `/api/leagues/${hash}/selectionTimeline`
-      );
+      const response = await fetchData(`/api/leagues/${hash}/selectionTimeline`);
       if (!response.ok) {
         throw new Error('Failed to fetch league');
       }

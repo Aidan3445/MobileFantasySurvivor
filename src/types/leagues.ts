@@ -1,10 +1,5 @@
 import z from 'zod';
-import {
-  EventTypes,
-  PredictionTimings,
-  ReferenceTypes,
-  ScoringBaseEventNames
-} from '~/lib/events';
+import { EventTypes, PredictionTimings, ReferenceTypes, ScoringBaseEventNames } from '~/lib/events';
 import {
   ABS_MAX_EVENT_POINTS,
   LEAGUE_NAME_MAX_LENGTH,
@@ -22,11 +17,7 @@ import {
 } from '~/types/events';
 import { type Tribe } from '~/types/tribes';
 import { type EnrichedCastaway } from '~/types/castaways';
-import {
-  ColorZod,
-  DisplayNameZod,
-  type LeagueMember
-} from '~/types/leagueMembers';
+import { ColorZod, DisplayNameZod, type LeagueMember } from '~/types/leagueMembers';
 
 export type LeagueStatus = (typeof LeagueStatuses)[number];
 
@@ -89,9 +80,7 @@ export type LeagueDetailsUpdate = z.infer<typeof LeagueDetailsUpdateZod>;
 export const SurvivalCapZod = z.coerce
   .number()
   .int()
-  .gte(0, {
-    message: `Survival cap must be either 0 (no cap) or less than ${MAX_SURVIVAL_CAP}`
-  })
+  .gte(0, { message: `Survival cap must be either 0 (no cap) or less than ${MAX_SURVIVAL_CAP}` })
   .lte(MAX_SURVIVAL_CAP, {
     message: `Survival cap must be either 0 (no cap) or less than ${MAX_SURVIVAL_CAP}`
   });
@@ -115,10 +104,7 @@ export const EventPointsZod = z.coerce
 export type BaseEventRules = Record<ScoringBaseEventName, number>;
 export const BaseEventRulesZod = z.object(
   Object.fromEntries(
-    ScoringBaseEventNames.map((name: ScoringBaseEventName) => [
-      name,
-      EventPointsZod
-    ])
+    ScoringBaseEventNames.map((name: ScoringBaseEventName) => [name, EventPointsZod])
   )
 ) as z.ZodObject<
   Record<ScoringBaseEventName, z.ZodNumber>,
@@ -183,10 +169,7 @@ export type BaseEventPredictionSetting = {
   points: number;
   timing: PredictionTiming[];
 };
-export type BaseEventPredictionRules = Record<
-  ScoringBaseEventName,
-  BaseEventPredictionSetting
->;
+export type BaseEventPredictionRules = Record<ScoringBaseEventName, BaseEventPredictionSetting>;
 
 export const PredictionTimingZod = z.enum(PredictionTimings);
 
@@ -196,9 +179,7 @@ export const BasePredictionRulesZod = z.object(
       name,
       z.object({
         enabled: z.boolean(),
-        points: z.coerce
-          .number()
-          .gte(0, { message: 'Points must be a positive number' }),
+        points: z.coerce.number().gte(0, { message: 'Points must be a positive number' }),
         timing: z.array(PredictionTimingZod)
       })
     ])
@@ -242,9 +223,7 @@ export const ShauhinModeSettingsZod = z
     maxBetsPerWeek: z.coerce
       .number()
       .int()
-      .min(0, {
-        message: 'Max bets per week must be at least 1 or 0 for unlimited.'
-      })
+      .min(0, { message: 'Max bets per week must be at least 1 or 0 for unlimited.' })
       .max(SHAUHIN_MODE_MAX_MAX_BETS_PER_WEEK, {
         message: `Max bets per week cannot exceed ${SHAUHIN_MODE_MAX_MAX_BETS_PER_WEEK}`
       }),
@@ -256,12 +235,8 @@ export const ShauhinModeSettingsZod = z
   })
   .refine(
     data =>
-      data.startWeek !== 'Custom'
-      || (data.customStartWeek !== null && data.customStartWeek >= 3),
-    {
-      message:
-        'Custom start week must be set and at least 3 when start week is Custom'
-    }
+      data.startWeek !== 'Custom' || (data.customStartWeek !== null && data.customStartWeek >= 3),
+    { message: 'Custom start week must be set and at least 3 when start week is Custom' }
   );
 
 export type CustomEventRule = {
@@ -315,8 +290,5 @@ export type SelectionTimelines = {
 
 export type DraftDetails = Record<
   number,
-  {
-    tribe: Tribe;
-    castaways: { castaway: EnrichedCastaway; member: LeagueMember | null }[];
-  }
+  { tribe: Tribe; castaways: { castaway: EnrichedCastaway; member: LeagueMember | null }[] }
 >;

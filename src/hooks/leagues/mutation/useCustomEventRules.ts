@@ -7,10 +7,7 @@ import { useFetch } from '~/hooks/helpers/useFetch';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
 import { useLeagueRules } from '~/hooks/leagues/query/useRules';
-import {
-  type CustomEventRuleInsert,
-  CustomEventRuleInsertZod
-} from '~/types/leagues';
+import { type CustomEventRuleInsert, CustomEventRuleInsertZod } from '~/types/leagues';
 import { defaultNewCustomRule } from '~/lib/leagues';
 
 export function useCustomEventRules() {
@@ -31,18 +28,15 @@ export function useCustomEventRules() {
     if (!league) return;
 
     try {
-      const response = await fetchData(
-        `/api/leagues/${league.hash}/rules/custom`,
-        { method: 'POST', body: { rule: data } }
-      );
+      const response = await fetchData(`/api/leagues/${league.hash}/rules/custom`, {
+        method: 'POST',
+        body: { rule: data }
+      });
 
       if (response.status !== 201) {
         const errorData = await response.json();
         console.error('Error creating custom event:', errorData);
-        Alert.alert(
-          'Error',
-          errorData.message || 'Failed to create custom event'
-        );
+        Alert.alert('Error', errorData.message || 'Failed to create custom event');
         return;
       }
 
@@ -56,25 +50,19 @@ export function useCustomEventRules() {
     }
   });
 
-  const updateCustomEvent = async (
-    data: CustomEventRuleInsert,
-    ruleId: number
-  ) => {
+  const updateCustomEvent = async (data: CustomEventRuleInsert, ruleId: number) => {
     if (!league) return;
 
     try {
-      const response = await fetchData(
-        `/api/leagues/${league.hash}/rules/custom`,
-        { method: 'PUT', body: { rule: data, ruleId } }
-      );
+      const response = await fetchData(`/api/leagues/${league.hash}/rules/custom`, {
+        method: 'PUT',
+        body: { rule: data, ruleId }
+      });
 
       if (response.status !== 200) {
         const errorData = await response.json();
         console.error('Error updating custom event:', errorData);
-        Alert.alert(
-          'Error',
-          errorData.message || 'Failed to update custom event'
-        );
+        Alert.alert('Error', errorData.message || 'Failed to update custom event');
         return;
       }
 
@@ -98,10 +86,7 @@ export function useCustomEventRules() {
       if (response.status !== 200) {
         const errorData = await response.json();
         console.error('Error deleting custom event:', errorData);
-        Alert.alert(
-          'Error',
-          errorData.message || 'Failed to delete custom event'
-        );
+        Alert.alert('Error', errorData.message || 'Failed to delete custom event');
         return;
       }
 

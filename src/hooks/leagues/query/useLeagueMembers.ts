@@ -27,9 +27,7 @@ export function useLeagueMembers(overrideHash?: string) {
       if (!res.ok) {
         throw new Error('Failed to fetch leagueMembers data');
       }
-      const { leagueMembers } = (await res.json()) as {
-        leagueMembers: LeagueMember[];
-      };
+      const { leagueMembers } = (await res.json()) as { leagueMembers: LeagueMember[] };
       const loggedIn = leagueMembers.find(member => member.loggedIn);
       return { loggedIn, members: leagueMembers };
     },

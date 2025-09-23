@@ -34,11 +34,7 @@ export default function CreateLeagueForm({ onSubmit }: CreateLeagueFormProps) {
       optional: false,
       isFirst: true
     },
-    {
-      name: 'draftDate',
-      content: <DraftDate control={reactForm.control} />,
-      optional: true
-    },
+    { name: 'draftDate', content: <DraftDate control={reactForm.control} />, optional: true },
     {
       name: 'newMember',
       content: (
@@ -64,22 +60,16 @@ export default function CreateLeagueForm({ onSubmit }: CreateLeagueFormProps) {
         renderItem={({ item }) => {
           const buttonDisabled =
             !item.optional
-            && !LeagueInsertZod.shape[item.name].safeParse(
-              reactForm.watch(item.name)
-            ).success;
+            && !LeagueInsertZod.shape[item.name].safeParse(reactForm.watch(item.name)).success;
           const fieldTouched = reactForm.formState.touchedFields[item.name];
           return (
             <View className='flex-1'>
               {item.content}
               <View className='w-90p relative items-center self-center'>
                 <Button
-                  onPress={
-                    item.isLast ? handleSubmit : () => ref.current?.next()
-                  }
+                  onPress={item.isLast ? handleSubmit : () => ref.current?.next()}
                   disabled={buttonDisabled}
-                  className={cn(
-                    'absolute bottom-4 w-1/2 rounded-md bg-primary px-4 py-2'
-                  )}>
+                  className={cn('absolute bottom-4 w-1/2 rounded-md bg-primary px-4 py-2')}>
                   <Text className='text-center font-semibold text-white'>
                     {item.isLast
                       ? 'Create League'

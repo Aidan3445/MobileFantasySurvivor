@@ -1,13 +1,6 @@
 'use client';
 import { Lock, LockOpen } from 'lucide-react-native';
-import {
-  Text,
-  View,
-  Pressable,
-  Switch,
-  TextInput,
-  Linking
-} from 'react-native';
+import { Text, View, Pressable, Switch, TextInput, Linking } from 'react-native';
 import Button from '~/components/common/button';
 import { Controller } from 'react-hook-form';
 import { useShauhinMode } from '~/hooks/leagues/mutation/useShauhinMode';
@@ -45,10 +38,7 @@ export default function ShauhinMode() {
   const maxBetsPerWeek = reactForm.watch('maxBetsPerWeek');
   const enabledBets = reactForm.watch('enabledBets');
 
-  const timingOptions = ShauhinModeTimings.map(timing => ({
-    value: timing,
-    label: timing
-  }));
+  const timingOptions = ShauhinModeTimings.map(timing => ({ value: timing, label: timing }));
 
   const betsOptions = Object.entries(rules?.basePrediction ?? {})
     .filter(([_, setting]) => setting.enabled)
@@ -64,9 +54,7 @@ export default function ShauhinMode() {
   return (
     <View className='w-full rounded-xl bg-card p-2'>
       <View className='flex-row items-center justify-between'>
-        <Text className='text-card-foreground text-lg font-bold'>
-          Shauhin Mode
-        </Text>
+        <Text className='text-card-foreground text-lg font-bold'>Shauhin Mode</Text>
         {!disabled && (
           <Pressable
             onPress={() => {
@@ -103,10 +91,9 @@ export default function ShauhinMode() {
         <View className='translate-y-[0.5rem] rounded bg-[#d05dbd] px-1'>
           <Text className='font-medium text-white'>Shauhin Davari</Text>
         </View>
-        , from Survivor 48, posted, this twist allows you to bet points you've
-        earned throughout the season on predictions. If you win, you gain those
-        points in addition to the base points for the event. If you miss the
-        prediction, you get nothing.
+        , from Survivor 48, posted, this twist allows you to bet points you've earned throughout the
+        season on predictions. If you win, you gain those points in addition to the base points for
+        the event. If you miss the prediction, you get nothing.
       </Text>
       <View className='gap-2'>
         {!locked && (
@@ -114,9 +101,7 @@ export default function ShauhinMode() {
             <Button
               className={'flex-1 rounded-lg bg-destructive p-3'}
               onPress={resetSettings}>
-              <Text className='text-center font-semibold text-white'>
-                Cancel
-              </Text>
+              <Text className='text-center font-semibold text-white'>Cancel</Text>
             </Button>
             <Button
               className={'flex-1 rounded-lg bg-primary p-3'}
@@ -146,10 +131,7 @@ export default function ShauhinMode() {
                   <Switch
                     value={field.value}
                     onValueChange={field.onChange}
-                    trackColor={{
-                      false: colors.destructive,
-                      true: colors.positive
-                    }}
+                    trackColor={{ false: colors.destructive, true: colors.positive }}
                     ios_backgroundColor={colors.destructive}
                     thumbColor={colors.muted}
                   />
@@ -163,9 +145,7 @@ export default function ShauhinMode() {
             <Text className='mb-2 font-bold text-black'>Start Timing</Text>
             {locked ? (
               <Text className='text-sm text-black'>
-                {startWeek === 'Custom'
-                  ? `Custom (after ${customStartWeek} episodes)`
-                  : startWeek}
+                {startWeek === 'Custom' ? `Custom (after ${customStartWeek} episodes)` : startWeek}
               </Text>
             ) : (
               <View>
@@ -174,9 +154,7 @@ export default function ShauhinMode() {
                     'rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
                   )}
                   onPress={timingModal.openModal}>
-                  <Text className='text-gray-700'>
-                    {startWeek || 'Select Betting Start Week'}
-                  </Text>
+                  <Text className='text-gray-700'>{startWeek || 'Select Betting Start Week'}</Text>
                 </Button>
                 {startWeek === 'Custom' && (
                   <Controller
@@ -190,9 +168,7 @@ export default function ShauhinMode() {
                           )}
                           placeholder='Enable after episode...'
                           value={Math.max(2, field.value || 2).toString()}
-                          onChangeText={text =>
-                            field.onChange(parseInt(text) || 2)
-                          }
+                          onChangeText={text => field.onChange(parseInt(text) || 2)}
                           keyboardType='numeric'
                         />
                         {field?.value && field.value > 14 && (
@@ -217,8 +193,8 @@ export default function ShauhinMode() {
               </View>
             )}
             <Text className='mt-1 text-sm text-black'>
-              Choose when Shauhin Mode activates. You can choose from predefined
-              timings or set a custom week for betting to start.
+              Choose when Shauhin Mode activates. You can choose from predefined timings or set a
+              custom week for betting to start.
             </Text>
           </View>
         )}
@@ -226,9 +202,7 @@ export default function ShauhinMode() {
           <View className='rounded-lg bg-accent p-2'>
             <View className='mb-2 flex-row gap-4'>
               <View className='flex-1'>
-                <Text className='mb-2 font-bold text-black'>
-                  Max Points Per Bet
-                </Text>
+                <Text className='mb-2 font-bold text-black'>Max Points Per Bet</Text>
                 {locked ? (
                   <Text className='text-sm text-black'>{maxBet}</Text>
                 ) : (
@@ -243,10 +217,7 @@ export default function ShauhinMode() {
                         placeholder='Max Bet (0 for Unlimited)'
                         value={field.value?.toString() ?? '0'}
                         onChangeText={text => {
-                          const value = Math.min(
-                            parseInt(text) || 0,
-                            ABS_MAX_EVENT_POINTS
-                          );
+                          const value = Math.min(parseInt(text) || 0, ABS_MAX_EVENT_POINTS);
                           field.onChange(value);
                         }}
                         keyboardType='numeric'
@@ -256,9 +227,7 @@ export default function ShauhinMode() {
                 )}
               </View>
               <View className='flex-1'>
-                <Text className='mb-2 font-bold text-black'>
-                  Max Bets Per Week
-                </Text>
+                <Text className='mb-2 font-bold text-black'>Max Bets Per Week</Text>
                 {locked ? (
                   <Text className='text-sm text-black'>
                     {maxBetsPerWeek === 0 ? 'Unlimited' : maxBetsPerWeek}
@@ -289,10 +258,10 @@ export default function ShauhinMode() {
               </View>
             </View>
             <Text className='text-sm text-black'>
-              <Text className='font-semibold'>Max Points Per Bet</Text>: max
-              points you can bet on a prediction{'\n'}
-              <Text className='font-semibold'>Max Bets Per Week</Text>: max
-              number of bets you can place in a single week
+              <Text className='font-semibold'>Max Points Per Bet</Text>: max points you can bet on a
+              prediction{'\n'}
+              <Text className='font-semibold'>Max Bets Per Week</Text>: max number of bets you can
+              place in a single week
             </Text>
           </View>
         )}
@@ -303,9 +272,7 @@ export default function ShauhinMode() {
               <Text className='text-sm text-black'>
                 {enabledBets && enabledBets.length > 0
                   ? enabledBets
-                      .map(
-                        (name: ScoringBaseEventName) => BaseEventFullName[name]
-                      )
+                      .map((name: ScoringBaseEventName) => BaseEventFullName[name])
                       .join(', ')
                   : 'None'}
               </Text>
@@ -323,10 +290,7 @@ export default function ShauhinMode() {
                       <Text className='text-gray-700'>
                         {enabledBets && enabledBets.length > 0
                           ? enabledBets
-                              .map(
-                                (name: ScoringBaseEventName) =>
-                                  BaseEventFullName[name]
-                              )
+                              .map((name: ScoringBaseEventName) => BaseEventFullName[name])
                               .join(', ')
                           : 'Select enabled bets'}
                       </Text>
@@ -346,8 +310,7 @@ export default function ShauhinMode() {
               />
             )}
             <Text className='mt-1 text-sm text-black'>
-              Select what you can bet on from your enabled official and custom
-              prediction events.
+              Select what you can bet on from your enabled official and custom prediction events.
             </Text>
           </View>
         )}

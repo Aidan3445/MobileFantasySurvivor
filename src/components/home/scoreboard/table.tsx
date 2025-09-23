@@ -39,24 +39,15 @@ export default function ScoreboardTable({
       undefined,
       undefined,
       overrideBaseRules
-        ? {
-            base: overrideBaseRules,
-            basePrediction: null,
-            custom: [],
-            shauhinMode: null
-          }
+        ? { base: overrideBaseRules, basePrediction: null, custom: [], shauhinMode: null }
         : null
     ).scores;
 
     const sortedCastaways = Object.entries(castawayScores)
       .sort(
-        ([_, scoresA], [__, scoresB]) =>
-          (scoresB.slice().pop() ?? 0) - (scoresA.slice().pop() ?? 0)
+        ([_, scoresA], [__, scoresB]) => (scoresB.slice().pop() ?? 0) - (scoresA.slice().pop() ?? 0)
       )
-      .map(
-        ([castawayId, scores]) =>
-          [Number(castawayId), scores] as [number, number[]]
-      );
+      .map(([castawayId, scores]) => [Number(castawayId), scores] as [number, number[]]);
 
     const castawayColors: Record<string, string> = data.castaways
       .sort(({ fullName: a }, { fullName: b }) => a.length - b.length)
@@ -76,9 +67,8 @@ export default function ScoreboardTable({
   // Calculate allZero based on selected season data
   const allZero = useMemo(() => {
     return (
-      selectedSeasonData?.sortedCastaways.every(([_, scores]) =>
-        scores.every(score => score === 0)
-      ) ?? true
+      selectedSeasonData?.sortedCastaways.every(([_, scores]) => scores.every(score => score === 0))
+      ?? true
     );
   }, [selectedSeasonData]);
 
@@ -103,9 +93,7 @@ export default function ScoreboardTable({
   if (!selectedSeasonData) {
     return (
       <View className='rounded-xl bg-card p-6'>
-        <Text className='text-center text-muted-foreground'>
-          No seasons available.
-        </Text>
+        <Text className='text-center text-muted-foreground'>No seasons available.</Text>
       </View>
     );
   }
@@ -130,10 +118,7 @@ export default function ScoreboardTable({
                   Castaway - {selectedSeasonData.data.season.name}
                 </Text>
                 <SelectSeason
-                  seasons={scoreData.map(s => ({
-                    value: s.season.name,
-                    label: s.season.name
-                  }))}
+                  seasons={scoreData.map(s => ({ value: s.season.name, label: s.season.name }))}
                   value={selectedSeasonData.data.season.name}
                   setValue={selectSeason}
                   someHidden={someHidden}
@@ -146,10 +131,7 @@ export default function ScoreboardTable({
                 {selectedSeasonData.data.season?.name} Castaways
               </Text>
               <SelectSeason
-                seasons={scoreData.map(s => ({
-                  value: s.season.name,
-                  label: s.season.name
-                }))}
+                seasons={scoreData.map(s => ({ value: s.season.name, label: s.season.name }))}
                 value={selectedSeasonData.data.season.name}
                 setValue={selectSeason}
                 someHidden={someHidden}

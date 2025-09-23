@@ -23,9 +23,7 @@ export default function LeagueMember({
   className
 }: LeagueMemberProps) {
   if (control == null) {
-    console.error(
-      'LeagueMember component requires a control prop from react-hook-form'
-    );
+    console.error('LeagueMember component requires a control prop from react-hook-form');
     return null;
   }
 

@@ -5,12 +5,7 @@ import {
   type CustomEventRuleInsert
 } from '~/types/leagues';
 
-export const LeagueStatuses = [
-  'Predraft',
-  'Draft',
-  'Active',
-  'Inactive'
-] as const;
+export const LeagueStatuses = ['Predraft', 'Draft', 'Active', 'Inactive'] as const;
 export const LeagueMemberRoles = ['Owner', 'Admin', 'Member'] as const;
 export const ShauhinModeTimings = [
   'After Premiere',
@@ -65,22 +60,10 @@ export const defaultBasePredictionRules: BaseEventPredictionRules = {
   tribe1st: { enabled: false, points: 5, timing: ['Weekly (Premerge only)'] },
   tribe2nd: { enabled: false, points: 3, timing: ['Weekly (Premerge only)'] },
   indivWin: { enabled: false, points: 10, timing: ['Weekly (Postmerge only)'] },
-  indivReward: {
-    enabled: false,
-    points: 5,
-    timing: ['Weekly (Postmerge only)']
-  },
-  finalists: {
-    enabled: false,
-    points: 3,
-    timing: ['Draft', 'After Merge', 'Before Finale']
-  },
+  indivReward: { enabled: false, points: 5, timing: ['Weekly (Postmerge only)'] },
+  finalists: { enabled: false, points: 3, timing: ['Draft', 'After Merge', 'Before Finale'] },
   fireWin: { enabled: false, points: 7, timing: ['Before Finale'] },
-  soleSurvivor: {
-    enabled: false,
-    points: 10,
-    timing: ['Draft', 'After Merge', 'Before Finale']
-  },
+  soleSurvivor: { enabled: false, points: 10, timing: ['Draft', 'After Merge', 'Before Finale'] },
   elim: { enabled: false, points: 5, timing: ['Weekly'] }
 };
 export const defaultShauhinModeSettings: ShauhinModeSettings = {

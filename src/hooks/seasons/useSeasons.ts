@@ -13,9 +13,7 @@ export function useSeasons(includeInactive: boolean) {
   return useQuery<Season[]>({
     queryKey: ['seasons', includeInactive],
     queryFn: async () => {
-      const res = await fetchData(
-        `/api/seasons/seasons?includeInactive=${includeInactive}`
-      );
+      const res = await fetchData(`/api/seasons/seasons?includeInactive=${includeInactive}`);
       if (!res.ok) {
         throw new Error('Failed to fetch seasons data');
       }

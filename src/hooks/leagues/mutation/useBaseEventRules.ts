@@ -25,8 +25,7 @@ export function useBaseEventRules() {
   const [locked, setLocked] = useState(true);
 
   const currentBaseRules = rules?.base ?? defaultBaseRules;
-  const currentBasePredictionRules =
-    rules?.basePrediction ?? defaultBasePredictionRules;
+  const currentBasePredictionRules = rules?.basePrediction ?? defaultBasePredictionRules;
 
   const reactForm = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
@@ -48,19 +47,13 @@ export function useBaseEventRules() {
 
     try {
       const response = await putData(`/api/leagues/${league.hash}/rules/base`, {
-        body: {
-          baseRules: data.baseEventRules,
-          predictionRules: data.basePredictionRules
-        }
+        body: { baseRules: data.baseEventRules, predictionRules: data.basePredictionRules }
       });
 
       if (response.status !== 200) {
         const errorData = await response.json();
         console.error('Error saving scoring rules:', errorData);
-        Alert.alert(
-          'Error',
-          errorData.message || 'Failed to save scoring rules'
-        );
+        Alert.alert('Error', errorData.message || 'Failed to save scoring rules');
         return;
       }
 
@@ -86,8 +79,7 @@ export function useBaseEventRules() {
   };
 
   const disabled =
-    (!!leagueMembers && leagueMembers.loggedIn?.role !== 'Owner')
-    || league?.status === 'Inactive';
+    (!!leagueMembers && leagueMembers.loggedIn?.role !== 'Owner') || league?.status === 'Inactive';
 
   return {
     reactForm,

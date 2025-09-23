@@ -24,13 +24,9 @@ export default function ScoreboardBody({
   data,
   allZero
 }: ScoreboardBodyProps) {
-  const { setCarouselData, props, progressProps } = useCarousel<
-    [number, number[]][]
-  >([]);
+  const { setCarouselData, props, progressProps } = useCarousel<[number, number[]][]>([]);
   const [colors, setColors] = useState<Record<string, string>>({});
-  const [castawayData, setCastawayData] = useState<SeasonsDataQuery | null>(
-    null
-  );
+  const [castawayData, setCastawayData] = useState<SeasonsDataQuery | null>(null);
 
   useEffect(() => {
     const firstHalf = sortedCastaways.slice(0, castawaySplitIndex);
@@ -38,13 +34,7 @@ export default function ScoreboardBody({
     setCarouselData([firstHalf, secondHalf]);
     setColors(castawayColors);
     setCastawayData(data);
-  }, [
-    sortedCastaways,
-    castawayColors,
-    castawaySplitIndex,
-    data,
-    setCarouselData
-  ]);
+  }, [sortedCastaways, castawayColors, castawaySplitIndex, data, setCarouselData]);
 
   return (
     <View className='bg-card pb-1'>
@@ -54,9 +44,7 @@ export default function ScoreboardBody({
         renderItem={({ item, index: col }) => (
           <View className=''>
             {item.map(([castawayId, scores], index) => {
-              const castaway = castawayData?.castaways.find(
-                c => c.castawayId === castawayId
-              );
+              const castaway = castawayData?.castaways.find(c => c.castawayId === castawayId);
               const points = scores.slice().pop() ?? 0;
               const color = colors[castawayId] ?? '#AAAAAA';
               const place = col * castawaySplitIndex + index + 1;
@@ -92,9 +80,7 @@ export default function ScoreboardBody({
                     <Text
                       className='text-center font-medium'
                       numberOfLines={1}
-                      style={{
-                        color: getContrastingColor(color ?? '#AAAAAA')
-                      }}>
+                      style={{ color: getContrastingColor(color ?? '#AAAAAA') }}>
                       {castaway?.fullName ?? 'Unknown'}
                     </Text>
                   </View>

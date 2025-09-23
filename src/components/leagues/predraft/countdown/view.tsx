@@ -1,13 +1,16 @@
-import { View, Text } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import Button from '~/components/common/button';
 import { useRouter } from 'expo-router';
 import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 import { useQueryClient } from '@tanstack/react-query';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useFetch } from '~/hooks/helpers/useFetch';
 import Clock from '~/components/leagues/predraft/countdown/clock';
+import { Lock, Unlock } from 'lucide-react-native';
+import { colors } from '~/lib/colors';
+import SetDraftDate from '~/components/leagues/predraft/countdown/edit';
 
 interface DraftCountdownProps {
   overrideHash?: string;
@@ -19,6 +22,7 @@ export function DraftCountdown({ overrideHash }: DraftCountdownProps) {
   const { data: league } = useLeague(overrideHash);
   const { data: leagueSettings } = useLeagueSettings(overrideHash);
   const { data: leagueMembers } = useLeagueMembers(overrideHash);
+  const [modalOpen, setModalOpen] = useState(false);
   const router = useRouter();
 
   const editable = useMemo(
@@ -26,8 +30,7 @@ export function DraftCountdown({ overrideHash }: DraftCountdownProps) {
       leagueMembers?.loggedIn
       && leagueMembers.loggedIn.role === 'Owner'
       && leagueSettings
-      && (leagueSettings.draftDate === null
-        || Date.now() < leagueSettings.draftDate.getTime()),
+      && (leagueSettings.draftDate === null || Date.now() < leagueSettings.draftDate.getTime()),
     [leagueMembers, leagueSettings]
   );
 
@@ -40,12 +43,8 @@ export function DraftCountdown({ overrideHash }: DraftCountdownProps) {
         console.error(`Failed to join draft: ${res.statusText}`);
         return;
       }
-      await queryClient.invalidateQueries({
-        queryKey: ['league', league.hash]
-      });
-      await queryClient.invalidateQueries({
-        queryKey: ['settings', league.hash]
-      });
+      await queryClient.invalidateQueries({ queryKey: ['league', league.hash] });
+      await queryClient.invalidateQueries({ queryKey: ['settings', league.hash] });
     }
     router.push(`/leagues/${league.hash}/draft`);
   };
@@ -68,11 +67,26 @@ export function DraftCountdown({ overrideHash }: DraftCountdownProps) {
           </View>
         </View>
         {editable && (
-          <Button
-            onPress={onDraftJoin}
-            className='rounded-md bg-navigation p-1'>
-            <Text className='text-accent-foreground'>Draft Now</Text>
-          </Button>
+          <View className='flex-row items-center gap-2'>
+            <Button
+              onPress={onDraftJoin}
+              className='rounded-md bg-navigation p-1'>
+              <Text className='text-accent-foreground'>Draft Now</Text>
+            </Button>
+            <Pressable onPress={() => setModalOpen(true)}>
+              {modalOpen ? (
+                <Unlock
+                  size={24}
+                  color={colors.secondary}
+                />
+              ) : (
+                <Lock
+                  size={24}
+                  color={colors.primary}
+                />
+              )}
+            </Pressable>
+          </View>
         )}
       </View>
       <View className='mt-2 rounded-2xl bg-primary p-2 shadow-sm'>
@@ -82,13 +96,15 @@ export function DraftCountdown({ overrideHash }: DraftCountdownProps) {
             <Button
               className='w-full rounded-xl bg-navigation p-2'
               onPress={onDraftJoin}>
-              <Text className='p-1 text-center text-2xl font-semibold text-primary'>
-                Join now!
-              </Text>
+              <Text className='p-1 text-center text-2xl font-semibold text-primary'>Join now!</Text>
             </Button>
           }
         />
       </View>
+      <SetDraftDate
+        modalOpen={modalOpen}
+        setModalOpen={() => setModalOpen(false)}
+      />
     </View>
   );
 }

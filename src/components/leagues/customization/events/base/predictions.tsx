@@ -6,10 +6,7 @@ import { colors } from '~/lib/colors';
 import { cn } from '~/lib/utils';
 import { type PredictionTiming } from '~/types/events';
 import { PredictionTimings } from '~/lib/events';
-import {
-  useSearchableSelect,
-  type SearchableOption
-} from '~/hooks/ui/useSearchableSelect';
+import { useSearchableSelect, type SearchableOption } from '~/hooks/ui/useSearchableSelect';
 import SearchableMultiSelect from '~/components/common/searchableMultiSelect';
 
 interface BasePredictionFormFieldProps {
@@ -18,29 +15,15 @@ interface BasePredictionFormFieldProps {
   disabled?: boolean;
 }
 
-export function BasePredictions({
-  eventName,
-  reactForm,
-  disabled
-}: BasePredictionFormFieldProps) {
-  const predictionEnabled = reactForm.watch(
-    `basePredictionRules.${eventName}.enabled`
-  ) as boolean;
-  const predictionPoints = reactForm.watch(
-    `basePredictionRules.${eventName}.points`
-  ) as number;
+export function BasePredictions({ eventName, reactForm, disabled }: BasePredictionFormFieldProps) {
+  const predictionEnabled = reactForm.watch(`basePredictionRules.${eventName}.enabled`) as boolean;
+  const predictionPoints = reactForm.watch(`basePredictionRules.${eventName}.points`) as number;
   const predictionTiming = reactForm.watch(
     `basePredictionRules.${eventName}.timing`
   ) as PredictionTiming[];
 
-  const {
-    isVisible,
-    searchText,
-    setSearchText,
-    openModal,
-    closeModal,
-    filterOptions
-  } = useSearchableSelect();
+  const { isVisible, searchText, setSearchText, openModal, closeModal, filterOptions } =
+    useSearchableSelect();
 
   const timingOptions: SearchableOption[] = PredictionTimings.map(timing => ({
     value: timing,
@@ -65,10 +48,7 @@ export function BasePredictions({
                 <Switch
                   value={field.value}
                   onValueChange={field.onChange}
-                  trackColor={{
-                    false: colors.destructive,
-                    true: colors.positive
-                  }}
+                  trackColor={{ false: colors.destructive, true: colors.positive }}
                   ios_backgroundColor={colors.destructive}
                   thumbColor={colors.muted}
                 />
@@ -84,9 +64,7 @@ export function BasePredictions({
                 <Text
                   className={cn(
                     'mr-1 text-lg font-bold',
-                    predictionPoints <= 0
-                      ? 'text-destructive'
-                      : 'text-positive',
+                    predictionPoints <= 0 ? 'text-destructive' : 'text-positive',
                     predictionPoints === 0 && 'text-neutral'
                   )}>
                   {predictionPoints}

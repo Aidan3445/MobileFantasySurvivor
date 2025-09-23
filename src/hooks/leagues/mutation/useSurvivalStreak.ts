@@ -8,10 +8,7 @@ import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  LeagueSurvivalUpdateZod,
-  type LeagueSurvivalUpdate
-} from '~/types/leagues';
+import { LeagueSurvivalUpdateZod, type LeagueSurvivalUpdate } from '~/types/leagues';
 
 export function useSurvivalStreak() {
   const putData = useFetch('PUT');
@@ -30,10 +27,7 @@ export function useSurvivalStreak() {
   });
 
   useEffect(() => {
-    reactForm.setValue(
-      'survivalCap',
-      settings?.survivalCap ?? DEFAULT_SURVIVAL_CAP
-    );
+    reactForm.setValue('survivalCap', settings?.survivalCap ?? DEFAULT_SURVIVAL_CAP);
     reactForm.setValue('preserveStreak', settings?.preserveStreak ?? true);
   }, [settings?.survivalCap, settings?.preserveStreak, reactForm]);
 
@@ -43,17 +37,12 @@ export function useSurvivalStreak() {
     if (!league || !settingsChanged) return;
 
     try {
-      const response = await putData(`/api/leagues/${league.hash}/settings`, {
-        body: data
-      });
+      const response = await putData(`/api/leagues/${league.hash}/settings`, { body: data });
 
       if (response.status !== 200) {
         const errorData = await response.json();
         console.error('Error saving survival streak settings:', errorData);
-        Alert.alert(
-          'Error',
-          errorData.message || 'Failed to save survival streak settings'
-        );
+        Alert.alert('Error', errorData.message || 'Failed to save survival streak settings');
         return;
       }
 
@@ -63,9 +52,7 @@ export function useSurvivalStreak() {
         return;
       }
 
-      await queryClient.invalidateQueries({
-        queryKey: ['leagueSettings', league.hash]
-      });
+      await queryClient.invalidateQueries({ queryKey: ['leagueSettings', league.hash] });
       Alert.alert('Success', 'Survival streak settings saved');
       setLocked(true);
       reactForm.reset(data); // Reset form with new values as default

@@ -21,8 +21,7 @@ export default function ActiveLeagues() {
 
   const carouselHeight = useMemo(() => {
     const maxLeagueMembers =
-      leagues?.reduce((max, league) => Math.max(max, league.memberCount), 0)
-      ?? 0;
+      leagues?.reduce((max, league) => Math.max(max, league.memberCount), 0) ?? 0;
     if (maxLeagueMembers < MAX_LEAGUE_MEMBERS_HOME_DISPLAY) {
       return Math.max(150, 28 * maxLeagueMembers + 55);
     }
