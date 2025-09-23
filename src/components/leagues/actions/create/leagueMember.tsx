@@ -20,7 +20,7 @@ export default function LeagueMember({
   usedColors,
   currentColor,
   formPrefix,
-  className,
+  className
 }: LeagueMemberProps) {
   if (control == null) {
     console.error(
@@ -80,8 +80,7 @@ export default function LeagueMember({
                     onChange(color);
                     onBlur();
                   }}
-                  key={color}
-                >
+                  key={color}>
                   {value === color && (
                     <Check
                       className='mt-2 self-center'

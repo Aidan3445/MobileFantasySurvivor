@@ -26,6 +26,6 @@ export function useSearchableSelect<T extends string | number>() {
     setSearchText,
     openModal,
     closeModal,
-    filterOptions,
+    filterOptions
   };
 }

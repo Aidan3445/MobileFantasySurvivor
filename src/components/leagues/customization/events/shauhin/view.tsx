@@ -6,7 +6,7 @@ import {
   Pressable,
   Switch,
   TextInput,
-  Linking,
+  Linking
 } from 'react-native';
 import Button from '~/components/common/button';
 import { Controller } from 'react-hook-form';
@@ -16,7 +16,7 @@ import { colors } from '~/lib/colors';
 import {
   ABS_MAX_EVENT_POINTS,
   SHAUHIN_MODE_MAX_MAX_BETS_PER_WEEK,
-  ShauhinModeTimings,
+  ShauhinModeTimings
 } from '~/lib/leagues';
 import { BaseEventFullName } from '~/lib/events';
 import { type ScoringBaseEventName } from '~/types/events';
@@ -33,7 +33,7 @@ export default function ShauhinMode() {
     handleSubmit,
     resetSettings,
     disabled,
-    rules,
+    rules
   } = useShauhinMode();
   const timingModal = useSearchableSelect();
   const betsModal = useSearchableSelect();
@@ -47,14 +47,14 @@ export default function ShauhinMode() {
 
   const timingOptions = ShauhinModeTimings.map(timing => ({
     value: timing,
-    label: timing,
+    label: timing
   }));
 
   const betsOptions = Object.entries(rules?.basePrediction ?? {})
     .filter(([_, setting]) => setting.enabled)
     .map(([eventName]) => ({
       value: eventName as ScoringBaseEventName,
-      label: BaseEventFullName[eventName as ScoringBaseEventName],
+      label: BaseEventFullName[eventName as ScoringBaseEventName]
     }));
 
   const openTikTokLink = () => {
@@ -75,12 +75,17 @@ export default function ShauhinMode() {
               } else {
                 resetSettings();
               }
-            }}
-          >
+            }}>
             {locked ? (
-              <Lock size={24} color={colors.primary} />
+              <Lock
+                size={24}
+                color={colors.primary}
+              />
             ) : (
-              <LockOpen size={24} color={colors.secondary} />
+              <LockOpen
+                size={24}
+                color={colors.secondary}
+              />
             )}
           </Pressable>
         )}
@@ -90,8 +95,7 @@ export default function ShauhinMode() {
         <View className='translate-y-[0.05rem] border-b border-b-primary'>
           <Text
             className='-mb-1 text-sm leading-none text-primary'
-            onPress={openTikTokLink}
-          >
+            onPress={openTikTokLink}>
             video
           </Text>
         </View>{' '}
@@ -109,8 +113,7 @@ export default function ShauhinMode() {
           <View className='flex-row gap-2'>
             <Button
               className={'flex-1 rounded-lg bg-destructive p-3'}
-              onPress={resetSettings}
-            >
+              onPress={resetSettings}>
               <Text className='text-center font-semibold text-white'>
                 Cancel
               </Text>
@@ -118,8 +121,7 @@ export default function ShauhinMode() {
             <Button
               className={'flex-1 rounded-lg bg-primary p-3'}
               disabled={!rulesChanged}
-              onPress={() => handleSubmit()}
-            >
+              onPress={() => handleSubmit()}>
               <Text className='text-center font-semibold text-white'>Save</Text>
             </Button>
           </View>
@@ -132,8 +134,7 @@ export default function ShauhinMode() {
                 className={cn(
                   'text-lg font-semibold',
                   shauhinEnabled ? 'text-positive' : 'text-destructive'
-                )}
-              >
+                )}>
                 {shauhinEnabled ? 'On' : 'Off'}
               </Text>
             </View>
@@ -147,7 +148,7 @@ export default function ShauhinMode() {
                     onValueChange={field.onChange}
                     trackColor={{
                       false: colors.destructive,
-                      true: colors.positive,
+                      true: colors.positive
                     }}
                     ios_backgroundColor={colors.destructive}
                     thumbColor={colors.muted}
@@ -172,8 +173,7 @@ export default function ShauhinMode() {
                   className={cn(
                     'rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
                   )}
-                  onPress={timingModal.openModal}
-                >
+                  onPress={timingModal.openModal}>
                   <Text className='text-gray-700'>
                     {startWeek || 'Select Betting Start Week'}
                   </Text>
@@ -319,8 +319,7 @@ export default function ShauhinMode() {
                       className={cn(
                         'rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
                       )}
-                      onPress={betsModal.openModal}
-                    >
+                      onPress={betsModal.openModal}>
                       <Text className='text-gray-700'>
                         {enabledBets && enabledBets.length > 0
                           ? enabledBets

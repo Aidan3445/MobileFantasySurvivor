@@ -47,16 +47,16 @@ export function useUpdateDraftOrder() {
   }, [dbOrder, order]);
 
   const orderLocked =
-    locked ||
-    league?.status !== 'Predraft' ||
-    (!!settings?.draftDate && Date.now() > settings.draftDate.getTime());
+    locked
+    || league?.status !== 'Predraft'
+    || (!!settings?.draftDate && Date.now() > settings.draftDate.getTime());
 
   const handleSubmit = async () => {
     if (!league || !orderChanged || !leagueMembers) return;
 
     try {
       const response = await putData(`/api/leagues/${league.hash}/draftOrder`, {
-        body: { draftOrder: order.map(member => member.memberId) },
+        body: { draftOrder: order.map(member => member.memberId) }
       });
       if (response.status !== 200) {
         const errorData = await response.json();
@@ -73,9 +73,9 @@ export function useUpdateDraftOrder() {
 
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: ['leagueMembers', league.hash],
+          queryKey: ['leagueMembers', league.hash]
         }),
-        queryClient.invalidateQueries({ queryKey: ['league', league.hash] }),
+        queryClient.invalidateQueries({ queryKey: ['league', league.hash] })
       ]);
 
       Alert.alert('Success', 'Draft order saved');
@@ -98,6 +98,6 @@ export function useUpdateDraftOrder() {
     orderLocked,
     handleSubmit,
     setLocked,
-    leagueMembers,
+    leagueMembers
   };
 }

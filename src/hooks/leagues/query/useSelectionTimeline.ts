@@ -34,6 +34,6 @@ export function useSelectionTimeline(overrideHash?: string) {
     refetchInterval:
       league?.status === 'Draft'
         ? 5 * 1000 // 5 seconds during draft
-        : 10 * 60 * 1000, // 10 minutes
+        : 10 * 60 * 1000 // 10 minutes
   });
 }

@@ -25,21 +25,21 @@ export function useKeyEpisodes(seasonId: number | null) {
         mergeEpisode: keyEpisodes.mergeEpisode
           ? {
               ...keyEpisodes.mergeEpisode,
-              airDate: new Date(keyEpisodes.mergeEpisode.airDate),
+              airDate: new Date(keyEpisodes.mergeEpisode.airDate)
             }
           : null,
         nextEpisode: keyEpisodes.nextEpisode
           ? {
               ...keyEpisodes.nextEpisode,
-              airDate: new Date(keyEpisodes.nextEpisode.airDate),
+              airDate: new Date(keyEpisodes.nextEpisode.airDate)
             }
           : null,
         previousEpisode: keyEpisodes.previousEpisode
           ? {
               ...keyEpisodes.previousEpisode,
-              airDate: new Date(keyEpisodes.previousEpisode.airDate),
+              airDate: new Date(keyEpisodes.previousEpisode.airDate)
             }
-          : null,
+          : null
       };
     },
     staleTime: query => {
@@ -58,7 +58,7 @@ export function useKeyEpisodes(seasonId: number | null) {
       return determineEpisodeRefreshConfig(query.state.data).refetchOnReconnect;
     },
     gcTime: 24 * 60 * 60 * 1000, // 24 hours
-    enabled: !!seasonId,
+    enabled: !!seasonId
   });
 }
 
@@ -72,7 +72,7 @@ function determineEpisodeRefreshConfig(keyEpisodes: KeyEpisodes | undefined) {
       refetchInterval: false,
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
-      inTransitionWindow: false,
+      inTransitionWindow: false
     };
   }
 
@@ -94,7 +94,7 @@ function determineEpisodeRefreshConfig(keyEpisodes: KeyEpisodes | undefined) {
       refetchInterval: 10 * 1000, // 10 seconds
       refetchOnWindowFocus: true,
       refetchOnReconnect: true,
-      inTransitionWindow: true,
+      inTransitionWindow: true
     };
   }
 
@@ -103,6 +103,6 @@ function determineEpisodeRefreshConfig(keyEpisodes: KeyEpisodes | undefined) {
     refetchInterval: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
-    inTransitionWindow: false,
+    inTransitionWindow: false
   };
 }

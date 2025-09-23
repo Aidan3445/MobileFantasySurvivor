@@ -28,6 +28,6 @@ export function useSeasons(includeInactive: boolean) {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     refetchInterval: false,
-    enabled: true,
+    enabled: true
   });
 }

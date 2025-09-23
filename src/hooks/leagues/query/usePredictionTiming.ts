@@ -33,6 +33,6 @@ export function usePredictionTiming(overrideHash?: string) {
       return predictionTiming;
     },
     enabled: !!hash,
-    ...refreshConfig,
+    ...refreshConfig
   });
 }

@@ -4,7 +4,7 @@ import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
 import { useForm } from 'react-hook-form';
 import {
   LeagueMemberInsertZod,
-  type LeagueMemberInsert,
+  type LeagueMemberInsert
 } from '~/types/leagueMembers';
 import { useEffect } from 'react';
 import { Alert } from 'react-native';
@@ -20,11 +20,8 @@ export function useEditMember(onSubmit?: () => void) {
   const { data: usedColors } = useLeagueColors();
 
   const reactForm = useForm<LeagueMemberInsert>({
-    defaultValues: {
-      displayName: '',
-      color: '',
-    },
-    resolver: zodResolver(LeagueMemberInsertZod),
+    defaultValues: { displayName: '', color: '' },
+    resolver: zodResolver(LeagueMemberInsertZod)
   });
 
   useEffect(() => {
@@ -44,7 +41,7 @@ export function useEditMember(onSubmit?: () => void) {
     }
     try {
       const response = await putData(`/api/leagues/${hash}/members`, {
-        body: { member: data },
+        body: { member: data }
       });
 
       if (response.status !== 200) {
@@ -65,7 +62,7 @@ export function useEditMember(onSubmit?: () => void) {
       reactForm.reset(data);
       onSubmit?.();
       await queryClient.invalidateQueries({
-        queryKey: ['leagueMembers', hash],
+        queryKey: ['leagueMembers', hash]
       });
       Alert.alert('Success', 'Member details updated');
     } catch (error) {
@@ -78,7 +75,7 @@ export function useEditMember(onSubmit?: () => void) {
     if (leagueMembers?.loggedIn) {
       reactForm.reset({
         displayName: leagueMembers.loggedIn.displayName || '',
-        color: leagueMembers.loggedIn.color || '',
+        color: leagueMembers.loggedIn.color || ''
       });
     } else {
       reactForm.reset();
@@ -90,6 +87,6 @@ export function useEditMember(onSubmit?: () => void) {
     handleSubmit,
     usedColors,
     currentColor: leagueMembers?.loggedIn?.color,
-    resetForm,
+    resetForm
   };
 }

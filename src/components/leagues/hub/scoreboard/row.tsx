@@ -31,7 +31,7 @@ export default function MemberRow({
   castaway,
   color,
   doubleBelow,
-  overrideHash,
+  overrideHash
 }: MemberRowProps) {
   const { data: tribesTimeline } = useTribesTimeline(
     castaway?.seasonId ?? null
@@ -60,8 +60,8 @@ export default function MemberRow({
             {
               castaway,
               start: acc.length === 0 ? 'Draft' : index,
-              end: castaway.eliminatedEpisode,
-            },
+              end: castaway.eliminatedEpisode
+            }
           ];
         },
         [] as {
@@ -79,7 +79,7 @@ export default function MemberRow({
     const sortedTimeline = Object.entries(tribesTimeline)
       .map(([episode, tribeUpdates]) => ({
         episode: Number(episode),
-        tribeUpdates,
+        tribeUpdates
       }))
       .sort((a, b) => a.episode - b.episode);
 
@@ -112,27 +112,22 @@ export default function MemberRow({
         'h-8 flex-row gap-x-1 p-1',
         divideY(place - 1),
         doubleBelow && 'border-dashed'
-      )}
-    >
+      )}>
       <View
         className='w-11 items-center justify-center rounded'
-        style={{ backgroundColor: color }}
-      >
+        style={{ backgroundColor: color }}>
         <Text
           className='text-center font-medium'
-          style={{ color: getContrastingColor(color) }}
-        >
+          style={{ color: getContrastingColor(color) }}>
           {place}
         </Text>
       </View>
       <View
         className='w-8 items-center justify-center rounded'
-        style={{ backgroundColor: color }}
-      >
+        style={{ backgroundColor: color }}>
         <Text
           className='text-center font-medium'
-          style={{ color: getContrastingColor(color) }}
-        >
+          style={{ color: getContrastingColor(color) }}>
           {points}
         </Text>
       </View>
@@ -141,12 +136,10 @@ export default function MemberRow({
           'flex-1 items-center justify-center rounded',
           member.loggedIn && 'border border-white'
         )}
-        style={{ backgroundColor: color }}
-      >
+        style={{ backgroundColor: color }}>
         <Text
           className={cn('text-center')}
-          style={{ color: getContrastingColor(color) }}
-        >
+          style={{ color: getContrastingColor(color) }}>
           {member.displayName}
         </Text>
       </View>
@@ -155,9 +148,8 @@ export default function MemberRow({
         style={{
           backgroundColor: castaway?.eliminatedEpisode
             ? '#AAAAAA'
-            : castaway?.tribe?.color,
-        }}
-      >
+            : castaway?.tribe?.color
+        }}>
         <View className='flex-row items-center p-0.5'>
           <Text
             className='flex-1 text-center text-sm'
@@ -166,25 +158,25 @@ export default function MemberRow({
                 castaway?.eliminatedEpisode
                   ? '#AAAAAA'
                   : (castaway?.tribe?.color ?? '#AAAAAA')
-              ),
-            }}
-          >
+              )
+            }}>
             {castaway?.shortName || 'None'}
           </Text>
           <View className='flex-row items-center'>
-            {castawayTribes.length > 1 &&
-              castawayTribes.map(({ tribe, episode }) => (
+            {castawayTribes.length > 1
+              && castawayTribes.map(({ tribe, episode }) => (
                 <Pressable
                   key={`${tribe.tribeName}-${episode}`}
-                  className='mr-1'
-                >
-                  <Circle size={16} fill={tribe.tribeColor} />
+                  className='mr-1'>
+                  <Circle
+                    size={16}
+                    fill={tribe.tribeColor}
+                  />
                 </Pressable>
               ))}
             <Pressable
               className='mr-1'
-              onPress={() => setShowHistory(!showHistory)}
-            >
+              onPress={() => setShowHistory(!showHistory)}>
               <History
                 size={16}
                 color={
@@ -208,8 +200,7 @@ export default function MemberRow({
                           : getContrastingColor(
                               castaway?.tribe?.color ?? '#AAAAAA'
                             )
-                      )}
-                    >
+                      )}>
                       {Math.min(
                         currentStreak ?? Infinity,
                         leagueSettings.survivalCap
@@ -230,17 +221,18 @@ export default function MemberRow({
           {condensedTimeline.map(({ castaway, start, end }, index) => (
             <View
               key={index}
-              className='mb-1 flex-row items-center justify-between'
-            >
+              className='mb-1 flex-row items-center justify-between'>
               <View
                 className='mr-2 flex-1 rounded px-2 py-1'
-                style={{ backgroundColor: castaway.tribe?.color ?? '#AAAAAA' }}
-              >
+                style={{ backgroundColor: castaway.tribe?.color ?? '#AAAAAA' }}>
                 <Text className='text-center text-xs'>{castaway.fullName}</Text>
               </View>
               <View className='flex-row items-center'>
                 <Text className='text-xs'>{start}</Text>
-                <MoveRight size={12} className='mx-1' />
+                <MoveRight
+                  size={12}
+                  className='mx-1'
+                />
                 <Text className='text-xs'>{end ? `${end}` : 'Present'}</Text>
               </View>
             </View>
@@ -255,7 +247,10 @@ export default function MemberRow({
             <Text className='text-xs'>
               Point cap: {leagueSettings?.survivalCap}
             </Text>
-            <Flame size={12} className='ml-1' />
+            <Flame
+              size={12}
+              className='ml-1'
+            />
           </View>
         </View>
       )}

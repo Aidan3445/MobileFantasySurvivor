@@ -19,7 +19,7 @@ export default function EventField({
   reactForm,
   eventName,
   fieldPath,
-  disabled,
+  disabled
 }: EventFieldProps) {
   const currentValue = reactForm.watch(fieldPath);
   const hasItalicDescription =
@@ -40,8 +40,7 @@ export default function EventField({
                 'mr-1 text-lg font-bold',
                 currentValue <= 0 ? 'text-destructive' : 'text-positive',
                 currentValue === 0 && 'text-neutral'
-              )}
-            >
+              )}>
               {currentValue}
             </Text>
             <Flame

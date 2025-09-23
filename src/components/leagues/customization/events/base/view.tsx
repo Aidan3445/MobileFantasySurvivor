@@ -16,7 +16,7 @@ export default function BaseEventRules() {
     rulesChanged,
     handleSubmit,
     resetSettings,
-    disabled,
+    disabled
   } = useBaseEventRules();
 
   return (
@@ -33,12 +33,17 @@ export default function BaseEventRules() {
               } else {
                 resetSettings();
               }
-            }}
-          >
+            }}>
             {locked ? (
-              <Lock size={24} color={colors.primary} />
+              <Lock
+                size={24}
+                color={colors.primary}
+              />
             ) : (
-              <LockOpen size={24} color={colors.secondary} />
+              <LockOpen
+                size={24}
+                color={colors.secondary}
+              />
             )}
           </Pressable>
         )}
@@ -53,8 +58,7 @@ export default function BaseEventRules() {
           <View className='flex-row gap-2'>
             <Button
               className='flex-1 rounded-lg bg-destructive p-3'
-              onPress={resetSettings}
-            >
+              onPress={resetSettings}>
               <Text className='text-center font-semibold text-white'>
                 Cancel
               </Text>
@@ -62,8 +66,7 @@ export default function BaseEventRules() {
             <Button
               className={'flex-1 rounded-lg bg-primary p-3'}
               disabled={!rulesChanged}
-              onPress={() => handleSubmit()}
-            >
+              onPress={() => handleSubmit()}>
               <Text className='text-center font-semibold text-white'>Save</Text>
             </Button>
           </View>

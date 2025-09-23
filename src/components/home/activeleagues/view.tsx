@@ -21,8 +21,8 @@ export default function ActiveLeagues() {
 
   const carouselHeight = useMemo(() => {
     const maxLeagueMembers =
-      leagues?.reduce((max, league) => Math.max(max, league.memberCount), 0) ??
-      0;
+      leagues?.reduce((max, league) => Math.max(max, league.memberCount), 0)
+      ?? 0;
     if (maxLeagueMembers < MAX_LEAGUE_MEMBERS_HOME_DISPLAY) {
       return Math.max(150, 28 * maxLeagueMembers + 55);
     }
@@ -43,8 +43,7 @@ export default function ActiveLeagues() {
         />
         <Button
           className='absolute bottom-0 right-1 rounded-md bg-white px-2'
-          onPress={() => router.push('/leagues')}
-        >
+          onPress={() => router.push('/leagues')}>
           <Text className='text-sm font-semibold text-primary'>View All</Text>
         </Button>
       </View>

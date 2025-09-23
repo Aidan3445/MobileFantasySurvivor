@@ -28,7 +28,7 @@ export default function SearchableMultiSelect<T extends string | number>({
   onSearchChange,
   placeholder = 'Search...',
   emptyMessage = 'No options found.',
-  footerComponent,
+  footerComponent
 }: SearchableMultiSelectProps<T>) {
   const isSelected = (value: T) => selectedValues.includes(value);
 
@@ -41,7 +41,9 @@ export default function SearchableMultiSelect<T extends string | number>({
   };
 
   return (
-    <Modal isVisible={isVisible} onClose={onClose}>
+    <Modal
+      isVisible={isVisible}
+      onClose={onClose}>
       <View className='flex-row justify-between gap-2'>
         <TextInput
           className='flex-1 rounded border border-primary px-3 py-2 placeholder:text-muted-foreground'
@@ -51,8 +53,7 @@ export default function SearchableMultiSelect<T extends string | number>({
         />
         <Button
           className='items-center justify-center rounded bg-primary p-1'
-          onPress={onClose}
-        >
+          onPress={onClose}>
           <Text className='text-white'>Done</Text>
         </Button>
       </View>
@@ -64,8 +65,7 @@ export default function SearchableMultiSelect<T extends string | number>({
         renderItem={({ item }) => (
           <Button
             className='!active:bg-accent my-0.5 flex-row items-center rounded-md bg-background px-2 py-3'
-            onPress={() => handleToggleSelect(item.value)}
-          >
+            onPress={() => handleToggleSelect(item.value)}>
             <Check
               size={16}
               color={isSelected(item.value) ? 'black' : 'transparent'}

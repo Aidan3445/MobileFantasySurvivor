@@ -1,6 +1,6 @@
 import {
   type BaseEventPredictionRules,
-  type BaseEventPredictionRulesSchema,
+  type BaseEventPredictionRulesSchema
 } from '~/types/leagues';
 import { type Eliminations, type PredictionTiming } from '~/types/events';
 import { type TribesTimeline } from '~/types/tribes';
@@ -70,7 +70,7 @@ export function basePredictionRulesSchemaToObject(
       rules[eventName] = {
         enabled: schema[enabledKey] as boolean,
         points: (schema[pointsKey] ?? 0) as number,
-        timing: (schema[timingKey] ?? []) as PredictionTiming[],
+        timing: (schema[timingKey] ?? []) as PredictionTiming[]
       };
     } else {
       rules[eventName].enabled = false;
@@ -125,8 +125,8 @@ export function reviveDates(obj: any): any {
   const result = {} as Record<string, any>;
   for (const [key, value] of Object.entries(obj)) {
     if (
-      typeof value === 'string' &&
-      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(value)
+      typeof value === 'string'
+      && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(value)
     ) {
       // ISO date string pattern
       result[key] = new Date(value);

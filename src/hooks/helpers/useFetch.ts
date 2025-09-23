@@ -42,9 +42,9 @@ export function useFetch(
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
-          ...headers,
+          ...headers
         },
-        ...(body && { body: JSON.stringify(body) }),
+        ...(body && { body: JSON.stringify(body) })
       }
     );
 

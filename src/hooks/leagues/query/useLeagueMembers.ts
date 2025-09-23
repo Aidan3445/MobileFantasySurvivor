@@ -34,6 +34,6 @@ export function useLeagueMembers(overrideHash?: string) {
       return { loggedIn, members: leagueMembers };
     },
     enabled: !!hash,
-    ...refreshConfig,
+    ...refreshConfig
   });
 }

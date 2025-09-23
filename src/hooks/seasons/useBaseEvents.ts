@@ -28,6 +28,6 @@ export function useBaseEvents(seasonId: number | null) {
       return res.json();
     },
     enabled: !!seasonId,
-    ...refreshConfig,
+    ...refreshConfig
   });
 }

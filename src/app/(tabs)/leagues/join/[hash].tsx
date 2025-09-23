@@ -22,15 +22,17 @@ export default function JoinLeagueScreen() {
             <Header />
           </View>
           <View className='flex-1'>
-            <LeagueMember control={reactForm.control} className='mb-14' />
+            <LeagueMember
+              control={reactForm.control}
+              className='mb-14'
+            />
             <View className='w-90p relative items-center self-center'>
               <Button
                 onPress={handleSubmit}
                 disabled={!reactForm.formState.isValid}
                 className={cn(
                   'absolute bottom-4 w-1/2 rounded-md bg-primary px-4 py-2'
-                )}
-              >
+                )}>
                 <Text className='text-center font-semibold text-white'>
                   Join League
                 </Text>

@@ -34,6 +34,6 @@ export function useEliminations(seasonId: number | null) {
       });
     },
     enabled: !!seasonId,
-    ...refreshConfig,
+    ...refreshConfig
   });
 }

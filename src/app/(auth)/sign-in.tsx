@@ -19,7 +19,7 @@ export default function Page() {
     try {
       const signInAttempt = await signIn.create({
         identifier: emailAddress,
-        password,
+        password
       });
 
       // If sign-in process is complete, set the created session as active
@@ -68,8 +68,7 @@ export default function Page() {
           />
           <TouchableOpacity
             onPress={onSignInPress}
-            className='mt-6 rounded-2xl bg-primary py-4 shadow-sm'
-          >
+            className='mt-6 rounded-2xl bg-primary py-4 shadow-sm'>
             <Text className='text-center text-lg font-semibold text-white'>
               Continue
             </Text>

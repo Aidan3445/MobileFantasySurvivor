@@ -2,21 +2,21 @@ import {
   type BaseEventPredictionRules,
   type BaseEventRules,
   type ShauhinModeSettings,
-  type CustomEventRuleInsert,
+  type CustomEventRuleInsert
 } from '~/types/leagues';
 
 export const LeagueStatuses = [
   'Predraft',
   'Draft',
   'Active',
-  'Inactive',
+  'Inactive'
 ] as const;
 export const LeagueMemberRoles = ['Owner', 'Admin', 'Member'] as const;
 export const ShauhinModeTimings = [
   'After Premiere',
   'After Merge',
   'Before Finale',
-  'Custom',
+  'Custom'
 ] as const;
 
 export const MAX_LEAGUE_MEMBERS_HOME_DISPLAY = 5;
@@ -44,7 +44,7 @@ export const defaultBaseRules: BaseEventRules = {
   finalists: 5,
   fireWin: 5,
   soleSurvivor: 10,
-  elim: 0,
+  elim: 0
 };
 
 export const defaultNewCustomRule: CustomEventRuleInsert = {
@@ -53,75 +53,35 @@ export const defaultNewCustomRule: CustomEventRuleInsert = {
   points: 5,
   eventType: 'Direct',
   referenceTypes: ['Castaway'],
-  timing: [],
+  timing: []
 };
 
 export const defaultBasePredictionRules: BaseEventPredictionRules = {
-  advFound: {
-    enabled: false,
-    points: 5,
-    timing: ['Draft'],
-  },
-  advPlay: {
-    enabled: false,
-    points: 3,
-    timing: ['Weekly'],
-  },
-  badAdvPlay: {
-    enabled: false,
-    points: 3,
-    timing: ['Weekly'],
-  },
-  advElim: {
-    enabled: false,
-    points: 3,
-    timing: ['Weekly'],
-  },
-  spokeEpTitle: {
-    enabled: false,
-    points: 2,
-    timing: ['Weekly'],
-  },
-  tribe1st: {
-    enabled: false,
-    points: 5,
-    timing: ['Weekly (Premerge only)'],
-  },
-  tribe2nd: {
-    enabled: false,
-    points: 3,
-    timing: ['Weekly (Premerge only)'],
-  },
-  indivWin: {
-    enabled: false,
-    points: 10,
-    timing: ['Weekly (Postmerge only)'],
-  },
+  advFound: { enabled: false, points: 5, timing: ['Draft'] },
+  advPlay: { enabled: false, points: 3, timing: ['Weekly'] },
+  badAdvPlay: { enabled: false, points: 3, timing: ['Weekly'] },
+  advElim: { enabled: false, points: 3, timing: ['Weekly'] },
+  spokeEpTitle: { enabled: false, points: 2, timing: ['Weekly'] },
+  tribe1st: { enabled: false, points: 5, timing: ['Weekly (Premerge only)'] },
+  tribe2nd: { enabled: false, points: 3, timing: ['Weekly (Premerge only)'] },
+  indivWin: { enabled: false, points: 10, timing: ['Weekly (Postmerge only)'] },
   indivReward: {
     enabled: false,
     points: 5,
-    timing: ['Weekly (Postmerge only)'],
+    timing: ['Weekly (Postmerge only)']
   },
   finalists: {
     enabled: false,
     points: 3,
-    timing: ['Draft', 'After Merge', 'Before Finale'],
+    timing: ['Draft', 'After Merge', 'Before Finale']
   },
-  fireWin: {
-    enabled: false,
-    points: 7,
-    timing: ['Before Finale'],
-  },
+  fireWin: { enabled: false, points: 7, timing: ['Before Finale'] },
   soleSurvivor: {
     enabled: false,
     points: 10,
-    timing: ['Draft', 'After Merge', 'Before Finale'],
+    timing: ['Draft', 'After Merge', 'Before Finale']
   },
-  elim: {
-    enabled: false,
-    points: 5,
-    timing: ['Weekly'],
-  },
+  elim: { enabled: false, points: 5, timing: ['Weekly'] }
 };
 export const defaultShauhinModeSettings: ShauhinModeSettings = {
   enabled: false,
@@ -129,5 +89,5 @@ export const defaultShauhinModeSettings: ShauhinModeSettings = {
   maxBetsPerWeek: 5,
   startWeek: 'After Merge',
   customStartWeek: 8,
-  enabledBets: ['indivWin', 'finalists', 'fireWin', 'soleSurvivor'],
+  enabledBets: ['indivWin', 'finalists', 'fireWin', 'soleSurvivor']
 };

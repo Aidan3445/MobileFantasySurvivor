@@ -8,7 +8,7 @@ import { type PredictionTiming } from '~/types/events';
 import { PredictionTimings } from '~/lib/events';
 import {
   useSearchableSelect,
-  type SearchableOption,
+  type SearchableOption
 } from '~/hooks/ui/useSearchableSelect';
 import SearchableMultiSelect from '~/components/common/searchableMultiSelect';
 
@@ -21,7 +21,7 @@ interface BasePredictionFormFieldProps {
 export function BasePredictions({
   eventName,
   reactForm,
-  disabled,
+  disabled
 }: BasePredictionFormFieldProps) {
   const predictionEnabled = reactForm.watch(
     `basePredictionRules.${eventName}.enabled`
@@ -39,12 +39,12 @@ export function BasePredictions({
     setSearchText,
     openModal,
     closeModal,
-    filterOptions,
+    filterOptions
   } = useSearchableSelect();
 
   const timingOptions: SearchableOption[] = PredictionTimings.map(timing => ({
     value: timing,
-    label: timing,
+    label: timing
   }));
 
   return (
@@ -54,8 +54,7 @@ export function BasePredictions({
           <Text className='text-sm font-medium'>Prediction:</Text>
           {disabled ? (
             <Text
-              className={`font-semibold ${predictionEnabled ? 'text-positive' : 'text-destructive'}`}
-            >
+              className={`font-semibold ${predictionEnabled ? 'text-positive' : 'text-destructive'}`}>
               {predictionEnabled ? 'On' : 'Off'}
             </Text>
           ) : (
@@ -68,7 +67,7 @@ export function BasePredictions({
                   onValueChange={field.onChange}
                   trackColor={{
                     false: colors.destructive,
-                    true: colors.positive,
+                    true: colors.positive
                   }}
                   ios_backgroundColor={colors.destructive}
                   thumbColor={colors.muted}
@@ -89,11 +88,13 @@ export function BasePredictions({
                       ? 'text-destructive'
                       : 'text-positive',
                     predictionPoints === 0 && 'text-neutral'
-                  )}
-                >
+                  )}>
                   {predictionPoints}
                 </Text>
-                <Flame size={16} color={colors.positive} />
+                <Flame
+                  size={16}
+                  color={colors.positive}
+                />
               </View>
             ) : (
               <Controller
@@ -128,8 +129,7 @@ export function BasePredictions({
             <View>
               <Button
                 className='mb-1 rounded-lg border border-primary bg-muted/50 p-2'
-                onPress={openModal}
-              >
+                onPress={openModal}>
                 <Text className='text-sm'>
                   {predictionTiming?.length > 0
                     ? predictionTiming.join(', ')

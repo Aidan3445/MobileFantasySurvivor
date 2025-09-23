@@ -5,7 +5,7 @@ import { useRouter } from 'expo-router';
 import SearchableSelect from '~/components/common/searchableSelect';
 import {
   type SearchableOption,
-  useSearchableSelect,
+  useSearchableSelect
 } from '~/hooks/ui/useSearchableSelect';
 
 interface SelectSeasonProps {
@@ -19,7 +19,7 @@ export default function SelectSeason({
   seasons,
   value,
   setValue,
-  someHidden,
+  someHidden
 }: SelectSeasonProps) {
   const router = useRouter();
   const {
@@ -28,7 +28,7 @@ export default function SelectSeason({
     setSearchText,
     openModal,
     closeModal,
-    filterOptions,
+    filterOptions
   } = useSearchableSelect<string>();
 
   const footerComponent =
@@ -38,8 +38,7 @@ export default function SelectSeason({
         onPress={() => {
           router.push('/playground');
           closeModal();
-        }}
-      >
+        }}>
         <Text className='text-center text-xs'>
           {someHidden ? 'See all seasons' : 'Try scoring playground'}
         </Text>
@@ -48,7 +47,9 @@ export default function SelectSeason({
 
   return (
     <>
-      <Button className='absolute right-2' onPress={openModal}>
+      <Button
+        className='absolute right-2'
+        onPress={openModal}>
         <Ellipsis size={20} />
       </Button>
       <SearchableSelect<string>

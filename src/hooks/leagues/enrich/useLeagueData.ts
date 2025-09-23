@@ -35,19 +35,19 @@ export function useLeagueData(overrideHash?: string) {
 
   const scoreData = useMemo(() => {
     if (
-      !league ||
-      !membersArray.length ||
-      !seasonData ||
-      !selectionTimeline ||
-      !basePredictions ||
-      !leagueRules ||
-      !leagueSettings
+      !league
+      || !membersArray.length
+      || !seasonData
+      || !selectionTimeline
+      || !basePredictions
+      || !leagueRules
+      || !leagueSettings
     ) {
       return {
         scores: { Castaway: {}, Tribe: {}, Member: {} },
         currentStreaks: {},
         sortedMemberScores: [],
-        loggedInIndex: -1,
+        loggedInIndex: -1
       };
     }
 
@@ -75,7 +75,7 @@ export function useLeagueData(overrideHash?: string) {
           ? {
               member,
               scores: memberScores,
-              currentStreak: currentStreaks[Number(memberId)] ?? 0,
+              currentStreak: currentStreaks[Number(memberId)] ?? 0
             }
           : null;
       })
@@ -85,12 +85,7 @@ export function useLeagueData(overrideHash?: string) {
       ({ member }) => member?.loggedIn
     );
 
-    return {
-      scores,
-      currentStreaks,
-      sortedMemberScores,
-      loggedInIndex,
-    };
+    return { scores, currentStreaks, sortedMemberScores, loggedInIndex };
   }, [
     league,
     membersArray,
@@ -99,7 +94,7 @@ export function useLeagueData(overrideHash?: string) {
     basePredictions,
     leagueRules,
     leagueSettings,
-    customEvents,
+    customEvents
   ]);
 
   return useMemo(
@@ -112,7 +107,7 @@ export function useLeagueData(overrideHash?: string) {
       customEvents,
       basePredictions,
       leagueRules,
-      leagueSettings,
+      leagueSettings
     }),
     [
       scoreData,
@@ -123,7 +118,7 @@ export function useLeagueData(overrideHash?: string) {
       customEvents,
       basePredictions,
       leagueRules,
-      leagueSettings,
+      leagueSettings
     ]
   );
 }

@@ -23,9 +23,8 @@ export function usePredictionsMade(overrideHash?: string) {
     if (!loggedInMemberId) return () => [];
 
     return (predictions: Prediction[] | undefined) =>
-      predictions?.filter(
-        pred => pred.predictionMakerId === loggedInMemberId
-      ) ?? [];
+      predictions?.filter(pred => pred.predictionMakerId === loggedInMemberId)
+      ?? [];
   }, [loggedInMemberId]);
 
   const basePredictionsMade = useMemo(() => {
@@ -86,8 +85,5 @@ export function usePredictionsMade(overrideHash?: string) {
     return result;
   }, [customEvents?.predictions, loggedInMemberId, filterPredictionsByUser]);
 
-  return {
-    basePredictionsMade,
-    customPredictionsMade,
-  };
+  return { basePredictionsMade, customPredictionsMade };
 }

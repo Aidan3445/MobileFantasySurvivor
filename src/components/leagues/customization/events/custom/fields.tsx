@@ -11,7 +11,7 @@ import { cn } from '~/lib/utils';
 import {
   type EventType,
   type PredictionTiming,
-  type ReferenceType,
+  type ReferenceType
 } from '~/types/events';
 
 interface CustomEventFieldsProps {
@@ -21,7 +21,7 @@ interface CustomEventFieldsProps {
 
 export default function CustomEventFields({
   reactForm,
-  predictionDefault,
+  predictionDefault
 }: CustomEventFieldsProps) {
   const [isPrediction, setIsPrediction] = useState(predictionDefault ?? false);
   const typeModal = useSearchableSelect<EventType>();
@@ -30,15 +30,15 @@ export default function CustomEventFields({
 
   const eventTypeOptions = EventTypes.map(type => ({
     value: type,
-    label: type,
+    label: type
   }));
   const referenceTypeOptions = ReferenceTypes.map(type => ({
     value: type,
-    label: type,
+    label: type
   }));
   const timingOptions = PredictionTimings.map(timing => ({
     value: timing,
-    label: timing,
+    label: timing
   }));
 
   const selectedEventType = reactForm.watch('eventType');
@@ -89,8 +89,7 @@ export default function CustomEventFields({
           className={cn(
             'rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
           )}
-          onPress={referenceModal.openModal}
-        >
+          onPress={referenceModal.openModal}>
           <Text className='text-muted-foreground'>
             {selectedReferences.length > 0
               ? selectedReferences.join(', ')
@@ -139,8 +138,7 @@ export default function CustomEventFields({
             className={cn(
               'rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
             )}
-            onPress={typeModal.openModal}
-          >
+            onPress={typeModal.openModal}>
             <Text className='text-muted-foreground'>
               {selectedEventType || 'Select event type'}
             </Text>
@@ -168,8 +166,7 @@ export default function CustomEventFields({
             className={cn(
               'rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
             )}
-            onPress={timingModal.openModal}
-          >
+            onPress={timingModal.openModal}>
             <Text className='text-muted-foreground'>
               {selectedTimings.length > 0
                 ? selectedTimings.join(', ')

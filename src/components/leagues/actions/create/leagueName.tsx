@@ -8,7 +8,7 @@ import { cn } from '~/lib/utils';
 const placeholderOptions = [
   'Jeff Probst Fan Club',
   'Torch Snuffers',
-  'Jury\'s Out',
+  'Jury\'s Out'
 ];
 
 interface LeagueNameProps {

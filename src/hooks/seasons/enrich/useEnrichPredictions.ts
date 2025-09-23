@@ -10,7 +10,7 @@ import {
   type EnrichedPrediction,
   type EnrichedEvent,
   type Prediction,
-  type ScoringBaseEventName,
+  type ScoringBaseEventName
 } from '~/types/events';
 import { useEliminations } from '~/hooks/seasons/useEliminations';
 
@@ -61,7 +61,7 @@ export function useEnrichPredictions(
       castawaysById,
       membersById,
       eventsById,
-      eliminationEpisodes,
+      eliminationEpisodes
     };
   }, [tribes, castaways, leagueMembers, events, eliminations]);
 
@@ -80,10 +80,7 @@ export function useEnrichPredictions(
           if (tribeMembers.includes(castawayId)) {
             const tribe = lookupMaps.tribesById.get(parseInt(tribeIdStr));
             return tribe
-              ? {
-                  name: tribe.tribeName,
-                  color: tribe.tribeColor,
-                }
+              ? { name: tribe.tribeName, color: tribe.tribeColor }
               : null;
           }
         }
@@ -94,11 +91,11 @@ export function useEnrichPredictions(
 
   const enrichedPredictions = useMemo(() => {
     if (
-      !seasonId ||
-      !predictions ||
-      !lookupMaps ||
-      !createTribeFinder ||
-      !rules
+      !seasonId
+      || !predictions
+      || !lookupMaps
+      || !createTribeFinder
+      || !rules
     ) {
       return [];
     }
@@ -124,8 +121,8 @@ export function useEnrichPredictions(
               ?.points ?? null;
         } else {
           points =
-            rules.custom?.find(r => r.eventName === event.eventName)?.points ??
-            null;
+            rules.custom?.find(r => r.eventName === event.eventName)?.points
+            ?? null;
         }
 
         if (points === null) continue;
@@ -137,11 +134,7 @@ export function useEnrichPredictions(
       const member = lookupMaps.membersById.get(prediction.predictionMakerId);
       if (!member) continue;
 
-      const entry = {
-        member,
-        hit: prediction.hit,
-        bet: prediction.bet,
-      };
+      const entry = { member, hit: prediction.hit, bet: prediction.bet };
 
       if (prediction.hit) {
         existingPrediction.hits.push(entry);
@@ -162,7 +155,7 @@ export function useEnrichPredictions(
           const castawayWithTribe: EnrichedCastaway = {
             ...castaway,
             tribe,
-            eliminatedEpisode,
+            eliminatedEpisode
           };
 
           existingPrediction.misses.push({
@@ -170,8 +163,8 @@ export function useEnrichPredictions(
             reference: {
               type: 'Castaway',
               name: castaway.fullName,
-              color: castawayWithTribe.tribe?.color ?? '#AAAAAA',
-            },
+              color: castawayWithTribe.tribe?.color ?? '#AAAAAA'
+            }
           });
         } else if (prediction.referenceType === 'Tribe') {
           const tribe = lookupMaps.tribesById.get(prediction.referenceId);
@@ -182,8 +175,8 @@ export function useEnrichPredictions(
             reference: {
               type: 'Tribe',
               name: tribe.tribeName,
-              color: tribe.tribeColor,
-            },
+              color: tribe.tribeColor
+            }
           });
         }
       }

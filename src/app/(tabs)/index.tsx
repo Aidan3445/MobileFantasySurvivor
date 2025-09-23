@@ -16,9 +16,11 @@ export default function Page() {
         className='w-full pt-0'
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }>
         <View className='page justify-start gap-y-4 pt-10'>
           {refreshing ? (
             <View className='mb-4 animate-spin items-center'>

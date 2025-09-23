@@ -13,7 +13,7 @@ import { BaseEventRulesZod, BasePredictionRulesZod } from '~/types/leagues';
 
 const formSchema = z.object({
   baseEventRules: BaseEventRulesZod,
-  basePredictionRules: BasePredictionRulesZod,
+  basePredictionRules: BasePredictionRulesZod
 });
 
 export function useBaseEventRules() {
@@ -31,9 +31,9 @@ export function useBaseEventRules() {
   const reactForm = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
       baseEventRules: currentBaseRules,
-      basePredictionRules: currentBasePredictionRules,
+      basePredictionRules: currentBasePredictionRules
     },
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema)
   });
 
   useEffect(() => {
@@ -50,8 +50,8 @@ export function useBaseEventRules() {
       const response = await putData(`/api/leagues/${league.hash}/rules/base`, {
         body: {
           baseRules: data.baseEventRules,
-          predictionRules: data.basePredictionRules,
-        },
+          predictionRules: data.basePredictionRules
+        }
       });
 
       if (response.status !== 200) {
@@ -86,8 +86,8 @@ export function useBaseEventRules() {
   };
 
   const disabled =
-    (!!leagueMembers && leagueMembers.loggedIn?.role !== 'Owner') ||
-    league?.status === 'Inactive';
+    (!!leagueMembers && leagueMembers.loggedIn?.role !== 'Owner')
+    || league?.status === 'Inactive';
 
   return {
     reactForm,
@@ -97,6 +97,6 @@ export function useBaseEventRules() {
     handleSubmit,
     resetSettings,
     leagueMembers,
-    disabled,
+    disabled
   };
 }

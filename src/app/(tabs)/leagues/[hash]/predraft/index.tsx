@@ -8,7 +8,7 @@ import SurvivalStreaks from '~/components/leagues/customization/settings/surviva
 import { DraftCountdown } from '~/components/leagues/predraft/countdown/view';
 import PredraftHeader from '~/components/leagues/predraft/header/view';
 import InviteLink from '~/components/leagues/predraft/inviteLink/view';
-import DraftOrder from '~/components/leagues/predraft/order/view';
+import DraftOrder from '~/components/leagues/customization/order/view';
 import { usePredraftRefresh } from '~/hooks/helpers/refresh/usePredraftRefresh';
 const LogoImage = require('~/assets/Logo.png');
 
@@ -22,9 +22,11 @@ export default function PredraftScreen() {
         className='w-full pt-28'
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }>
         <View className='gap-y-4 px-2 pb-4'>
           {refreshing && (
             <View className='-mt-20 animate-spin items-center'>

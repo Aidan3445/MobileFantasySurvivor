@@ -21,7 +21,7 @@ export default function ScoreboardTable({
   scoreData,
   someHidden,
   overrideBaseRules,
-  className,
+  className
 }: ScoreboardTableProps) {
   const [selectedSeasonIndex, setSelectedSeasonIndex] = useState(0);
 
@@ -43,7 +43,7 @@ export default function ScoreboardTable({
             base: overrideBaseRules,
             basePrediction: null,
             custom: [],
-            shauhinMode: null,
+            shauhinMode: null
           }
         : null
     ).scores;
@@ -70,12 +70,7 @@ export default function ScoreboardTable({
 
     const castawaySplitIndex = Math.ceil(sortedCastaways.length / 2);
 
-    return {
-      sortedCastaways,
-      castawayColors,
-      castawaySplitIndex,
-      data,
-    };
+    return { sortedCastaways, castawayColors, castawaySplitIndex, data };
   }, [scoreData, selectedSeasonIndex, overrideBaseRules]);
 
   // Calculate allZero based on selected season data
@@ -125,7 +120,10 @@ export default function ScoreboardTable({
                 <Text className='text-center font-medium'>Place</Text>
               </View>
               <View className='w-8 items-center justify-center py-1'>
-                <Flame size={16} className='text-muted-foreground' />
+                <Flame
+                  size={16}
+                  className='text-muted-foreground'
+                />
               </View>
               <View className='flex-1 items-center justify-center py-1'>
                 <Text className='text-center font-medium'>
@@ -134,7 +132,7 @@ export default function ScoreboardTable({
                 <SelectSeason
                   seasons={scoreData.map(s => ({
                     value: s.season.name,
-                    label: s.season.name,
+                    label: s.season.name
                   }))}
                   value={selectedSeasonData.data.season.name}
                   setValue={selectSeason}
@@ -150,7 +148,7 @@ export default function ScoreboardTable({
               <SelectSeason
                 seasons={scoreData.map(s => ({
                   value: s.season.name,
-                  label: s.season.name,
+                  label: s.season.name
                 }))}
                 value={selectedSeasonData.data.season.name}
                 setValue={selectSeason}

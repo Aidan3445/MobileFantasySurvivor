@@ -16,9 +16,8 @@ export default function TabLayout() {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.secondary,
         tabBarStyle: { backgroundColor: colors.navigation, height: 80 },
-        tabBarLabelStyle: { fontSize: 12 },
-      }}
-    >
+        tabBarLabelStyle: { fontSize: 12 }
+      }}>
       <Tabs.Screen
         name='index'
         options={{
@@ -29,14 +28,19 @@ export default function TabLayout() {
               source={HomeImage}
               style={{ tintColor: color }}
             />
-          ),
+          )
         }}
       />
       <Tabs.Screen
         name='playground'
         options={{
           title: 'Playground',
-          tabBarIcon: ({ color }) => <Flame color={color} size={32} />,
+          tabBarIcon: ({ color }) => (
+            <Flame
+              color={color}
+              size={32}
+            />
+          )
         }}
       />
       <Tabs.Screen
@@ -44,29 +48,55 @@ export default function TabLayout() {
         options={{
           title: 'Leagues',
           tabBarIcon: ({ color }) => (
-            <Trophy color={isLeaguesPath ? colors!.primary : color} size={32} />
+            <Trophy
+              color={isLeaguesPath ? colors!.primary : color}
+              size={32}
+            />
           ),
           tabBarLabelStyle: {
             fontSize: 12,
-            color: isLeaguesPath ? colors!.primary : colors!.secondary,
+            color: isLeaguesPath ? colors!.primary : colors!.secondary
           },
-          href: { pathname: '/leagues' },
+          href: { pathname: '/leagues' }
         }}
       />
       <Tabs.Screen
         name='profile'
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color }) => <UserCircle2 color={color} size={32} />,
+          tabBarIcon: ({ color }) => (
+            <UserCircle2
+              color={color}
+              size={32}
+            />
+          )
         }}
       />
       {/* Hidden screens */}
-      <Tabs.Screen name='leagues/create' options={{ href: null }} />
-      <Tabs.Screen name='leagues/join/index' options={{ href: null }} />
-      <Tabs.Screen name='leagues/join/[hash]' options={{ href: null }} />
-      <Tabs.Screen name='leagues/[hash]/index' options={{ href: null }} />
-      <Tabs.Screen name='leagues/[hash]/predraft' options={{ href: null }} />
-      <Tabs.Screen name='leagues/[hash]/draft' options={{ href: null }} />
+      <Tabs.Screen
+        name='leagues/create'
+        options={{ href: null }}
+      />
+      <Tabs.Screen
+        name='leagues/join/index'
+        options={{ href: null }}
+      />
+      <Tabs.Screen
+        name='leagues/join/[hash]'
+        options={{ href: null }}
+      />
+      <Tabs.Screen
+        name='leagues/[hash]/index'
+        options={{ href: null }}
+      />
+      <Tabs.Screen
+        name='leagues/[hash]/predraft'
+        options={{ href: null }}
+      />
+      <Tabs.Screen
+        name='leagues/[hash]/draft'
+        options={{ href: null }}
+      />
     </Tabs>
   );
 }

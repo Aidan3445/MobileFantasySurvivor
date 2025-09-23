@@ -26,6 +26,6 @@ export function useLeagueRules(overrideHash?: string) {
     },
     enabled: !!hash,
     staleTime: 5 * 60 * 1000, // 5 minutes
-    refetchInterval: 10 * 60 * 1000, // 10 minutes
+    refetchInterval: 10 * 60 * 1000 // 10 minutes
   });
 }

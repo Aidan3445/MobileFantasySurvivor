@@ -51,12 +51,7 @@ export function useEnrichEvents(
       });
     });
 
-    return {
-      tribesById,
-      castawaysById,
-      membersById,
-      eliminationEpisodes,
-    };
+    return { tribesById, castawaysById, membersById, eliminationEpisodes };
   }, [tribes, castaways, leagueMembers, eliminations]);
 
   const pointsLookup = useMemo(() => {
@@ -91,10 +86,7 @@ export function useEnrichEvents(
           if (tribeMembers.includes(castawayId)) {
             const tribe = lookupMaps.tribesById.get(parseInt(tribeIdStr));
             return tribe
-              ? {
-                  name: tribe.tribeName,
-                  color: tribe.tribeColor,
-                }
+              ? { name: tribe.tribeName, color: tribe.tribeColor }
               : null;
           }
         }
@@ -105,11 +97,11 @@ export function useEnrichEvents(
 
   return useMemo(() => {
     if (
-      !events ||
-      !tribesTimeline ||
-      !selectionTimeline ||
-      !lookupMaps ||
-      !createTribeFinder
+      !events
+      || !tribesTimeline
+      || !selectionTimeline
+      || !lookupMaps
+      || !createTribeFinder
     ) {
       return [];
     }
@@ -130,9 +122,8 @@ export function useEnrichEvents(
             selectionTimeline.castawayMembers[castawayId];
           const selectionLength = castawaySelections?.length ?? 0;
           const memberId =
-            castawaySelections?.[
-              Math.min(selectionLength - 1, episodeNumber)
-            ] ?? null;
+            castawaySelections?.[Math.min(selectionLength - 1, episodeNumber)]
+            ?? null;
 
           const member = memberId
             ? (lookupMaps.membersById.get(memberId) ?? null)
@@ -146,7 +137,7 @@ export function useEnrichEvents(
             tribe: tribe
               ? { name: tribe.tribeName, color: tribe.tribeColor }
               : createTribeFinder(castawayId, episodeNumber),
-            eliminatedEpisode,
+            eliminatedEpisode
           };
 
           return { castaway: castawayWithTribe, member };
@@ -211,11 +202,7 @@ export function useEnrichEvents(
           }
         }
 
-        return {
-          ...event,
-          points,
-          referenceMap,
-        } as EnrichedEvent;
+        return { ...event, points, referenceMap } as EnrichedEvent;
       })
       .filter((event): event is EnrichedEvent => event !== null);
   }, [
@@ -225,6 +212,6 @@ export function useEnrichEvents(
     lookupMaps,
     createTribeFinder,
     pointsLookup,
-    eliminations,
+    eliminations
   ]);
 }

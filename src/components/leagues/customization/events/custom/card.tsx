@@ -8,7 +8,7 @@ import { colors } from '~/lib/colors';
 import {
   type CustomEventRule,
   type CustomEventRuleInsert,
-  CustomEventRuleInsertZod,
+  CustomEventRuleInsertZod
 } from '~/types/leagues';
 import CustomEventModal from '~/components/leagues/customization/events/custom/modal';
 
@@ -25,13 +25,13 @@ export default function CustomEventCard({
   locked,
   onUpdate,
   onDelete,
-  leagueMembers,
+  leagueMembers
 }: CustomEventCardProps) {
   const [isEditing, setIsEditing] = useState(false);
 
   const reactForm = useForm<CustomEventRuleInsert>({
     defaultValues: rule,
-    resolver: zodResolver(CustomEventRuleInsertZod),
+    resolver: zodResolver(CustomEventRuleInsertZod)
   });
 
   const handleSubmit = async () => {
@@ -49,8 +49,8 @@ export default function CustomEventCard({
         {
           text: 'Delete',
           style: 'destructive',
-          onPress: () => void onDelete(rule.customEventRuleId, rule.eventName),
-        },
+          onPress: () => void onDelete(rule.customEventRuleId, rule.eventName)
+        }
       ]
     );
   };
@@ -70,8 +70,7 @@ export default function CustomEventCard({
               className={cn(
                 'text-md font-medium',
                 rule.points <= 0 ? 'text-destructive' : 'text-positive'
-              )}
-            >
+              )}>
               {rule.points}
             </Text>
             <Flame
@@ -83,10 +82,16 @@ export default function CustomEventCard({
         {canEdit && (
           <View className='flex-row gap-2'>
             <Pressable onPress={() => setIsEditing(true)}>
-              <Settings2 size={18} color={colors.primary} />
+              <Settings2
+                size={18}
+                color={colors.primary}
+              />
             </Pressable>
             <Pressable onPress={handleDelete}>
-              <Trash2 size={18} color={colors.destructive} />
+              <Trash2
+                size={18}
+                color={colors.destructive}
+              />
             </Pressable>
           </View>
         )}

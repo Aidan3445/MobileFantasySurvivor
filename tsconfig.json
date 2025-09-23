@@ -16,10 +16,7 @@
     "jsx": "react-native",
     "incremental": true,
     "baseUrl": ".",
-    "paths": {
-      "~/*": ["./src/*"],
-      "@/*": ["./*"]
-    }
+    "paths": { "~/*": ["./src/*"], "@/*": ["./*"] }
   },
   "extends": "expo/tsconfig.base",
   "include": [

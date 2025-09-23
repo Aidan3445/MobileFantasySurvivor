@@ -23,7 +23,7 @@ export default function CustomEventRules() {
     deleteCustomEvent,
     disabled,
     customRules,
-    leagueMembers,
+    leagueMembers
   } = useCustomEventRules();
 
   const { props, progressProps, setCarouselData } = useCarousel<
@@ -56,12 +56,17 @@ export default function CustomEventRules() {
                 setLocked(true);
                 reactForm.reset();
               }
-            }}
-          >
+            }}>
             {locked ? (
-              <Lock size={24} color={colors.primary} />
+              <Lock
+                size={24}
+                color={colors.primary}
+              />
             ) : (
-              <LockOpen size={24} color={colors.secondary} />
+              <LockOpen
+                size={24}
+                color={colors.secondary}
+              />
             )}
           </Button>
         )}
@@ -102,12 +107,17 @@ export default function CustomEventRules() {
         <Button
           className='mb-4 flex-row items-center justify-center gap-2 rounded-lg bg-primary p-3'
           disabled={customRules.length >= 6}
-          onPress={() => setModalOpen(true)}
-        >
+          onPress={() => setModalOpen(true)}>
           {customRules.length >= 6 ? (
-            <CircleAlert size={20} color='white' />
+            <CircleAlert
+              size={20}
+              color='white'
+            />
           ) : (
-            <Plus size={20} color='white' />
+            <Plus
+              size={20}
+              color='white'
+            />
           )}
           <Text className='font-semibold text-white'>
             {customRules.length >= 6
@@ -122,7 +132,9 @@ export default function CustomEventRules() {
             height={300}
             loop={customRules.length > 3}
             renderItem={({ item, index }) => (
-              <View key={index} className='flex-col gap-2 px-2'>
+              <View
+                key={index}
+                className='flex-col gap-2 px-2'>
                 {item.map(rule => (
                   <CustomEventCard
                     key={rule.customEventRuleId}
@@ -141,7 +153,7 @@ export default function CustomEventRules() {
             {...progressProps}
             containerStyle={{
               ...progressProps.containerStyle,
-              marginBottom: 3,
+              marginBottom: 3
             }}
           />
         </View>

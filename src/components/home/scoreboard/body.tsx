@@ -22,7 +22,7 @@ export default function ScoreboardBody({
   castawayColors,
   castawaySplitIndex,
   data,
-  allZero,
+  allZero
 }: ScoreboardBodyProps) {
   const { setCarouselData, props, progressProps } = useCarousel<
     [number, number[]][]
@@ -43,7 +43,7 @@ export default function ScoreboardBody({
     castawayColors,
     castawaySplitIndex,
     data,
-    setCarouselData,
+    setCarouselData
   ]);
 
   return (
@@ -63,29 +63,24 @@ export default function ScoreboardBody({
               return (
                 <View
                   key={castawayId}
-                  className={cn('h-7 flex-row gap-x-1 p-1', divideY(index))}
-                >
+                  className={cn('h-7 flex-row gap-x-1 p-1', divideY(index))}>
                   {!allZero && (
                     <>
                       <View
                         className='w-11 items-center justify-center rounded'
-                        style={{ backgroundColor: color }}
-                      >
+                        style={{ backgroundColor: color }}>
                         <Text
                           className='text-center font-medium'
-                          style={{ color: getContrastingColor(color) }}
-                        >
+                          style={{ color: getContrastingColor(color) }}>
                           {place}
                         </Text>
                       </View>
                       <View
                         className='w-8 items-center justify-center rounded'
-                        style={{ backgroundColor: color }}
-                      >
+                        style={{ backgroundColor: color }}>
                         <Text
                           className='text-center font-medium'
-                          style={{ color: getContrastingColor(color) }}
-                        >
+                          style={{ color: getContrastingColor(color) }}>
                           {points}
                         </Text>
                       </View>
@@ -93,13 +88,13 @@ export default function ScoreboardBody({
                   )}
                   <View
                     className='flex-1 items-center justify-center rounded'
-                    style={{ backgroundColor: color }}
-                  >
+                    style={{ backgroundColor: color }}>
                     <Text
                       className='text-center font-medium'
                       numberOfLines={1}
-                      style={{ color: getContrastingColor(color ?? '#AAAAAA') }}
-                    >
+                      style={{
+                        color: getContrastingColor(color ?? '#AAAAAA')
+                      }}>
                       {castaway?.fullName ?? 'Unknown'}
                     </Text>
                   </View>

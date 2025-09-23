@@ -17,8 +17,7 @@ export default function ActiveLeague({ league }: ActiveLeagueProps) {
       <Link
         key={league.hash}
         href={{ pathname: 'leagues/[hash]', params: { hash: league.hash } }}
-        asChild
-      >
+        asChild>
         <Button className='flex-row items-center justify-between border-b-2 border-primary bg-white px-2 py-1'>
           <Text className='flex-1 font-semibold'>{league.name}</Text>
           <View className='mr-2 rounded-lg bg-secondary p-1'>

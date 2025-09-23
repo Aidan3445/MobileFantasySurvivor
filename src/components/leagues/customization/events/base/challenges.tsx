@@ -14,7 +14,7 @@ interface ChallengeScoreSettingsProps {
 
 export default function ChallengeScoreSettings({
   disabled,
-  reactForm,
+  reactForm
 }: ChallengeScoreSettingsProps) {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
@@ -25,13 +25,18 @@ export default function ChallengeScoreSettings({
           'flex-row items-center justify-between rounded-b-lg rounded-t-lg bg-secondary p-3 transition-all',
           !isCollapsed ? 'rounded-b-none duration-75' : 'delay-300'
         )}
-        onPress={() => setIsCollapsed(!isCollapsed)}
-      >
+        onPress={() => setIsCollapsed(!isCollapsed)}>
         <Text className='text-lg font-bold text-muted'>Challenges</Text>
         {isCollapsed ? (
-          <ChevronDown size={24} color={colors.muted} />
+          <ChevronDown
+            size={24}
+            color={colors.muted}
+          />
         ) : (
-          <ChevronUp size={24} color={colors.muted} />
+          <ChevronUp
+            size={24}
+            color={colors.muted}
+          />
         )}
       </Pressable>
       <Collapsible collapsed={isCollapsed}>

@@ -38,10 +38,7 @@ export function useEnrichedTribeMembers(
       }
 
       if (members.length > 0) {
-        result[parseInt(tribeId)] = {
-          tribe,
-          castaways: members,
-        };
+        result[parseInt(tribeId)] = { tribe, castaways: members };
       }
     }
 

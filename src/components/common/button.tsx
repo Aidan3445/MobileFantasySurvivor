@@ -13,14 +13,13 @@ export default function Button({
   onPress,
   disabled = false,
   className,
-  children,
+  children
 }: ButtonProps) {
   return (
     <Pressable
       className={cn('active:opacity-70 disabled:opacity-50', className)}
       onPress={onPress}
-      disabled={disabled}
-    >
+      disabled={disabled}>
       {children}
     </Pressable>
   );

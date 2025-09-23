@@ -33,6 +33,6 @@ export function useTribeMembers(
       return res.json();
     },
     enabled: !!seasonId && !!episodeNumber,
-    ...refreshConfig,
+    ...refreshConfig
   });
 }

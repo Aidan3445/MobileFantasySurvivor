@@ -23,6 +23,6 @@ export function useLeagueColors(overrideHash?: string) {
     },
     enabled: !!hash,
     staleTime: Infinity,
-    gcTime: Infinity,
+    gcTime: Infinity
   });
 }

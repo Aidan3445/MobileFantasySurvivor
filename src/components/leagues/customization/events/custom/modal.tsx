@@ -18,10 +18,12 @@ export default function CustomEventModal({
   onClose,
   onSubmit,
   reactForm,
-  type,
+  type
 }: CustomEventModalProps) {
   return (
-    <Modal isVisible={isVisible} onClose={onClose}>
+    <Modal
+      isVisible={isVisible}
+      onClose={onClose}>
       <Text className='mb-4 text-xl font-bold'>{type} a Custom Event</Text>
       <CustomEventFields
         reactForm={reactForm}
@@ -30,15 +32,13 @@ export default function CustomEventModal({
       <View className='mt-4 flex-row gap-2'>
         <Button
           className='flex-1 rounded-lg bg-destructive p-3'
-          onPress={onClose}
-        >
+          onPress={onClose}>
           <Text className='text-center font-medium text-muted'>Cancel</Text>
         </Button>
         <Button
           className='flex-1 rounded-lg bg-primary p-3'
           disabled={!reactForm.formState.isValid}
-          onPress={onSubmit}
-        >
+          onPress={onSubmit}>
           <Text className='text-center font-medium text-white'>
             {type} Event
           </Text>

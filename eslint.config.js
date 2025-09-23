@@ -17,10 +17,8 @@ export default [
       parserOptions: {
         ecmaVersion: 2023,
         sourceType: 'module',
-        ecmaFeatures: {
-          jsx: true,
-        },
-        project: './tsconfig.json',
+        ecmaFeatures: { jsx: true },
+        project: './tsconfig.json'
       },
       globals: {
         __dirname: 'readonly',
@@ -29,8 +27,8 @@ export default [
         module: 'readonly',
         console: 'readonly',
         fetch: 'readonly',
-        RequestInit: 'readonly',
-      },
+        RequestInit: 'readonly'
+      }
     },
     plugins: {
       '@typescript-eslint': typescriptEslint,
@@ -38,7 +36,7 @@ export default [
       'react-hooks': reactHooks,
       'react-native': reactNative,
       '@stylistic/js': stylisticJs,
-      'no-relative-import-paths': noRelativeImportPaths,
+      'no-relative-import-paths': noRelativeImportPaths
     },
     rules: {
       'react-hooks/rules-of-hooks': 'error',
@@ -48,58 +46,36 @@ export default [
       '@stylistic/js/quote-props': ['error', 'consistent-as-needed'],
       '@stylistic/js/jsx-quotes': ['error', 'prefer-single'],
       'linebreak-style': ['error', 'unix'],
-      quotes: ['error', 'single'],
-      semi: ['error', 'always'],
+      'quotes': ['error', 'single'],
+      'semi': ['error', 'always'],
       '@typescript-eslint/array-type': 'off',
       '@typescript-eslint/consistent-type-definitions': 'off',
       '@typescript-eslint/consistent-type-imports': [
         'warn',
-        {
-          prefer: 'type-imports',
-          fixStyle: 'inline-type-imports',
-        },
+        { prefer: 'type-imports', fixStyle: 'inline-type-imports' }
       ],
       '@typescript-eslint/no-unused-vars': [
         'warn',
-        {
-          argsIgnorePattern: '^_',
-        },
+        { argsIgnorePattern: '^_' }
       ],
-      'no-unused-vars': [
-        'error',
-        {
-          argsIgnorePattern: '^_',
-        },
-      ],
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/require-await': 'off',
       '@typescript-eslint/no-misused-promises': [
         'error',
-        {
-          checksVoidReturn: {
-            attributes: false,
-          },
-        },
+        { checksVoidReturn: { attributes: false } }
       ],
       'no-relative-import-paths/no-relative-import-paths': [
         'warn',
-        {
-          allowSameFolder: false,
-          rootDir: 'src',
-          prefix: '~',
-        },
+        { allowSameFolder: false, rootDir: 'src', prefix: '~' }
       ],
       'react-native/no-unused-styles': 'warn',
       'react-native/split-platform-components': 'off',
       'react-native/no-inline-styles': 'off',
       'react-native/no-color-literals': 'off',
       'react/react-in-jsx-scope': 'off',
-      'react/jsx-uses-react': 'off',
+      'react/jsx-uses-react': 'off'
     },
-    settings: {
-      react: {
-        version: 'detect',
-      },
-    },
+    settings: { react: { version: 'detect' } }
   },
   // Configuration for JavaScript config files
   {
@@ -107,7 +83,7 @@ export default [
       'babel.config.js',
       'metro.config.js',
       'tailwind.config.js',
-      'prettier.config.js',
+      'prettier.config.js'
     ],
     languageOptions: {
       ecmaVersion: 2023,
@@ -120,16 +96,14 @@ export default [
         setInterval: 'readonly',
         setTimeout: 'readonly',
         clearInterval: 'readonly',
-        clearTimeout: 'readonly',
-      },
+        clearTimeout: 'readonly'
+      }
     },
-    plugins: {
-      '@stylistic/js': stylisticJs,
-    },
+    plugins: { '@stylistic/js': stylisticJs },
     rules: {
-      quotes: ['error', 'single'],
-      semi: ['error', 'always'],
-      '@stylistic/js/quote-props': ['error', 'consistent-as-needed'],
-    },
-  },
+      'quotes': ['error', 'single'],
+      'semi': ['error', 'always'],
+      '@stylistic/js/quote-props': ['error', 'consistent-as-needed']
+    }
+  }
 ];

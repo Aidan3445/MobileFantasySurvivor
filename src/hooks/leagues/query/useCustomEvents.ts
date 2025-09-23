@@ -30,6 +30,6 @@ export function useCustomEvents(overrideHash?: string) {
       return response.json();
     },
     enabled: !!hash,
-    ...refreshConfig,
+    ...refreshConfig
   });
 }

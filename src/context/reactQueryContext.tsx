@@ -9,12 +9,7 @@ import { reviveDates } from '~/lib/utils';
 
 function makeQueryClient() {
   return new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: 60 * 1000,
-        gcTime: Infinity,
-      },
-    },
+    defaultOptions: { queries: { staleTime: 60 * 1000, gcTime: Infinity } }
   });
 }
 
@@ -25,7 +20,7 @@ const persister = createAsyncStoragePersister({
   deserialize: data => {
     const parsed = JSON.parse(data);
     return reviveDates(parsed);
-  },
+  }
 });
 
 function getQueryClient() {
@@ -52,8 +47,7 @@ export default function Provider({ children }: { children: ReactNode }) {
   return (
     <PersistQueryClientProvider
       client={queryClient}
-      persistOptions={{ persister, maxAge: Infinity }}
-    >
+      persistOptions={{ persister, maxAge: Infinity }}>
       {children}
     </PersistQueryClientProvider>
   );

@@ -6,14 +6,13 @@ interface KeyboardContainerProps {
 }
 
 export default function KeyboardContainer({
-  children,
+  children
 }: KeyboardContainerProps) {
   return (
     <TouchableWithoutFeedback
       onPress={() => {
         Keyboard.dismiss();
-      }}
-    >
+      }}>
       {children}
     </TouchableWithoutFeedback>
   );

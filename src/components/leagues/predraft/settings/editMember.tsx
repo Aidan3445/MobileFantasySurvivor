@@ -6,7 +6,8 @@ import { Text, View } from 'react-native';
 import Button from '~/components/common/button';
 
 export default function EditMember() {
-  const { reactForm, usedColors, currentColor, handleSubmit, resetForm } = useEditMember();
+  const { reactForm, usedColors, currentColor, handleSubmit, resetForm } =
+    useEditMember();
 
   if (!reactForm.control) {
     return null;
@@ -22,15 +23,13 @@ export default function EditMember() {
       <View className='flex-row gap-2'>
         <Button
           className={'flex-1 rounded-lg bg-destructive p-3'}
-          onPress={resetForm}
-        >
+          onPress={resetForm}>
           <Text className='text-center font-semibold text-white'>Cancel</Text>
         </Button>
         <Button
           className={'flex-1 rounded-lg bg-primary p-3'}
           disabled={!reactForm.formState.isDirty}
-          onPress={() => handleSubmit()}
-        >
+          onPress={() => handleSubmit()}>
           <Text className='text-center font-semibold text-white'>Save</Text>
         </Button>
       </View>

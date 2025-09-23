@@ -1,7 +1,7 @@
 import {
   defaultBaseRules,
   defaultBasePredictionRules,
-  defaultShauhinModeSettings,
+  defaultShauhinModeSettings
 } from '~/lib/leagues';
 import { findTribeCastaways } from '~/lib/utils';
 import {
@@ -12,7 +12,7 @@ import {
   type ReferenceType,
   type Scores,
   type ScoringBaseEventName,
-  type Streaks,
+  type Streaks
 } from '~/types/events';
 import { type SelectionTimelines, type LeagueRules } from '~/types/leagues';
 import { type TribesTimeline } from '~/types/tribes';
@@ -41,7 +41,7 @@ export function compileScores(
 
   selectionTimelines: SelectionTimelines = {
     castawayMembers: {},
-    memberCastaways: {},
+    memberCastaways: {}
   },
   customEvents: CustomEvents = { events: [], predictions: [] },
   basePredictions: Predictions = {},
@@ -49,11 +49,7 @@ export function compileScores(
   survivalCap = 0,
   preserveStreak = false
 ) {
-  const scores: Scores = {
-    Castaway: {},
-    Tribe: {},
-    Member: {},
-  };
+  const scores: Scores = { Castaway: {}, Tribe: {}, Member: {} };
 
   const baseEventRules = rules?.base ?? defaultBaseRules;
   const basePredictionRules =
@@ -139,17 +135,17 @@ export function compileScores(
     ([episodeNumber, predictionsMap]) => {
       const episodeNum = parseInt(episodeNumber, 10);
       const shauhinModeActive =
-        shauhinModeRules.enabled &&
-        shauhinModeRules.enabledBets.length > 0 &&
-        ((shauhinModeRules.startWeek === 'Custom' &&
-          episodeNum >= (shauhinModeRules.customStartWeek ?? Infinity)) ||
-          (shauhinModeRules.startWeek === 'After Premiere' && episodeNum > 1) ||
-          (shauhinModeRules.startWeek === 'After Merge' &&
-            episodeNum >
-              (keyEpisodes.mergeEpisode?.episodeNumber ?? Infinity)) ||
-          (shauhinModeRules.startWeek === 'Before Finale' &&
-            !!keyEpisodes.nextEpisode?.isFinale &&
-            episodeNum < keyEpisodes.nextEpisode.episodeNumber));
+        shauhinModeRules.enabled
+        && shauhinModeRules.enabledBets.length > 0
+        && ((shauhinModeRules.startWeek === 'Custom'
+          && episodeNum >= (shauhinModeRules.customStartWeek ?? Infinity))
+          || (shauhinModeRules.startWeek === 'After Premiere' && episodeNum > 1)
+          || (shauhinModeRules.startWeek === 'After Merge'
+            && episodeNum
+              > (keyEpisodes.mergeEpisode?.episodeNumber ?? Infinity))
+          || (shauhinModeRules.startWeek === 'Before Finale'
+            && !!keyEpisodes.nextEpisode?.isFinale
+            && episodeNum < keyEpisodes.nextEpisode.episodeNumber));
 
       Object.values(predictionsMap)
         .flat()
@@ -170,9 +166,9 @@ export function compileScores(
                 prediction.bet;
             }
           } else if (
-            shauhinModeActive &&
-            prediction.eventId !== null &&
-            prediction.bet
+            shauhinModeActive
+            && prediction.eventId !== null
+            && prediction.bet
           ) {
             // if the prediction was wrong but shauhin mode is active, subtract the bet
             scores.Member[prediction.predictionMakerId] ??= [];
@@ -296,10 +292,10 @@ export function compileScores(
         // note this has the side effect of ensuring that streaks end when
         // a member is out of castaways to select
         if (
-          eliminated.some(e => e?.castawayId === castaways[mcIndex]) ||
-          (!preserveStreak &&
-            castaways[episodeNumber - 1] &&
-            castaways[episodeNumber - 1] !== castaways[mcIndex])
+          eliminated.some(e => e?.castawayId === castaways[mcIndex])
+          || (!preserveStreak
+            && castaways[episodeNumber - 1]
+            && castaways[episodeNumber - 1] !== castaways[mcIndex])
         ) {
           streak = 0;
           continue;

@@ -16,7 +16,7 @@ export default function SurvivalStreaks() {
     settingsChanged,
     handleSubmit,
     resetSettings,
-    leagueMembers,
+    leagueMembers
   } = useSurvivalStreak();
 
   const displaySurvivalCap = (value: number) => {
@@ -42,12 +42,17 @@ export default function SurvivalStreaks() {
               } else {
                 resetSettings();
               }
-            }}
-          >
+            }}>
             {locked ? (
-              <Lock size={24} color={colors.primary} />
+              <Lock
+                size={24}
+                color={colors.primary}
+              />
             ) : (
-              <LockOpen size={24} color={colors.secondary} />
+              <LockOpen
+                size={24}
+                color={colors.secondary}
+              />
             )}
           </Pressable>
         )}
@@ -85,8 +90,7 @@ export default function SurvivalStreaks() {
           <View className='flex-row gap-2'>
             <Button
               className={'flex-1 rounded-lg bg-destructive p-3'}
-              onPress={resetSettings}
-            >
+              onPress={resetSettings}>
               <Text className='text-center font-semibold text-white'>
                 Cancel
               </Text>
@@ -94,8 +98,7 @@ export default function SurvivalStreaks() {
             <Button
               className={'flex-1 rounded-lg bg-primary p-3'}
               disabled={!settingsChanged}
-              onPress={() => handleSubmit()}
-            >
+              onPress={() => handleSubmit()}>
               <Text className='text-center font-semibold text-white'>Save</Text>
             </Button>
           </View>
@@ -107,8 +110,7 @@ export default function SurvivalStreaks() {
               className={cn(
                 'text-lg font-semibold',
                 survivalCapValue > 0 ? 'text-positive' : 'text-destructive'
-              )}
-            >
+              )}>
               {displaySurvivalCap(survivalCapValue)}
             </Text>
             {survivalCapValue > 0 && survivalCapValue < MAX_SURVIVAL_CAP && (
@@ -154,8 +156,7 @@ export default function SurvivalStreaks() {
                 className={cn(
                   'text-lg font-semibold',
                   preserveStreakValue ? 'text-positive' : 'text-destructive'
-                )}
-              >
+                )}>
                 {preserveStreakValue ? 'On' : 'Off'}
               </Text>
             </View>
@@ -169,7 +170,7 @@ export default function SurvivalStreaks() {
                     onValueChange={field.onChange}
                     trackColor={{
                       false: colors.destructive,
-                      true: colors.positive,
+                      true: colors.positive
                     }}
                     ios_backgroundColor={colors.destructive}
                     thumbColor={colors.muted}

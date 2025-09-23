@@ -15,9 +15,9 @@ export function useShauhinActive(overrideHash?: string) {
 
   const shauhinActive = useMemo(() => {
     if (
-      !league ||
-      !keyEpisodes?.previousEpisode ||
-      !rules?.shauhinMode?.enabled
+      !league
+      || !keyEpisodes?.previousEpisode
+      || !rules?.shauhinMode?.enabled
     ) {
       return false;
     }
@@ -53,7 +53,7 @@ export function useShauhinActive(overrideHash?: string) {
     keyEpisodes?.nextEpisode?.isFinale,
     rules?.shauhinMode?.enabled,
     rules?.shauhinMode?.startWeek,
-    rules?.shauhinMode?.customStartWeek,
+    rules?.shauhinMode?.customStartWeek
   ]);
 
   return shauhinActive;

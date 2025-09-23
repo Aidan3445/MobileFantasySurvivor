@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import {
   type CurrentSelection,
-  type LeagueMember,
+  type LeagueMember
 } from '~/types/leagueMembers';
 import { type League } from '~/types/leagues';
 import { useFetch } from '~/hooks/helpers/useFetch';
@@ -40,6 +40,6 @@ export function useLeagues() {
     refetchOnReconnect: true,
     refetchOnMount: true,
     refetchInterval: false,
-    enabled: true,
+    enabled: true
   });
 }

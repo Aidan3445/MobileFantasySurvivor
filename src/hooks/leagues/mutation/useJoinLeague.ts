@@ -8,7 +8,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useFetch } from '~/hooks/helpers/useFetch';
 import {
   type LeagueMemberInsert,
-  LeagueMemberInsertZod,
+  LeagueMemberInsertZod
 } from '~/types/leagueMembers';
 import { type PublicLeague } from '~/types/leagues';
 
@@ -19,11 +19,8 @@ export function useJoinLeague(onSubmit?: () => void) {
   const { user } = useUser();
   const { hash } = useLocalSearchParams<{ hash: string }>();
   const reactForm = useForm<LeagueMemberInsert>({
-    defaultValues: {
-      displayName: user?.username || '',
-      color: '',
-    },
-    resolver: zodResolver(LeagueMemberInsertZod),
+    defaultValues: { displayName: user?.username || '', color: '' },
+    resolver: zodResolver(LeagueMemberInsertZod)
   });
 
   useEffect(() => {
@@ -36,7 +33,7 @@ export function useJoinLeague(onSubmit?: () => void) {
       if (!hash) throw new Error('League hash is required');
 
       const response = await postData(`/api/leagues/join?hash=${hash}`, {
-        method: 'GET',
+        method: 'GET'
       });
       if (!response.ok) {
         throw new Error('Failed to fetch league');
@@ -44,7 +41,7 @@ export function useJoinLeague(onSubmit?: () => void) {
       return response.json();
     },
     enabled: !!hash,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000 // 5 minutes
   });
 
   const handleSubmit = reactForm.handleSubmit(async data => {
@@ -58,10 +55,7 @@ export function useJoinLeague(onSubmit?: () => void) {
     }
     try {
       const response = await postData('/api/leagues/join', {
-        body: {
-          hash,
-          newMember: data,
-        },
+        body: { hash, newMember: data }
       });
       if (response.status !== 201) {
         const errorData = await response.json();
@@ -85,9 +79,5 @@ export function useJoinLeague(onSubmit?: () => void) {
     }
   });
 
-  return {
-    reactForm,
-    handleSubmit,
-    getPublicLeague,
-  };
+  return { reactForm, handleSubmit, getPublicLeague };
 }

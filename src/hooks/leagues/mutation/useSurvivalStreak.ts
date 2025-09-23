@@ -10,7 +10,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   LeagueSurvivalUpdateZod,
-  type LeagueSurvivalUpdate,
+  type LeagueSurvivalUpdate
 } from '~/types/leagues';
 
 export function useSurvivalStreak() {
@@ -24,9 +24,9 @@ export function useSurvivalStreak() {
   const reactForm = useForm<LeagueSurvivalUpdate>({
     defaultValues: {
       survivalCap: settings?.survivalCap ?? DEFAULT_SURVIVAL_CAP,
-      preserveStreak: settings?.preserveStreak ?? true,
+      preserveStreak: settings?.preserveStreak ?? true
     },
-    resolver: zodResolver(LeagueSurvivalUpdateZod),
+    resolver: zodResolver(LeagueSurvivalUpdateZod)
   });
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export function useSurvivalStreak() {
 
     try {
       const response = await putData(`/api/leagues/${league.hash}/settings`, {
-        body: data,
+        body: data
       });
 
       if (response.status !== 200) {
@@ -64,7 +64,7 @@ export function useSurvivalStreak() {
       }
 
       await queryClient.invalidateQueries({
-        queryKey: ['leagueSettings', league.hash],
+        queryKey: ['leagueSettings', league.hash]
       });
       Alert.alert('Success', 'Survival streak settings saved');
       setLocked(true);
@@ -87,6 +87,6 @@ export function useSurvivalStreak() {
     settingsChanged,
     handleSubmit,
     resetSettings,
-    leagueMembers,
+    leagueMembers
   };
 }

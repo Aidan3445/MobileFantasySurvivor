@@ -8,7 +8,9 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <ClerkProvider tokenCache={tokenCache} telemetry={false}>
+      <ClerkProvider
+        tokenCache={tokenCache}
+        telemetry={false}>
         <QueryClientContextProvider>
           <Slot />
         </QueryClientContextProvider>

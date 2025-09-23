@@ -23,11 +23,11 @@ export function DraftCountdown({ overrideHash }: DraftCountdownProps) {
 
   const editable = useMemo(
     () =>
-      leagueMembers?.loggedIn &&
-      leagueMembers.loggedIn.role === 'Owner' &&
-      leagueSettings &&
-      (leagueSettings.draftDate === null ||
-        Date.now() < leagueSettings.draftDate.getTime()),
+      leagueMembers?.loggedIn
+      && leagueMembers.loggedIn.role === 'Owner'
+      && leagueSettings
+      && (leagueSettings.draftDate === null
+        || Date.now() < leagueSettings.draftDate.getTime()),
     [leagueMembers, leagueSettings]
   );
 
@@ -41,10 +41,10 @@ export function DraftCountdown({ overrideHash }: DraftCountdownProps) {
         return;
       }
       await queryClient.invalidateQueries({
-        queryKey: ['league', league.hash],
+        queryKey: ['league', league.hash]
       });
       await queryClient.invalidateQueries({
-        queryKey: ['settings', league.hash],
+        queryKey: ['settings', league.hash]
       });
     }
     router.push(`/leagues/${league.hash}/draft`);
@@ -70,8 +70,7 @@ export function DraftCountdown({ overrideHash }: DraftCountdownProps) {
         {editable && (
           <Button
             onPress={onDraftJoin}
-            className='rounded-md bg-navigation p-1'
-          >
+            className='rounded-md bg-navigation p-1'>
             <Text className='text-accent-foreground'>Draft Now</Text>
           </Button>
         )}
@@ -82,8 +81,7 @@ export function DraftCountdown({ overrideHash }: DraftCountdownProps) {
           replacedBy={
             <Button
               className='w-full rounded-xl bg-navigation p-2'
-              onPress={onDraftJoin}
-            >
+              onPress={onDraftJoin}>
               <Text className='p-1 text-center text-2xl font-semibold text-primary'>
                 Join now!
               </Text>

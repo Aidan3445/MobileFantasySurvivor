@@ -9,7 +9,7 @@ import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
 import { useLeagueRules } from '~/hooks/leagues/query/useRules';
 import {
   type ShauhinModeSettings,
-  ShauhinModeSettingsZod,
+  ShauhinModeSettingsZod
 } from '~/types/leagues';
 import { defaultShauhinModeSettings } from '~/lib/leagues';
 
@@ -23,7 +23,7 @@ export function useShauhinMode() {
 
   const reactForm = useForm<ShauhinModeSettings>({
     defaultValues: rules?.shauhinMode ?? defaultShauhinModeSettings,
-    resolver: zodResolver(ShauhinModeSettingsZod),
+    resolver: zodResolver(ShauhinModeSettingsZod)
   });
 
   useEffect(() => {
@@ -48,9 +48,7 @@ export function useShauhinMode() {
     try {
       const response = await putData(
         `/api/leagues/${league.hash}/rules/shauhinMode`,
-        {
-          body: { shauhinMode: data },
-        }
+        { body: { shauhinMode: data } }
       );
 
       if (response.status !== 200) {
@@ -85,8 +83,8 @@ export function useShauhinMode() {
   };
 
   const disabled =
-    (!!leagueMembers && leagueMembers.loggedIn?.role !== 'Owner') ||
-    league?.status === 'Inactive';
+    (!!leagueMembers && leagueMembers.loggedIn?.role !== 'Owner')
+    || league?.status === 'Inactive';
 
   return {
     reactForm,
@@ -96,6 +94,6 @@ export function useShauhinMode() {
     handleSubmit,
     resetSettings,
     disabled,
-    rules,
+    rules
   };
 }

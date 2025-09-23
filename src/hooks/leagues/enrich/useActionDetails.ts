@@ -83,13 +83,13 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
   const actionDetails = useMemo(() => {
     if (
-      !league ||
-      !rules ||
-      !selectionTimeline ||
-      !nextEpisode ||
-      !tribeMembers ||
-      !leagueMembers ||
-      !eliminationLookup
+      !league
+      || !rules
+      || !selectionTimeline
+      || !nextEpisode
+      || !tribeMembers
+      || !leagueMembers
+      || !eliminationLookup
     ) {
       return undefined;
     }
@@ -106,23 +106,17 @@ export function useLeagueActionDetails(overrideHash?: string) {
         const castawayWithTribe: EnrichedCastaway = {
           ...castaway,
           tribe: { name: tribe.tribeName, color: tribe.tribeColor },
-          eliminatedEpisode,
+          eliminatedEpisode
         };
 
         const member = selection
           ? (leagueMembers.members.find(m => m.memberId === selection) ?? null)
           : null;
 
-        return {
-          castaway: castawayWithTribe,
-          member,
-        };
+        return { castaway: castawayWithTribe, member };
       });
 
-      details[Number(tribeId)] = {
-        tribe,
-        castaways: selections,
-      };
+      details[Number(tribeId)] = { tribe, castaways: selections };
     });
 
     return details;
@@ -133,7 +127,7 @@ export function useLeagueActionDetails(overrideHash?: string) {
     nextEpisode,
     tribeMembers,
     leagueMembers,
-    eliminationLookup,
+    eliminationLookup
   ]);
 
   const router = useRouter();
@@ -141,17 +135,17 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
   const { onTheClock, onDeck, onTheClockIndex } = useMemo(() => {
     if (
-      !leagueMembers?.members ||
-      !selectionTimeline?.memberCastaways ||
-      !nextEpisode
+      !leagueMembers?.members
+      || !selectionTimeline?.memberCastaways
+      || !nextEpisode
     ) {
       return { onTheClock: null, onDeck: null, onTheClockIndex: -1 };
     }
 
     const onTheClockIndex = leagueMembers.members.findIndex(
       member =>
-        selectionTimeline.memberCastaways[member.memberId]?.[nextEpisode] ===
-        undefined
+        selectionTimeline.memberCastaways[member.memberId]?.[nextEpisode]
+        === undefined
     );
 
     const onTheClock = leagueMembers.members[onTheClockIndex];
@@ -160,30 +154,24 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
     return {
       onTheClock: onTheClock
-        ? {
-            ...onTheClock,
-            loggedIn: onTheClock.memberId === loggedInId,
-          }
+        ? { ...onTheClock, loggedIn: onTheClock.memberId === loggedInId }
         : null,
       onDeck: onDeck
-        ? {
-            ...onDeck,
-            loggedIn: onDeck.memberId === loggedInId,
-          }
+        ? { ...onDeck, loggedIn: onDeck.memberId === loggedInId }
         : null,
-      onTheClockIndex: onTheClockIndex >= 0 ? onTheClockIndex : -1,
+      onTheClockIndex: onTheClockIndex >= 0 ? onTheClockIndex : -1
     };
   }, [
     leagueMembers?.members,
     leagueMembers?.loggedIn?.memberId,
     selectionTimeline?.memberCastaways,
-    nextEpisode,
+    nextEpisode
   ]);
 
   useEffect(() => {
     if (
-      (!!onTheClock?.loggedIn || !!onDeck?.loggedIn) &&
-      dialogOpen === undefined
+      (!!onTheClock?.loggedIn || !!onDeck?.loggedIn)
+      && dialogOpen === undefined
     ) {
       setDialogOpen(true);
     }
@@ -216,7 +204,7 @@ export function useLeagueActionDetails(overrideHash?: string) {
     if (!nextEpisode) return [];
     return [
       ...(basePredictionsMade?.[nextEpisode] ?? []),
-      ...(customPredictionsMade?.[nextEpisode] ?? []),
+      ...(customPredictionsMade?.[nextEpisode] ?? [])
     ];
   }, [nextEpisode, basePredictionsMade, customPredictionsMade]);
 
@@ -238,22 +226,15 @@ export function useLeagueActionDetails(overrideHash?: string) {
         if (rule.enabled && !rule.timing.some(t => timingSet.has(t))) {
           filteredBase[eventName as ScoringBaseEventName] = {
             ...rule,
-            enabled: false,
+            enabled: false
           };
         }
       });
 
-      return {
-        ...rules,
-        custom: filteredCustom,
-        basePrediction: filteredBase,
-      };
+      return { ...rules, custom: filteredCustom, basePrediction: filteredBase };
     }
 
-    return {
-      ...rules,
-      custom: filteredCustom,
-    };
+    return { ...rules, custom: filteredCustom };
   }, [rules, predictionTiming]);
 
   return {
@@ -269,6 +250,6 @@ export function useLeagueActionDetails(overrideHash?: string) {
     selectionTimeline,
     keyEpisodes,
     dialogOpen,
-    setDialogOpen,
+    setDialogOpen
   };
 }

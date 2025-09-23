@@ -20,10 +20,12 @@ export default function PredraftHeader({ inSettings }: PredraftHeaderProps) {
       {inSettings ? (
         <Pressable
           className='absolute bottom-0 left-4 p-4'
-          onPress={() => router.back()}
-        >
+          onPress={() => router.back()}>
           <Text className='text-lg text-white'>
-            <ArrowLeft color='white' size={24} />
+            <ArrowLeft
+              color='white'
+              size={24}
+            />
           </Text>
         </Pressable>
       ) : (
@@ -31,9 +33,11 @@ export default function PredraftHeader({ inSettings }: PredraftHeaderProps) {
           className='absolute bottom-0 right-4 p-4'
           onPress={() =>
             router.push(`/leagues/${league?.hash}/predraft/settings`)
-          }
-        >
-          <Settings color='white' size={24} />
+          }>
+          <Settings
+            color='white'
+            size={24}
+          />
         </Pressable>
       )}
     </View>

@@ -1,9 +1,7 @@
 import { type LeagueMemberRole } from '~/types/leagueMembers';
 import { type LeagueStatus } from '~/types/leagues';
 
-export type LeagueRouteParams = {
-  params: Promise<{ hash: string }>;
-};
+export type LeagueRouteParams = { params: Promise<{ hash: string }> };
 
 export type LeagueMemberAuth = {
   userId: string | null;

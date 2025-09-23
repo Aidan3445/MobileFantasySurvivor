@@ -23,7 +23,7 @@ export default function SignUpScreen() {
       await signUp.create({
         username: username.trim(),
         emailAddress: emailAddress.trim().toLowerCase(),
-        password: password.trim(),
+        password: password.trim()
       });
 
       // Send user an email with verification code
@@ -46,7 +46,7 @@ export default function SignUpScreen() {
     try {
       // Use the code the user provided to attempt verification
       const signUpAttempt = await signUp.attemptEmailAddressVerification({
-        code,
+        code
       });
 
       // If verification was completed, set the session to active
@@ -91,8 +91,7 @@ export default function SignUpScreen() {
 
             <TouchableOpacity
               onPress={onVerifyPress}
-              className='mt-6 rounded-2xl bg-primary py-4 shadow-sm'
-            >
+              className='mt-6 rounded-2xl bg-primary py-4 shadow-sm'>
               <Text className='text-center text-lg font-semibold text-white'>
                 Verify
               </Text>
@@ -136,8 +135,7 @@ export default function SignUpScreen() {
           />
           <TouchableOpacity
             onPress={onSignUpPress}
-            className='mt-6 rounded-2xl bg-primary py-4 shadow-sm'
-          >
+            className='mt-6 rounded-2xl bg-primary py-4 shadow-sm'>
             <Text className='text-center text-lg font-semibold text-white'>
               Continue
             </Text>

@@ -35,12 +35,12 @@ export function useSeasonsData(includeInactive: boolean, seasonId?: number) {
           premiereDate: new Date(seasonData.season.premiereDate),
           finaleDate: seasonData.season.finaleDate
             ? new Date(seasonData.season.finaleDate)
-            : null,
+            : null
         },
         episodes: seasonData.episodes.map(episode => ({
           ...episode,
-          airDate: new Date(episode.airDate),
-        })),
+          airDate: new Date(episode.airDate)
+        }))
       }));
     },
     enabled: true,
@@ -52,7 +52,7 @@ export function useSeasonsData(includeInactive: boolean, seasonId?: number) {
           refetchOnMount: false,
           refetchOnWindowFocus: false,
           refetchOnReconnect: false,
-          refetchInterval: false,
-        }),
+          refetchInterval: false
+        })
   });
 }
