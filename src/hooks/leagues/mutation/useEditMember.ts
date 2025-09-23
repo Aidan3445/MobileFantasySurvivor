@@ -43,9 +43,10 @@ export function useEditMember(onSubmit?: () => void) {
       return;
     }
     try {
-      const response = await putData(`/api/leagues/${hash}/members/`, {
+      const response = await putData(`/api/leagues/${hash}/members`, {
         body: { member: data },
       });
+
       if (response.status !== 200) {
         const errorData = await response.json();
         console.error('Error updating member details:', errorData);
