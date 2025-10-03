@@ -43,11 +43,11 @@ export function useSeasonsData(includeInactive: boolean, seasonId?: number) {
     ...(isEpisodeAiring
       ? refreshConfig
       : {
-          staleTime: Infinity,
+          staleTime: 10 * 60 * 1000, // 10 minutes
           gcTime: 24 * 60 * 60 * 1000, // 24 hours
-          refetchOnMount: false,
+          refetchOnMount: true,
           refetchOnWindowFocus: false,
-          refetchOnReconnect: false,
+          refetchOnReconnect: true,
           refetchInterval: false
         })
   });

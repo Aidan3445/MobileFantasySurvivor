@@ -33,12 +33,9 @@ export function useCarousel<T>(data: T[] = []) {
     onProgressChange: progress,
     width: PAGE_WIDTH - 12
   };
-  const memoizedSetCarouselData = useCallback((newData: T[]) => {
-    setCarouselData(newData);
-  }, []);
 
   return {
-    setCarouselData: memoizedSetCarouselData,
+    setCarouselData,
     ref,
     progress,
     onPressPagination,

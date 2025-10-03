@@ -9,11 +9,11 @@ import { DraftCountdown } from '~/components/leagues/predraft/countdown/view';
 import PredraftHeader from '~/components/leagues/predraft/header/view';
 import InviteLink from '~/components/leagues/predraft/inviteLink/view';
 import DraftOrder from '~/components/leagues/customization/order/view';
-import { usePredraftRefresh } from '~/hooks/helpers/refresh/usePredraftRefresh';
+import { useLeagueRefresh } from '~/hooks/helpers/refresh/useLeagueRefresh';
 const LogoImage = require('~/assets/Logo.png');
 
 export default function PredraftScreen() {
-  const { refreshing, onRefresh } = usePredraftRefresh();
+  const { refreshing, onRefresh } = useLeagueRefresh();
 
   return (
     <View className='flex-1 items-center justify-center bg-background'>

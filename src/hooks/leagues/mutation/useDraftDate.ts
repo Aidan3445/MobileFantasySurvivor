@@ -24,9 +24,7 @@ export function useDraftDate(onSubmit?: () => void) {
 
   const reactForm = useForm<DraftDateUpdate>({
     defaultValues: {
-      draftDate: leagueSettings?.draftDate
-        ? new Date(leagueSettings.draftDate)
-        : null
+      draftDate: leagueSettings?.draftDate ? new Date(leagueSettings.draftDate) : null
     },
     resolver: zodResolver(DraftDateUpdateSchema)
   });

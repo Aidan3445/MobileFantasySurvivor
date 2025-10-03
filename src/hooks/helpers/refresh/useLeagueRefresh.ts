@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 
-export function usePredraftRefresh(overrideHash?: string) {
+export function useLeagueRefresh(overrideHash?: string) {
   const [refreshing, setRefreshing] = useState(false);
   const queryClient = useQueryClient();
   const { data: league } = useLeague(overrideHash);

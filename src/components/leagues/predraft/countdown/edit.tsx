@@ -23,11 +23,13 @@ export default function SetDraftDate({ modalOpen, setModalOpen }: SetDraftDatePr
     <Modal
       isVisible={modalOpen}
       onClose={handleCancel}>
-      <View className='w-full h-72 rounded-xl bg-card'>
-        <Text className='text-card-foreground text-center text-lg font-bold'>
-          Set Draft Date
-        </Text>
-        <DraftDate control={reactForm.control} editing submit={handleSubmit} />
+      <View className='h-72 w-full rounded-xl bg-card'>
+        <Text className='text-card-foreground text-center text-lg font-bold'>Set Draft Date</Text>
+        <DraftDate
+          control={reactForm.control}
+          editing
+          submit={handleSubmit}
+        />
         <View className='flex-row justify-between gap-3'>
           <Button
             onPress={handleCancel}
@@ -38,7 +40,7 @@ export default function SetDraftDate({ modalOpen, setModalOpen }: SetDraftDatePr
             onPress={handleSubmit}
             className='flex-1 rounded-lg bg-primary px-4 py-3 disabled:opacity-50'
             disabled={!reactForm.formState.isDirty}>
-            <Text className='text-center text-white font-medium'>Save</Text>
+            <Text className='text-center font-medium text-white'>Save</Text>
           </Button>
         </View>
       </View>

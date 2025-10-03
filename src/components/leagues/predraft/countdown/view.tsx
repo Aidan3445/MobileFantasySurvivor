@@ -59,10 +59,13 @@ export function DraftCountdown({ overrideHash }: DraftCountdownProps) {
             </Text>
             <Text className='text-sm leading-none text-muted-foreground'>
               {leagueSettings?.draftDate
-                ? leagueSettings.draftDate.getTime() > Date.now()
+                ? (leagueSettings.draftDate.getTime() > Date.now()
                   ? `Starts at: ${leagueSettings.draftDate.toLocaleString()}`
-                  : 'Draft is live'
+                  : (league?.status === 'Draft'
+                    ? 'Draft is live!'
+                    : 'Draft ready to start!'))
                 : 'Draft set to manual start by commissioner'}
+
             </Text>
           </View>
         </View>
@@ -75,15 +78,9 @@ export function DraftCountdown({ overrideHash }: DraftCountdownProps) {
             </Button>
             <Pressable onPress={() => setModalOpen(true)}>
               {modalOpen ? (
-                <Unlock
-                  size={24}
-                  color={colors.secondary}
-                />
+                <Unlock size={24} color={colors.secondary} />
               ) : (
-                <Lock
-                  size={24}
-                  color={colors.primary}
-                />
+                <Lock size={24} color={colors.primary} />
               )}
             </Pressable>
           </View>
@@ -95,16 +92,16 @@ export function DraftCountdown({ overrideHash }: DraftCountdownProps) {
           replacedBy={
             <Button
               className='w-full rounded-xl bg-navigation p-2'
+              disabled={!league || (leagueMembers?.loggedIn?.role !== 'Owner' && league?.status !== 'Draft')}
               onPress={onDraftJoin}>
-              <Text className='p-1 text-center text-2xl font-semibold text-primary'>Join now!</Text>
+              <Text className='p-1 text-center text-2xl font-semibold text-primary'>
+                {league?.status === 'Draft' ? 'Join Draft' :
+                  (leagueMembers?.loggedIn?.role === 'Owner' ? 'Start Draft' : 'Waiting for Commissioner')}
+              </Text>
             </Button>
-          }
-        />
+          } />
       </View>
-      <SetDraftDate
-        modalOpen={modalOpen}
-        setModalOpen={() => setModalOpen(false)}
-      />
+      <SetDraftDate modalOpen={modalOpen} setModalOpen={() => setModalOpen(false)} />
     </View>
   );
 }

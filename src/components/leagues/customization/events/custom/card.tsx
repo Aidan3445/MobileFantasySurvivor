@@ -55,7 +55,7 @@ export default function CustomEventCard({
 
   return (
     <View className='relative rounded-xl bg-accent p-3'>
-      <View className='mb-2 flex-row items-center justify-between'>
+      <View className='flex-row items-center justify-between'>
         <View className='flex-1 flex-row items-center gap-1'>
           <Text className='text-card-foreground flex-shrink text-lg font-semibold'>
             {rule.eventName}
@@ -69,42 +69,32 @@ export default function CustomEventCard({
               )}>
               {rule.points}
             </Text>
-            <Flame
-              size={16}
-              color={rule.points <= 0 ? colors.destructive : colors.positive}
-            />
+            <Flame size={16} color={rule.points <= 0 ? colors.destructive : colors.positive} />
           </View>
         </View>
         {canEdit && (
           <View className='flex-row gap-2'>
             <Pressable onPress={() => setIsEditing(true)}>
-              <Settings2
-                size={18}
-                color={colors.primary}
-              />
+              <Settings2 size={18} color={colors.primary} />
             </Pressable>
             <Pressable onPress={handleDelete}>
-              <Trash2
-                size={18}
-                color={colors.destructive}
-              />
+              <Trash2 size={18} color={colors.destructive} />
             </Pressable>
           </View>
         )}
       </View>
       {rule.eventType === 'Prediction' && (
-        <Text className='mb-1 text-xs italic text-muted-foreground'>
+        <Text className='text-xs italic text-muted-foreground'>
           Predictions: {rule.timing.join(', ')}
         </Text>
       )}
-      <Text className='text-sm text-muted-foreground'>{rule.description}</Text>
+      <Text className='text-sm text-muted-foreground line-clamp-2'>{rule.description}</Text>
       <CustomEventModal
         type='Edit'
         isVisible={isEditing}
         onClose={() => setIsEditing(false)}
         onSubmit={handleSubmit}
-        reactForm={reactForm}
-      />
+        reactForm={reactForm} />
     </View>
   );
 }
