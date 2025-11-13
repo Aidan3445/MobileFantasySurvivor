@@ -13,13 +13,26 @@ export default function DraftHeader({ inCastawaysView }: DraftHeaderProps) {
   const { data: league } = useLeague();
   const router = useRouter();
 
+  const handleBackPress = () => {
+    if (router.canGoBack()) {
+      router.back();
+    } else {
+      // Fallback to direct navigation if no history
+      router.replace(`/(tabs)/leagues/${league?.hash}/draft`);
+    }
+  };
+
+  const handleCastawaysPress = () => {
+    router.push(`/(tabs)/leagues/${league?.hash}/draft/castaways`);
+  };
+
   return (
-    <View className='absolute top-0 z-10 h-24 w-full items-center justify-end bg-secondary pb-4'>
+    <View className='absolute top-0 z-10 h-24 w-full items-center justify-end bg-secondary pb-2'>
       <Text className='text-2xl font-bold text-white'>{league?.name ?? 'League'} - Draft</Text>
       {inCastawaysView ? (
         <Pressable
-          className='absolute bottom-0 left-4 p-4'
-          onPress={() => router.back()}>
+          className='absolute bottom-0 left-4 py-2 px-4'
+          onPress={handleBackPress}>
           <ArrowLeft
             color='white'
             size={24}
@@ -27,8 +40,8 @@ export default function DraftHeader({ inCastawaysView }: DraftHeaderProps) {
         </Pressable>
       ) : (
         <Pressable
-          className='absolute bottom-0 right-4 p-4'
-          onPress={() => router.push(`/leagues/${league?.hash}/draft/castaways`)}>
+          className='absolute bottom-0 right-4 py-2 px-4'
+          onPress={handleCastawaysPress}>
           <Users
             color='white'
             size={24}

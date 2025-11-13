@@ -97,14 +97,6 @@ export default function TabLayout() {
         name='leagues/[hash]/draft'
         options={{ href: null }}
       />
-      <Tabs.Screen
-        name='leagues/[hash]/draft/castaways'
-        options={{ href: null }}
-      />
-      <Tabs.Screen
-        name='leagues/[hash]/draft/tracker'
-        options={{ href: null }}
-      />
     </Tabs>
   );
 }
