@@ -19,15 +19,13 @@ export function useBaseEvents(seasonId: number | null) {
     queryFn: async () => {
       if (!seasonId) return {};
 
-      const res = await fetchData(
-        `/api/seasons/baseEvents?seasonId=${seasonId}`
-      );
+      const res = await fetchData(`/api/seasons/baseEvents?seasonId=${seasonId}`);
       if (!res.ok) {
         throw new Error('Failed to fetch base events data');
       }
       return res.json();
     },
     enabled: !!seasonId,
-    ...refreshConfig,
+    ...refreshConfig
   });
 }

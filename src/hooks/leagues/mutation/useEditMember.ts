@@ -2,10 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useFetch } from '~/hooks/helpers/useFetch';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
 import { useForm } from 'react-hook-form';
-import {
-  LeagueMemberInsertZod,
-  type LeagueMemberInsert,
-} from '~/types/leagueMembers';
+import { LeagueMemberInsertZod, type LeagueMemberInsert } from '~/types/leagueMembers';
 import { useEffect } from 'react';
 import { Alert } from 'react-native';
 import { useLeagueColors } from '~/hooks/leagues/query/useLeagueColors';
@@ -20,19 +17,13 @@ export function useEditMember(onSubmit?: () => void) {
   const { data: usedColors } = useLeagueColors();
 
   const reactForm = useForm<LeagueMemberInsert>({
-    defaultValues: {
-      displayName: '',
-      color: '',
-    },
-    resolver: zodResolver(LeagueMemberInsertZod),
+    defaultValues: { displayName: '', color: '' },
+    resolver: zodResolver(LeagueMemberInsertZod)
   });
 
   useEffect(() => {
     if (leagueMembers?.loggedIn) {
-      reactForm.setValue(
-        'displayName',
-        leagueMembers.loggedIn.displayName || ''
-      );
+      reactForm.setValue('displayName', leagueMembers.loggedIn.displayName || '');
       reactForm.setValue('color', leagueMembers.loggedIn.color || '');
     }
   }, [leagueMembers?.loggedIn, reactForm]);
@@ -43,17 +34,12 @@ export function useEditMember(onSubmit?: () => void) {
       return;
     }
     try {
-      const response = await putData(`/api/leagues/${hash}/members`, {
-        body: { member: data },
-      });
+      const response = await putData(`/api/leagues/${hash}/members`, { body: { member: data } });
 
       if (response.status !== 200) {
         const errorData = await response.json();
         console.error('Error updating member details:', errorData);
-        Alert.alert(
-          'Error',
-          errorData.message || 'Failed to update member details'
-        );
+        Alert.alert('Error', errorData.message || 'Failed to update member details');
         return;
       }
 
@@ -64,9 +50,7 @@ export function useEditMember(onSubmit?: () => void) {
       }
       reactForm.reset(data);
       onSubmit?.();
-      await queryClient.invalidateQueries({
-        queryKey: ['leagueMembers', hash],
-      });
+      await queryClient.invalidateQueries({ queryKey: ['leagueMembers', hash] });
       Alert.alert('Success', 'Member details updated');
     } catch (error) {
       console.error(error);
@@ -78,7 +62,7 @@ export function useEditMember(onSubmit?: () => void) {
     if (leagueMembers?.loggedIn) {
       reactForm.reset({
         displayName: leagueMembers.loggedIn.displayName || '',
-        color: leagueMembers.loggedIn.color || '',
+        color: leagueMembers.loggedIn.color || ''
       });
     } else {
       reactForm.reset();
@@ -90,6 +74,6 @@ export function useEditMember(onSubmit?: () => void) {
     handleSubmit,
     usedColors,
     currentColor: leagueMembers?.loggedIn?.color,
-    resetForm,
+    resetForm
   };
 }

@@ -30,6 +30,6 @@ export function useBasePredictions(overrideHash?: string) {
       return response.json();
     },
     enabled: !!hash,
-    ...refreshConfig,
+    ...refreshConfig
   });
 }

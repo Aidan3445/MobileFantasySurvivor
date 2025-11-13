@@ -5,11 +5,7 @@ import { LEAGUE_NAME_MAX_LENGTH } from '~/lib/leagues';
 import { useEffect, useState } from 'react';
 import { cn } from '~/lib/utils';
 
-const placeholderOptions = [
-  'Jeff Probst Fan Club',
-  'Torch Snuffers',
-  'Jury\'s Out',
-];
+const placeholderOptions = ['Jeff Probst Fan Club', 'Torch Snuffers', 'Jury\'s Out'];
 
 interface LeagueNameProps {
   control: Control<any>;

@@ -6,10 +6,7 @@ import { colors } from '~/lib/colors';
 import { cn } from '~/lib/utils';
 import { type PredictionTiming } from '~/types/events';
 import { PredictionTimings } from '~/lib/events';
-import {
-  useSearchableSelect,
-  type SearchableOption,
-} from '~/hooks/ui/useSearchableSelect';
+import { useSearchableSelect, type SearchableOption } from '~/hooks/ui/useSearchableSelect';
 import SearchableMultiSelect from '~/components/common/searchableMultiSelect';
 
 interface BasePredictionFormFieldProps {
@@ -18,33 +15,19 @@ interface BasePredictionFormFieldProps {
   disabled?: boolean;
 }
 
-export function BasePredictions({
-  eventName,
-  reactForm,
-  disabled,
-}: BasePredictionFormFieldProps) {
-  const predictionEnabled = reactForm.watch(
-    `basePredictionRules.${eventName}.enabled`
-  ) as boolean;
-  const predictionPoints = reactForm.watch(
-    `basePredictionRules.${eventName}.points`
-  ) as number;
+export function BasePredictions({ eventName, reactForm, disabled }: BasePredictionFormFieldProps) {
+  const predictionEnabled = reactForm.watch(`basePredictionRules.${eventName}.enabled`) as boolean;
+  const predictionPoints = reactForm.watch(`basePredictionRules.${eventName}.points`) as number;
   const predictionTiming = reactForm.watch(
     `basePredictionRules.${eventName}.timing`
   ) as PredictionTiming[];
 
-  const {
-    isVisible,
-    searchText,
-    setSearchText,
-    openModal,
-    closeModal,
-    filterOptions,
-  } = useSearchableSelect();
+  const { isVisible, searchText, setSearchText, openModal, closeModal, filterOptions } =
+    useSearchableSelect();
 
   const timingOptions: SearchableOption[] = PredictionTimings.map(timing => ({
     value: timing,
-    label: timing,
+    label: timing
   }));
 
   return (
@@ -54,8 +37,7 @@ export function BasePredictions({
           <Text className='text-sm font-medium'>Prediction:</Text>
           {disabled ? (
             <Text
-              className={`font-semibold ${predictionEnabled ? 'text-positive' : 'text-destructive'}`}
-            >
+              className={`font-semibold ${predictionEnabled ? 'text-positive' : 'text-destructive'}`}>
               {predictionEnabled ? 'On' : 'Off'}
             </Text>
           ) : (
@@ -66,10 +48,7 @@ export function BasePredictions({
                 <Switch
                   value={field.value}
                   onValueChange={field.onChange}
-                  trackColor={{
-                    false: colors.destructive,
-                    true: colors.positive,
-                  }}
+                  trackColor={{ false: colors.destructive, true: colors.positive }}
                   ios_backgroundColor={colors.destructive}
                   thumbColor={colors.muted}
                 />
@@ -85,15 +64,15 @@ export function BasePredictions({
                 <Text
                   className={cn(
                     'mr-1 text-lg font-bold',
-                    predictionPoints <= 0
-                      ? 'text-destructive'
-                      : 'text-positive',
+                    predictionPoints <= 0 ? 'text-destructive' : 'text-positive',
                     predictionPoints === 0 && 'text-neutral'
-                  )}
-                >
+                  )}>
                   {predictionPoints}
                 </Text>
-                <Flame size={16} color={colors.positive} />
+                <Flame
+                  size={16}
+                  color={colors.positive}
+                />
               </View>
             ) : (
               <Controller
@@ -128,8 +107,7 @@ export function BasePredictions({
             <View>
               <Button
                 className='mb-1 rounded-lg border border-primary bg-muted/50 p-2'
-                onPress={openModal}
-              >
+                onPress={openModal}>
                 <Text className='text-sm'>
                   {predictionTiming?.length > 0
                     ? predictionTiming.join(', ')

@@ -16,16 +16,7 @@ export function useSearchableSelect<T extends string | number>() {
   };
 
   const filterOptions = (options: SearchableOption<T>[]) =>
-    options.filter(option =>
-      option.label.toLowerCase().includes(searchText.toLowerCase())
-    );
+    options.filter(option => option.label.toLowerCase().includes(searchText.toLowerCase()));
 
-  return {
-    isVisible,
-    searchText,
-    setSearchText,
-    openModal,
-    closeModal,
-    filterOptions,
-  };
+  return { isVisible, searchText, setSearchText, openModal, closeModal, filterOptions };
 }

@@ -22,13 +22,15 @@ export function useLeagueSettings(overrideHash?: string) {
       if (!response.ok) {
         throw new Error('Failed to fetch league');
       }
-      return await response.json().then((data: LeagueSettings) => ({
-        ...data,
-        draftDate: data.draftDate ? new Date(data.draftDate) : null,
-      }));
+      return await response
+        .json()
+        .then((data: LeagueSettings) => ({
+          ...data,
+          draftDate: data.draftDate ? new Date(data.draftDate) : null
+        }));
     },
     enabled: !!hash,
     staleTime: 5 * 60 * 1000, // 5 minutes
-    refetchInterval: 10 * 60 * 1000, // 10 minutes
+    refetchInterval: 10 * 60 * 1000 // 10 minutes
   });
 }

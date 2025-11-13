@@ -11,10 +11,7 @@ export type Castaway = {
 };
 
 export type EnrichedCastaway = Castaway & {
-  tribe: {
-    name: string;
-    color: string;
-  } | null;
+  tribe: { name: string; color: string } | null;
   eliminatedEpisode: number | null;
 };
 

@@ -3,17 +3,14 @@ import { useFetch } from '~/hooks/helpers/useFetch';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
 import { useForm } from 'react-hook-form';
-import {
-  LeagueDetailsUpdateZod,
-  type LeagueDetailsUpdate,
-} from '~/types/leagues';
+import { LeagueDetailsUpdateZod, type LeagueDetailsUpdate } from '~/types/leagues';
 import { useEffect, useMemo } from 'react';
 import { Alert } from 'react-native';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLocalSearchParams } from 'expo-router';
 import { useSearchableSelect } from '~/hooks/ui/useSearchableSelect';
 
-export function useLeagueSettings(onSubmit?: () => void) {
+export function useLeagueDetails(onSubmit?: () => void) {
   const putData = useFetch('PUT');
   const queryClient = useQueryClient();
   const { hash } = useLocalSearchParams<{ hash: string }>();
@@ -21,21 +18,20 @@ export function useLeagueSettings(onSubmit?: () => void) {
   const { data: leagueMembers } = useLeagueMembers();
   const adminsModal = useSearchableSelect<number>();
 
-  const membersList = useMemo(() =>
-    leagueMembers?.members
-      .map(member => ({
-        value: member.memberId,
-        label: member.displayName,
-        role: member.role,
-      }))
-      .filter(member =>
-        member.value !== leagueMembers.loggedIn?.memberId && member.role !== 'Owner') ?? [],
-    [leagueMembers]);
+  const membersList = useMemo(
+    () =>
+      leagueMembers?.members
+        .map(member => ({ value: member.memberId, label: member.displayName, role: member.role }))
+        .filter(
+          member => member.value !== leagueMembers.loggedIn?.memberId && member.role !== 'Owner'
+        ) ?? [],
+    [leagueMembers]
+  );
 
   const reactForm = useForm<LeagueDetailsUpdate>({
     defaultValues: {
       name: league?.name ?? '',
-      admins: membersList.filter(m => m.role === 'Admin').map(m => m.value) ?? [],
+      admins: membersList.filter(m => m.role === 'Admin').map(m => m.value) ?? []
     },
     resolver: zodResolver(LeagueDetailsUpdateZod)
   });
@@ -50,7 +46,7 @@ export function useLeagueSettings(onSubmit?: () => void) {
     }
   }, [league, membersList, reactForm]);
 
-  const handleSubmit = reactForm.handleSubmit(async (data) => {
+  const handleSubmit = reactForm.handleSubmit(async data => {
     if (!league || !hash) {
       Alert.alert('Error', 'League data not available');
       return;
@@ -58,19 +54,13 @@ export function useLeagueSettings(onSubmit?: () => void) {
 
     try {
       const response = await putData(`/api/leagues/${hash}/settings`, {
-        body: {
-          name: data.name,
-          admins: data.admins,
-        },
+        body: { name: data.name, admins: data.admins }
       });
 
       if (response.status !== 200) {
         const errorData = await response.json();
         console.error('Error updating league settings:', errorData);
-        Alert.alert(
-          'Error',
-          errorData.message || 'Failed to update league settings'
-        );
+        Alert.alert('Error', errorData.message || 'Failed to update league settings');
         return;
       }
 
@@ -96,16 +86,14 @@ export function useLeagueSettings(onSubmit?: () => void) {
   const resetForm = () => {
     if (league && membersList.length > 0) {
       const adminIds = membersList.filter(m => m.role === 'Admin').map(m => m.value) ?? [];
-      reactForm.reset({
-        name: league.name,
-        admins: adminIds,
-      });
+      reactForm.reset({ name: league.name, admins: adminIds });
     } else {
       reactForm.reset();
     }
   };
 
-  const editable = (!!leagueMembers && leagueMembers.loggedIn?.role === 'Owner') && league?.status !== 'Inactive';
+  const editable =
+    !!leagueMembers && leagueMembers.loggedIn?.role === 'Owner' && league?.status !== 'Inactive';
 
   const selectedAdminNames = membersList
     .filter(member => selectedAdmins.includes(member.value))
@@ -120,6 +108,6 @@ export function useLeagueSettings(onSubmit?: () => void) {
     membersList,
     selectedAdmins,
     selectedAdminNames,
-    adminsModal,
+    adminsModal
   };
 }

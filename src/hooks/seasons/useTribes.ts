@@ -26,6 +26,6 @@ export function useTribes(seasonId: number | null) {
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
-    enabled: !!seasonId,
+    enabled: !!seasonId
   });
 }

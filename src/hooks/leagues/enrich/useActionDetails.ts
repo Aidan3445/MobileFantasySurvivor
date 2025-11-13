@@ -26,8 +26,7 @@ export function useLeagueActionDetails(overrideHash?: string) {
   const { data: leagueMembers } = useLeagueMembers(overrideHash);
   const { data: selectionTimeline } = useSelectionTimeline(overrideHash);
   const { data: predictionTiming } = usePredictionTiming(overrideHash);
-  const { customPredictionsMade, basePredictionsMade } =
-    usePredictionsMade(overrideHash);
+  const { customPredictionsMade, basePredictionsMade } = usePredictionsMade(overrideHash);
 
   const { data: keyEpisodes } = useKeyEpisodes(league?.seasonId ?? null);
 
@@ -36,10 +35,7 @@ export function useLeagueActionDetails(overrideHash?: string) {
     [keyEpisodes?.nextEpisode?.episodeNumber]
   );
 
-  const tribeMembers = useEnrichedTribeMembers(
-    league?.seasonId ?? null,
-    nextEpisode
-  );
+  const tribeMembers = useEnrichedTribeMembers(league?.seasonId ?? null, nextEpisode);
   const { data: eliminations } = useEliminations(league?.seasonId ?? null);
 
   const eliminationLookup = useMemo(() => {
@@ -65,12 +61,9 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
     Object.values(tribeMembers).forEach(({ castaways }) => {
       castaways.forEach(castaway => {
-        const selection =
-          selectionTimeline.castawayMembers[castaway.castawayId]?.[nextEpisode];
+        const selection = selectionTimeline.castawayMembers[castaway.castawayId]?.[nextEpisode];
         if (selection) {
-          const member = leagueMembers.members.find(
-            m => m.memberId === selection
-          );
+          const member = leagueMembers.members.find(m => m.memberId === selection);
           if (member) {
             picks.push({ member, castawayFullName: castaway.fullName });
           }
@@ -83,13 +76,13 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
   const actionDetails = useMemo(() => {
     if (
-      !league ||
-      !rules ||
-      !selectionTimeline ||
-      !nextEpisode ||
-      !tribeMembers ||
-      !leagueMembers ||
-      !eliminationLookup
+      !league
+      || !rules
+      || !selectionTimeline
+      || !nextEpisode
+      || !tribeMembers
+      || !leagueMembers
+      || !eliminationLookup
     ) {
       return undefined;
     }
@@ -98,31 +91,23 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
     Object.entries(tribeMembers).forEach(([tribeId, { tribe, castaways }]) => {
       const selections = castaways.map(castaway => {
-        const selection =
-          selectionTimeline.castawayMembers[castaway.castawayId]?.[nextEpisode];
-        const eliminatedEpisode =
-          eliminationLookup.get(castaway.castawayId) ?? null;
+        const selection = selectionTimeline.castawayMembers[castaway.castawayId]?.[nextEpisode];
+        const eliminatedEpisode = eliminationLookup.get(castaway.castawayId) ?? null;
 
         const castawayWithTribe: EnrichedCastaway = {
           ...castaway,
           tribe: { name: tribe.tribeName, color: tribe.tribeColor },
-          eliminatedEpisode,
+          eliminatedEpisode
         };
 
         const member = selection
           ? (leagueMembers.members.find(m => m.memberId === selection) ?? null)
           : null;
 
-        return {
-          castaway: castawayWithTribe,
-          member,
-        };
+        return { castaway: castawayWithTribe, member };
       });
 
-      details[Number(tribeId)] = {
-        tribe,
-        castaways: selections,
-      };
+      details[Number(tribeId)] = { tribe, castaways: selections };
     });
 
     return details;
@@ -133,25 +118,19 @@ export function useLeagueActionDetails(overrideHash?: string) {
     nextEpisode,
     tribeMembers,
     leagueMembers,
-    eliminationLookup,
+    eliminationLookup
   ]);
 
   const router = useRouter();
   const [dialogOpen, setDialogOpen] = useState<boolean>();
 
   const { onTheClock, onDeck, onTheClockIndex } = useMemo(() => {
-    if (
-      !leagueMembers?.members ||
-      !selectionTimeline?.memberCastaways ||
-      !nextEpisode
-    ) {
+    if (!leagueMembers?.members || !selectionTimeline?.memberCastaways || !nextEpisode) {
       return { onTheClock: null, onDeck: null, onTheClockIndex: -1 };
     }
 
     const onTheClockIndex = leagueMembers.members.findIndex(
-      member =>
-        selectionTimeline.memberCastaways[member.memberId]?.[nextEpisode] ===
-        undefined
+      member => selectionTimeline.memberCastaways[member.memberId]?.[nextEpisode] === undefined
     );
 
     const onTheClock = leagueMembers.members[onTheClockIndex];
@@ -160,31 +139,20 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
     return {
       onTheClock: onTheClock
-        ? {
-            ...onTheClock,
-            loggedIn: onTheClock.memberId === loggedInId,
-          }
+        ? { ...onTheClock, loggedIn: onTheClock.memberId === loggedInId }
         : null,
-      onDeck: onDeck
-        ? {
-            ...onDeck,
-            loggedIn: onDeck.memberId === loggedInId,
-          }
-        : null,
-      onTheClockIndex: onTheClockIndex >= 0 ? onTheClockIndex : -1,
+      onDeck: onDeck ? { ...onDeck, loggedIn: onDeck.memberId === loggedInId } : null,
+      onTheClockIndex: onTheClockIndex >= 0 ? onTheClockIndex : -1
     };
   }, [
     leagueMembers?.members,
     leagueMembers?.loggedIn?.memberId,
     selectionTimeline?.memberCastaways,
-    nextEpisode,
+    nextEpisode
   ]);
 
   useEffect(() => {
-    if (
-      (!!onTheClock?.loggedIn || !!onDeck?.loggedIn) &&
-      dialogOpen === undefined
-    ) {
+    if ((!!onTheClock?.loggedIn || !!onDeck?.loggedIn) && dialogOpen === undefined) {
       setDialogOpen(true);
     }
   }, [dialogOpen, onTheClock?.loggedIn, onDeck?.loggedIn]);
@@ -216,7 +184,7 @@ export function useLeagueActionDetails(overrideHash?: string) {
     if (!nextEpisode) return [];
     return [
       ...(basePredictionsMade?.[nextEpisode] ?? []),
-      ...(customPredictionsMade?.[nextEpisode] ?? []),
+      ...(customPredictionsMade?.[nextEpisode] ?? [])
     ];
   }, [nextEpisode, basePredictionsMade, customPredictionsMade]);
 
@@ -227,8 +195,7 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
     const filteredCustom =
       rules.custom?.filter(
-        rule =>
-          rule.eventType === 'Direct' || rule.timing.some(t => timingSet.has(t))
+        rule => rule.eventType === 'Direct' || rule.timing.some(t => timingSet.has(t))
       ) ?? [];
 
     if (rules.basePrediction) {
@@ -236,24 +203,14 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
       Object.entries(filteredBase).forEach(([eventName, rule]) => {
         if (rule.enabled && !rule.timing.some(t => timingSet.has(t))) {
-          filteredBase[eventName as ScoringBaseEventName] = {
-            ...rule,
-            enabled: false,
-          };
+          filteredBase[eventName as ScoringBaseEventName] = { ...rule, enabled: false };
         }
       });
 
-      return {
-        ...rules,
-        custom: filteredCustom,
-        basePrediction: filteredBase,
-      };
+      return { ...rules, custom: filteredCustom, basePrediction: filteredBase };
     }
 
-    return {
-      ...rules,
-      custom: filteredCustom,
-    };
+    return { ...rules, custom: filteredCustom };
   }, [rules, predictionTiming]);
 
   return {
@@ -269,6 +226,6 @@ export function useLeagueActionDetails(overrideHash?: string) {
     selectionTimeline,
     keyEpisodes,
     dialogOpen,
-    setDialogOpen,
+    setDialogOpen
   };
 }

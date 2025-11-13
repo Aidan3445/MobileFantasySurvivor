@@ -15,17 +15,10 @@ interface EventFieldProps {
   disabled?: boolean;
 }
 
-export default function EventField({
-  reactForm,
-  eventName,
-  fieldPath,
-  disabled,
-}: EventFieldProps) {
+export default function EventField({ reactForm, eventName, fieldPath, disabled }: EventFieldProps) {
   const currentValue = reactForm.watch(fieldPath);
   const hasItalicDescription =
-    BaseEventDescriptions.italics?.[
-      eventName as keyof typeof BaseEventDescriptions.italics
-    ];
+    BaseEventDescriptions.italics?.[eventName as keyof typeof BaseEventDescriptions.italics];
 
   return (
     <View className='gap-1 rounded-lg bg-accent px-2 pb-1'>
@@ -40,8 +33,7 @@ export default function EventField({
                 'mr-1 text-lg font-bold',
                 currentValue <= 0 ? 'text-destructive' : 'text-positive',
                 currentValue === 0 && 'text-neutral'
-              )}
-            >
+              )}>
               {currentValue}
             </Text>
             <Flame
@@ -79,16 +71,9 @@ export default function EventField({
 
       <View>
         <Text className='text-sm leading-none text-muted-foreground'>
-          {
-            BaseEventDescriptions.main[
-              eventName as keyof typeof BaseEventDescriptions.main
-            ]
-          }
+          {BaseEventDescriptions.main[eventName as keyof typeof BaseEventDescriptions.main]}
           {hasItalicDescription && (
-            <Text className='text-xs italic text-muted-foreground'>
-              {' '}
-              {hasItalicDescription}
-            </Text>
+            <Text className='text-xs italic text-muted-foreground'> {hasItalicDescription}</Text>
           )}
         </Text>
       </View>

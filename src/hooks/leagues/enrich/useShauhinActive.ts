@@ -14,11 +14,7 @@ export function useShauhinActive(overrideHash?: string) {
   const { data: keyEpisodes } = useKeyEpisodes(league?.seasonId ?? null);
 
   const shauhinActive = useMemo(() => {
-    if (
-      !league ||
-      !keyEpisodes?.previousEpisode ||
-      !rules?.shauhinMode?.enabled
-    ) {
+    if (!league || !keyEpisodes?.previousEpisode || !rules?.shauhinMode?.enabled) {
       return false;
     }
 
@@ -34,15 +30,11 @@ export function useShauhinActive(overrideHash?: string) {
       case 'After Premiere':
         return prevEpisodeNumber >= 1;
       case 'After Merge':
-        return (
-          mergeEpisodeNumber !== null && prevEpisodeNumber >= mergeEpisodeNumber
-        );
+        return mergeEpisodeNumber !== null && prevEpisodeNumber >= mergeEpisodeNumber;
       case 'Before Finale':
         return keyEpisodes.nextEpisode?.isFinale === true;
       case 'Custom':
-        return (
-          prevEpisodeNumber >= (rules.shauhinMode.customStartWeek ?? Infinity)
-        );
+        return prevEpisodeNumber >= (rules.shauhinMode.customStartWeek ?? Infinity);
       default:
         return false;
     }
@@ -53,7 +45,7 @@ export function useShauhinActive(overrideHash?: string) {
     keyEpisodes?.nextEpisode?.isFinale,
     rules?.shauhinMode?.enabled,
     rules?.shauhinMode?.startWeek,
-    rules?.shauhinMode?.customStartWeek,
+    rules?.shauhinMode?.customStartWeek
   ]);
 
   return shauhinActive;

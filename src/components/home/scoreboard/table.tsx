@@ -21,7 +21,7 @@ export default function ScoreboardTable({
   scoreData,
   someHidden,
   overrideBaseRules,
-  className,
+  className
 }: ScoreboardTableProps) {
   const [selectedSeasonIndex, setSelectedSeasonIndex] = useState(0);
 
@@ -39,24 +39,15 @@ export default function ScoreboardTable({
       undefined,
       undefined,
       overrideBaseRules
-        ? {
-            base: overrideBaseRules,
-            basePrediction: null,
-            custom: [],
-            shauhinMode: null,
-          }
+        ? { base: overrideBaseRules, basePrediction: null, custom: [], shauhinMode: null }
         : null
     ).scores;
 
     const sortedCastaways = Object.entries(castawayScores)
       .sort(
-        ([_, scoresA], [__, scoresB]) =>
-          (scoresB.slice().pop() ?? 0) - (scoresA.slice().pop() ?? 0)
+        ([_, scoresA], [__, scoresB]) => (scoresB.slice().pop() ?? 0) - (scoresA.slice().pop() ?? 0)
       )
-      .map(
-        ([castawayId, scores]) =>
-          [Number(castawayId), scores] as [number, number[]]
-      );
+      .map(([castawayId, scores]) => [Number(castawayId), scores] as [number, number[]]);
 
     const castawayColors: Record<string, string> = data.castaways
       .sort(({ fullName: a }, { fullName: b }) => a.length - b.length)
@@ -70,20 +61,14 @@ export default function ScoreboardTable({
 
     const castawaySplitIndex = Math.ceil(sortedCastaways.length / 2);
 
-    return {
-      sortedCastaways,
-      castawayColors,
-      castawaySplitIndex,
-      data,
-    };
+    return { sortedCastaways, castawayColors, castawaySplitIndex, data };
   }, [scoreData, selectedSeasonIndex, overrideBaseRules]);
 
   // Calculate allZero based on selected season data
   const allZero = useMemo(() => {
     return (
-      selectedSeasonData?.sortedCastaways.every(([_, scores]) =>
-        scores.every(score => score === 0)
-      ) ?? true
+      selectedSeasonData?.sortedCastaways.every(([_, scores]) => scores.every(score => score === 0))
+      ?? true
     );
   }, [selectedSeasonData]);
 
@@ -108,9 +93,7 @@ export default function ScoreboardTable({
   if (!selectedSeasonData) {
     return (
       <View className='rounded-xl bg-card p-6'>
-        <Text className='text-center text-muted-foreground'>
-          No seasons available.
-        </Text>
+        <Text className='text-center text-muted-foreground'>No seasons available.</Text>
       </View>
     );
   }
@@ -125,17 +108,17 @@ export default function ScoreboardTable({
                 <Text className='text-center font-medium'>Place</Text>
               </View>
               <View className='w-8 items-center justify-center py-1'>
-                <Flame size={16} className='text-muted-foreground' />
+                <Flame
+                  size={16}
+                  className='text-muted-foreground'
+                />
               </View>
               <View className='flex-1 items-center justify-center py-1'>
                 <Text className='text-center font-medium'>
                   Castaway - {selectedSeasonData.data.season.name}
                 </Text>
                 <SelectSeason
-                  seasons={scoreData.map(s => ({
-                    value: s.season.name,
-                    label: s.season.name,
-                  }))}
+                  seasons={scoreData.map(s => ({ value: s.season.name, label: s.season.name }))}
                   value={selectedSeasonData.data.season.name}
                   setValue={selectSeason}
                   someHidden={someHidden}
@@ -148,10 +131,7 @@ export default function ScoreboardTable({
                 {selectedSeasonData.data.season?.name} Castaways
               </Text>
               <SelectSeason
-                seasons={scoreData.map(s => ({
-                  value: s.season.name,
-                  label: s.season.name,
-                }))}
+                seasons={scoreData.map(s => ({ value: s.season.name, label: s.season.name }))}
                 value={selectedSeasonData.data.season.name}
                 setValue={selectSeason}
                 someHidden={someHidden}

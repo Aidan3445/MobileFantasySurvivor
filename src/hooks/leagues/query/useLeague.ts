@@ -64,6 +64,6 @@ export function useLeague(overrideHash?: string) {
     refetchOnReconnect: query => {
       const data = query.state.data;
       return data?.status === 'Draft' || data?.status === 'Predraft';
-    },
+    }
   });
 }

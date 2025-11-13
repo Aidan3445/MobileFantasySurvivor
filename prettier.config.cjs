@@ -1,14 +1,25 @@
 /** @type {import('prettier').Config & import('prettier-plugin-tailwindcss').PluginOptions} */
 const config = {
-  plugins: ['prettier-plugin-tailwindcss'],
+  arrowParens: 'avoid',
+  bracketSameLine: true,
+  bracketSpacing: true,
+  endOfLine: 'lf',
+  experimentalOperatorPosition: 'start',
+  htmlWhitespaceSensitivity: 'css',
+  insertPragma: false,
+  jsxSingleQuote: true,
+  objectWrap: 'collapse',
+  proseWrap: 'preserve',
+  printWidth: 100,
+  quoteProps: 'consistent',
+  requirePragma: false,
   semi: true,
+  singleAttributePerLine: true,
   singleQuote: true,
   tabWidth: 2,
-  trailingComma: 'es5',
-  printWidth: 80,
-  bracketSpacing: true,
-  arrowParens: 'avoid',
-  endOfLine: 'lf',
+  trailingComma: 'none',
+  useTabs: false,
+  plugins: ['prettier-plugin-tailwindcss']
 };
 
 module.exports = config;

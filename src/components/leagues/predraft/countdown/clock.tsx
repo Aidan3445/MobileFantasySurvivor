@@ -33,7 +33,10 @@ export default function Clock({ endDate, replacedBy }: ClockProps) {
 
   return !timer || timer > 0 ? (
     <View className='w-full flex-row justify-evenly'>
-      <ClockPlace value={days.toString()} label={days === 1 ? 'Day' : 'Days'} />
+      <ClockPlace
+        value={days.toString()}
+        label={days === 1 ? 'Day' : 'Days'}
+      />
       <Text className='text-4xl text-navigation'>:</Text>
       <ClockPlace
         value={hours.toString()}

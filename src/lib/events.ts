@@ -1,8 +1,4 @@
-import {
-  type ScoringBaseEventName,
-  type BaseEventName,
-  type ReferenceType,
-} from '~/types/events';
+import { type ScoringBaseEventName, type BaseEventName, type ReferenceType } from '~/types/events';
 
 export const EventSources = ['Base', 'Custom'] as const;
 export const EventTypes = ['Direct', 'Prediction'] as const;
@@ -22,14 +18,14 @@ export const ScoringBaseEventNames = [
   'finalists',
   'fireWin',
   'soleSurvivor',
-  'elim',
+  'elim'
 ] as const;
 
 export const BaseEventNames = [
   ...ScoringBaseEventNames,
   'noVoteExit',
   'tribeUpdate',
-  'otherNotes',
+  'otherNotes'
 ] as const;
 
 export const BaseEventFullName: Record<BaseEventName, string> = {
@@ -48,7 +44,7 @@ export const BaseEventFullName: Record<BaseEventName, string> = {
   elim: 'Eliminated',
   noVoteExit: 'No Vote Exit',
   tribeUpdate: 'Tribe Update',
-  otherNotes: 'Other Notes',
+  otherNotes: 'Other Notes'
 };
 
 export const PredictionTimings = [
@@ -57,7 +53,7 @@ export const PredictionTimings = [
   'After Merge',
   'Before Finale',
   'Weekly (Premerge only)',
-  'Weekly (Postmerge only)',
+  'Weekly (Postmerge only)'
 ] as const;
 
 export const BaseEventLabelPrefixes: Record<BaseEventName, string> = {
@@ -76,7 +72,7 @@ export const BaseEventLabelPrefixes: Record<BaseEventName, string> = {
   elim: '',
   noVoteExit: '',
   tribeUpdate: '',
-  otherNotes: '',
+  otherNotes: ''
 } as const;
 
 const advList = [
@@ -89,13 +85,10 @@ const advList = [
   'Safety Without Power',
   'Idol Nullifier',
   'Challenge Advantage',
-  'Knowledge is Power',
+  'Knowledge is Power'
 ] as const;
 
-export const BaseEventLabels: Record<
-  BaseEventName,
-  readonly [string, ...string[]]
-> = {
+export const BaseEventLabels: Record<BaseEventName, readonly [string, ...string[]]> = {
   advFound: advList,
   advPlay: [...advList, 'Shot in the Dark'],
   badAdvPlay: [...advList, 'Shot in the Dark'],
@@ -111,7 +104,7 @@ export const BaseEventLabels: Record<
   elim: ['Voted Out', 'Blindside', 'Rock Draw'],
   noVoteExit: ['Med Evacuation', 'Quit', 'Removed'],
   tribeUpdate: ['Starting Tribes', 'Merge Tribe', 'Tribe Swap', 'New Tribes'],
-  otherNotes: ['Other Notes'],
+  otherNotes: ['Other Notes']
 } as const;
 
 export const BaseEventDescriptions: {
@@ -123,51 +116,40 @@ export const BaseEventDescriptions: {
     indivWin: 'Points if your castaway wins an individual immunity challenge',
     indivReward: 'Points if your castaway wins an individual reward challenge',
     tribe1st: 'Points if your castaway’s tribe/team wins a challenge',
-    tribe2nd:
-      'Points if your castaway’s tribe/team comes second in a challenge',
+    tribe2nd: 'Points if your castaway’s tribe/team comes second in a challenge',
     advFound: 'Points if your castaway finds or earns an advantage',
     advPlay: 'Points if your castaway plays an advantage effectively',
-    badAdvPlay:
-      'Points if your castaway plays an advantage poorly or unnecessarily',
-    advElim:
-      'Points if your castaway is eliminated with an advantage in their pocket',
+    badAdvPlay: 'Points if your castaway plays an advantage poorly or unnecessarily',
+    advElim: 'Points if your castaway is eliminated with an advantage in their pocket',
     spokeEpTitle: 'Points if your castaway is quoted in the episode title',
     finalists: 'Points if your castaway makes it to the final tribal council',
     fireWin: 'Points if your castaway wins the fire-making challenge',
     soleSurvivor: 'Points if your castaway wins the season',
-    elim: 'Points if your castaway is eliminated at tribal council',
+    elim: 'Points if your castaway is eliminated at tribal council'
   },
   prediction: {
-    indivWin:
-      'Predict which castaway will win an individual immunity challenge',
-    indivReward:
-      'Predict which castaway will win an individual reward challenge',
+    indivWin: 'Predict which castaway will win an individual immunity challenge',
+    indivReward: 'Predict which castaway will win an individual reward challenge',
     tribe1st: 'Predict which tribe/team will win a challenge',
     tribe2nd: 'Predict which tribe/team will come second in a challenge',
     advFound: 'Predict which castaway will find or earn an advantage',
     advPlay: 'Predict which castaway will play an advantage effectively',
-    badAdvPlay:
-      'Predict which castaway will play an advantage poorly or unnecessarily',
-    advElim:
-      'Predict which castaway will be eliminated with an advantage in their pocket',
+    badAdvPlay: 'Predict which castaway will play an advantage poorly or unnecessarily',
+    advElim: 'Predict which castaway will be eliminated with an advantage in their pocket',
     spokeEpTitle: 'Predict which castaway will be quoted in the episode title',
-    finalists:
-      'Predict which castaway will make it to the final tribal council',
+    finalists: 'Predict which castaway will make it to the final tribal council',
     fireWin: 'Predict which castaway will win the fire-making challenge',
     soleSurvivor: 'Predict which castaway will win the season',
-    elim: 'Predict which castaway will be voted out at tribal council',
+    elim: 'Predict which castaway will be voted out at tribal council'
   },
   italics: {
     tribe2nd: '(only applies for challenges with 3+ tribes/teams)',
     badAdvPlay: '(usually negative)',
-    advElim: '(usually negative)',
-  },
+    advElim: '(usually negative)'
+  }
 };
 
-export const BasePredictionReferenceTypes: Record<
-  ScoringBaseEventName,
-  ReferenceType[]
-> = {
+export const BasePredictionReferenceTypes: Record<ScoringBaseEventName, ReferenceType[]> = {
   advFound: ['Castaway'],
   advPlay: ['Castaway'],
   badAdvPlay: ['Castaway'],
@@ -180,5 +162,5 @@ export const BasePredictionReferenceTypes: Record<
   finalists: ['Castaway'],
   fireWin: ['Castaway'],
   soleSurvivor: ['Castaway'],
-  elim: ['Castaway'],
+  elim: ['Castaway']
 } as const;

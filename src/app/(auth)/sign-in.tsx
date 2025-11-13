@@ -17,10 +17,7 @@ export default function Page() {
 
     // Start the sign-in process using the email and password provided
     try {
-      const signInAttempt = await signIn.create({
-        identifier: emailAddress,
-        password,
-      });
+      const signInAttempt = await signIn.create({ identifier: emailAddress, password });
 
       // If sign-in process is complete, set the created session as active
       // and redirect the user
@@ -44,9 +41,7 @@ export default function Page() {
       <Header />
       <View className='transition-keyboard rounded-3xl bg-white p-8 shadow-lg focus:-translate-y-96'>
         <View className='mb-8 items-center'>
-          <Text className='mb-2 text-3xl font-bold text-primary'>
-            Welcome Back!
-          </Text>
+          <Text className='mb-2 text-3xl font-bold text-primary'>Welcome Back!</Text>
           <Text className='text-lg text-secondary'>Sign in to continue</Text>
         </View>
         <View className='gap-y-2'>
@@ -68,21 +63,14 @@ export default function Page() {
           />
           <TouchableOpacity
             onPress={onSignInPress}
-            className='mt-6 rounded-2xl bg-primary py-4 shadow-sm'
-          >
-            <Text className='text-center text-lg font-semibold text-white'>
-              Continue
-            </Text>
+            className='mt-6 rounded-2xl bg-primary py-4 shadow-sm'>
+            <Text className='text-center text-lg font-semibold text-white'>Continue</Text>
           </TouchableOpacity>
         </View>
         <View className='mt-8 flex-row items-center justify-center'>
-          <Text className='text-base text-secondary'>
-            Don't have an account?{' '}
-          </Text>
+          <Text className='text-base text-secondary'>Don't have an account? </Text>
           <Link href='/sign-up'>
-            <Text className='text-base font-semibold text-primary'>
-              Sign up
-            </Text>
+            <Text className='text-base font-semibold text-primary'>Sign up</Text>
           </Link>
         </View>
       </View>

@@ -14,7 +14,7 @@ export function useHomeRefresh() {
     try {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['leagues'] }),
-        queryClient.invalidateQueries({ queryKey: ['seasons'] }),
+        queryClient.invalidateQueries({ queryKey: ['seasons'] })
       ]);
     } finally {
       setRefreshing(false);

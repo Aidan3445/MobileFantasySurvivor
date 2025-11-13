@@ -23,7 +23,7 @@ export default function SignUpScreen() {
       await signUp.create({
         username: username.trim(),
         emailAddress: emailAddress.trim().toLowerCase(),
-        password: password.trim(),
+        password: password.trim()
       });
 
       // Send user an email with verification code
@@ -45,9 +45,7 @@ export default function SignUpScreen() {
 
     try {
       // Use the code the user provided to attempt verification
-      const signUpAttempt = await signUp.attemptEmailAddressVerification({
-        code,
-      });
+      const signUpAttempt = await signUp.attemptEmailAddressVerification({ code });
 
       // If verification was completed, set the session to active
       // and redirect the user
@@ -72,9 +70,7 @@ export default function SignUpScreen() {
       <View className='flex-1 justify-center bg-background px-6'>
         <View className='transition-keyboard rounded-3xl bg-white p-8 shadow-lg focus:-translate-y-40'>
           <View className='mb-8 items-center'>
-            <Text className='mb-2 text-3xl font-bold text-primary'>
-              Check Your Email
-            </Text>
+            <Text className='mb-2 text-3xl font-bold text-primary'>Check Your Email</Text>
             <Text className='text-center text-lg text-secondary'>
               We sent you a verification code
             </Text>
@@ -91,11 +87,8 @@ export default function SignUpScreen() {
 
             <TouchableOpacity
               onPress={onVerifyPress}
-              className='mt-6 rounded-2xl bg-primary py-4 shadow-sm'
-            >
-              <Text className='text-center text-lg font-semibold text-white'>
-                Verify
-              </Text>
+              className='mt-6 rounded-2xl bg-primary py-4 shadow-sm'>
+              <Text className='text-center text-lg font-semibold text-white'>Verify</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -136,21 +129,14 @@ export default function SignUpScreen() {
           />
           <TouchableOpacity
             onPress={onSignUpPress}
-            className='mt-6 rounded-2xl bg-primary py-4 shadow-sm'
-          >
-            <Text className='text-center text-lg font-semibold text-white'>
-              Continue
-            </Text>
+            className='mt-6 rounded-2xl bg-primary py-4 shadow-sm'>
+            <Text className='text-center text-lg font-semibold text-white'>Continue</Text>
           </TouchableOpacity>
         </View>
         <View className='mt-8 flex-row items-center justify-center'>
-          <Text className='text-base text-secondary'>
-            Already have an account?{' '}
-          </Text>
+          <Text className='text-base text-secondary'>Already have an account? </Text>
           <Link href='../'>
-            <Text className='text-base font-semibold text-primary'>
-              Sign in
-            </Text>
+            <Text className='text-base font-semibold text-primary'>Sign in</Text>
           </Link>
         </View>
       </View>

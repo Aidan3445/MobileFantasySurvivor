@@ -28,10 +28,12 @@ export default function SearchableSelect<T extends string | number>({
   onSearchChange,
   placeholder = 'Search...',
   emptyMessage = 'No options found.',
-  footerComponent,
+  footerComponent
 }: SearchableSelectProps<T>) {
   return (
-    <Modal isVisible={isVisible} onClose={onClose}>
+    <Modal
+      isVisible={isVisible}
+      onClose={onClose}>
       <TextInput
         className='rounded border border-primary px-3 py-2 placeholder:text-muted-foreground'
         placeholder={placeholder}
@@ -49,8 +51,7 @@ export default function SearchableSelect<T extends string | number>({
             onPress={() => {
               onSelect(item.value);
               onClose();
-            }}
-          >
+            }}>
             <Check
               size={16}
               color={selectedValue === item.value ? 'black' : 'transparent'}
@@ -59,9 +60,7 @@ export default function SearchableSelect<T extends string | number>({
           </Button>
         )}
         ListEmptyComponent={
-          <Text className='py-4 text-center text-muted-foreground'>
-            {emptyMessage}
-          </Text>
+          <Text className='py-4 text-center text-muted-foreground'>{emptyMessage}</Text>
         }
         ListFooterComponent={footerComponent}
       />

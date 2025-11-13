@@ -8,12 +8,12 @@ import SurvivalStreaks from '~/components/leagues/customization/settings/surviva
 import { DraftCountdown } from '~/components/leagues/predraft/countdown/view';
 import PredraftHeader from '~/components/leagues/predraft/header/view';
 import InviteLink from '~/components/leagues/predraft/inviteLink/view';
-import DraftOrder from '~/components/leagues/predraft/order/view';
-import { usePredraftRefresh } from '~/hooks/helpers/refresh/usePredraftRefresh';
+import DraftOrder from '~/components/leagues/customization/order/view';
+import { useLeagueRefresh } from '~/hooks/helpers/refresh/useLeagueRefresh';
 const LogoImage = require('~/assets/Logo.png');
 
 export default function PredraftScreen() {
-  const { refreshing, onRefresh } = usePredraftRefresh();
+  const { refreshing, onRefresh } = useLeagueRefresh();
 
   return (
     <View className='flex-1 items-center justify-center bg-background'>
@@ -22,9 +22,11 @@ export default function PredraftScreen() {
         className='w-full pt-28'
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }>
         <View className='gap-y-4 px-2 pb-4'>
           {refreshing && (
             <View className='-mt-20 animate-spin items-center'>
@@ -39,9 +41,7 @@ export default function PredraftScreen() {
           <DraftCountdown />
           <DraftOrder />
           <View className='items-center justify-center rounded-lg bg-primary p-4'>
-            <Text className='text-center text-2xl font-bold text-white'>
-              League Scoring
-            </Text>
+            <Text className='text-center text-2xl font-bold text-white'>League Scoring</Text>
           </View>
           <SurvivalStreaks />
           <BaseEventRules />

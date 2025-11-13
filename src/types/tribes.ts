@@ -5,10 +5,7 @@ export type Tribe = {
   seasonId: number | null;
 };
 
-export type TribeInsert = {
-  tribeName: string;
-  tribeColor: string;
-};
+export type TribeInsert = { tribeName: string; tribeColor: string };
 
 /**
  * Record<episodeNumber, Record<tribeId, castawayId[]>>

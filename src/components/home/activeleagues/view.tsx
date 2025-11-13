@@ -16,18 +16,45 @@ export default function ActiveLeagues() {
   const { props, progressProps, setCarouselData } = useCarousel(leagues);
 
   useEffect(() => {
-    setCarouselData(leagues ?? []);
+    const currentLeagues = leagues?.filter(({ league }) =>
+      league.status !== 'Inactive'
+    ).sort((a, b) => {
+      // sort order: Drafting, Active, Predraft. (inactive for typing but those are filtered out)
+      // break ties by member count descending
+      const statusOrder = { Draft: 0, Active: 1, Predraft: 2, Inactive: 3 };
+      if (statusOrder[a.league.status] !== statusOrder[b.league.status]) {
+        return statusOrder[a.league.status] - statusOrder[b.league.status];
+      }
+      return b.memberCount - a.memberCount;
+    });
+    setCarouselData(currentLeagues ?? []);
   }, [leagues, setCarouselData]);
 
   const carouselHeight = useMemo(() => {
     const maxLeagueMembers =
-      leagues?.reduce((max, league) => Math.max(max, league.memberCount), 0) ??
-      0;
+      leagues?.reduce((max, league) => Math.max(max, league.memberCount), 0) ?? 0;
     if (maxLeagueMembers < MAX_LEAGUE_MEMBERS_HOME_DISPLAY) {
       return Math.max(150, 28 * maxLeagueMembers + 55);
     }
     return 28 * MAX_LEAGUE_MEMBERS_HOME_DISPLAY + 55;
   }, [leagues]);
+
+  if (!props.data || props.data.length === 0) {
+    return (
+      <View className='overflow-hidden rounded-lg bg-card pb-1 mx-2'>
+        <View className='relative items-center'>
+          <Text className='m-4 text-center text-sm font-medium text-muted-foreground'>
+            You are not a member of any active leagues. Join or create a league to get started!
+          </Text>
+          <Button
+            className='absolute bottom-0 right-1 rounded-md bg-white px-2'
+            onPress={() => router.push('/leagues')}>
+            <Text className='text-sm font-semibold text-primary'>View All</Text>
+          </Button>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View className='overflow-hidden rounded-lg bg-card pb-1'>
@@ -43,8 +70,7 @@ export default function ActiveLeagues() {
         />
         <Button
           className='absolute bottom-0 right-1 rounded-md bg-white px-2'
-          onPress={() => router.push('/leagues')}
-        >
+          onPress={() => router.push('/leagues')}>
           <Text className='text-sm font-semibold text-primary'>View All</Text>
         </Button>
       </View>

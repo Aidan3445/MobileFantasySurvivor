@@ -16,19 +16,9 @@
     "jsx": "react-native",
     "incremental": true,
     "baseUrl": ".",
-    "paths": {
-      "~/*": ["./src/*"],
-      "@/*": ["./*"]
-    }
+    "paths": { "~/*": ["./src/*"], "@/*": ["./*"] }
   },
   "extends": "expo/tsconfig.base",
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.js",
-    "**/*.jsx",
-    "global.d.ts",
-    "nativewind-env.d.ts"
-  ],
+  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "global.d.ts", "nativewind-env.d.ts"],
   "exclude": ["node_modules", "babel.config.js", "metro.config.js"]
 }

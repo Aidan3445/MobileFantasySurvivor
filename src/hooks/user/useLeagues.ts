@@ -1,8 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import {
-  type CurrentSelection,
-  type LeagueMember,
-} from '~/types/leagueMembers';
+import { type CurrentSelection, type LeagueMember } from '~/types/leagueMembers';
 import { type League } from '~/types/leagues';
 import { useFetch } from '~/hooks/helpers/useFetch';
 
@@ -12,12 +9,7 @@ import { useFetch } from '~/hooks/helpers/useFetch';
 export function useLeagues() {
   const fetchData = useFetch('GET');
   return useQuery<
-    {
-      league: League;
-      member: LeagueMember;
-      castaway: CurrentSelection;
-      memberCount: number;
-    }[]
+    { league: League; member: LeagueMember; currentSelection: CurrentSelection; memberCount: number }[]
   >({
     queryKey: ['leagues'],
     queryFn: async () => {
@@ -29,7 +21,7 @@ export function useLeagues() {
         leagues: {
           league: League;
           member: LeagueMember;
-          castaway: CurrentSelection;
+          currentSelection: CurrentSelection;
           memberCount: number;
         }[];
       };
@@ -40,6 +32,6 @@ export function useLeagues() {
     refetchOnReconnect: true,
     refetchOnMount: true,
     refetchInterval: false,
-    enabled: true,
+    enabled: true
   });
 }

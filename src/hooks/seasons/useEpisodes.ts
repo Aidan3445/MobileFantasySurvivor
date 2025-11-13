@@ -29,6 +29,6 @@ export function useEpisodes(seasonId: number | null) {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchIntervalInBackground: false,
-    enabled: !!seasonId,
+    enabled: !!seasonId
   });
 }

@@ -32,13 +32,9 @@ export default function CreateLeagueForm({ onSubmit }: CreateLeagueFormProps) {
       name: 'leagueName',
       content: <LeagueName control={reactForm.control} />,
       optional: false,
-      isFirst: true,
+      isFirst: true
     },
-    {
-      name: 'draftDate',
-      content: <DraftDate control={reactForm.control} />,
-      optional: true,
-    },
+    { name: 'draftDate', content: <DraftDate control={reactForm.control} />, optional: true },
     {
       name: 'newMember',
       content: (
@@ -49,8 +45,8 @@ export default function CreateLeagueForm({ onSubmit }: CreateLeagueFormProps) {
         />
       ),
       optional: false,
-      isLast: true,
-    },
+      isLast: true
+    }
   ];
 
   const { props, progressProps, ref } = useCarousel(pages);
@@ -63,24 +59,17 @@ export default function CreateLeagueForm({ onSubmit }: CreateLeagueFormProps) {
         enabled={false}
         renderItem={({ item }) => {
           const buttonDisabled =
-            !item.optional &&
-            !LeagueInsertZod.shape[item.name].safeParse(
-              reactForm.watch(item.name)
-            ).success;
+            !item.optional
+            && !LeagueInsertZod.shape[item.name].safeParse(reactForm.watch(item.name)).success;
           const fieldTouched = reactForm.formState.touchedFields[item.name];
           return (
             <View className='flex-1'>
               {item.content}
               <View className='w-90p relative items-center self-center'>
                 <Button
-                  onPress={
-                    item.isLast ? handleSubmit : () => ref.current?.next()
-                  }
+                  onPress={item.isLast ? handleSubmit : () => ref.current?.next()}
                   disabled={buttonDisabled}
-                  className={cn(
-                    'absolute bottom-4 w-1/2 rounded-md bg-primary px-4 py-2'
-                  )}
-                >
+                  className={cn('absolute bottom-4 w-1/2 rounded-md bg-primary px-4 py-2')}>
                   <Text className='text-center font-semibold text-white'>
                     {item.isLast
                       ? 'Create League'
@@ -97,8 +86,7 @@ export default function CreateLeagueForm({ onSubmit }: CreateLeagueFormProps) {
                   className={cn(
                     'absolute bottom-2 left-0 p-4 pr-12',
                     !item.isFirst ? 'opacity-100' : 'opacity-0'
-                  )}
-                >
+                  )}>
                   <Text className='text-center font-semibold text-muted-foreground'>
                     <ArrowLeft size={16} />
                   </Text>

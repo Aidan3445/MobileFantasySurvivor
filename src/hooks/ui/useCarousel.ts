@@ -12,30 +12,30 @@ export function useCarousel<T>(data: T[] = []) {
   const ref = useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
 
-  const onPressPagination = useCallback((index: number) => {
-    ref.current?.scrollTo({
-      /**
-       * Calculate the difference between the current index and the target index
-       * to ensure that the carousel scrolls to the nearest index
-       */
-      count: index - progress.value,
-      animated: true,
-    });
-  }, [progress]);
+  const onPressPagination = useCallback(
+    (index: number) => {
+      ref.current?.scrollTo({
+        /**
+         * Calculate the difference between the current index and the target index
+         * to ensure that the carousel scrolls to the nearest index
+         */
+        count: index - progress.value,
+        animated: true
+      });
+    },
+    [progress]
+  );
 
   const props = {
     ref,
     data: carouselData,
     progress,
     onProgressChange: progress,
-    width: PAGE_WIDTH - 12,
+    width: PAGE_WIDTH - 12
   };
-  const memoizedSetCarouselData = useCallback((newData: T[]) => {
-    setCarouselData(newData);
-  }, []);
 
   return {
-    setCarouselData: memoizedSetCarouselData,
+    setCarouselData,
     ref,
     progress,
     onPressPagination,
@@ -47,7 +47,7 @@ export function useCarousel<T>(data: T[] = []) {
       activeDotStyle: { backgroundColor: colors.primary, borderRadius: 50 },
       containerStyle: { gap: 5 },
       onPressPagination,
-      ...props,
-    },
+      ...props
+    }
   };
 }

@@ -16,13 +16,11 @@ export function useLeagueColors(overrideHash?: string) {
         console.error('Error fetching used colors:', response.statusText);
         return [];
       }
-      const { usedColors } = (await response.json()) as {
-        usedColors: string[];
-      };
+      const { usedColors } = (await response.json()) as { usedColors: string[] };
       return usedColors;
     },
     enabled: !!hash,
     staleTime: Infinity,
-    gcTime: Infinity,
+    gcTime: Infinity
   });
 }

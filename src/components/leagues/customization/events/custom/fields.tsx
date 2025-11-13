@@ -8,11 +8,7 @@ import SearchableMultiSelect from '~/components/common/searchableMultiSelect';
 import SearchableSelect from '~/components/common/searchableSelect';
 import { useSearchableSelect } from '~/hooks/ui/useSearchableSelect';
 import { cn } from '~/lib/utils';
-import {
-  type EventType,
-  type PredictionTiming,
-  type ReferenceType,
-} from '~/types/events';
+import { type EventType, type PredictionTiming, type ReferenceType } from '~/types/events';
 
 interface CustomEventFieldsProps {
   reactForm: UseFormReturn<CustomEventRuleInsert>;
@@ -21,25 +17,16 @@ interface CustomEventFieldsProps {
 
 export default function CustomEventFields({
   reactForm,
-  predictionDefault,
+  predictionDefault
 }: CustomEventFieldsProps) {
   const [isPrediction, setIsPrediction] = useState(predictionDefault ?? false);
   const typeModal = useSearchableSelect<EventType>();
   const referenceModal = useSearchableSelect<ReferenceType>();
   const timingModal = useSearchableSelect<PredictionTiming>();
 
-  const eventTypeOptions = EventTypes.map(type => ({
-    value: type,
-    label: type,
-  }));
-  const referenceTypeOptions = ReferenceTypes.map(type => ({
-    value: type,
-    label: type,
-  }));
-  const timingOptions = PredictionTimings.map(timing => ({
-    value: timing,
-    label: timing,
-  }));
+  const eventTypeOptions = EventTypes.map(type => ({ value: type, label: type }));
+  const referenceTypeOptions = ReferenceTypes.map(type => ({ value: type, label: type }));
+  const timingOptions = PredictionTimings.map(timing => ({ value: timing, label: timing }));
 
   const selectedEventType = reactForm.watch('eventType');
   const selectedReferences = reactForm.watch('referenceTypes') || [];
@@ -89,8 +76,7 @@ export default function CustomEventFields({
           className={cn(
             'rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
           )}
-          onPress={referenceModal.openModal}
-        >
+          onPress={referenceModal.openModal}>
           <Text className='text-muted-foreground'>
             {selectedReferences.length > 0
               ? selectedReferences.join(', ')
@@ -139,8 +125,7 @@ export default function CustomEventFields({
             className={cn(
               'rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
             )}
-            onPress={typeModal.openModal}
-          >
+            onPress={typeModal.openModal}>
             <Text className='text-muted-foreground'>
               {selectedEventType || 'Select event type'}
             </Text>
@@ -168,12 +153,9 @@ export default function CustomEventFields({
             className={cn(
               'rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
             )}
-            onPress={timingModal.openModal}
-          >
+            onPress={timingModal.openModal}>
             <Text className='text-muted-foreground'>
-              {selectedTimings.length > 0
-                ? selectedTimings.join(', ')
-                : 'Select prediction timing'}
+              {selectedTimings.length > 0 ? selectedTimings.join(', ') : 'Select prediction timing'}
             </Text>
           </Button>
           <Controller

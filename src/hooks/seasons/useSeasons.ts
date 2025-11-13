@@ -13,9 +13,7 @@ export function useSeasons(includeInactive: boolean) {
   return useQuery<Season[]>({
     queryKey: ['seasons', includeInactive],
     queryFn: async () => {
-      const res = await fetchData(
-        `/api/seasons/seasons?includeInactive=${includeInactive}`
-      );
+      const res = await fetchData(`/api/seasons/seasons?includeInactive=${includeInactive}`);
       if (!res.ok) {
         throw new Error('Failed to fetch seasons data');
       }
@@ -23,11 +21,11 @@ export function useSeasons(includeInactive: boolean) {
       return seasons;
     },
     staleTime: Infinity,
-    gcTime: 30 * 24 * 60 * 60 * 1000, // 30 days
+    gcTime: 24 * 60 * 60 * 1000, // 24 hours
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     refetchInterval: false,
-    enabled: true,
+    enabled: true
   });
 }

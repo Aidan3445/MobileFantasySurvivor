@@ -1,8 +1,5 @@
 import tailwindConfig from '@/tailwind.config.cjs';
-export const colors = tailwindConfig.theme!.extend!.colors! as Record<
-  string,
-  string
->;
+export const colors = tailwindConfig.theme!.extend!.colors! as Record<string, string>;
 
 export const twentyColors = [
   '#fc0509',
@@ -24,7 +21,7 @@ export const twentyColors = [
   '#cd04f9',
   '#7a05fc',
   '#050afc',
-  '#05bafc',
+  '#05bafc'
 ];
 
 export const newtwentyColors = [
@@ -47,5 +44,5 @@ export const newtwentyColors = [
   '#fa8072',
   '#98fb98',
   '#87cefa',
-  '#ffdab9',
+  '#ffdab9'
 ];

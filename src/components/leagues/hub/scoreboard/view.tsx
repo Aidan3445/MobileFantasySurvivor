@@ -10,17 +10,13 @@ interface ScoreboardProps {
   className?: string;
 }
 
-export default function Scoreboard({
-  overrideHash,
-  maxRows,
-  className,
-}: ScoreboardProps = {}) {
+export default function Scoreboard({ overrideHash, maxRows, className }: ScoreboardProps = {}) {
   const {
     sortedMemberScores,
     loggedInIndex,
     //leagueSettings,
     selectionTimeline,
-    castaways,
+    castaways
     // currentStreaks
   } = useLeagueData(overrideHash);
 
@@ -31,7 +27,10 @@ export default function Scoreboard({
           <Text className='text-center font-medium'>Place</Text>
         </View>
         <View className='w-8 items-center justify-center'>
-          <Flame size={16} className='text-muted-foreground' />
+          <Flame
+            size={16}
+            className='text-muted-foreground'
+          />
         </View>
         <View className='flex-1 items-center justify-center'>
           <Text className='text-center font-medium'>Member</Text>
@@ -44,17 +43,13 @@ export default function Scoreboard({
       <View>
         {sortedMemberScores.map(({ member, scores }, index) => {
           if (
-            maxRows &&
-            index !== loggedInIndex &&
-            (loggedInIndex >= maxRows ? index >= maxRows - 1 : index >= maxRows)
+            maxRows
+            && index !== loggedInIndex
+            && (loggedInIndex >= maxRows ? index >= maxRows - 1 : index >= maxRows)
           )
             return null;
 
-          const castawayId = selectionTimeline?.memberCastaways?.[
-            member.memberId
-          ]
-            ?.slice()
-            .pop();
+          const castawayId = selectionTimeline?.memberCastaways?.[member.memberId]?.slice().pop();
           const castaway =
             castawayId !== undefined
               ? castaways?.find(c => c.castawayId === castawayId)

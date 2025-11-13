@@ -8,7 +8,7 @@ import { colors } from '~/lib/colors';
 import {
   type CustomEventRule,
   type CustomEventRuleInsert,
-  CustomEventRuleInsertZod,
+  CustomEventRuleInsertZod
 } from '~/types/leagues';
 import CustomEventModal from '~/components/leagues/customization/events/custom/modal';
 
@@ -25,13 +25,13 @@ export default function CustomEventCard({
   locked,
   onUpdate,
   onDelete,
-  leagueMembers,
+  leagueMembers
 }: CustomEventCardProps) {
   const [isEditing, setIsEditing] = useState(false);
 
   const reactForm = useForm<CustomEventRuleInsert>({
     defaultValues: rule,
-    resolver: zodResolver(CustomEventRuleInsertZod),
+    resolver: zodResolver(CustomEventRuleInsertZod)
   });
 
   const handleSubmit = async () => {
@@ -41,25 +41,21 @@ export default function CustomEventCard({
   };
 
   const handleDelete = () => {
-    Alert.alert(
-      'Delete Event',
-      `Are you sure you want to delete "${rule.eventName}"?`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: () => void onDelete(rule.customEventRuleId, rule.eventName),
-        },
-      ]
-    );
+    Alert.alert('Delete Event', `Are you sure you want to delete "${rule.eventName}"?`, [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: () => void onDelete(rule.customEventRuleId, rule.eventName)
+      }
+    ]);
   };
 
   const canEdit = leagueMembers?.loggedIn?.role === 'Owner' && !locked;
 
   return (
     <View className='relative rounded-xl bg-accent p-3'>
-      <View className='mb-2 flex-row items-center justify-between'>
+      <View className='flex-row items-center justify-between'>
         <View className='flex-1 flex-row items-center gap-1'>
           <Text className='text-card-foreground flex-shrink text-lg font-semibold'>
             {rule.eventName}
@@ -70,14 +66,10 @@ export default function CustomEventCard({
               className={cn(
                 'text-md font-medium',
                 rule.points <= 0 ? 'text-destructive' : 'text-positive'
-              )}
-            >
+              )}>
               {rule.points}
             </Text>
-            <Flame
-              size={16}
-              color={rule.points <= 0 ? colors.destructive : colors.positive}
-            />
+            <Flame size={16} color={rule.points <= 0 ? colors.destructive : colors.positive} />
           </View>
         </View>
         {canEdit && (
@@ -92,18 +84,17 @@ export default function CustomEventCard({
         )}
       </View>
       {rule.eventType === 'Prediction' && (
-        <Text className='mb-1 text-xs italic text-muted-foreground'>
+        <Text className='text-xs italic text-muted-foreground'>
           Predictions: {rule.timing.join(', ')}
         </Text>
       )}
-      <Text className='text-sm text-muted-foreground'>{rule.description}</Text>
+      <Text className='text-sm text-muted-foreground line-clamp-2'>{rule.description}</Text>
       <CustomEventModal
         type='Edit'
         isVisible={isEditing}
         onClose={() => setIsEditing(false)}
         onSubmit={handleSubmit}
-        reactForm={reactForm}
-      />
+        reactForm={reactForm} />
     </View>
   );
 }

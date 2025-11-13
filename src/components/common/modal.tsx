@@ -14,7 +14,7 @@ export default function Modal({
   isVisible,
   onClose,
   animationType = 'slide',
-  children,
+  children
 }: ModalProps) {
   return (
     <>
@@ -22,8 +22,7 @@ export default function Modal({
         visible={isVisible}
         transparent
         animationType={animationType}
-        onRequestClose={onClose}
-      >
+        onRequestClose={onClose}>
         <View
           className={cn(
             'absolute bottom-0 left-0 right-0 h-[200%] bg-black/50 transition-opacity',
@@ -32,12 +31,10 @@ export default function Modal({
         />
         <Pressable
           className='flex-1 items-center justify-center'
-          onPress={onClose}
-        >
+          onPress={onClose}>
           <Pressable
             className='max-h-4/5 w-11/12 rounded-lg bg-card p-4'
-            onPress={e => e.stopPropagation()}
-          >
+            onPress={e => e.stopPropagation()}>
             {children}
           </Pressable>
         </Pressable>

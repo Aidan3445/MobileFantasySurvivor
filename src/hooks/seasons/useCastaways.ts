@@ -15,9 +15,7 @@ export function useCastaways(seasonId: number | null) {
     queryFn: async () => {
       if (!seasonId) return [];
 
-      const res = await fetchData(
-        `/api/seasons/castaways?seasonId=${seasonId}`
-      );
+      const res = await fetchData(`/api/seasons/castaways?seasonId=${seasonId}`);
       if (!res.ok) {
         throw new Error('Failed to fetch castaways data');
       }
@@ -29,6 +27,6 @@ export function useCastaways(seasonId: number | null) {
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
-    enabled: !!seasonId,
+    enabled: !!seasonId
   });
 }

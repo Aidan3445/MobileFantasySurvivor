@@ -1,6 +1,6 @@
 import {
   type BaseEventPredictionRules,
-  type BaseEventPredictionRulesSchema,
+  type BaseEventPredictionRulesSchema
 } from '~/types/leagues';
 import { type Eliminations, type PredictionTiming } from '~/types/events';
 import { type TribesTimeline } from '~/types/tribes';
@@ -30,9 +30,7 @@ export function findTribeCastaways(
   const onTribe = new Set(tribeUpdates[1]?.[tribeId] ?? []);
 
   for (let i = 2; i <= episodeNumber; i++) {
-    eliminations[i - 1]?.forEach(castaway =>
-      onTribe.delete(castaway.castawayId)
-    );
+    eliminations[i - 1]?.forEach(castaway => onTribe.delete(castaway.castawayId));
     if (!tribeUpdates[i]) continue;
     Object.entries(tribeUpdates[i]!).forEach(([tribeUpdateId, update]) => {
       const tuid = parseInt(tribeUpdateId, 10);
@@ -59,18 +57,15 @@ export function basePredictionRulesSchemaToObject(
   for (const eventName of ScoringBaseEventNames) {
     // Construct keys for the event based on the event name
     // Lots of TypeScript magic here but it should be safe
-    const enabledKey =
-      `${eventName}Prediction` as keyof BaseEventPredictionRulesSchema;
-    const pointsKey =
-      `${eventName}PredictionPoints` as keyof BaseEventPredictionRulesSchema;
-    const timingKey =
-      `${eventName}PredictionTiming` as keyof BaseEventPredictionRulesSchema;
+    const enabledKey = `${eventName}Prediction` as keyof BaseEventPredictionRulesSchema;
+    const pointsKey = `${eventName}PredictionPoints` as keyof BaseEventPredictionRulesSchema;
+    const timingKey = `${eventName}PredictionTiming` as keyof BaseEventPredictionRulesSchema;
 
     if (schema[enabledKey]) {
       rules[eventName] = {
         enabled: schema[enabledKey] as boolean,
         points: (schema[pointsKey] ?? 0) as number,
-        timing: (schema[timingKey] ?? []) as PredictionTiming[],
+        timing: (schema[timingKey] ?? []) as PredictionTiming[]
       };
     } else {
       rules[eventName].enabled = false;
@@ -80,20 +75,15 @@ export function basePredictionRulesSchemaToObject(
   return rules;
 }
 
-export function basePredictionRulesObjectToSchema(
-  rules: BaseEventPredictionRules
-) {
+export function basePredictionRulesObjectToSchema(rules: BaseEventPredictionRules) {
   const schema: Record<string, boolean | number | PredictionTiming[]> = {};
 
   for (const eventName of ScoringBaseEventNames) {
     const rule = rules[eventName];
 
-    const enabledKey =
-      `${eventName}Prediction` as keyof BaseEventPredictionRulesSchema;
-    const pointsKey =
-      `${eventName}PredictionPoints` as keyof BaseEventPredictionRulesSchema;
-    const timingKey =
-      `${eventName}PredictionTiming` as keyof BaseEventPredictionRulesSchema;
+    const enabledKey = `${eventName}Prediction` as keyof BaseEventPredictionRulesSchema;
+    const pointsKey = `${eventName}PredictionPoints` as keyof BaseEventPredictionRulesSchema;
+    const timingKey = `${eventName}PredictionTiming` as keyof BaseEventPredictionRulesSchema;
 
     schema[enabledKey] = rule.enabled;
     schema[pointsKey] = rule.points;
@@ -104,9 +94,7 @@ export function basePredictionRulesObjectToSchema(
 }
 
 export function camelToTitle(str: string) {
-  return str
-    .replace(/([a-z])([A-Z])/g, '$1 $2')
-    .replace(/(^\w|\s\w)/g, m => m.toUpperCase());
+  return str.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/(^\w|\s\w)/g, m => m.toUpperCase());
 }
 
 export function getHslIndex(index: number, total: number) {
@@ -124,10 +112,7 @@ export function reviveDates(obj: any): any {
 
   const result = {} as Record<string, any>;
   for (const [key, value] of Object.entries(obj)) {
-    if (
-      typeof value === 'string' &&
-      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(value)
-    ) {
+    if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(value)) {
       // ISO date string pattern
       result[key] = new Date(value);
     } else if (typeof value === 'object') {

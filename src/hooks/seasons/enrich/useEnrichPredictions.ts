@@ -10,7 +10,7 @@ import {
   type EnrichedPrediction,
   type EnrichedEvent,
   type Prediction,
-  type ScoringBaseEventName,
+  type ScoringBaseEventName
 } from '~/types/events';
 import { useEliminations } from '~/hooks/seasons/useEliminations';
 
@@ -39,12 +39,8 @@ export function useEnrichPredictions(
     }
 
     const tribesById = new Map(tribes.map(tribe => [tribe.tribeId, tribe]));
-    const castawaysById = new Map(
-      castaways.map(castaway => [castaway.castawayId, castaway])
-    );
-    const membersById = new Map(
-      leagueMembers.members.map(member => [member.memberId, member])
-    );
+    const castawaysById = new Map(castaways.map(castaway => [castaway.castawayId, castaway]));
+    const membersById = new Map(leagueMembers.members.map(member => [member.memberId, member]));
     const eventsById = new Map(events.map(event => [event.eventName, event]));
 
     const eliminationEpisodes = new Map<number, number>();
@@ -56,13 +52,7 @@ export function useEnrichPredictions(
       });
     });
 
-    return {
-      tribesById,
-      castawaysById,
-      membersById,
-      eventsById,
-      eliminationEpisodes,
-    };
+    return { tribesById, castawaysById, membersById, eventsById, eliminationEpisodes };
   }, [tribes, castaways, leagueMembers, events, eliminations]);
 
   const createTribeFinder = useMemo(() => {
@@ -74,17 +64,10 @@ export function useEnrichPredictions(
         .sort((a, b) => parseInt(b[0]) - parseInt(a[0]));
 
       for (const [, tribesInEpisode] of sortedTimeline) {
-        for (const [tribeIdStr, tribeMembers] of Object.entries(
-          tribesInEpisode
-        )) {
+        for (const [tribeIdStr, tribeMembers] of Object.entries(tribesInEpisode)) {
           if (tribeMembers.includes(castawayId)) {
             const tribe = lookupMaps.tribesById.get(parseInt(tribeIdStr));
-            return tribe
-              ? {
-                  name: tribe.tribeName,
-                  color: tribe.tribeColor,
-                }
-              : null;
+            return tribe ? { name: tribe.tribeName, color: tribe.tribeColor } : null;
           }
         }
       }
@@ -93,13 +76,7 @@ export function useEnrichPredictions(
   }, [tribesTimeline, lookupMaps]);
 
   const enrichedPredictions = useMemo(() => {
-    if (
-      !seasonId ||
-      !predictions ||
-      !lookupMaps ||
-      !createTribeFinder ||
-      !rules
-    ) {
+    if (!seasonId || !predictions || !lookupMaps || !createTribeFinder || !rules) {
       return [];
     }
 
@@ -117,15 +94,11 @@ export function useEnrichPredictions(
 
         let points: number | null = null;
         if (event.eventSource === 'Base') {
-          const basePredictionRules =
-            rules.basePrediction ?? defaultBasePredictionRules;
+          const basePredictionRules = rules.basePrediction ?? defaultBasePredictionRules;
           points =
-            basePredictionRules[prediction.eventName as ScoringBaseEventName]
-              ?.points ?? null;
+            basePredictionRules[prediction.eventName as ScoringBaseEventName]?.points ?? null;
         } else {
-          points =
-            rules.custom?.find(r => r.eventName === event.eventName)?.points ??
-            null;
+          points = rules.custom?.find(r => r.eventName === event.eventName)?.points ?? null;
         }
 
         if (points === null) continue;
@@ -137,11 +110,7 @@ export function useEnrichPredictions(
       const member = lookupMaps.membersById.get(prediction.predictionMakerId);
       if (!member) continue;
 
-      const entry = {
-        member,
-        hit: prediction.hit,
-        bet: prediction.bet,
-      };
+      const entry = { member, hit: prediction.hit, bet: prediction.bet };
 
       if (prediction.hit) {
         existingPrediction.hits.push(entry);
@@ -156,22 +125,17 @@ export function useEnrichPredictions(
           );
           if (!tribe) continue;
 
-          const eliminatedEpisode =
-            lookupMaps.eliminationEpisodes.get(castaway.castawayId) ?? null;
+          const eliminatedEpisode = lookupMaps.eliminationEpisodes.get(castaway.castawayId) ?? null;
 
-          const castawayWithTribe: EnrichedCastaway = {
-            ...castaway,
-            tribe,
-            eliminatedEpisode,
-          };
+          const castawayWithTribe: EnrichedCastaway = { ...castaway, tribe, eliminatedEpisode };
 
           existingPrediction.misses.push({
             ...entry,
             reference: {
               type: 'Castaway',
               name: castaway.fullName,
-              color: castawayWithTribe.tribe?.color ?? '#AAAAAA',
-            },
+              color: castawayWithTribe.tribe?.color ?? '#AAAAAA'
+            }
           });
         } else if (prediction.referenceType === 'Tribe') {
           const tribe = lookupMaps.tribesById.get(prediction.referenceId);
@@ -179,11 +143,7 @@ export function useEnrichPredictions(
 
           existingPrediction.misses.push({
             ...entry,
-            reference: {
-              type: 'Tribe',
-              name: tribe.tribeName,
-              color: tribe.tribeColor,
-            },
+            reference: { type: 'Tribe', name: tribe.tribeName, color: tribe.tribeColor }
           });
         }
       }

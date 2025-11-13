@@ -51,11 +51,8 @@ export default function JoinLeagueForm() {
       <Button
         onPress={handleJoinLeague}
         disabled={!joinCode.trim()}
-        className='absolute bottom-4 w-1/2 rounded-md bg-primary px-4 py-2'
-      >
-        <Text className='text-center font-semibold text-white'>
-          Join League
-        </Text>
+        className='absolute bottom-4 w-1/2 rounded-md bg-primary px-4 py-2'>
+        <Text className='text-center font-semibold text-white'>Join League</Text>
       </Button>
     </View>
   );
