@@ -1,34 +1,40 @@
-import React from 'react';
-import { Image, RefreshControl, ScrollView, View } from 'react-native';
+import React, { useRef } from 'react';
+import { Animated, RefreshControl, ScrollView, View } from 'react-native';
 import LeaguesList from '~/components/leagues/grid/leaguesList';
+import RefreshIndicator from '~/components/common/refresh';
 import { useHomeRefresh } from '~/hooks/helpers/refresh/useHomeRefresh';
 import { cn } from '~/lib/utils';
-const LogoImage = require('~/assets/Logo.png');
 
 export default function LeaguesScreen() {
   const { refreshing, onRefresh } = useHomeRefresh();
+  const scrollY = useRef(new Animated.Value(0)).current;
+
+  const handleScroll = Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+    useNativeDriver: false
+  });
 
   return (
     <View className='flex-1 items-center justify-center bg-background'>
+      <RefreshIndicator
+        refreshing={refreshing}
+        scrollY={scrollY}
+      />
       <ScrollView
         className='w-full pt-0'
         showsVerticalScrollIndicator={false}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
+            tintColor='transparent'
+            colors={['transparent']}
+            style={{ backgroundColor: 'transparent' }}
           />
         }>
-        <View className='page justify-start gap-y-4 pt-10'>
-          <View className={cn(
-            'mb-4 animate-spin items-center absolute transition-all',
-          )}>
-            <Image
-              source={LogoImage}
-              className='h-20 w-20'
-              resizeMode='contain'
-            />
-          </View>
+        <View className={cn('page justify-start gap-y-4 transition-all',
+          refreshing ? 'pt-16' : 'pt-10')}>
           <LeaguesList />
         </View>
       </ScrollView>
