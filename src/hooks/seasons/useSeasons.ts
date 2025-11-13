@@ -21,7 +21,7 @@ export function useSeasons(includeInactive: boolean) {
       return seasons;
     },
     staleTime: Infinity,
-    gcTime: 30 * 24 * 60 * 60 * 1000, // 30 days
+    gcTime: 24 * 60 * 60 * 1000, // 24 hours
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,

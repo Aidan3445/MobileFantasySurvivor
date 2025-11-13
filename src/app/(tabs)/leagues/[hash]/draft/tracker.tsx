@@ -77,8 +77,7 @@ export default function DraftTrackerScreen() {
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
-            onRefresh={onRefresh}
-          />
+            onRefresh={onRefresh} />
         }>
         <View className='gap-y-4 px-2 pb-4'>
           {refreshing && (
@@ -86,30 +85,23 @@ export default function DraftTrackerScreen() {
               <Image
                 source={LogoImage}
                 className='h-14 w-14'
-                resizeMode='contain'
-              />
+                resizeMode='contain' />
             </View>
           )}
-
           <DraftOrder
             leagueMembers={leagueMembers}
             membersWithPicks={membersWithPicks}
-            onTheClock={onTheClock}
-          />
-
+            onTheClock={onTheClock} />
           {(onTheClock?.loggedIn || onDeck?.loggedIn) && actionDetails && (
             <ChooseCastaway
               draftDetails={actionDetails}
               onDeck={!!onDeck?.loggedIn}
-              hash={hash}
-            />
+              hash={hash} />
           )}
-
           <PredictionsCarousel
             rules={rules}
             predictionRuleCount={predictionRuleCount}
-            predictionsMade={predictionsMade}
-          />
+            predictionsMade={predictionsMade} />
         </View>
       </ScrollView>
     </View>

@@ -31,7 +31,7 @@ export default function Page() {
               />
             </View>
           ) : (
-            <Header className='mb-4' />
+            <Header />
           )}
           <ActiveLeagues />
           <CastawayScoreboard />

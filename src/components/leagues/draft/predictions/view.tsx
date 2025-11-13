@@ -2,7 +2,6 @@
 
 import { Text, View } from 'react-native';
 import { useCarousel } from '~/hooks/ui/useCarousel';
-import { useEffect } from 'react';
 import Carousel, { Pagination } from 'react-native-reanimated-carousel';
 import { type LeagueRules } from '~/types/leagues';
 import { type Prediction } from '~/types/events';
@@ -29,20 +28,7 @@ export default function PredictionsCarousel({
 }: PredictionsCarouselProps) {
   const mockPredictions = createMockPredictions(predictionRuleCount);
 
-  // Group predictions into slides of 2 per slide
-  const { props, progressProps, setCarouselData } = useCarousel<typeof mockPredictions>([]);
-
-  useEffect(() => {
-    const slides = mockPredictions.reduce(
-      (pairs, prediction, index) => {
-        if (index % 2 === 0) pairs.push([]);
-        pairs[pairs.length - 1]!.push(prediction);
-        return pairs;
-      },
-      [] as (typeof mockPredictions)[]
-    );
-    setCarouselData(slides);
-  }, [mockPredictions, setCarouselData]);
+  const { props, progressProps } = useCarousel<typeof mockPredictions[number]>(mockPredictions);
 
   if (predictionRuleCount === 0) {
     return null;
@@ -70,19 +56,17 @@ export default function PredictionsCarousel({
               <View
                 key={index}
                 className='flex-col gap-2 px-2'>
-                {item.map(prediction => (
-                  <View
-                    key={prediction.id}
-                    className='flex-1 rounded-lg bg-muted p-4'>
-                    <Text className='text-card-foreground mb-2 text-lg font-semibold'>
-                      {prediction.title}
-                    </Text>
-                    <Text className='mb-2 text-sm text-muted-foreground'>
-                      {prediction.description}
-                    </Text>
-                    <Text className='text-xs font-medium text-primary'>{prediction.type}</Text>
-                  </View>
-                ))}
+                <View
+                  key={item.id}
+                  className='flex-1 rounded-lg bg-muted p-4'>
+                  <Text className='text-card-foreground mb-2 text-lg font-semibold'>
+                    {item.title}
+                  </Text>
+                  <Text className='mb-2 text-sm text-muted-foreground'>
+                    {item.description}
+                  </Text>
+                  <Text className='text-xs font-medium text-primary'>{item.type}</Text>
+                </View>
               </View>
             )}
             {...props} />
