@@ -9,20 +9,26 @@ import ActiveLeague from '~/components/home/activeleagues/activeLeague';
 import { useCarousel } from '~/hooks/ui/useCarousel';
 import { useEffect, useMemo } from 'react';
 import { MAX_LEAGUE_MEMBERS_HOME_DISPLAY } from '~/lib/leagues';
-import { useSeasons } from '~/hooks/seasons/useSeasons';
 
 export default function ActiveLeagues() {
   const router = useRouter();
-  const { data: currentSeasons } = useSeasons(false);
   const { data: leagues } = useLeagues();
   const { props, progressProps, setCarouselData } = useCarousel(leagues);
 
   useEffect(() => {
     const currentLeagues = leagues?.filter(({ league }) =>
-      currentSeasons?.some(season => season.seasonId === league.seasonId)
-    ).sort((a, b) => b.memberCount - a.memberCount);
+      league.status !== 'Inactive'
+    ).sort((a, b) => {
+      // sort order: Drafting, Active, Predraft. (inactive for typing but those are filtered out)
+      // break ties by member count descending
+      const statusOrder = { Draft: 0, Active: 1, Predraft: 2, Inactive: 3 };
+      if (statusOrder[a.league.status] !== statusOrder[b.league.status]) {
+        return statusOrder[a.league.status] - statusOrder[b.league.status];
+      }
+      return b.memberCount - a.memberCount;
+    });
     setCarouselData(currentLeagues ?? []);
-  }, [leagues, currentSeasons, setCarouselData]);
+  }, [leagues, setCarouselData]);
 
   const carouselHeight = useMemo(() => {
     const maxLeagueMembers =
