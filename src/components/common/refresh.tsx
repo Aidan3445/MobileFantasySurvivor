@@ -75,8 +75,16 @@ export default function RefreshIndicator({
   // Handle scroll to show/hide logo on pull
   useEffect(() => {
     const listener = scrollY.addListener(({ value }) => {
-      // Show logo when pulling down (but not when already refreshing)
-      if (value < 0 && !refreshing) {
+      if (value > 0) {
+        // Hide logo when scrolling down content (even if refreshing)
+        logoOpacity.setValue(0);
+        logoTranslateY.setValue(-logoSize - 20);
+      } else if (refreshing && value <= 0) {
+        // Show logo when refreshing and at/above top
+        logoOpacity.setValue(1);
+        logoTranslateY.setValue(0);
+      } else if (value < 0) {
+        // Show logo proportionally when pulling down (not refreshing)
         const pullDistance = Math.abs(value);
         const pullOpacity = Math.min(pullDistance / 100, 1);
         logoOpacity.setValue(pullOpacity);
@@ -84,7 +92,8 @@ export default function RefreshIndicator({
         // Slide logo down as user pulls (capped at 0 translateY)
         const translateY = Math.min(pullDistance - logoSize - 20, 0);
         logoTranslateY.setValue(translateY);
-      } else if (!refreshing) {
+      } else {
+        // Hide logo when at top and not refreshing
         logoOpacity.setValue(0);
         logoTranslateY.setValue(-logoSize - 20);
       }
