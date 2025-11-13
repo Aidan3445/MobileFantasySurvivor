@@ -21,7 +21,7 @@ export default function LeaguesScreen() {
       />
       <ScrollView
         className='w-full pt-0'
-        showsVerticalScrollIndicator={false}
+        showsVerticalScrollIndicator={true}
         onScroll={handleScroll}
         scrollEventThrottle={16}
         refreshControl={

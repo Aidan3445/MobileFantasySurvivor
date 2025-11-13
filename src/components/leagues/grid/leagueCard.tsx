@@ -17,22 +17,16 @@ export default function LeagueCard({ league, member, currentSelection }: LeagueC
       key={league.hash}
       href={{ pathname: '/leagues/[hash]', params: { hash: league.hash } }}
       asChild>
-      <Button className='mb-3 flex-col rounded-lg bg-card p-4'>
-        <Text className='text-xl font-semibold text-card-foreground'>{league.name}</Text>
-        <Text className='mt-1 text-sm text-muted-foreground'>{league.season}</Text>
+      <Button className='mb-3 flex-col rounded-lg bg-card p-4 w-96'>
+        <Text className='text-xl font-semibold text-card-foreground text-center'>{league.name}</Text>
+        <Text className='mt-1 text-sm text-muted-foreground text-center'>{league.season}</Text>
         {currentSelection ? (
-          <View className='mt-2 flex-row items-center'>
+          <View className='mt-2 flex-row items-center justify-center'>
             <Text className='italic text-foreground'>{currentSelection.fullName}</Text>
-            {currentSelection.isEliminated && (
-              <FlameKindling
-                size={16}
-                color='#ef4444'
-                className='ml-1'
-              />
-            )}
+            {currentSelection.isEliminated && (<FlameKindling size={16} className='ml-1' />)}
           </View>
         ) : (
-          <Text className='mt-2 italic text-muted-foreground'>Yet to draft</Text>
+          <Text className='mt-2 italic text-muted-foreground text-center'>Yet to draft</Text>
         )}
         <View
           className='mt-3 items-center justify-center rounded-full py-1.5'
