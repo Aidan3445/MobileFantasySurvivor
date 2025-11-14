@@ -172,9 +172,9 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
     const enabledBasePredictions = rules.basePrediction
       ? Object.values(rules.basePrediction).reduce(
-          (count, event) => count + Number(event.enabled),
-          0
-        )
+        (count, event) => count + Number(event.enabled),
+        0
+      )
       : 0;
 
     return enabledBasePredictions + (rules.custom?.length ?? 0);

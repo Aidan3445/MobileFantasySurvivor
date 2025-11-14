@@ -1,8 +1,11 @@
 import { useState } from 'react';
+import { type ReactElement } from 'react';
 
 export interface SearchableOption<T extends string | number> {
   value: T;
   label: string;
+  disabled?: boolean;
+  renderLabel?: () => ReactElement;
 }
 
 export function useSearchableSelect<T extends string | number>() {

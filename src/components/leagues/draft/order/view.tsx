@@ -37,10 +37,8 @@ export default function DraftOrder({
               className={isOnTheClock ? 'opacity-75' : ''}
               color={pick.color}
               loggedIn={leagueMembers.loggedIn?.displayName === pick.displayName}>
-              <Text className='text-lg font-bold text-white'>{index + 1}</Text>
-
+              <Text className='text-lg font-bold text-white'>{index + 1}. </Text>
               <Text className='flex-1 text-xl font-semibold text-white'>{pick.displayName}</Text>
-
               {isOnTheClock && (
                 <View className='items-center'>
                   <Text className='animate-pulse text-sm font-medium text-white'>Picking...</Text>

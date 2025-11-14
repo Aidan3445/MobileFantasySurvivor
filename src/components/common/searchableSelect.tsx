@@ -48,7 +48,9 @@ export default function SearchableSelect<T extends string | number>({
         renderItem={({ item }) => (
           <Button
             className='!active:bg-accent my-0.5 flex-row items-center rounded-md bg-background px-2 py-3'
+            disabled={item.disabled}
             onPress={() => {
+              if (item.disabled) return;
               onSelect(item.value);
               onClose();
             }}>
@@ -56,7 +58,11 @@ export default function SearchableSelect<T extends string | number>({
               size={16}
               color={selectedValue === item.value ? 'black' : 'transparent'}
             />
-            <Text className='ml-2 flex-1'>{item.label}</Text>
+            {item.renderLabel ? (
+              item.renderLabel()
+            ) : (
+              <Text className='ml-2 flex-1'>{item.label}</Text>
+            )}
           </Button>
         )}
         ListEmptyComponent={
