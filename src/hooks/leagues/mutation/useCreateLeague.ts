@@ -51,5 +51,5 @@ export function useCreateLeague(onSubmit?: () => void) {
     }
   });
 
-  return { reactForm, handleSubmit };
+  return { reactForm, handleSubmit, isSubmitting: reactForm.formState.isSubmitting };
 }

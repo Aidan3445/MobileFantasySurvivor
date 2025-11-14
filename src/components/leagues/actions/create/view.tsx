@@ -19,7 +19,7 @@ interface CreateLeagueFormProps {
 }
 
 export default function CreateLeagueForm({ onSubmit }: CreateLeagueFormProps) {
-  const { reactForm, handleSubmit } = useCreateLeague(onSubmit);
+  const { reactForm, handleSubmit, isSubmitting } = useCreateLeague(onSubmit);
 
   const pages: {
     name: keyof typeof LeagueInsertZod.shape;
@@ -53,7 +53,7 @@ export default function CreateLeagueForm({ onSubmit }: CreateLeagueFormProps) {
 
   return (
     <View className='h-90p items-center justify-end overflow-hidden rounded-lg bg-card pt-12'>
-      <Header className='flex-1' />
+      <Header className='flex-1' refreshing={isSubmitting} />
       <Carousel
         renderItem={({ item }) => {
           const buttonDisabled =

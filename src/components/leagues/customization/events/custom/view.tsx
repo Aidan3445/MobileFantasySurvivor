@@ -112,9 +112,7 @@ export default function CustomEventRules() {
       {customRules.length > 0 ? (
         <View className='relative items-center'>
           <Carousel
-            enabled={customRules.length > 3}
             height={Math.min(320, 105 * customRules.length)}
-            loop={customRules.length > 3}
             renderItem={({ item, index }) => (
               <View
                 key={index}
@@ -130,7 +128,9 @@ export default function CustomEventRules() {
                 ))}
               </View>
             )}
-            {...props} />
+            {...props}
+            enabled={customRules.length > 3}
+            loop={customRules.length > 3} />
           {customRules.length > 3 && (
             <Pagination.Basic
               {...progressProps}
