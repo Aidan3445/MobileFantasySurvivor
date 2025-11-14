@@ -42,9 +42,13 @@ export default function DraftTrackerScreen() {
   // Handle draft completion redirect
   useEffect(() => {
     if (league && league.status === 'Active') {
-      router.replace(`/leagues/${hash}`);
+      onRefresh();
+      router.navigate({
+        pathname: '/leagues/[hash]',
+        params: { hash }
+      });
     }
-  }, [league?.status, hash, router, league]);
+  }, [league?.status, hash, router, league, onRefresh]);
 
   // Handle user turn dialog
   useEffect(() => {
