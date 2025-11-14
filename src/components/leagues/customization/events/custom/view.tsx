@@ -26,14 +26,15 @@ export default function CustomEventRules() {
     leagueMembers
   } = useCustomEventRules();
 
-  const slides = useMemo(() => customRules.reduce((threes, rule, index) => {
-    if (index % 3 === 0) threes.push([]);
-    threes[threes.length - 1]!.push(rule);
-    return threes;
-  }, [] as CustomEventRule[][]),
-    [customRules]);
+  const { props, progressProps, setCarouselData } = useCarousel<CustomEventRule[]>([]);
 
-  const { props, progressProps, setCarouselData } = useCarousel<CustomEventRule[]>(slides);
+  const slides = useMemo(() => {
+    return customRules.reduce((threes, rule, index) => {
+      if (index % 3 === 0) threes.push([]);
+      threes[threes.length - 1]!.push(rule);
+      return threes;
+    }, [] as CustomEventRule[][]);
+  }, [customRules]);
 
   useEffect(() => {
     setCarouselData(slides);

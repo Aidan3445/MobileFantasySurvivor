@@ -1,7 +1,7 @@
 'use client';
 
 import { Text, View } from 'react-native';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useEffect } from 'react';
 import { type MakePredictionsProps } from '~/components/leagues/draft/predictions/view';
 import { type ScoringBaseEventName, type ReferenceType, type MakePrediction } from '~/types/events';
 import { BaseEventDescriptions, BaseEventFullName, BasePredictionReferenceTypes } from '~/lib/events';
@@ -89,9 +89,9 @@ export default function PredictionCards({
     [...enabledBasePredictions, ...customPredictions],
     [enabledBasePredictions, customPredictions]);
 
-  const { props, progressProps, setCarouselData } = useCarousel(allPredictions);
+  const { props, progressProps, setCarouselData } = useCarousel<MakePrediction>([]);
 
-  useMemo(() => {
+  useEffect(() => {
     setCarouselData(allPredictions);
   }, [allPredictions, setCarouselData]);
 
