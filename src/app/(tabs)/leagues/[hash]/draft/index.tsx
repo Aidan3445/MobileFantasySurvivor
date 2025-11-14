@@ -4,17 +4,19 @@ import { Animated, RefreshControl, ScrollView, View, Alert } from 'react-native'
 import { Redirect, useLocalSearchParams, useRouter } from 'expo-router';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 import { useLeagueActionDetails } from '~/hooks/leagues/enrich/useActionDetails';
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
 import DraftHeader from '~/components/leagues/draft/header/view';
 import DraftOrder from '~/components/leagues/draft/order/view';
 import ChooseCastaway from '~/components/leagues/draft/chooseCastaway/view';
 import PredictionsCarousel from '~/components/leagues/draft/predictions/view';
 import RefreshIndicator from '~/components/common/refresh';
+import { useDraftRefresh } from '~/hooks/helpers/refresh/useDraftRefresh';
 
 export default function DraftTrackerScreen() {
   const { hash } = useLocalSearchParams<{ hash: string }>();
   const { data: league } = useLeague(hash);
   const router = useRouter();
+  const { refreshing, onRefresh } = useDraftRefresh(hash);
 
   const {
     actionDetails,
@@ -29,6 +31,13 @@ export default function DraftTrackerScreen() {
     dialogOpen,
     setDialogOpen
   } = useLeagueActionDetails(hash);
+
+  const castaways = useMemo(() =>
+    Object.values(actionDetails ?? {})
+      .flatMap(({ castaways }) => castaways.map(c => c.castaway)), [actionDetails]);
+
+  const tribes = useMemo(() =>
+    Object.values(actionDetails ?? {}).map(({ tribe }) => tribe), [actionDetails]);
 
   // Handle draft completion redirect
   useEffect(() => {
@@ -54,15 +63,6 @@ export default function DraftTrackerScreen() {
       ]);
     }
   }, [dialogOpen, onTheClock?.loggedIn, onDeck?.loggedIn, settings?.survivalCap, setDialogOpen]);
-
-  const [refreshing, setRefreshing] = useState(false);
-
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
-    // Refresh logic would go here - the queries should automatically refetch
-    // eslint-disable-next-line no-undef
-    setTimeout(() => setRefreshing(false), 1000);
-  }, []);
 
   const scrollY = useRef(new Animated.Value(0)).current;
   const handleScroll = Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
@@ -104,7 +104,9 @@ export default function DraftTrackerScreen() {
           <PredictionsCarousel
             rules={rules}
             predictionRuleCount={predictionRuleCount}
-            predictionsMade={predictionsMade} />
+            predictionsMade={predictionsMade}
+            castaways={castaways}
+            tribes={tribes} />
         </View>
       </ScrollView>
     </View>

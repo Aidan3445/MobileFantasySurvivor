@@ -31,7 +31,9 @@ export function useCarousel<T>(data: T[] = []) {
     data: carouselData,
     progress,
     onProgressChange: progress,
-    width: PAGE_WIDTH - 12
+    width: PAGE_WIDTH - 12,
+    loop: carouselData.length > 2,
+    enabled: carouselData.length > 1
   };
 
   return {

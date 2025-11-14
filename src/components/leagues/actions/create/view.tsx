@@ -28,26 +28,26 @@ export default function CreateLeagueForm({ onSubmit }: CreateLeagueFormProps) {
     isFirst?: boolean;
     isLast?: boolean;
   }[] = [
-    {
-      name: 'leagueName',
-      content: <LeagueName control={reactForm.control} />,
-      optional: false,
-      isFirst: true
-    },
-    { name: 'draftDate', content: <DraftDate control={reactForm.control} />, optional: true },
-    {
-      name: 'newMember',
-      content: (
-        <LeagueMember
-          control={reactForm.control}
-          formPrefix='newMember'
-          className='mb-14'
-        />
-      ),
-      optional: false,
-      isLast: true
-    }
-  ];
+      {
+        name: 'leagueName',
+        content: <LeagueName control={reactForm.control} />,
+        optional: false,
+        isFirst: true
+      },
+      { name: 'draftDate', content: <DraftDate control={reactForm.control} />, optional: true },
+      {
+        name: 'newMember',
+        content: (
+          <LeagueMember
+            control={reactForm.control}
+            formPrefix='newMember'
+            className='mb-14'
+          />
+        ),
+        optional: false,
+        isLast: true
+      }
+    ];
 
   const { props, progressProps, ref } = useCarousel(pages);
 
@@ -55,8 +55,6 @@ export default function CreateLeagueForm({ onSubmit }: CreateLeagueFormProps) {
     <View className='h-90p items-center justify-end overflow-hidden rounded-lg bg-card pt-12'>
       <Header className='flex-1' />
       <Carousel
-        loop={false}
-        enabled={false}
         renderItem={({ item }) => {
           const buttonDisabled =
             !item.optional

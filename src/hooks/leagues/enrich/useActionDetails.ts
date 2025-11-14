@@ -177,7 +177,8 @@ export function useLeagueActionDetails(overrideHash?: string) {
       )
       : 0;
 
-    return enabledBasePredictions + (rules.custom?.length ?? 0);
+    return enabledBasePredictions + (rules.custom?.filter(rule =>
+      rule.eventType === 'Prediction').length ?? 0);
   }, [rules]);
 
   const predictionsMade = useMemo(() => {
