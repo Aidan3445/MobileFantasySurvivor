@@ -26,14 +26,15 @@ export default function CustomEventRules() {
     leagueMembers
   } = useCustomEventRules();
 
-  const slides = useMemo(() => customRules.reduce((threes, rule, index) => {
-    if (index % 3 === 0) threes.push([]);
-    threes[threes.length - 1]!.push(rule);
-    return threes;
-  }, [] as CustomEventRule[][]),
-    [customRules]);
+  const { props, progressProps, setCarouselData } = useCarousel<CustomEventRule[]>([]);
 
-  const { props, progressProps, setCarouselData } = useCarousel<CustomEventRule[]>(slides);
+  const slides = useMemo(() => {
+    return customRules.reduce((threes, rule, index) => {
+      if (index % 3 === 0) threes.push([]);
+      threes[threes.length - 1]!.push(rule);
+      return threes;
+    }, [] as CustomEventRule[][]);
+  }, [customRules]);
 
   useEffect(() => {
     setCarouselData(slides);
@@ -112,9 +113,7 @@ export default function CustomEventRules() {
       {customRules.length > 0 ? (
         <View className='relative items-center'>
           <Carousel
-            enabled={customRules.length > 3}
             height={Math.min(320, 105 * customRules.length)}
-            loop={customRules.length > 3}
             renderItem={({ item, index }) => (
               <View
                 key={index}
@@ -130,7 +129,9 @@ export default function CustomEventRules() {
                 ))}
               </View>
             )}
-            {...props} />
+            {...props}
+            enabled={customRules.length > 3}
+            loop={customRules.length > 3} />
           {customRules.length > 3 && (
             <Pagination.Basic
               {...progressProps}
