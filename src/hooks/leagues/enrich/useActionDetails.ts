@@ -172,12 +172,13 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
     const enabledBasePredictions = rules.basePrediction
       ? Object.values(rules.basePrediction).reduce(
-          (count, event) => count + Number(event.enabled),
-          0
-        )
+        (count, event) => count + Number(event.enabled),
+        0
+      )
       : 0;
 
-    return enabledBasePredictions + (rules.custom?.length ?? 0);
+    return enabledBasePredictions + (rules.custom?.filter(rule =>
+      rule.eventType === 'Prediction').length ?? 0);
   }, [rules]);
 
   const predictionsMade = useMemo(() => {

@@ -5,6 +5,7 @@ import { type DraftDetails } from '~/types/leagues';
 import { useState } from 'react';
 import Modal from '~/components/common/modal';
 import ColorRow from '~/components/shared/colorRow';
+import { cn } from '~/lib/utils';
 
 interface DraftCastawaysProps {
   actionDetails: DraftDetails;
@@ -27,7 +28,8 @@ function CastawayModal({ castaway, isVisible, onClose }: CastawayModalProps) {
   return (
     <Modal
       isVisible={isVisible}
-      onClose={onClose}>
+      onClose={onClose}
+      animationType='fade'>
       <View className='items-center gap-4'>
         <Image
           source={{ uri: castaway.imageUrl }}
@@ -71,12 +73,14 @@ export default function DraftCastaways({ actionDetails }: DraftCastawaysProps) {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
+        scrollEnabled={Object.values(actionDetails).length > 1}
         className='px-4 pb-4'>
-        <View className='flex-row gap-4'>
+        <View className=' gap-4'>
           {Object.values(actionDetails).map(({ tribe, castaways }) => (
             <View
               key={tribe.tribeId}
-              className='min-w-[240px] rounded-lg bg-background p-3'
+              className={cn('rounded-lg bg-background p-3',
+                Object.values(actionDetails).length === 1 ? 'w-[90vw]' : 'min-w-[240px]')}
               style={{ borderWidth: 3, borderColor: tribe.tribeColor }}>
               <Text className='text-foreground mb-3 text-lg font-semibold'>{tribe.tribeName}</Text>
               <View className='gap-2'>
@@ -87,16 +91,14 @@ export default function DraftCastaways({ actionDetails }: DraftCastawaysProps) {
                   return (
                     <Pressable
                       key={castaway.castawayId}
-                      className={`rounded-lg bg-muted p-3 ${
-                        isDrafted || isEliminated ? 'opacity-50' : ''
-                      }`}
+                      className={`rounded-lg bg-muted p-3 ${isDrafted || isEliminated ? 'opacity-50' : ''
+                        }`}
                       onPress={() => setSelectedCastaway(castaway)}>
                       <View className='relative flex-row items-center gap-3'>
                         <Image
                           source={{ uri: castaway.imageUrl }}
-                          className={`h-12 w-12 rounded-full ${
-                            isDrafted || isEliminated ? 'grayscale' : ''
-                          }`}
+                          className={`h-12 w-12 rounded-full ${isDrafted || isEliminated ? 'grayscale' : ''
+                            }`}
                           resizeMode='cover'
                         />
                         <View className='flex-1'>

@@ -1,82 +1,50 @@
 'use client';
 
 import { Text, View } from 'react-native';
-import { useCarousel } from '~/hooks/ui/useCarousel';
-import Carousel, { Pagination } from 'react-native-reanimated-carousel';
 import { type LeagueRules } from '~/types/leagues';
 import { type Prediction } from '~/types/events';
+import { type EnrichedCastaway } from '~/types/castaways';
+import { type Tribe } from '~/types/tribes';
+import PredictionCards from '~/components/leagues/draft/predictions/cards';
 
-interface PredictionsCarouselProps {
+export interface MakePredictionsProps {
   rules?: LeagueRules;
   predictionRuleCount: number;
   predictionsMade: Prediction[];
+  castaways: EnrichedCastaway[];
+  tribes: Tribe[];
 }
 
-// Mock prediction data for the carousel
-const createMockPredictions = (count: number) => {
-  return Array.from({ length: Math.max(count, 3) }, (_, index) => ({
-    id: index + 1,
-    title: `Prediction ${index + 1}`,
-    description: 'This is a mock prediction card for testing the carousel layout.',
-    type: index % 2 === 0 ? 'Base Event' : 'Custom Event'
-  }));
-};
-
 export default function PredictionsCarousel({
+  rules,
   predictionRuleCount,
-  predictionsMade
-}: PredictionsCarouselProps) {
-  const mockPredictions = createMockPredictions(predictionRuleCount);
-
-  const { props, progressProps } = useCarousel<typeof mockPredictions[number]>(mockPredictions);
-
-  if (predictionRuleCount === 0) {
+  predictionsMade,
+  castaways,
+  tribes
+}: MakePredictionsProps) {
+  if (!rules || predictionRuleCount === 0) {
     return null;
   }
 
   return (
-    <View className='w-full rounded-lg bg-card p-2'>
-      <View className='mb-4 px-2'>
-        <Text className='text-card-foreground text-lg font-bold'>
-          Predictions{' '}
-          <Text className='text-sm font-normal text-muted-foreground'>
-            ({predictionsMade.length}/{predictionRuleCount})
-          </Text>
+    <View className='w-full rounded-lg bg-card py-4'>
+      <View className='mb-4'>
+        <Text className='text-center text-xl font-semibold text-card-foreground'>
+          While you wait...
         </Text>
-        <Text className='mt-1 text-sm text-muted-foreground'>
-          Make your predictions before each episode airs!
+        <Text className='text-center text-sm text-muted-foreground'>
+          Make your prediction{predictionRuleCount > 1 ? 's' : ''} and earn points if you are correct!
+        </Text>
+        <Text className='mt-2 text-center text-xs text-muted-foreground'>
+          ({predictionsMade.length}/{predictionRuleCount} submitted)
         </Text>
       </View>
-      {mockPredictions.length > 0 ? (
-        <View className='relative items-center'>
-          <Carousel
-            height={200}
-            loop={mockPredictions.length > 2}
-            renderItem={({ item, index }) => (
-              <View
-                key={index}
-                className='flex-col gap-2 px-2'>
-                <View
-                  key={item.id}
-                  className='flex-1 rounded-lg bg-muted p-4'>
-                  <Text className='text-card-foreground mb-2 text-lg font-semibold'>
-                    {item.title}
-                  </Text>
-                  <Text className='mb-2 text-sm text-muted-foreground'>
-                    {item.description}
-                  </Text>
-                  <Text className='text-xs font-medium text-primary'>{item.type}</Text>
-                </View>
-              </View>
-            )}
-            {...props} />
-          <Pagination.Basic
-            {...progressProps}
-            containerStyle={{ ...progressProps.containerStyle, marginBottom: 8 }} />
-        </View>
-      ) : (
-        <Text className='py-8 text-center text-muted-foreground'>No predictions available.</Text>
-      )}
+      <PredictionCards
+        rules={rules}
+        predictionRuleCount={predictionRuleCount}
+        predictionsMade={predictionsMade}
+        castaways={castaways}
+        tribes={tribes} />
     </View>
   );
 }
