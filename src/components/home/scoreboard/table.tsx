@@ -107,7 +107,7 @@ export default function ScoreboardTable({
               <View className='w-11 items-center justify-center py-1'>
                 <Text className='text-center font-medium'>Place</Text>
               </View>
-              <View className='w-8 items-center justify-center py-1'>
+              <View className='w-10 items-center justify-center py-1'>
                 <Flame
                   size={16}
                   className='text-muted-foreground'

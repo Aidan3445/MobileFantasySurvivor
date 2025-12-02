@@ -27,7 +27,7 @@ export default function Scoreboard({ overrideHash, maxRows, hideSelectionHistory
         <View className='w-11 items-center justify-center'>
           <Text className='text-center font-medium'>Place</Text>
         </View>
-        <View className='w-8 items-center justify-center'>
+        <View className='w-10 items-center justify-center'>
           <Flame
             size={16}
             className='text-muted-foreground'

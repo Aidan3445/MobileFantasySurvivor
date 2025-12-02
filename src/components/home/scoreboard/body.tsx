@@ -1,14 +1,12 @@
 'use client';
 
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { useEffect, useState } from 'react';
 import { type SeasonsDataQuery } from '~/types/seasons';
 import { useCarousel } from '~/hooks/ui/useCarousel';
 import Carousel, { Pagination } from 'react-native-reanimated-carousel';
-import { cn } from '~/lib/utils';
-import { divideY } from '~/lib/ui';
-import { getContrastingColor } from '@uiw/color-convert';
-import { FlameKindling } from 'lucide-react-native';
+import { getTribeTimeline } from '~/lib/utils';
+import CastawayEntry from '~/components/home/scoreboard/entry';
 
 export interface ScoreboardBodyProps {
   sortedCastaways: [number, number[]][];
@@ -43,58 +41,28 @@ export default function ScoreboardBody({
         height={24.5 * castawaySplitIndex}
         {...props}
         renderItem={({ item, index: col }) => (
-          <View className=''>
+          <View>
             {item.map(([castawayId, scores], index) => {
               const castaway = castawayData?.castaways.find(c => c.castawayId === castawayId);
               const points = scores.slice().pop() ?? 0;
               const color = colors[castawayId] ?? '#AAAAAA';
-              const colorOverride = castaway?.eliminatedEpisode ? '#AAAAAA' : color;
               const place = col * castawaySplitIndex + index + 1;
+              const tribeTimeline = castawayData
+                ? getTribeTimeline(castawayId, castawayData.tribesTimeline, castawayData.tribes)
+                : [];
+
               return (
-                <View
+                <CastawayEntry
                   key={castawayId}
-                  className={cn('h-7 flex-row gap-x-1 p-1', divideY(index))}>
-                  {!allZero && (
-                    <>
-                      <View
-                        className='w-11 items-center justify-center rounded'
-                        style={{ backgroundColor: color }}>
-                        <Text
-                          className='text-center font-medium'
-                          style={{ color: getContrastingColor(color) }}>
-                          {place}
-                        </Text>
-                      </View>
-                      <View
-                        className='w-8 items-center justify-center rounded'
-                        style={{ backgroundColor: color }}>
-                        <Text
-                          className='text-center font-medium'
-                          style={{ color: getContrastingColor(color) }}>
-                          {points}
-                        </Text>
-                      </View>
-                    </>
-                  )}
-                  <View
-                    className='flex-row flex-1 items-center justify-center rounded'
-                    style={{ backgroundColor: colorOverride }}>
-                    <Text
-                      className='text-center font-medium mr-1'
-                      numberOfLines={1}
-                      style={{ color: getContrastingColor(colorOverride) }}>
-                      {castaway?.fullName ?? 'Unknown'}
-                    </Text>
-                    {castaway?.eliminatedEpisode && (
-                      <>
-                        <FlameKindling size={14} color={getContrastingColor(colorOverride)} />
-                        <Text className='text-muted-foreground'>
-                          ({castaway.eliminatedEpisode})
-                        </Text>
-                      </>
-                    )}
-                  </View>
-                </View>
+                  castawayId={castawayId}
+                  castaway={castaway}
+                  points={points}
+                  color={color}
+                  place={place}
+                  index={index}
+                  allZero={allZero}
+                  tribeTimeline={tribeTimeline}
+                />
               );
             })}
             {/* If odd number of castaways, add an empty row for alignment to first half only (col 0) */}
