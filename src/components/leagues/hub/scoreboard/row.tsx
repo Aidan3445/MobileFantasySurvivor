@@ -20,6 +20,7 @@ interface MemberRowProps {
   color: string;
   overrideHash?: string;
   doubleBelow?: boolean;
+  hideSelectionHistory?: boolean;
 }
 
 export default function MemberRow({
@@ -31,7 +32,8 @@ export default function MemberRow({
   castaway,
   color,
   doubleBelow,
-  overrideHash
+  overrideHash,
+  hideSelectionHistory
 }: MemberRowProps) {
   const { data: tribesTimeline } = useTribesTimeline(castaway?.seasonId ?? null);
   const { data: leagueSettings } = useLeagueSettings(overrideHash);
@@ -39,7 +41,7 @@ export default function MemberRow({
   const [showStreak, setShowStreak] = useState(false);
 
   const condensedTimeline = useMemo(
-    () =>
+    () => hideSelectionHistory ? [] :
       (selectionList ?? []).reduce(
         (acc, castaway, index) => {
           if (castaway === null) return acc;
@@ -60,7 +62,7 @@ export default function MemberRow({
         },
         [] as { castaway: EnrichedCastaway; start: number | string; end: number | null }[]
       ),
-    [selectionList]
+    [selectionList, hideSelectionHistory]
   );
 
   const castawayTribes = useMemo(() => {
@@ -153,18 +155,20 @@ export default function MemberRow({
                   />
                 </Pressable>
               ))}
-            <Pressable
-              className='mr-1'
-              onPress={() => setShowHistory(!showHistory)}>
-              <History
-                size={16}
-                color={
-                  castaway?.eliminatedEpisode
-                    ? 'black'
-                    : getContrastingColor(castaway?.tribe?.color ?? '#AAAAAA')
-                }
-              />
-            </Pressable>
+            {!hideSelectionHistory && (
+              <Pressable
+                className='mr-1'
+                onPress={() => setShowHistory(!showHistory)}>
+                <History
+                  size={16}
+                  color={
+                    castaway?.eliminatedEpisode
+                      ? 'black'
+                      : getContrastingColor(castaway?.tribe?.color ?? '#AAAAAA')
+                  }
+                />
+              </Pressable>
+            )}
             {leagueSettings && leagueSettings.survivalCap > 0 && (
               <Pressable onPress={() => setShowStreak(!showStreak)}>
                 <View className='w-4 items-center justify-center'>

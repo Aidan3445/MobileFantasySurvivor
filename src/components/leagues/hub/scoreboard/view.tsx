@@ -7,10 +7,11 @@ import MemberRow from '~/components/leagues/hub/scoreboard/row';
 interface ScoreboardProps {
   overrideHash?: string;
   maxRows?: number;
+  hideSelectionHistory?: boolean;
   className?: string;
 }
 
-export default function Scoreboard({ overrideHash, maxRows, className }: ScoreboardProps = {}) {
+export default function Scoreboard({ overrideHash, maxRows, hideSelectionHistory, className }: ScoreboardProps = {}) {
   const {
     sortedMemberScores,
     loggedInIndex,
@@ -54,15 +55,20 @@ export default function Scoreboard({ overrideHash, maxRows, className }: Scorebo
             castawayId !== undefined
               ? castaways?.find(c => c.castawayId === castawayId)
               : undefined;
+          const selectionList = selectionTimeline?.memberCastaways?.[member.memberId]?.map(
+            (id) => castaways?.find((c) => c.castawayId === id) ?? null) ?? [];
+
           return (
             <MemberRow
               key={member.memberId}
               member={member}
               points={scores.slice().pop() ?? 0}
               place={index + 1}
+              selectionList={selectionList}
               castaway={castaway}
               color={member.color}
               doubleBelow={!!maxRows && index >= maxRows}
+              hideSelectionHistory={hideSelectionHistory}
             />
           );
         })}

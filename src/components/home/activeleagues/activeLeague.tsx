@@ -30,6 +30,7 @@ export default function ActiveLeague({ league }: ActiveLeagueProps) {
         <Scoreboard
           overrideHash={league.hash}
           maxRows={MAX_LEAGUE_MEMBERS_HOME_DISPLAY}
+          hideSelectionHistory
         />
       ) : (
         <DraftCountdown overrideHash={league.hash} />
