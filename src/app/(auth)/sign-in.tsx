@@ -3,6 +3,7 @@ import { Link, useRouter } from 'expo-router';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import Header from '~/components/auth/header';
+import { SignInWithGoogle } from '~/components/auth/signInWithGoogle';
 
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -66,8 +67,9 @@ export default function Page() {
             className='mt-6 rounded-2xl bg-primary py-4 shadow-sm'>
             <Text className='text-center text-lg font-semibold text-white'>Continue</Text>
           </TouchableOpacity>
+          <SignInWithGoogle />
         </View>
-        <View className='mt-8 flex-row items-center justify-center'>
+        <View className='flex-row items-center justify-center'>
           <Text className='text-base text-secondary'>Don't have an account? </Text>
           <Link href='/sign-up'>
             <Text className='text-base font-semibold text-primary'>Sign up</Text>
