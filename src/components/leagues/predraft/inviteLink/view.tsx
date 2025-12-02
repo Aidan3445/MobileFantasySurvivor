@@ -1,4 +1,5 @@
 'use client';
+
 import { Link as LinkIcon, Share } from 'lucide-react-native';
 import { TextInput, Text, View, Pressable, Alert, Share as RNShare } from 'react-native';
 import Button from '~/components/common/button';

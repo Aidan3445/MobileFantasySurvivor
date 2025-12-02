@@ -12,7 +12,7 @@ export default function Header({ className }: HeaderProps) {
     <View className={cn('items-center', className)}>
       <Image
         source={LogoImage}
-        className='h-72 w-72'
+        className='h-72 w-72 translate-y-12'
         resizeMode='contain'
       />
     </View>
