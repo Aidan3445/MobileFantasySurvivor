@@ -7,7 +7,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export default function RootLayout() {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView className='flex-1 bg-background'>
       <ClerkProvider
         tokenCache={tokenCache}
         telemetry={false}>
