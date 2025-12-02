@@ -8,6 +8,7 @@ import Carousel, { Pagination } from 'react-native-reanimated-carousel';
 import { cn } from '~/lib/utils';
 import { divideY } from '~/lib/ui';
 import { getContrastingColor } from '@uiw/color-convert';
+import { FlameKindling } from 'lucide-react-native';
 
 export interface ScoreboardBodyProps {
   sortedCastaways: [number, number[]][];
@@ -47,6 +48,7 @@ export default function ScoreboardBody({
               const castaway = castawayData?.castaways.find(c => c.castawayId === castawayId);
               const points = scores.slice().pop() ?? 0;
               const color = colors[castawayId] ?? '#AAAAAA';
+              const colorOverride = castaway?.eliminatedEpisode ? '#AAAAAA' : color;
               const place = col * castawaySplitIndex + index + 1;
               return (
                 <View
@@ -75,14 +77,22 @@ export default function ScoreboardBody({
                     </>
                   )}
                   <View
-                    className='flex-1 items-center justify-center rounded'
-                    style={{ backgroundColor: color }}>
+                    className='flex-row flex-1 items-center justify-center rounded'
+                    style={{ backgroundColor: colorOverride }}>
                     <Text
-                      className='text-center font-medium'
+                      className='text-center font-medium mr-1'
                       numberOfLines={1}
-                      style={{ color: getContrastingColor(color ?? '#AAAAAA') }}>
+                      style={{ color: getContrastingColor(colorOverride) }}>
                       {castaway?.fullName ?? 'Unknown'}
                     </Text>
+                    {castaway?.eliminatedEpisode && (
+                      <>
+                        <FlameKindling size={14} color={getContrastingColor(colorOverride)} />
+                        <Text className='text-muted-foreground'>
+                          ({castaway.eliminatedEpisode})
+                        </Text>
+                      </>
+                    )}
                   </View>
                 </View>
               );
@@ -92,9 +102,10 @@ export default function ScoreboardBody({
               <View className='h-7 border-t border-t-primary' />
             )}
           </View>
-        )}
+        )
+        }
       />
-      <Pagination.Basic
+      < Pagination.Basic
         {...progressProps}
         containerStyle={{ ...progressProps.containerStyle, marginVertical: 4 }}
       />
