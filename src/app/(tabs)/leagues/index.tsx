@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Animated, RefreshControl, ScrollView, View } from 'react-native';
+import { Animated, RefreshControl, ScrollView, View, Platform } from 'react-native';
 import LeaguesList from '~/components/leagues/grid/leaguesList';
 import RefreshIndicator from '~/components/common/refresh';
 import { useHomeRefresh } from '~/hooks/helpers/refresh/useHomeRefresh';
@@ -13,12 +13,11 @@ export default function LeaguesScreen() {
     useNativeDriver: false
   });
 
+  const isIOS = Platform.OS === 'ios';
+
   return (
     <View className='flex-1 items-center justify-center bg-background'>
-      <RefreshIndicator
-        refreshing={refreshing}
-        scrollY={scrollY}
-      />
+      {isIOS && <RefreshIndicator refreshing={refreshing} scrollY={scrollY} />}
       <ScrollView
         className='w-full pt-0'
         showsVerticalScrollIndicator={true}

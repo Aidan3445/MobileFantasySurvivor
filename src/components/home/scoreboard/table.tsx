@@ -4,7 +4,7 @@ import { Flame } from 'lucide-react-native';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { type SeasonsDataQuery } from '~/types/seasons';
 import { compileScores } from '~/lib/scores';
-import { newtwentyColors } from '~/lib/colors';
+import { twentyFourColors } from '~/lib/colors';
 import { type BaseEventRules } from '~/types/leagues';
 import ScoreboardBody from '~/components/home/scoreboard/body';
 import SelectSeason from '~/components/home/scoreboard/selectSeason';
@@ -53,7 +53,7 @@ export default function ScoreboardTable({
       .sort(({ fullName: a }, { fullName: b }) => a.length - b.length)
       .reduce(
         (acc, { castawayId }, index) => {
-          acc[castawayId] = newtwentyColors[index % newtwentyColors.length]!;
+          acc[castawayId] = twentyFourColors[index % twentyFourColors.length]!;
           return acc;
         },
         {} as Record<string, string>

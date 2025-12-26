@@ -7,18 +7,25 @@ import Carousel, { Pagination } from 'react-native-reanimated-carousel';
 import { useRouter } from 'expo-router';
 import ActiveLeague from '~/components/home/activeleagues/activeLeague';
 import { useCarousel } from '~/hooks/ui/useCarousel';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { MAX_LEAGUE_MEMBERS_HOME_DISPLAY } from '~/lib/leagues';
+import { type LeagueDetails } from '~/types/leagues';
 
 export default function ActiveLeagues() {
   const router = useRouter();
   const { data: leagues } = useLeagues();
   const { props, progressProps, setCarouselData } = useCarousel(leagues);
+  const [inactive, setInactive] = useState<LeagueDetails[]>([]);
 
   useEffect(() => {
-    const currentLeagues = leagues?.filter(({ league }) =>
-      league.status !== 'Inactive'
-    ).sort((a, b) => {
+    const currentLeagues: LeagueDetails[] = [];
+    leagues?.forEach((leagueDetails) =>
+      leagueDetails.league.status !== 'Inactive'
+        ? currentLeagues.push(leagueDetails)
+        : setInactive((prev) => [...prev, leagueDetails])
+    );
+
+    currentLeagues.sort((a, b) => {
       // sort order: Drafting, Active, Predraft. (inactive for typing but those are filtered out)
       // break ties by member count descending
       const statusOrder = { Draft: 0, Active: 1, Predraft: 2, Inactive: 3 };
@@ -39,7 +46,7 @@ export default function ActiveLeagues() {
     return 28 * MAX_LEAGUE_MEMBERS_HOME_DISPLAY + 55;
   }, [leagues]);
 
-  if (!props.data || props.data.length === 0) {
+  if ((!props.data || props.data.length === 0) && inactive.length === 0) {
     return (
       <View className='overflow-hidden rounded-lg bg-card pb-1 mx-2'>
         <View className='relative items-center'>
