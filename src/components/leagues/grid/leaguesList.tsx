@@ -38,8 +38,8 @@ export default function LeaguesList() {
   }, [leagues]);
 
   return (
-    <View className='px-4 py-6'>
-      <View className='rounded-full bg-primary mb-3 mt-2'>
+    <View className='w-full px-2 py-6 flex flex-col items-center'>
+      <View className='w-full rounded-full bg-primary mb-4 mt-2'>
         <Text className='text-2xl font-semibold text-white text-center'>My Leagues</Text>
       </View>
       <View className='flex-col'>
@@ -51,17 +51,27 @@ export default function LeaguesList() {
             currentSelection={currentSelection}
           />
         ))}
+        {currentLeagues.length === 0 && (
+          <View className='rounded-lg bg-card p-4 mb-4 w-96'>
+            <Text className='text-center text-muted-foreground'>
+              You don't have any active leagues.
+            </Text>
+            <Text className='text-center text-muted-foreground'>
+              Create or join one to get started!
+            </Text>
+          </View>
+        )}
       </View>
       <QuickActions />
-      <View className='rounded-full bg-secondary mt-6 mb-3' />
+      <View className='rounded-full bg-secondary mb-3' />
       {inactiveLeagues.map(({ league, member, currentSelection }, index) => {
         // Check if this is the first league of this season
         const isFirstOfSeason =
           inactiveLeagues.findIndex(({ league: l }) => l.seasonId === league.seasonId) === index;
         return (
-          <View key={league.hash}>
+          <View key={league.hash} className='w-full flex flex-col items-center'>
             {isFirstOfSeason && (
-              <View className='rounded-full bg-primary mb-3'>
+              <View className='rounded-full bg-primary mb-3 w-full'>
                 <Text className='text-xl font-semibold text-white text-center'>
                   {league.season}
                 </Text>

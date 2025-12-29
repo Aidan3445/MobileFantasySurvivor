@@ -2,12 +2,17 @@ import { View, Text } from 'react-native';
 import { ListPlus, Users } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import Button from '~/components/common/button';
+import { cn } from '~/lib/utils';
 
-export default function QuickActions() {
+interface QuickActionsProps {
+  className?: string;
+}
+
+export default function QuickActions({ className }: QuickActionsProps) {
   const router = useRouter();
 
   return (
-    <View className='mb-2 mt-auto flex-row gap-4 px-4'>
+    <View className={cn('mb-2 flex-row gap-4', className)}>
       <Button
         className='flex-1 flex-row items-center justify-center rounded-lg bg-primary p-4'
         onPress={() => router.push('/leagues/create')}>

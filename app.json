@@ -14,7 +14,24 @@
   "expo": {
     "ios": {
       "bundleIdentifier": "com.aidan3445.mobilefantasysurvivor",
-      "infoPlist": { "ITSAppUsesNonExemptEncryption": false }
-    }
+      "infoPlist": { "ITSAppUsesNonExemptEncryption": false },
+      "requiresFullScreen": true
+    },
+    "android": {
+      "package": "com.aidan3445.mobilefantasysurvivor",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+    },
+    "plugins": [
+      [
+        "expo-screen-orientation",
+        {
+          "initialOrientation": "PORTRAIT_UP"
+        }
+      ]
+    ],
+    "version": "1.0.0",
   }
 }
