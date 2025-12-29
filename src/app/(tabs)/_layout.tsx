@@ -66,7 +66,8 @@ export default function TabLayout() {
             marginBottom: isAndroid ? insets.bottom : 0,
             shadowColor: 'transparent',
           },
-          tabBarLabelStyle: { fontSize: 12 },
+          tabBarLabelStyle: { fontSize: 12, },
+          tabBarAllowFontScaling: false,
         }}>
         <Tabs.Screen
           name='index'

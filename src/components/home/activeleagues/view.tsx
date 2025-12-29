@@ -56,7 +56,9 @@ export default function ActiveLeagues() {
           <Button
             className='absolute bottom-0 right-1 rounded-md bg-white px-2'
             onPress={() => router.push('/leagues')}>
-            <Text className='text-sm font-semibold text-primary'>View All</Text>
+            <Text className='text-sm font-semibold text-primary' allowFontScaling={false}>
+              View All
+            </Text>
           </Button>
         </View>
       </View>
@@ -78,7 +80,9 @@ export default function ActiveLeagues() {
         <Button
           className='absolute bottom-0 right-1 rounded-md bg-white px-2'
           onPress={() => router.push('/leagues')}>
-          <Text className='text-sm font-semibold text-primary'>View All</Text>
+          <Text className='text-sm font-semibold text-primary' allowFontScaling={false}>
+            View All
+          </Text>
         </Button>
       </View>
     </View>

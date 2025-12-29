@@ -16,6 +16,8 @@ export interface ScoreboardBodyProps {
   allZero: boolean;
 }
 
+const ROW_HEIGHT = 25.5;
+
 export default function ScoreboardBody({
   sortedCastaways,
   castawayColors,
@@ -38,7 +40,7 @@ export default function ScoreboardBody({
   return (
     <View className='bg-card pb-1'>
       <Carousel
-        height={24.5 * castawaySplitIndex}
+        height={castawaySplitIndex * ROW_HEIGHT}
         {...props}
         renderItem={({ item, index: col }) => (
           <View>
@@ -65,15 +67,18 @@ export default function ScoreboardBody({
                 />
               );
             })}
-            {/* If odd number of castaways, add an empty row for alignment to first half only (col 0) */}
+            {/* If odd number of castaways, add an empty row for alignment */}
             {sortedCastaways.length % 2 === 1 && col === 1 && (
-              <View className='h-7 border-t border-t-primary' />
+              <View
+                className='border-t border-t-primary'
+                style={{ height: ROW_HEIGHT }}
+              />
             )}
           </View>
         )
         }
       />
-      < Pagination.Basic
+      <Pagination.Basic
         {...progressProps}
         containerStyle={{ ...progressProps.containerStyle, marginVertical: 4 }}
       />
