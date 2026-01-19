@@ -28,7 +28,7 @@ export default function Page() {
             <Header refreshing={refreshing} />
             <ActiveLeagues />
             <CastawayScoreboard />
-            <QuickActions />
+            <QuickActions className='px-2' />
           </View>
         </ScrollView>
       </View>

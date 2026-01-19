@@ -1,25 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
-import { type CurrentSelection, type LeagueMember } from '~/types/leagueMembers';
-import { type League } from '~/types/leagues';
+import { type LeagueDetails } from '~/types/leagues';
 import { useFetch } from '~/hooks/helpers/useFetch';
 
 /** 
   * Fetch function for suspense queries.
   * @returns A promise resolving to the leagues data.
   */
-export async function fetchLeagues(fetchData: ReturnType<typeof useFetch>) {
+async function fetchLeagues(fetchData: ReturnType<typeof useFetch>) {
   const response = await fetchData('/api/leagues');
   if (!response.ok) {
     return [];
   }
-  const { leagues } = (await response.json()) as {
-    leagues: {
-      league: League;
-      member: LeagueMember;
-      currentSelection: CurrentSelection;
-      memberCount: number;
-    }[];
-  };
+  const { leagues } = await response.json() as { leagues: LeagueDetails[]; };
   return leagues;
 };
 
@@ -28,9 +20,7 @@ export async function fetchLeagues(fetchData: ReturnType<typeof useFetch>) {
  */
 export function useLeagues() {
   const fetchData = useFetch('GET');
-  return useQuery<
-    { league: League; member: LeagueMember; currentSelection: CurrentSelection; memberCount: number }[]
-  >({
+  return useQuery<LeagueDetails[]>({
     queryKey: ['leagues'],
     queryFn: fetchLeagues.bind(null, fetchData),
     staleTime: 5 * 60 * 1000, // 5 minutes

@@ -4,7 +4,7 @@ import { Flame } from 'lucide-react-native';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { type SeasonsDataQuery } from '~/types/seasons';
 import { compileScores } from '~/lib/scores';
-import { newtwentyColors } from '~/lib/colors';
+import { twentyFourColors } from '~/lib/colors';
 import { type BaseEventRules } from '~/types/leagues';
 import ScoreboardBody from '~/components/home/scoreboard/body';
 import SelectSeason from '~/components/home/scoreboard/selectSeason';
@@ -53,7 +53,7 @@ export default function ScoreboardTable({
       .sort(({ fullName: a }, { fullName: b }) => a.length - b.length)
       .reduce(
         (acc, { castawayId }, index) => {
-          acc[castawayId] = newtwentyColors[index % newtwentyColors.length]!;
+          acc[castawayId] = twentyFourColors[index % twentyFourColors.length]!;
           return acc;
         },
         {} as Record<string, string>
@@ -105,7 +105,7 @@ export default function ScoreboardTable({
           {!allZero ? (
             <>
               <View className='w-11 items-center justify-center py-1'>
-                <Text className='text-center font-medium'>Place</Text>
+                <Text className='text-center font-medium' allowFontScaling={false}>Place</Text>
               </View>
               <View className='w-10 items-center justify-center py-1'>
                 <Flame
@@ -114,8 +114,8 @@ export default function ScoreboardTable({
                 />
               </View>
               <View className='flex-1 items-center justify-center py-1'>
-                <Text className='text-center font-medium'>
-                  Castaway - {selectedSeasonData.data.season.name}
+                <Text className='text-center font-medium text-wrap' allowFontScaling={false}>
+                  {selectedSeasonData.data.season.name}
                 </Text>
                 <SelectSeason
                   seasons={scoreData.map(s => ({ value: s.season.name, label: s.season.name }))}
@@ -127,8 +127,8 @@ export default function ScoreboardTable({
             </>
           ) : (
             <View className='flex-1 items-center justify-center py-1'>
-              <Text className='text-center font-medium'>
-                {selectedSeasonData.data.season?.name} Castaways
+              <Text className='text-center font-medium' allowFontScaling={false}>
+                {selectedSeasonData.data.season?.name}
               </Text>
               <SelectSeason
                 seasons={scoreData.map(s => ({ value: s.season.name, label: s.season.name }))}

@@ -3,9 +3,11 @@ import { useIsFetching } from '@tanstack/react-query';
 import { Tabs, usePathname } from 'expo-router';
 import { Flame, Trophy, UserCircle2 } from 'lucide-react-native';
 import { useEffect, useState, useRef } from 'react';
-import { Animated, Image } from 'react-native';
+import { Animated, Image, Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import LoadingScreen from '~/components/auth/loadingScreen';
 import { colors } from '~/lib/colors';
+
 
 const HomeImage = require('~/assets/Icon.png');
 
@@ -15,6 +17,9 @@ export default function TabLayout() {
   const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
   const [showLoadingScreen, setShowLoadingScreen] = useState(true);
   const fadeAnim = useRef(new Animated.Value(1)).current;
+
+  const insets = useSafeAreaInsets();
+  const isAndroid = Platform.OS === 'android';
 
   useEffect(() => {
     // eslint-disable-next-line no-undef
@@ -53,8 +58,16 @@ export default function TabLayout() {
           headerShown: false,
           tabBarActiveTintColor: colors.primary,
           tabBarInactiveTintColor: colors.secondary,
-          tabBarStyle: { backgroundColor: colors.navigation, height: 80 },
-          tabBarLabelStyle: { fontSize: 12 },
+          tabBarStyle: {
+            backgroundColor: colors.navigation,
+            height: isAndroid ? 60 : 80,
+            paddingBottom: 0,
+            paddingTop: isAndroid ? 4 : 0,
+            marginBottom: isAndroid ? insets.bottom : 0,
+            shadowColor: 'transparent',
+          },
+          tabBarLabelStyle: { fontSize: 12, },
+          tabBarAllowFontScaling: false,
         }}>
         <Tabs.Screen
           name='index'

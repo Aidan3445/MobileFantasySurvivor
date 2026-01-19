@@ -17,7 +17,7 @@ import {
 } from '~/types/events';
 import { type Tribe } from '~/types/tribes';
 import { type EnrichedCastaway } from '~/types/castaways';
-import { ColorZod, DisplayNameZod, type LeagueMember } from '~/types/leagueMembers';
+import { ColorZod, type CurrentSelection, DisplayNameZod, type LeagueMember } from '~/types/leagueMembers';
 
 export type LeagueStatus = (typeof LeagueStatuses)[number];
 
@@ -36,6 +36,13 @@ export type PublicLeague = {
   status: LeagueStatus;
   season: string;
   usedColors: string[];
+};
+
+export type LeagueDetails = {
+  league: League;
+  member: LeagueMember;
+  currentSelection: CurrentSelection;
+  memberCount: number
 };
 
 export const LeagueNameZod = z
