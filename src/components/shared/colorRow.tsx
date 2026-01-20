@@ -15,11 +15,15 @@ export default function ColorRow({ color, className, children, loggedIn }: Color
   return (
     <View
       className={cn(
-        'flex-row items-center rounded-lg p-4',
-        loggedIn && 'border-2 border-primary',
+        'w-full inline-flex px-4 py-0.5 gap-4 text-nowrap items-center rounded-md border-t border-b border-r border-transparent',
+        loggedIn && 'text-primary',
         className
       )}
-      style={{ backgroundColor: color }}>
+      style={{
+        backgroundColor: `${color ?? '#AAAAAA'}20`,
+        borderLeftColor: color ?? '#000000',
+        borderLeftWidth: 4,
+      }}>
       {children}
     </View>
   );

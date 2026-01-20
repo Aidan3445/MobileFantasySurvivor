@@ -101,7 +101,7 @@ export default function ScoreboardTable({
   return (
     <View className={cn('', className)}>
       <View className='overflow-hidden rounded-lg bg-accent'>
-        <View className='flex-row gap-x-1 bg-white px-1'>
+        <View className='flex-row gap-x-1 bg-white'>
           {!allZero ? (
             <>
               <View className='w-11 items-center justify-center py-1'>

@@ -26,13 +26,11 @@ export default function ActiveLeagues() {
     );
 
     currentLeagues.sort((a, b) => {
-      // sort order: Drafting, Active, Predraft. (inactive for typing but those are filtered out)
-      // break ties by member count descending
-      const statusOrder = { Draft: 0, Active: 1, Predraft: 2, Inactive: 3 };
+      const statusOrder = { Draft: 0, Predraft: 1, Active: 2, Inactive: 3 };
       if (statusOrder[a.league.status] !== statusOrder[b.league.status]) {
         return statusOrder[a.league.status] - statusOrder[b.league.status];
       }
-      return b.memberCount - a.memberCount;
+      return b.league.season.localeCompare(a.league.season);
     });
     setCarouselData(currentLeagues ?? []);
   }, [leagues, setCarouselData]);
@@ -48,42 +46,62 @@ export default function ActiveLeagues() {
 
   if ((!props.data || props.data.length === 0) && inactive.length === 0) {
     return (
-      <View className='overflow-hidden rounded-lg bg-card pb-1 mx-2'>
-        <View className='relative items-center'>
-          <Text className='m-4 text-center text-sm font-medium text-muted-foreground'>
-            You are not a member of any active leagues. Join or create a league to get started!
+      <View className='relative overflow-hidden rounded-xl bg-card border-2 border-primary/20 px-4 pt-5 pb-3'>
+        <Text className='text-center text-sm font-medium text-muted-foreground leading-relaxed'>
+          You are not a member of any active leagues.
+          {'\n'}
+          Join or create a league to get started!
+        </Text>
+        <Button
+          className='mt-4 rounded-lg bg-primary/10 border border-primary/30 px-4 py-3'
+          onPress={() => router.push('/leagues')}>
+          <Text className='text-sm text-center font-bold text-primary uppercase tracking-wider' allowFontScaling={false}>
+            View All Leagues
           </Text>
-          <Button
-            className='absolute bottom-0 right-1 rounded-md bg-white px-2'
-            onPress={() => router.push('/leagues')}>
-            <Text className='text-sm font-semibold text-primary' allowFontScaling={false}>
-              View All
-            </Text>
-          </Button>
-        </View>
+        </Button>
       </View>
     );
   }
 
   return (
-    <View className='overflow-hidden rounded-lg bg-card pb-1'>
-      <Carousel
-        height={carouselHeight}
-        renderItem={({ item }) => <ActiveLeague league={item.league} />}
-        {...props}
-      />
-      <View className='relative items-center'>
+    <View className='relative overflow-hidden rounded-xl bg-card border-2 border-primary/20'>
+      {/* Header */}
+      <View className='px-4 pt-5 pb-3'>
+        <View className='flex-row items-end justify-between mb-3'>
+          <View className='flex-row items-center gap-3'>
+            <View className='h-8 w-1 bg-primary rounded-full' />
+            <Text className='text-2xl font-black tracking-tight uppercase text-foreground'>
+              Your Leagues
+            </Text>
+          </View>
+          <Button
+            className='rounded-md border border-primary/30 bg-primary/5 px-3 py-1.5 active:bg-primary/10'
+            onPress={() => router.push('/leagues')}>
+            <Text className='text-xs font-bold text-primary uppercase tracking-wider' allowFontScaling={false}>
+              View All
+            </Text>
+          </Button>
+        </View>
+
+        {/* Separator */}
+        <View className='h-[2px] bg-primary/20 rounded-full' />
+      </View>
+
+      {/* Carousel */}
+      <View>
+        <Carousel
+          height={carouselHeight}
+          renderItem={({ item }) => <ActiveLeague league={item.league} />}
+          {...props}
+        />
+      </View>
+
+      {/* Pagination Footer */}
+      <View className='items-center pb-3'>
         <Pagination.Basic
           {...progressProps}
-          containerStyle={{ ...progressProps.containerStyle, marginBottom: 3 }}
+          containerStyle={{ ...progressProps.containerStyle, marginBottom: 8 }}
         />
-        <Button
-          className='absolute bottom-0 right-1 rounded-md bg-white px-2'
-          onPress={() => router.push('/leagues')}>
-          <Text className='text-sm font-semibold text-primary' allowFontScaling={false}>
-            View All
-          </Text>
-        </Button>
       </View>
     </View>
   );

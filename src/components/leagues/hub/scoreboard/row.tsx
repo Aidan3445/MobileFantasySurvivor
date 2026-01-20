@@ -9,6 +9,7 @@ import { useTribesTimeline } from '~/hooks/seasons/useTribesTimeline';
 import { type Tribe } from '~/types/tribes';
 import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
 import { divideY } from '~/lib/ui';
+import ColorRow from '~/components/shared/colorRow';
 
 interface MemberRowProps {
   place: number;
@@ -116,18 +117,11 @@ export default function MemberRow({
           {points}
         </Text>
       </View>
-      <View
-        className={cn(
-          'flex-1 items-center justify-center rounded',
-          member.loggedIn && 'border border-white'
-        )}
-        style={{ backgroundColor: color }}>
-        <Text
-          className={cn('text-center')}
-          style={{ color: getContrastingColor(color) }}>
+      <ColorRow color={color}>
+        <Text>
           {member.displayName}
         </Text>
-      </View>
+      </ColorRow>
       <View
         className='w-24 rounded'
         style={{

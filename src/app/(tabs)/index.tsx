@@ -24,11 +24,11 @@ export default function Page() {
               onRefresh={onRefresh}
             />
           }>
-          <View className='page justify-start gap-y-4 pt-10'>
+          <View className='page justify-start gap-y-4 pt-10 px-1'>
             <Header refreshing={refreshing} />
             <ActiveLeagues />
             <CastawayScoreboard />
-            <QuickActions className='px-2' />
+            <QuickActions />
           </View>
         </ScrollView>
       </View>

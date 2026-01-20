@@ -10,13 +10,15 @@ import { useFetch } from '~/hooks/helpers/useFetch';
 import Clock from '~/components/leagues/predraft/countdown/clock';
 import { Lock, Unlock } from 'lucide-react-native';
 import { colors } from '~/lib/colors';
+import { cn } from '~/lib/utils';
 import SetDraftDate from '~/components/leagues/predraft/countdown/edit';
 
 interface DraftCountdownProps {
   overrideHash?: string;
+  className?: string;
 }
 
-export function DraftCountdown({ overrideHash }: DraftCountdownProps) {
+export function DraftCountdown({ overrideHash, className }: DraftCountdownProps) {
   const putData = useFetch('PUT');
   const queryClient = useQueryClient();
   const { data: league } = useLeague(overrideHash);
@@ -50,7 +52,7 @@ export function DraftCountdown({ overrideHash }: DraftCountdownProps) {
   };
 
   return (
-    <View className='w-full rounded-xl bg-card p-2'>
+    <View className={cn('w-full rounded-xl bg-card p-2', className)}>
       <View className='w-full flex-row items-center'>
         <View className='flex-1'>
           <View className='flex-col items-baseline gap-y-0'>
