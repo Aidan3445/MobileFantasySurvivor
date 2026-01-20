@@ -8,15 +8,13 @@ interface ColorRowProps {
   color: string;
   className?: string;
   children: ReactNode;
-  loggedIn?: boolean;
 }
 
-export default function ColorRow({ color, className, children, loggedIn }: ColorRowProps) {
+export default function ColorRow({ color, className, children }: ColorRowProps) {
   return (
     <View
       className={cn(
-        'w-full inline-flex px-4 py-0.5 gap-4 text-nowrap items-center rounded-md border-t border-b border-r border-transparent',
-        loggedIn && 'text-primary',
+        'w-full inline-flex px-1 py-0.5 gap-4 text-nowrap items-center rounded-md border-t border-b border-r border-transparent',
         className
       )}
       style={{

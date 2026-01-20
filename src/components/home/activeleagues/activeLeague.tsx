@@ -107,11 +107,7 @@ export default function ActiveLeague({ league }: ActiveLeagueProps) {
       <View className='mt-4'>
         {league.status === 'Active' ? (
           <View className='bg-primary/5 border border-primary/20 rounded-lg overflow-hidden'>
-            <Scoreboard
-              overrideHash={league.hash}
-              maxRows={MAX_LEAGUE_MEMBERS_HOME_DISPLAY}
-              hideSelectionHistory
-            />
+            <Scoreboard overrideHash={league.hash} maxRows={MAX_LEAGUE_MEMBERS_HOME_DISPLAY} />
           </View>
         ) : (
           <DraftCountdown
