@@ -12,11 +12,7 @@ export function useHomeRefresh() {
 
     setRefreshing(true);
     try {
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ['leagues'] }),
-        queryClient.invalidateQueries({ queryKey: ['league'] }),
-        queryClient.invalidateQueries({ queryKey: ['seasons'] })
-      ]);
+      await queryClient.invalidateQueries({ queryKey: [] });
     } finally {
       setRefreshing(false);
     }
