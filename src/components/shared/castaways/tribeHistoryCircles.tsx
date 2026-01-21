@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { Circle } from 'lucide-react-native';
 import Popover from 'react-native-popover-view';
 import { type Tribe } from '~/types/tribes';
 import { colors } from '~/lib/colors';
-import Button from '~/components/common/button';
 
 interface TribeHistoryCirclesProps {
   tribeTimeline: Array<{ episode: number; tribe: Tribe | null }>;
@@ -12,8 +11,6 @@ interface TribeHistoryCirclesProps {
 
 export default function TribeHistoryCircles({ tribeTimeline }: TribeHistoryCirclesProps) {
   const [visiblePopover, setVisiblePopover] = useState<string | null>(null);
-
-  if (tribeTimeline.length <= 1) return null;
 
   return (
     <View className='ml-auto flex-row gap-0.5'>
@@ -24,15 +21,16 @@ export default function TribeHistoryCircles({ tribeTimeline }: TribeHistoryCircl
             isVisible={visiblePopover === `${tribe.tribeName}-${episode}`}
             onRequestClose={() => setVisiblePopover(null)}
             popoverStyle={{
-              backgroundColor: colors.card,
+              backgroundColor: colors.primary,
               borderRadius: 8,
               borderWidth: 1,
-              borderColor: `${colors.primary}4D`,
+              borderColor: colors.primary,
+              transform: [{ translateY: 0 }],
             }}
             backgroundStyle={{ backgroundColor: 'transparent' }}
-            arrowSize={{ width: 0, height: 0 }}
+            arrowSize={{ width: 5, height: 10 }}
             from={
-              <Button
+              <Pressable
                 onPress={() =>
                   setVisiblePopover(
                     visiblePopover === `${tribe.tribeName}-${episode}`
@@ -40,13 +38,17 @@ export default function TribeHistoryCircles({ tribeTimeline }: TribeHistoryCircl
                       : `${tribe.tribeName}-${episode}`
                   )
                 }
-                className='p-0.5 opacity-80 active:opacity-60'>
-                <Circle size={16} fill={tribe.tribeColor} color={tribe.tribeColor} />
-              </Button>
+                className='opacity-80 active:opacity-60'>
+                <Circle
+                  size={16}
+                  fill={tribe.tribeColor}
+                  stroke='black'
+                  color={tribe.tribeColor} />
+              </Pressable>
             }>
-            <View className='flex-row items-center p-2'>
-              <Text className='font-bold text-xs text-foreground'>{tribe.tribeName}</Text>
-              <Text className='text-xs text-muted-foreground'> • Ep {episode}</Text>
+            <View className='flex-row items-center p-2 bg-card rounded-lg m-[1px]'>
+              <Text className='font-bold text-foreground'>{tribe.tribeName}</Text>
+              <Text className='text-muted-foreground'> • Ep {episode}</Text>
             </View>
           </Popover>
         ) : null

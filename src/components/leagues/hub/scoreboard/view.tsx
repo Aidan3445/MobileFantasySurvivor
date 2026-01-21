@@ -101,6 +101,6 @@ export default function Scoreboard({ overrideHash, maxRows, className }: Scorebo
           );
         })}
       </View>
-    </View >
+    </View>
   );
 }

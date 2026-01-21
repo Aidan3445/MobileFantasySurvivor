@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { Flame, Skull, ShieldCheck } from 'lucide-react-native';
 import Popover from 'react-native-popover-view';
 import { colors } from '~/lib/colors';
-import Button from '~/components/common/button';
 
 interface SurvivalStreaksProps {
   survivalCap: number;
@@ -42,27 +41,22 @@ export default function SurvivalStreaks({
       isVisible={isVisible}
       onRequestClose={() => setIsVisible(false)}
       popoverStyle={{
-        backgroundColor: colors.card,
+        backgroundColor: colors.primary,
         borderRadius: 8,
-        borderWidth: 2,
-        borderColor: `${colors.primary}4D`,
-        borderBottomColor: `${colors.primary}4D`,
-        shadowColor: colors.primary,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.2,
-        shadowRadius: 8,
-        elevation: 5,
+        borderWidth: 1,
+        borderColor: colors.primary,
+        transform: [{ translateY: 0 }],
       }}
       backgroundStyle={{ backgroundColor: 'transparent' }}
-      arrowSize={{ width: 0, height: 0 }}
+      arrowSize={{ width: 5, height: 10 }}
       from={
-        <Button
+        <Pressable
           onPress={() => setIsVisible(true)}
-          className='flex-1 ml-1 w-5 h-5 justify-center'>
+          className='flex-1 w-5 h-5 flex items-center justify-center'>
           {renderTriggerContent()}
-        </Button>
+        </Pressable>
       }>
-      <View className='p-3'>
+      <View className='p-3 bg-card rounded-lg m-[1px]'>
         <Text className='text-sm font-bold uppercase tracking-wider mb-2 text-foreground'>
           Survival Streak
         </Text>

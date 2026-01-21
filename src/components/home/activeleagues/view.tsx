@@ -39,14 +39,14 @@ export default function ActiveLeagues() {
     const maxLeagueMembers =
       leagues?.reduce((max, league) => Math.max(max, league.memberCount), 0) ?? 0;
     if (maxLeagueMembers < MAX_LEAGUE_MEMBERS_HOME_DISPLAY) {
-      return Math.max(150, 40 * maxLeagueMembers + 55);
+      return Math.max(150, 35 * maxLeagueMembers + 60);
     }
-    return 40 * MAX_LEAGUE_MEMBERS_HOME_DISPLAY + 55;
+    return 35 * MAX_LEAGUE_MEMBERS_HOME_DISPLAY + 60;
   }, [leagues]);
 
   if ((!props.data || props.data.length === 0) && inactive.length === 0) {
     return (
-      <View className='relative overflow-hidden rounded-xl bg-card border-2 border-primary/20 px-4 pt-5 pb-3'>
+      <View className='relative w-full overflow-hidden rounded-xl bg-card border-2 border-primary/20 p-4'>
         <Text className='text-center text-sm font-medium text-muted-foreground leading-relaxed'>
           You are not a member of any active leagues.
           {'\n'}
@@ -64,10 +64,10 @@ export default function ActiveLeagues() {
   }
 
   return (
-    <View className='relative overflow-hidden rounded-xl bg-card border-2 border-primary/20'>
+    <View className='relative w-full overflow-hidden rounded-xl bg-card border-2 border-primary/20'>
       {/* Header */}
       <View className='p-4 pb-0'>
-        <View className='flex-row items-end justify-between mb-2'>
+        <View className='flex-row items-end justify-between'>
           <View className='flex-row items-center gap-1'>
             <View className='h-8 w-1 bg-primary rounded-full' />
             <Text className='text-2xl font-black tracking-tight uppercase text-foreground'>
@@ -84,7 +84,7 @@ export default function ActiveLeagues() {
         </View>
 
         {/* Separator */}
-        <View className='h-[2px] bg-primary/20 rounded-full' />
+        <View className='h-[2px] bg-primary/20 rounded-full my-2' />
       </View>
 
       {/* Carousel */}
@@ -92,16 +92,17 @@ export default function ActiveLeagues() {
         <Carousel
           height={carouselHeight}
           renderItem={({ item }) => <ActiveLeague league={item.league} />}
-          {...props}
-        />
+          {...props} />
       </View>
 
       {/* Pagination Footer */}
       <View className='items-center'>
         <Pagination.Basic
           {...progressProps}
-          containerStyle={{ ...progressProps.containerStyle, marginBottom: 8 }}
-        />
+          containerStyle={{
+            ...progressProps.containerStyle,
+            marginVertical: 8,
+          }} />
       </View>
     </View>
   );

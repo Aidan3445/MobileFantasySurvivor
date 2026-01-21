@@ -36,13 +36,12 @@ export default function CreateLeagueForm({ onSubmit }: CreateLeagueFormProps) {
       },
       { name: 'draftDate', content: <DraftDate control={reactForm.control} />, optional: true },
       {
-        name: 'newMember',
+        name: 'member',
         content: (
           <LeagueMember
             control={reactForm.control}
             formPrefix='newMember'
-            className='mb-14'
-          />
+            className='mb-14' />
         ),
         optional: false,
         isLast: true

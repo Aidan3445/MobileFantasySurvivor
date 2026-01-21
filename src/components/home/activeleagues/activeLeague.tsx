@@ -61,7 +61,7 @@ export default function ActiveLeague({ league }: ActiveLeagueProps) {
   const StatusIcon = status.icon;
 
   return (
-    <View className='px-1 mt-2'>
+    <View className='px-1'>
       {/* League Header Card */}
       <Link
         key={league.hash}
@@ -107,11 +107,10 @@ export default function ActiveLeague({ league }: ActiveLeagueProps) {
       {/* League Content */}
       <View className='mt-2'>
         {league.status === 'Active' ? (
-          <View className='bg-primary/5 border-2 border-primary/20 rounded-lg overflow-hidden'>
-            <Scoreboard
-              overrideHash={league.hash}
-              maxRows={MAX_LEAGUE_MEMBERS_HOME_DISPLAY} />
-          </View>
+          <Scoreboard
+            className='bg-primary/5 border-2 border-primary/20 rounded-lg overflow-hidden'
+            overrideHash={league.hash}
+            maxRows={MAX_LEAGUE_MEMBERS_HOME_DISPLAY} />
         ) : (
           <DraftCountdown
             overrideHash={league.hash}

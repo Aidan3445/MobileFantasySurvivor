@@ -7,6 +7,7 @@ import { divideY } from '~/lib/ui';
 import ColorRow from '~/components/shared/colorRow';
 import SurvivalStreaks from '~/components/leagues/hub/scoreboard/popover/survivalStreaks';
 import MarqueeText from '~/components/common/marquee';
+import CastawayModal from '~/components/shared/castaways/castawayModal';
 
 interface MemberRowProps {
   place: number;
@@ -86,23 +87,27 @@ export default function MemberRow({
           containerClassName='flex-row' />
       </ColorRow>
       <View className='w-24 justify-center'>
-        <Text
-          className={cn(
-            'text-base font-medium transition-all text-black active:text-primary cursor-pointer text-nowrap',
-            castaway?.eliminatedEpisode && 'line-through opacity-40 active:opacity-60'
-          )}>
-          {castaway?.shortName || 'None'}
-        </Text>
+        <CastawayModal castaway={castaway}>
+          <Text
+            className={cn(
+              'text-base font-medium transition-all text-black text-nowrap',
+              castaway?.eliminatedEpisode && 'line-through opacity-40'
+            )}>
+            {castaway?.shortName || 'None'}
+          </Text>
+        </CastawayModal>
       </View>
       {leagueSettings?.secondaryPickEnabled && (secondaryPick ? (
         <View className='w-24 justify-center'>
-          <Text
-            className={cn(
-              'text-base font-medium transition-all text-black active:text-primary cursor-pointer text-nowrap',
-              secondaryPick.eliminatedEpisode && 'line-through opacity-40 active:opacity-60'
-            )}>
-            {secondaryPick?.shortName || 'None'}
-          </Text>
+          <CastawayModal castaway={secondaryPick}>
+            <Text
+              className={cn(
+                'text-base font-medium transition-all text-black text-nowrap',
+                secondaryPick.eliminatedEpisode && 'line-through opacity-40'
+              )}>
+              {secondaryPick?.shortName || 'None'}
+            </Text>
+          </CastawayModal>
         </View>
       ) : (
         <View className='w-24 justify-center'>

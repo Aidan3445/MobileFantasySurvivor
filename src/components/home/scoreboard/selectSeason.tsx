@@ -34,7 +34,7 @@ export default function SelectSeason({ seasons, value, setValue, someHidden }: S
   return (
     <>
       <Button
-        className='absolute right-2'
+        className='absolute right-3 top-1'
         onPress={openModal}>
         <Ellipsis size={20} />
       </Button>
@@ -48,8 +48,7 @@ export default function SelectSeason({ seasons, value, setValue, someHidden }: S
         onSearchChange={setSearchText}
         placeholder='Search seasons...'
         emptyMessage='No seasons found.'
-        footerComponent={footerComponent}
-      />
+        footerComponent={footerComponent} />
     </>
   );
 }

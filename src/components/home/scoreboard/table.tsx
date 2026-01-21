@@ -1,14 +1,13 @@
 'use client';
 import { View, Text } from 'react-native';
-import { Flame } from 'lucide-react-native';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { type SeasonsDataQuery } from '~/types/seasons';
 import { compileScores } from '~/lib/scores';
-import { twentyFourColors } from '~/lib/colors';
 import { type BaseEventRules } from '~/types/leagues';
 import ScoreboardBody from '~/components/home/scoreboard/body';
 import SelectSeason from '~/components/home/scoreboard/selectSeason';
 import { cn } from '~/lib/utils';
+import { Flame } from 'lucide-react-native';
 
 export interface ScoreboardTableProps {
   scoreData: SeasonsDataQuery[];
@@ -38,9 +37,13 @@ export default function ScoreboardTable({
       undefined,
       undefined,
       undefined,
-      overrideBaseRules
-        ? { base: overrideBaseRules, basePrediction: null, custom: [], shauhinMode: null }
-        : null
+      overrideBaseRules ? {
+        base: overrideBaseRules,
+        basePrediction: null,
+        custom: [],
+        shauhinMode: null,
+        secondaryPick: null
+      } : null
     ).scores;
 
     const sortedCastaways = Object.entries(castawayScores)
@@ -49,19 +52,9 @@ export default function ScoreboardTable({
       )
       .map(([castawayId, scores]) => [Number(castawayId), scores] as [number, number[]]);
 
-    const castawayColors: Record<string, string> = data.castaways
-      .sort(({ fullName: a }, { fullName: b }) => a.length - b.length)
-      .reduce(
-        (acc, { castawayId }, index) => {
-          acc[castawayId] = twentyFourColors[index % twentyFourColors.length]!;
-          return acc;
-        },
-        {} as Record<string, string>
-      );
-
     const castawaySplitIndex = Math.ceil(sortedCastaways.length / 2);
 
-    return { sortedCastaways, castawayColors, castawaySplitIndex, data };
+    return { sortedCastaways, castawaySplitIndex, data };
   }, [scoreData, selectedSeasonIndex, overrideBaseRules]);
 
   // Calculate allZero based on selected season data
@@ -92,60 +85,70 @@ export default function ScoreboardTable({
 
   if (!selectedSeasonData) {
     return (
-      <View className='rounded-xl bg-card p-6'>
-        <Text className='text-center text-muted-foreground'>No seasons available.</Text>
+      <View className='relative w-full overflow-hidden rounded-xl bg-card border-2 border-primary/20 p-4 items-center'>
+        <Text className='text-primary'>Loading season...</Text>
       </View>
     );
   }
 
+  const title = selectedSeasonIndex === 0
+    ? (allZero ? 'Castaways' : 'Leaderboard')
+    : 'Season Standings';
+
   return (
-    <View className={cn('', className)}>
-      <View className='overflow-hidden rounded-lg bg-accent'>
-        <View className='flex-row gap-x-1 bg-white'>
-          {!allZero ? (
-            <>
-              <View className='w-11 items-center justify-center py-1'>
-                <Text className='text-center font-medium' allowFontScaling={false}>Place</Text>
-              </View>
-              <View className='w-10 items-center justify-center py-1'>
-                <Flame
-                  size={16}
-                  className='text-muted-foreground'
-                />
-              </View>
-              <View className='flex-1 items-center justify-center py-1'>
-                <Text className='text-center font-medium text-wrap' allowFontScaling={false}>
-                  {selectedSeasonData.data.season.name}
-                </Text>
-                <SelectSeason
-                  seasons={scoreData.map(s => ({ value: s.season.name, label: s.season.name }))}
-                  value={selectedSeasonData.data.season.name}
-                  setValue={selectSeason}
-                  someHidden={someHidden}
-                />
-              </View>
-            </>
-          ) : (
-            <View className='flex-1 items-center justify-center py-1'>
-              <Text className='text-center font-medium' allowFontScaling={false}>
-                {selectedSeasonData.data.season?.name}
-              </Text>
-              <SelectSeason
-                seasons={scoreData.map(s => ({ value: s.season.name, label: s.season.name }))}
-                value={selectedSeasonData.data.season.name}
-                setValue={selectSeason}
-                someHidden={someHidden}
-              />
-            </View>
-          )}
+    <View className={cn('relative w-full overflow-hidden rounded-xl bg-card border-2 border-primary/20', className)}>
+      {/* Section Header */}
+      <View className='z-10 p-4 pb-2'>
+        <View className='flex-row items-center gap-1'>
+          <View className='h-6 w-1 bg-primary rounded-full' />
+          <Text className='text-xl font-black tracking-tight uppercase'>{title}</Text>
         </View>
+        <View className='flex-row items-center gap-2 ml-2.5'>
+          <Text className='text-xs font-bold text-primary uppercase tracking-wider'>
+            {selectedSeasonData.data.season.name}
+          </Text>
+        </View>
+        {scoreData.length > 1 && (
+          <SelectSeason
+            seasons={scoreData.map(s => ({ value: s.season.name, label: s.season.name }))}
+            value={selectedSeasonData.data.season.name}
+            setValue={selectSeason}
+            someHidden={someHidden} />
+        )}
+      </View>
+
+      {/* Scoreboard Table */}
+      <View className='px-1'>
+        {/* Table Header */}
+        <View className='rounded-t-lg border-2 border-b-0 border-primary/20 overflow-hidden'>
+          <View className='flex-row bg-white gap-0.5 px-0.5 rounded-t-md'>
+            {!allZero && (
+              <>
+                <View className='w-11 justify-center'>
+                  <Text className='text-base text-center font-medium'>Place</Text>
+                </View>
+                <View className='w-10 -ml-2 items-center justify-center'>
+                  <Flame size={14} className='text-muted-foreground' />
+                </View>
+              </>
+            )}
+            <View className='flex-1 justify-center'>
+              <Text className={cn(
+                'text-base text-left font-medium',
+                allZero && 'text-center'
+              )}>
+                Castaway
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Table Body */}
         <ScoreboardBody
           sortedCastaways={selectedSeasonData.sortedCastaways}
-          castawayColors={selectedSeasonData.castawayColors}
           castawaySplitIndex={selectedSeasonData.castawaySplitIndex}
           data={selectedSeasonData.data}
-          allZero={allZero}
-        />
+          allZero={allZero} />
       </View>
     </View>
   );

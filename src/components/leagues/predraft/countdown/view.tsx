@@ -5,10 +5,10 @@ import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 import { useQueryClient } from '@tanstack/react-query';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useFetch } from '~/hooks/helpers/useFetch';
 import Clock from '~/components/leagues/predraft/countdown/clock';
-import { Lock, Unlock, Calendar, CalendarX2 } from 'lucide-react-native';
+import { Calendar, CalendarX2 } from 'lucide-react-native';
 import { colors } from '~/lib/colors';
 import { cn } from '~/lib/utils';
 import SetDraftDate from '~/components/leagues/predraft/countdown/edit';
@@ -24,7 +24,6 @@ export function DraftCountdown({ overrideHash, className }: DraftCountdownProps)
   const { data: league } = useLeague(overrideHash);
   const { data: leagueSettings } = useLeagueSettings(overrideHash);
   const { data: leagueMembers } = useLeagueMembers(overrideHash);
-  const [modalOpen, setModalOpen] = useState(false);
   const router = useRouter();
 
   const editable = useMemo(
@@ -63,15 +62,7 @@ export function DraftCountdown({ overrideHash, className }: DraftCountdownProps)
           </View>
 
           {/* Action Buttons */}
-          {editable && (
-            <Button onPress={() => setModalOpen(true)}>
-              {modalOpen ? (
-                <Unlock size={24} color={colors.secondary} />
-              ) : (
-                <Lock size={24} color={colors.primary} />
-              )}
-            </Button>
-          )}
+          {editable && <SetDraftDate overrideHash={overrideHash} />}
         </View>
       </View>
 
@@ -119,11 +110,6 @@ export function DraftCountdown({ overrideHash, className }: DraftCountdownProps)
             } />
         </View>
       </View>
-
-      <SetDraftDate
-        overrideHash={overrideHash}
-        modalOpen={modalOpen}
-        setModalOpen={() => setModalOpen(false)} />
     </View>
   );
 }

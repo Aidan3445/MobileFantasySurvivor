@@ -5,15 +5,17 @@ import Modal from '~/components/common/modal';
 import { useDraftDate } from '~/hooks/leagues/mutation/useDraftDate';
 import Button from '~/components/common/button';
 import DraftDate from '~/components/leagues/actions/create/draftDate';
+import { useState } from 'react';
+import { colors } from '~/lib/colors';
+import { Lock, Unlock } from 'lucide-react-native';
 
 interface SetDraftDateProps {
   overrideHash?: string;
-  modalOpen: boolean;
-  setModalOpen: (_: boolean) => void;
 }
 
-export default function SetDraftDate({ overrideHash, modalOpen, setModalOpen }: SetDraftDateProps) {
+export default function SetDraftDate({ overrideHash }: SetDraftDateProps) {
   const { reactForm, handleSubmit, resetForm } = useDraftDate(overrideHash, () => setModalOpen(false));
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleCancel = () => {
     resetForm();
@@ -21,29 +23,38 @@ export default function SetDraftDate({ overrideHash, modalOpen, setModalOpen }: 
   };
 
   return (
-    <Modal
-      isVisible={modalOpen}
-      onClose={handleCancel}>
-      <View className='h-72 w-full rounded-xl bg-card'>
-        <Text className='text-card-foreground text-center text-lg font-bold'>Set Draft Date</Text>
-        <DraftDate
-          control={reactForm.control}
-          editing
-          submit={() => handleSubmit()} />
-        <View className='flex-row justify-between gap-3'>
-          <Button
-            onPress={() => handleCancel()}
-            className='flex-1 rounded-lg bg-destructive px-4 py-3'>
-            <Text className='text-center font-medium text-white'>Cancel</Text>
-          </Button>
-          <Button
-            onPress={() => handleSubmit()}
-            className='flex-1 rounded-lg bg-primary px-4 py-3 disabled:opacity-50'
-            disabled={!reactForm.formState.isDirty}>
-            <Text className='text-center font-medium text-white'>Save</Text>
-          </Button>
+    <>
+      <Button onPress={() => setModalOpen(true)}>
+        {modalOpen ? (
+          <Unlock size={24} color={colors.secondary} />
+        ) : (
+          <Lock size={24} color={colors.primary} />
+        )}
+      </Button>
+      <Modal
+        isVisible={modalOpen}
+        onClose={handleCancel}>
+        <View className='h-72 w-full rounded-xl bg-card'>
+          <Text className='text-card-foreground text-center text-lg font-bold'>Set Draft Date</Text>
+          <DraftDate
+            control={reactForm.control}
+            editing
+            submit={() => handleSubmit()} />
+          <View className='flex-row justify-between gap-3'>
+            <Button
+              onPress={() => handleCancel()}
+              className='flex-1 rounded-lg bg-destructive px-4 py-3'>
+              <Text className='text-center font-medium text-white'>Cancel</Text>
+            </Button>
+            <Button
+              onPress={() => handleSubmit()}
+              className='flex-1 rounded-lg bg-primary px-4 py-3 disabled:opacity-50'
+              disabled={!reactForm.formState.isDirty}>
+              <Text className='text-center font-medium text-white'>Save</Text>
+            </Button>
+          </View>
         </View>
-      </View>
-    </Modal>
+      </Modal>
+    </>
   );
 }
