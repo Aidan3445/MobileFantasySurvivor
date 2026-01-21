@@ -6,6 +6,7 @@ import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
 import { divideY } from '~/lib/ui';
 import ColorRow from '~/components/shared/colorRow';
 import SurvivalStreaks from '~/components/leagues/hub/scoreboard/popover/survivalStreaks';
+import MarqueeText from '~/components/common/marquee';
 
 interface MemberRowProps {
   place: number;
@@ -55,7 +56,7 @@ export default function MemberRow({
   return (
     <View
       className={cn(
-        'h-10 flex-row gap-x-1 p-1',
+        'h-10 flex-row py-1 px-0.5 gap-0.5',
         divideY(place - 1),
         doubleBelow && 'border-dashed'
       )}>
@@ -75,36 +76,37 @@ export default function MemberRow({
           {points}
         </Text>
       </View>
-      <ColorRow color={color} className='flex-1 items-start justify-center'>
-        <Text className={cn(
-          'text-left font-bold',
-          member.loggedIn && 'text-primary'
-        )}>
-          {member.displayName}
-        </Text>
+      <ColorRow color={color} className='w-28 items-center'>
+        <MarqueeText
+          text={member.displayName}
+          className={cn(
+            'text-base font-bold transition-all text-black cursor-pointer',
+            member.loggedIn && 'text-primary'
+          )}
+          containerClassName='flex-row' />
       </ColorRow>
-      <View className='w-20 justify-center'>
+      <View className='w-24 justify-center'>
         <Text
           className={cn(
-            'text-base font-bold transition-all hover:text-primary cursor-pointer text-nowrap',
-            castaway?.eliminatedEpisode && 'line-through opacity-40 hover:opacity-60'
+            'text-base font-medium transition-all text-black active:text-primary cursor-pointer text-nowrap',
+            castaway?.eliminatedEpisode && 'line-through opacity-40 active:opacity-60'
           )}>
           {castaway?.shortName || 'None'}
         </Text>
       </View>
       {leagueSettings?.secondaryPickEnabled && (secondaryPick ? (
-        <View className='w-20 justify-center'>
+        <View className='w-24 justify-center'>
           <Text
             className={cn(
-              'text-base font-bold transition-all hover:text-primary cursor-pointer text-nowrap',
-              secondaryPick.eliminatedEpisode && 'line-through opacity-40 hover:opacity-60'
+              'text-base font-medium transition-all text-black active:text-primary cursor-pointer text-nowrap',
+              secondaryPick.eliminatedEpisode && 'line-through opacity-40 active:opacity-60'
             )}>
             {secondaryPick?.shortName || 'None'}
           </Text>
         </View>
       ) : (
-        <View className='w-20 justify-center'>
-          <Text className='text-base md:text-lg font-bold text-muted-foreground'>
+        <View className='w-24 justify-center'>
+          <Text className='text-base md:text-lg font-medium text-muted-foreground'>
             {secondaryPick === null ? 'Hidden' : 'Pending'}...
           </Text>
         </View>

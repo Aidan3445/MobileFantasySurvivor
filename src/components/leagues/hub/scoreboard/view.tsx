@@ -28,21 +28,21 @@ export default function Scoreboard({ overrideHash, maxRows, className }: Scorebo
 
   return (
     <View className={cn('', className)}>
-      <View className='flex-row gap-x-1 bg-white px-1 rounded-t-md'>
+      <View className='flex-row bg-white gap-0.5 px-0.5 rounded-t-md'>
         <View className='w-11 justify-center'>
           <Text className='text-base text-center font-medium'>Place</Text>
         </View>
         <View className='w-10 items-center justify-center'>
           <Flame size={14} className='text-muted-foreground' />
         </View>
-        <View className='flex-1 justify-center pl-2'>
+        <View className='w-28 justify-center pl-1'>
           <Text className='text-base text-left font-medium'>Member</Text>
         </View>
-        <View className='w-20 justify-center'>
+        <View className='w-24 justify-center'>
           <Text className='text-left font-medium'>Survivor</Text>
         </View>
         {leagueSettings?.secondaryPickEnabled && (
-          <View className='w-21 justify-center'>
+          <View className='w-24 justify-center'>
             <Text className='text-left font-medium'>Secondary</Text>
           </View>
         )}

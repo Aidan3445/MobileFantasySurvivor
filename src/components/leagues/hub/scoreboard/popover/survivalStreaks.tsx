@@ -30,7 +30,7 @@ export default function SurvivalStreaks({
       return <Skull size={18} color={colors.mutedForeground} />;
     }
     return (
-      <Text className='text-sm font-bold text-muted-foreground'>
+      <Text className='text-base font-bold'>
         {Math.min(currentStreak ?? Infinity, survivalCap)}
       </Text>
     );
@@ -45,6 +45,7 @@ export default function SurvivalStreaks({
         borderRadius: 8,
         borderWidth: 2,
         borderColor: `${colors.primary}4D`,
+        borderBottomColor: `${colors.primary}4D`,
         shadowColor: colors.primary,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.2,
@@ -56,12 +57,10 @@ export default function SurvivalStreaks({
       from={
         <Pressable
           onPress={() => setIsVisible(true)}
-          className='ml-1 w-5 h-5 items-center justify-center'
-        >
+          className='flex-1 ml-1 w-5 h-5 justify-center'>
           {renderTriggerContent()}
         </Pressable>
-      }
-    >
+      }>
       <View className='p-3'>
         <Text className='text-sm font-bold uppercase tracking-wider mb-2 text-foreground'>
           Survival Streak
