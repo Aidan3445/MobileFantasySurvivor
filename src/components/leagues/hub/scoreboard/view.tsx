@@ -32,10 +32,10 @@ export default function Scoreboard({ overrideHash, maxRows, className }: Scorebo
         <View className='w-11 justify-center'>
           <Text className='text-base text-center font-medium'>Place</Text>
         </View>
-        <View className='w-10 items-center justify-center'>
+        <View className='w-10 -ml-2 items-center justify-center'>
           <Flame size={14} className='text-muted-foreground' />
         </View>
-        <View className='w-28 justify-center pl-1'>
+        <View className='flex-1 justify-center pl-1'>
           <Text className='text-base text-left font-medium'>Member</Text>
         </View>
         <View className='w-24 justify-center'>

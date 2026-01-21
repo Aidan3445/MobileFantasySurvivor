@@ -71,12 +71,12 @@ export default function MemberRow({
           </Text>
         </View>
       </View>
-      <View className='w-10 items-center justify-center'>
+      <View className='w-10 -ml-2 items-center justify-center'>
         <Text className='text-center font-black'>
           {points}
         </Text>
       </View>
-      <ColorRow color={color} className='w-28 items-center'>
+      <ColorRow color={color} className='flex-1 items-center'>
         <MarqueeText
           text={member.displayName}
           className={cn(

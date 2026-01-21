@@ -6,6 +6,15 @@ import QueryClientContextProvider from '~/context/reactQueryContext';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as ScreenOrientation from 'expo-screen-orientation';
 
+// Suppress specific warning from react-native-reanimated-carousel
+const originalWarn = console.warn;
+console.warn = (...args) => {
+  if (args[0]?.includes?.('`value` during component render')) {
+    return;
+  }
+  originalWarn(...args);
+};
+
 export default function RootLayout() {
   ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
 

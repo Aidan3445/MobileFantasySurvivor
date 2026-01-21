@@ -8,7 +8,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { useFetch } from '~/hooks/helpers/useFetch';
 import Clock from '~/components/leagues/predraft/countdown/clock';
-import { Lock, Unlock } from 'lucide-react-native';
+import { Lock, Unlock, Calendar, CalendarX2 } from 'lucide-react-native';
 import { colors } from '~/lib/colors';
 import { cn } from '~/lib/utils';
 import SetDraftDate from '~/components/leagues/predraft/countdown/edit';
@@ -41,7 +41,6 @@ export function DraftCountdown({ overrideHash, className }: DraftCountdownProps)
     if (league.status === 'Predraft') {
       const res = await putData(`/api/leagues/${league.hash}/status`);
       if (res.status !== 200) {
-        // You might want to use a proper alert/toast component
         console.error(`Failed to join draft: ${res.statusText}`);
         return;
       }
@@ -52,32 +51,19 @@ export function DraftCountdown({ overrideHash, className }: DraftCountdownProps)
   };
 
   return (
-    <View className={cn('w-full rounded-xl bg-card p-2', className)}>
-      <View className='w-full flex-row items-center'>
-        <View className='flex-1'>
-          <View className='flex-col items-baseline gap-y-0'>
-            <Text className='text-accent-foreground text-lg font-bold leading-none'>
-              Draft Countdown
-            </Text>
-            <Text className='text-sm leading-none text-muted-foreground'>
-              {leagueSettings?.draftDate
-                ? (leagueSettings.draftDate.getTime() > Date.now()
-                  ? `Starts at: ${leagueSettings.draftDate.toLocaleString()}`
-                  : (league?.status === 'Draft'
-                    ? 'Draft is live!'
-                    : 'Draft ready to start!'))
-                : 'Draft set to manual start by commissioner'}
-
+    <View className={cn('w-full p-2 pt-1', className)}>
+      {/* Header */}
+      <View>
+        <View className='flex-row items-center justify-between mb-1'>
+          <View className='flex-row items-center gap-1'>
+            <View className='h-6 w-1 bg-primary rounded-full' />
+            <Text className='text-xl font-black uppercase tracking-tight'>
+              Draft Status
             </Text>
           </View>
-        </View>
-        {editable && (
-          <View className='flex-row items-center gap-2'>
-            <Button
-              onPress={onDraftJoin}
-              className='rounded-md bg-navigation p-1'>
-              <Text className='text-accent-foreground'>Draft Now</Text>
-            </Button>
+
+          {/* Action Buttons */}
+          {editable && (
             <Pressable onPress={() => setModalOpen(true)}>
               {modalOpen ? (
                 <Unlock size={24} color={colors.secondary} />
@@ -85,25 +71,59 @@ export function DraftCountdown({ overrideHash, className }: DraftCountdownProps)
                 <Lock size={24} color={colors.primary} />
               )}
             </Pressable>
+          )}
+        </View>
+      </View>
+
+      {/* Countdown / Action */}
+      <View>
+        <View className='bg-accent border border-primary/40 rounded-md overflow-hidden'>
+          <View className='px-3 pb-1 flex-row items-center gap-2'>
+            {leagueSettings?.draftDate && leagueSettings.draftDate.getTime() > Date.now() ? (
+              <>
+                <Calendar size={16} stroke={colors.primary} />
+                <Text className='text-sm font-medium text-primary'>
+                  Starts: {leagueSettings.draftDate.toLocaleString(undefined, {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                  })}
+                </Text>
+              </>
+            ) : (
+              <>
+                <CalendarX2 size={16} stroke={colors.primary} />
+                <Text className='text-sm font-medium text-primary'>
+                  Draft date not scheduled
+                </Text>
+              </>
+            )}
           </View>
-        )}
+          <Clock
+            endDate={leagueSettings?.draftDate ?? null}
+            replacedBy={
+              <Button
+                className='w-full rounded-none p-4'
+                disabled={!league || (leagueMembers?.loggedIn?.role !== 'Owner' && league?.status !== 'Draft')}
+                onPress={onDraftJoin}>
+                <Text className='text-center text-2xl font-black uppercase tracking-wider text-primary-foreground'>
+                  {league?.status === 'Draft'
+                    ? 'Join Draft'
+                    : leagueMembers?.loggedIn?.role === 'Owner'
+                      ? 'Start Draft'
+                      : 'Waiting for Commissioner'}
+                </Text>
+              </Button>
+            } />
+        </View>
       </View>
-      <View className='mt-2 rounded-2xl bg-primary p-2 shadow-sm'>
-        <Clock
-          endDate={leagueSettings?.draftDate ?? null}
-          replacedBy={
-            <Button
-              className='w-full rounded-xl bg-navigation p-2'
-              disabled={!league || (leagueMembers?.loggedIn?.role !== 'Owner' && league?.status !== 'Draft')}
-              onPress={onDraftJoin}>
-              <Text className='p-1 text-center text-2xl font-semibold text-primary'>
-                {league?.status === 'Draft' ? 'Join Draft' :
-                  (leagueMembers?.loggedIn?.role === 'Owner' ? 'Start Draft' : 'Waiting for Commissioner')}
-              </Text>
-            </Button>
-          } />
-      </View>
-      <SetDraftDate modalOpen={modalOpen} setModalOpen={() => setModalOpen(false)} />
+
+      <SetDraftDate
+        overrideHash={overrideHash}
+        modalOpen={modalOpen}
+        setModalOpen={() => setModalOpen(false)} />
     </View>
   );
 }

@@ -49,8 +49,7 @@ export default function DraftDate({ control, editing, submit }: DraftDateProps) 
                   onBlur();
                 }}
                 accentColor={colors.secondary}
-                mode='date'
-              />
+                mode='date' />
               <DateTimePicker
                 minimumDate={new Date()}
                 value={value ?? new Date()}
@@ -68,8 +67,7 @@ export default function DraftDate({ control, editing, submit }: DraftDateProps) 
                   onBlur();
                 }}
                 accentColor={colors.secondary}
-                mode='time'
-              />
+                mode='time' />
             </View>
           </View>
         )}

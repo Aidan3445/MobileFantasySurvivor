@@ -66,9 +66,9 @@ export default function ActiveLeagues() {
   return (
     <View className='relative overflow-hidden rounded-xl bg-card border-2 border-primary/20'>
       {/* Header */}
-      <View className='px-4 pt-5'>
+      <View className='p-4 pb-0'>
         <View className='flex-row items-end justify-between mb-2'>
-          <View className='flex-row items-center gap-3'>
+          <View className='flex-row items-center gap-1'>
             <View className='h-8 w-1 bg-primary rounded-full' />
             <Text className='text-2xl font-black tracking-tight uppercase text-foreground'>
               Your Leagues
