@@ -16,7 +16,17 @@ module.exports = {
         'positive': '#28A53F',
         'destructive': '#FF3B30',
         'neutral': '#4b5563'
-      }
+      },
+      animation: {
+        // fadeIn animation
+        "fade-in": 'fade-in 0.25s ease-in forwards',
+      },
+      keyframes: {
+        "fade-in": {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+      },
     }
   },
   future: { hoverOnlyWhenSupported: true },
