@@ -1,7 +1,7 @@
 'use client';
 import { useIsFetching } from '@tanstack/react-query';
 import { Tabs, usePathname } from 'expo-router';
-import { Flame, Trophy, UserCircle2 } from 'lucide-react-native';
+import { BookUser, Flame, Trophy, UserCircle2 } from 'lucide-react-native';
 import { useEffect, useState, useRef } from 'react';
 import { Animated, Image, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -74,26 +74,25 @@ export default function TabLayout() {
           options={{
             title: 'Home',
             tabBarIcon: ({ color }) => (
-              <Image
-                className='max-h-8 max-w-8'
-                source={HomeImage}
-                style={{ tintColor: color }}
-              />
+              <Image className='max-h-8 max-w-8' source={HomeImage} style={{ tintColor: color }} />
             ),
-          }}
-        />
+          }} />
+        <Tabs.Screen
+          name='seasons'
+          options={{
+            title: 'Seasons',
+            tabBarIcon: ({ color }) => (
+              <BookUser color={color} size={32} />
+            ),
+          }} />
         <Tabs.Screen
           name='playground'
           options={{
             title: 'Playground',
             tabBarIcon: ({ color }) => (
-              <Flame
-                color={color}
-                size={32}
-              />
+              <Flame color={color} size={32} />
             ),
-          }}
-        />
+          }} />
         <Tabs.Screen
           name='leagues/index'
           options={{
@@ -116,38 +115,16 @@ export default function TabLayout() {
           options={{
             title: 'Profile',
             tabBarIcon: ({ color }) => (
-              <UserCircle2
-                color={color}
-                size={32}
-              />
+              <UserCircle2 color={color} size={32} />
             ),
-          }}
-        />
+          }} />
         {/* Hidden screens */}
-        <Tabs.Screen
-          name='leagues/create'
-          options={{ href: null }}
-        />
-        <Tabs.Screen
-          name='leagues/join/index'
-          options={{ href: null }}
-        />
-        <Tabs.Screen
-          name='leagues/join/[hash]'
-          options={{ href: null }}
-        />
-        <Tabs.Screen
-          name='leagues/[hash]/index'
-          options={{ href: null }}
-        />
-        <Tabs.Screen
-          name='leagues/[hash]/predraft'
-          options={{ href: null }}
-        />
-        <Tabs.Screen
-          name='leagues/[hash]/draft'
-          options={{ href: null }}
-        />
+        <Tabs.Screen name='leagues/create' options={{ href: null }} />
+        <Tabs.Screen name='leagues/join/index' options={{ href: null }} />
+        <Tabs.Screen name='leagues/join/[hash]' options={{ href: null }} />
+        <Tabs.Screen name='leagues/[hash]/index' options={{ href: null }} />
+        <Tabs.Screen name='leagues/[hash]/predraft' options={{ href: null }} />
+        <Tabs.Screen name='leagues/[hash]/draft' options={{ href: null }} />
       </Tabs>
 
       {showLoadingScreen && (

@@ -1,5 +1,5 @@
 export function divideY(index: number) {
-  return { 'border-t': index !== 0 };
+  return { 'border-t border-primary': index !== 0 };
 }
 
 export function alternateTableRowColors(index: number) {

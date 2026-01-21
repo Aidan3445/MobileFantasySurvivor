@@ -57,7 +57,10 @@ export default function ScoreboardBody({
                     points={points}
                     place={place}
                     allZero={allZero}
-                    tribeTimeline={tribeTimeline} />
+                    tribeTimeline={tribeTimeline}
+                    splitIndex={col * castawaySplitIndex}
+                    bottomBorder={index === item.length - 1 && col === 1}
+                  />
                 );
               })}
             </View>

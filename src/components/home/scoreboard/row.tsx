@@ -12,6 +12,8 @@ interface CastawayRowProps {
   points?: number;
   tribeTimeline?: { episode: number; tribe: Tribe }[];
   allZero?: boolean;
+  splitIndex?: number;
+  bottomBorder?: boolean;
 }
 
 export default function CastawayRow({
@@ -19,7 +21,9 @@ export default function CastawayRow({
   castaway,
   points,
   tribeTimeline,
-  allZero
+  allZero,
+  splitIndex = 0,
+  bottomBorder = false
 }: CastawayRowProps) {
   const isTopThree = place <= 3 && !allZero;
   const rankBadgeColor = place === 1
@@ -41,7 +45,8 @@ export default function CastawayRow({
     <View
       className={cn(
         'h-10 flex-row py-1 px-0.5 gap-0.5',
-        divideY(place - 1),
+        divideY(place - splitIndex - 1),
+        bottomBorder && 'border-b !h-[36px]'
       )}>
       {!allZero && (
         <>
