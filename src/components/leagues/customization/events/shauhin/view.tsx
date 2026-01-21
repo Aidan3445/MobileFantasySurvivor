@@ -1,6 +1,6 @@
 'use client';
 import { Lock, LockOpen } from 'lucide-react-native';
-import { Text, View, Pressable, Switch, TextInput, Linking } from 'react-native';
+import { Text, View, Switch, TextInput, Linking } from 'react-native';
 import Button from '~/components/common/button';
 import { Controller } from 'react-hook-form';
 import { useShauhinMode } from '~/hooks/leagues/mutation/useShauhinMode';
@@ -56,7 +56,7 @@ export default function ShauhinMode() {
       <View className='flex-row items-center justify-between'>
         <Text className='text-card-foreground text-lg font-bold'>Shauhin Mode</Text>
         {!disabled && (
-          <Pressable
+          <Button
             onPress={() => {
               if (locked) {
                 setLocked(false);
@@ -75,7 +75,7 @@ export default function ShauhinMode() {
                 color={colors.secondary}
               />
             )}
-          </Pressable>
+          </Button>
         )}
       </View>
       <Text className='mb-2 text-sm text-muted-foreground'>
@@ -272,8 +272,8 @@ export default function ShauhinMode() {
               <Text className='text-sm text-black'>
                 {enabledBets && enabledBets.length > 0
                   ? enabledBets
-                      .map((name: ScoringBaseEventName) => BaseEventFullName[name])
-                      .join(', ')
+                    .map((name: ScoringBaseEventName) => BaseEventFullName[name])
+                    .join(', ')
                   : 'None'}
               </Text>
             ) : (
@@ -290,8 +290,8 @@ export default function ShauhinMode() {
                       <Text className='text-gray-700'>
                         {enabledBets && enabledBets.length > 0
                           ? enabledBets
-                              .map((name: ScoringBaseEventName) => BaseEventFullName[name])
-                              .join(', ')
+                            .map((name: ScoringBaseEventName) => BaseEventFullName[name])
+                            .join(', ')
                           : 'Select enabled bets'}
                       </Text>
                     </Button>

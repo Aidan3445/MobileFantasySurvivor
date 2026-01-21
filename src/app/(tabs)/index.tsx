@@ -21,8 +21,7 @@ export default function Page() {
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
-              onRefresh={onRefresh}
-            />
+              onRefresh={onRefresh} />
           }>
           <View className='page justify-start gap-y-4 pt-10 px-1'>
             <Header refreshing={refreshing} />

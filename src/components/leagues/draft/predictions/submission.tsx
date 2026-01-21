@@ -1,6 +1,6 @@
 'use client';
 
-import { Text, View, Pressable } from 'react-native';
+import { Text, View } from 'react-native';
 import { Controller } from 'react-hook-form';
 import { type MakePrediction, type ReferenceType } from '~/types/events';
 import { useMakePrediction } from '~/hooks/leagues/mutation/useMakePrediction';
@@ -73,10 +73,10 @@ export default function SubmissionCard({ prediction, options }: SubmissionCardPr
 
         return (
           <View className='gap-3'>
-            <Pressable
+            <Button
               className='rounded-lg border border-border bg-background p-3 flex-row items-center gap-4'
               onPress={selectHook.openModal}>
-              {selectedOption?.tribeName && (
+              {selectedOption?.tribeName ? (
                 <ColorRow
                   className='w-24 justify-center px-2 py-1'
                   color={selectedOption.color}>
@@ -86,11 +86,11 @@ export default function SubmissionCard({ prediction, options }: SubmissionCardPr
                     {selectedOption.tribeName}
                   </Text>
                 </ColorRow>
-              )}
+              ) : null}
               <Text className={selectedOption ? 'text-foreground' : 'text-muted-foreground'}>
                 {selectedOption ? selectedOption.label : 'Select your prediction'}
               </Text>
-            </Pressable>
+            </Button>
 
             <Button
               className='w-full rounded-lg bg-primary p-3'

@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from 'react-native';
+import { View, Text } from 'react-native';
 import Button from '~/components/common/button';
 import { useRouter } from 'expo-router';
 import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
@@ -64,13 +64,13 @@ export function DraftCountdown({ overrideHash, className }: DraftCountdownProps)
 
           {/* Action Buttons */}
           {editable && (
-            <Pressable onPress={() => setModalOpen(true)}>
+            <Button onPress={() => setModalOpen(true)}>
               {modalOpen ? (
                 <Unlock size={24} color={colors.secondary} />
               ) : (
                 <Lock size={24} color={colors.primary} />
               )}
-            </Pressable>
+            </Button>
           )}
         </View>
       </View>

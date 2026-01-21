@@ -1,6 +1,6 @@
 'use client';
 import { Lock, LockOpen } from 'lucide-react-native';
-import { Text, View, Pressable } from 'react-native';
+import { Text, View } from 'react-native';
 import Button from '~/components/common/button';
 import { useBaseEventRules } from '~/hooks/leagues/mutation/useBaseEventRules';
 import { colors } from '~/lib/colors';
@@ -17,7 +17,7 @@ export default function BaseEventRules() {
       <View className='flex-row items-center justify-between'>
         <Text className='text-card-foreground text-lg font-bold'>Official Events</Text>
         {!disabled && (
-          <Pressable
+          <Button
             onPress={() => {
               if (locked) {
                 setLocked(false);
@@ -36,7 +36,7 @@ export default function BaseEventRules() {
                 color={colors.secondary}
               />
             )}
-          </Pressable>
+          </Button>
         )}
       </View>
       <Text className='mb-2 text-sm text-muted-foreground'>

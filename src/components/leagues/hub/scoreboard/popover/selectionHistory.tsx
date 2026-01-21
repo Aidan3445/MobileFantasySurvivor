@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text } from 'react-native';
+import Button from '~/components/common/button';
 import { MoveRight, History } from 'lucide-react-native';
 import Popover from 'react-native-popover-view';
 import { type EnrichedCastaway } from '~/types/castaways';
@@ -46,9 +47,9 @@ export default function SelectionHistory({ selectionList, secondaryPickList }: S
       backgroundStyle={{ backgroundColor: 'transparent' }}
       arrowSize={{ width: 0, height: 0 }}
       from={
-        <Pressable onPress={() => setIsVisible(true)} className='ml-1 p-1 active:opacity-60'>
+        <Button onPress={() => setIsVisible(true)} className='ml-1 p-1 active:opacity-60'>
           <History size={18} className='stroke-red-500' />
-        </Pressable>
+        </Button>
       }>
       <View className='p-3 gap-2 min-w-[200px]'>
         <Text className='text-sm font-bold uppercase tracking-wider text-center text-foreground'>

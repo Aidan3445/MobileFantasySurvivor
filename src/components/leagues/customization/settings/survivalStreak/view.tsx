@@ -1,9 +1,9 @@
 import { Flame, Lock, LockOpen } from 'lucide-react-native';
-import { Text, View, Pressable, Switch } from 'react-native';
+import { Text, View, Switch } from 'react-native';
 import Button from '~/components/common/button';
 import Slider from '@react-native-community/slider';
 import { useSurvivalStreak } from '~/hooks/leagues/mutation/useSurvivalStreak';
-import { MAX_SURVIVAL_CAP } from '~/lib/leagues';
+import { MAX_SEASON_LENGTH } from '~/lib/leagues';
 import { cn } from '~/lib/utils';
 import { colors } from '~/lib/colors';
 import { Controller } from 'react-hook-form';
@@ -21,7 +21,7 @@ export default function SurvivalStreaks() {
 
   const displaySurvivalCap = (value: number) => {
     if (value === 0) return 'Off';
-    if (value === MAX_SURVIVAL_CAP) return 'Unlimited';
+    if (value === MAX_SEASON_LENGTH) return 'Unlimited';
     return value.toString();
   };
 
@@ -33,7 +33,7 @@ export default function SurvivalStreaks() {
       <View className='flex-row items-center justify-between'>
         <Text className='text-card-foreground text-lg font-bold'>Survival Streaks</Text>
         {leagueMembers?.loggedIn?.role === 'Owner' && (
-          <Pressable
+          <Button
             onPress={() => {
               if (locked) {
                 setLocked(false);
@@ -52,7 +52,7 @@ export default function SurvivalStreaks() {
                 color={colors.secondary}
               />
             )}
-          </Pressable>
+          </Button>
         )}
       </View>
       <Text className='mb-2 text-sm text-muted-foreground'>
@@ -106,7 +106,7 @@ export default function SurvivalStreaks() {
               )}>
               {displaySurvivalCap(survivalCapValue)}
             </Text>
-            {survivalCapValue > 0 && survivalCapValue < MAX_SURVIVAL_CAP && (
+            {survivalCapValue > 0 && survivalCapValue < MAX_SEASON_LENGTH && (
               <Flame
                 size={16}
                 color={survivalCapValue > 0 ? colors.positive : colors.neutral}
@@ -121,7 +121,7 @@ export default function SurvivalStreaks() {
               render={({ field }) => (
                 <Slider
                   minimumValue={0}
-                  maximumValue={MAX_SURVIVAL_CAP}
+                  maximumValue={MAX_SEASON_LENGTH}
                   step={1}
                   value={field.value}
                   onValueChange={field.onChange}

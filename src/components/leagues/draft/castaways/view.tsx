@@ -1,6 +1,7 @@
 'use client';
 
-import { ScrollView, Text, View, Image, Pressable, Linking } from 'react-native';
+import { ScrollView, Text, View, Image, Linking } from 'react-native';
+import Button from '~/components/common/button';
 import { type DraftDetails } from '~/types/leagues';
 import { useState } from 'react';
 import Modal from '~/components/common/modal';
@@ -48,11 +49,11 @@ function CastawayModal({ castaway, isVisible, onClose }: CastawayModalProps) {
             <Text className='font-semibold'>Occupation:</Text> {castaway.occupation}
           </Text>
         </View>
-        <Pressable
+        <Button
           className='mt-4 rounded-lg bg-primary p-3'
           onPress={handleLearnMore}>
           <Text className='font-semibold text-white'>Learn More</Text>
-        </Pressable>
+        </Button>
       </View>
     </Modal>
   );
@@ -89,7 +90,7 @@ export default function DraftCastaways({ actionDetails }: DraftCastawaysProps) {
                   const isDrafted = !!member;
 
                   return (
-                    <Pressable
+                    <Button
                       key={castaway.castawayId}
                       className={`rounded-lg bg-muted p-3 ${isDrafted || isEliminated ? 'opacity-50' : ''
                         }`}
@@ -117,7 +118,7 @@ export default function DraftCastaways({ actionDetails }: DraftCastawaysProps) {
                           </ColorRow>
                         )}
                       </View>
-                    </Pressable>
+                    </Button>
                   );
                 })}
               </View>

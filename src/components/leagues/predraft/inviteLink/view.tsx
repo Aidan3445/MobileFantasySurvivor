@@ -1,7 +1,7 @@
 'use client';
 
 import { Link as LinkIcon, Share } from 'lucide-react-native';
-import { TextInput, Text, View, Pressable, Alert, Share as RNShare } from 'react-native';
+import { TextInput, Text, View, Alert, Share as RNShare } from 'react-native';
 import Button from '~/components/common/button';
 import { useMemo, useState } from 'react';
 import { cn } from '~/lib/utils';
@@ -50,7 +50,7 @@ export default function InviteLink() {
       </Text>
 
       <View className='flex-row items-center gap-2'>
-        <Pressable
+        <Button
           className='relative flex-1 flex-row items-center'
           onPress={copyLink}>
           <TextInput
@@ -68,15 +68,12 @@ export default function InviteLink() {
               color={hasCopied ? 'gray' : 'black'}
             />
           </View>
-        </Pressable>
+        </Button>
 
         <Button
           className='!active:bg-primary/80 rounded-lg bg-primary p-3'
           onPress={shareLink}>
-          <Share
-            size={20}
-            color='white'
-          />
+          <Share size={20} color='white' />
         </Button>
       </View>
     </View>

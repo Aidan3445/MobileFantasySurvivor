@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text } from 'react-native';
 import { Circle } from 'lucide-react-native';
 import Popover from 'react-native-popover-view';
 import { type Tribe } from '~/types/tribes';
 import { colors } from '~/lib/colors';
+import Button from '~/components/common/button';
 
 interface TribeHistoryCirclesProps {
   tribeTimeline: Array<{ episode: number; tribe: Tribe | null }>;
@@ -31,7 +32,7 @@ export default function TribeHistoryCircles({ tribeTimeline }: TribeHistoryCircl
             backgroundStyle={{ backgroundColor: 'transparent' }}
             arrowSize={{ width: 0, height: 0 }}
             from={
-              <Pressable
+              <Button
                 onPress={() =>
                   setVisiblePopover(
                     visiblePopover === `${tribe.tribeName}-${episode}`
@@ -41,7 +42,7 @@ export default function TribeHistoryCircles({ tribeTimeline }: TribeHistoryCircl
                 }
                 className='p-0.5 opacity-80 active:opacity-60'>
                 <Circle size={16} fill={tribe.tribeColor} color={tribe.tribeColor} />
-              </Pressable>
+              </Button>
             }>
             <View className='flex-row items-center p-2'>
               <Text className='font-bold text-xs text-foreground'>{tribe.tribeName}</Text>

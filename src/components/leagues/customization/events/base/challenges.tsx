@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react-native';
-import { Text, View, Pressable } from 'react-native';
+import { Text, View } from 'react-native';
+import Button from '~/components/common/button';
 import { useState } from 'react';
 import Collapsible from 'react-native-collapsible';
 import { type UseFormReturn } from 'react-hook-form';
@@ -20,7 +21,7 @@ export default function ChallengeScoreSettings({
 
   return (
     <View>
-      <Pressable
+      <Button
         className={cn(
           'flex-row items-center justify-between rounded-b-lg rounded-t-lg bg-secondary p-3 transition-all',
           !isCollapsed ? 'rounded-b-none duration-75' : 'delay-300'
@@ -38,7 +39,7 @@ export default function ChallengeScoreSettings({
             color={colors.muted}
           />
         )}
-      </Pressable>
+      </Button>
       <Collapsible collapsed={isCollapsed}>
         <View className='gap-2 rounded-b-lg border border-t-0 border-primary p-3'>
           <EventField

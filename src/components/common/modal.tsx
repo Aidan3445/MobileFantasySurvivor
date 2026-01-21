@@ -27,8 +27,7 @@ export default function Modal({
           className={cn(
             'absolute bottom-0 left-0 right-0 h-[200%] bg-black/50 transition-opacity',
             !isVisible && 'opacity-0'
-          )}
-        />
+          )} />
         <Pressable
           className='flex-1 items-center justify-center'
           onPress={onClose}>

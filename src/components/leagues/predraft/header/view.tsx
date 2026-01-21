@@ -2,7 +2,8 @@
 
 import { useRouter } from 'expo-router';
 import { ArrowLeft, Settings } from 'lucide-react-native';
-import { Pressable, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import Button from '~/components/common/button';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 
 interface PredraftHeaderProps {
@@ -16,7 +17,7 @@ export default function PredraftHeader({ inSettings }: PredraftHeaderProps) {
     <View className='absolute top-0 z-10 h-24 w-full items-center justify-end bg-secondary pb-2'>
       <Text className='text-2xl font-bold text-white'>{league?.name ?? 'League'}</Text>
       {inSettings ? (
-        <Pressable
+        <Button
           className='absolute bottom-0 left-4 py-2 px-4'
           onPress={() => router.back()}>
           <Text className='text-lg text-white'>
@@ -25,16 +26,16 @@ export default function PredraftHeader({ inSettings }: PredraftHeaderProps) {
               size={24}
             />
           </Text>
-        </Pressable>
+        </Button>
       ) : (
-        <Pressable
+        <Button
           className='absolute bottom-0 right-4 py-2 px-4'
           onPress={() => router.push(`/leagues/${league?.hash}/predraft/settings`)}>
           <Settings
             color='white'
             size={24}
           />
-        </Pressable>
+        </Button>
       )}
     </View>
   );

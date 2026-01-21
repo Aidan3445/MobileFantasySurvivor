@@ -2,11 +2,12 @@ import React, { useCallback, useEffect } from 'react';
 import * as WebBrowser from 'expo-web-browser';
 import * as AuthSession from 'expo-auth-session';
 import { useSSO } from '@clerk/clerk-expo';
-import { View, Platform, Pressable, Text } from 'react-native';
+import { View, Platform, Text } from 'react-native';
 import { useRouter } from 'expo-router';
 import Svg, { Path } from 'react-native-svg';
 import { useFonts } from '@expo-google-fonts/roboto/useFonts';
 import { Roboto_500Medium } from '@expo-google-fonts/roboto/500Medium';
+import Button from '~/components/common/button';
 
 
 // Preloads the browser for Android devices to reduce authentication load time
@@ -90,7 +91,7 @@ export default function GoogleSignInButton({
   useFonts({ Roboto_500Medium });
 
   return (
-    <Pressable
+    <Button
       className='bg-[#F2F2F2] active:bg-[#EDD9BF] transition-all h-[40px] items-center justify-center rounded-full'
       onPress={onPress}
       disabled={disabled}>
@@ -124,6 +125,6 @@ export default function GoogleSignInButton({
           Continue with Google
         </Text>
       </View>
-    </Pressable >
+    </Button>
   );
 }

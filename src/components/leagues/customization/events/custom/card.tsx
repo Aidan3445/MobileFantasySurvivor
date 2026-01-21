@@ -1,5 +1,6 @@
 import { Flame, Settings2, Trash2 } from 'lucide-react-native';
-import { Text, View, Pressable, Alert } from 'react-native';
+import { Text, View, Alert } from 'react-native';
+import Button from '~/components/common/button';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -74,12 +75,12 @@ export default function CustomEventCard({
         </View>
         {canEdit && (
           <View className='flex-row gap-2'>
-            <Pressable onPress={() => setIsEditing(true)}>
+            <Button onPress={() => setIsEditing(true)}>
               <Settings2 size={18} color={colors.primary} />
-            </Pressable>
-            <Pressable onPress={handleDelete}>
+            </Button>
+            <Button onPress={handleDelete}>
               <Trash2 size={18} color={colors.destructive} />
-            </Pressable>
+            </Button>
           </View>
         )}
       </View>

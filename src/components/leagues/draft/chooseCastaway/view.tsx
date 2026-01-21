@@ -1,6 +1,6 @@
 'use client';
 
-import { Text, View, Pressable } from 'react-native';
+import { Text, View } from 'react-native';
 import { type DraftDetails } from '~/types/leagues';
 import { useSearchableSelect } from '~/hooks/ui/useSearchableSelect';
 import SearchableSelect from '~/components/common/searchableSelect';
@@ -45,13 +45,13 @@ export default function ChooseCastaway({ draftDetails, onDeck, hash }: ChooseCas
               </Text>
 
               <View className='flex-row items-center gap-4'>
-                <Pressable
+                <Button
                   className='border-border flex-1 rounded-lg border bg-background p-3'
                   onPress={castawaySelectHook.openModal}>
                   <Text className={selectedCastaway ? 'text-foreground' : 'text-muted-foreground'}>
                     {selectedCastaway ? selectedCastaway.label : 'Select castaway'}
                   </Text>
-                </Pressable>
+                </Button>
                 <Button
                   className='w-40 rounded-lg bg-primary p-3'
                   disabled={!reactForm.formState.isValid || onDeck}

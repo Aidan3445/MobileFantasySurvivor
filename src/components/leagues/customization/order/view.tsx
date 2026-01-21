@@ -1,5 +1,5 @@
 'use client';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text } from 'react-native';
 import Button from '~/components/common/button';
 import { getContrastingColor } from '@uiw/color-convert';
 import { cn } from '~/lib/utils';
@@ -28,7 +28,7 @@ export default function DraftOrder({ className }: DraftOrderProps) {
   } = useUpdateDraftOrder();
 
   const renderItem = ({ item, getIndex, drag, isActive }: RenderItemParams<MemberWithId>) => (
-    <Pressable
+    <Button
       onLongPress={orderLocked ? undefined : drag}
       disabled={isActive}
       className={cn('mb-2', isActive && 'opacity-50')}>
@@ -52,7 +52,7 @@ export default function DraftOrder({ className }: DraftOrderProps) {
           />
         )}
       </View>
-    </Pressable>
+    </Button>
   );
 
   return (
@@ -66,7 +66,7 @@ export default function DraftOrder({ className }: DraftOrderProps) {
         </View>
         <View className='flex-row items-center gap-2'>
           {leagueMembers?.loggedIn?.role === 'Owner' && (
-            <Pressable
+            <Button
               onPress={() => {
                 if (orderLocked) {
                   setLocked(false);
@@ -86,7 +86,7 @@ export default function DraftOrder({ className }: DraftOrderProps) {
                   color={colors.secondary}
                 />
               )}
-            </Pressable>
+            </Button>
           )}
         </View>
       </View>

@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text } from 'react-native';
 import { Flame, Skull, ShieldCheck } from 'lucide-react-native';
 import Popover from 'react-native-popover-view';
 import { colors } from '~/lib/colors';
+import Button from '~/components/common/button';
 
 interface SurvivalStreaksProps {
   survivalCap: number;
@@ -55,11 +56,11 @@ export default function SurvivalStreaks({
       backgroundStyle={{ backgroundColor: 'transparent' }}
       arrowSize={{ width: 0, height: 0 }}
       from={
-        <Pressable
+        <Button
           onPress={() => setIsVisible(true)}
           className='flex-1 ml-1 w-5 h-5 justify-center'>
           {renderTriggerContent()}
-        </Pressable>
+        </Button>
       }>
       <View className='p-3'>
         <Text className='text-sm font-bold uppercase tracking-wider mb-2 text-foreground'>
