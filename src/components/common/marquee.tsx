@@ -13,8 +13,14 @@ interface MarqueeTextProps {
   text: string;
   /** Tailwind classes for the text */
   className?: string;
+  /** Center the text when no marquee is needed */
+  center?: boolean;
+  /** Allow font scaling */
+  allowFontScaling?: boolean;
   /** Tailwind classes for the container */
   containerClassName?: string;
+  /** No Marquee container class */
+  noMarqueeContainerClassName?: string;
   /** Duration in ms to pause at the start before scrolling (default: 2000) */
   pauseDuration?: number;
   /** Speed of scroll in pixels per second (default: 30) */
@@ -27,6 +33,9 @@ export default function MarqueeText({
   text,
   className,
   containerClassName,
+  noMarqueeContainerClassName,
+  center = false,
+  allowFontScaling = true,
   pauseDuration = 2000,
   scrollSpeed = 30,
   trailingGap = 12,
@@ -106,10 +115,15 @@ export default function MarqueeText({
 
   return (
     <View
-      className={`w-full overflow-hidden ${containerClassName ?? ''}`}
+      className={cn(
+        'w-full overflow-hidden',
+        containerClassName,
+        !needsMarquee && noMarqueeContainerClassName
+      )}
       onLayout={onContainerLayout}>
       {needsMarquee ? (
         <Animated.View
+          key={`marquee-${textWidth}-${containerWidth}-${trailingGap}`}
           className='flex-row items-center'
           style={{
             transform: [{ translateX: scrollAnim }],
@@ -117,7 +131,10 @@ export default function MarqueeText({
           }}>
           <Text
             className={cn('text-left align-middle', className)}
-            style={{ flexShrink: 0 }}>
+            allowFontScaling={allowFontScaling}
+            style={{
+              flexShrink: 0,
+            }}>
             {text}
           </Text>
 
@@ -125,21 +142,24 @@ export default function MarqueeText({
 
           <Text
             className={cn('text-left', className)}
+            allowFontScaling={allowFontScaling}
             style={{ flexShrink: 0 }}>
             {text}
           </Text>
         </Animated.View>
       ) : (
         <Text
-          className={`text-left ${className ?? ''}`}
-          style={{ flexShrink: 1 }}>
+          className={cn(center ? 'text-center' : 'text-left', className)}
+          allowFontScaling={allowFontScaling}
+          style={{ flexShrink: 0 }}>
           {text}
         </Text>
       )}
 
       {/* Hidden text used only for width measurement */}
       <Text
-        className={`absolute opacity-0 ${className ?? ''}`}
+        className={cn('absolute opacity-0', className)}
+        allowFontScaling={allowFontScaling}
         style={{ flexShrink: 0 }}
         onTextLayout={onTextLayout}>
         {text}

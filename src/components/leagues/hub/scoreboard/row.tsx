@@ -57,7 +57,7 @@ export default function MemberRow({
   return (
     <View
       className={cn(
-        'h-10 flex-row py-1 px-0.5 gap-0.5',
+        'h-10 flex-row px-0.5 gap-0.5 items-center',
         divideY(place - 1),
         doubleBelow && 'border-dashed'
       )}>

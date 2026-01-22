@@ -35,54 +35,38 @@ export default function SeasonsScreen() {
 
   return (
     <View className='flex-1 bg-background'>
-      {/* Header */}
-      <View className='bg-card shadow-lg px-4 py-4'>
-        <View className='items-center justify-center'>
-          <View className='flex-row items-center justify-center gap-3 mb-2'>
-            <View className='h-6 w-1 bg-primary rounded-full' />
-            <Text className='text-2xl font-black uppercase tracking-tight text-foreground'>
-              Survivor Seasons
-            </Text>
-            <View className='h-6 w-1 bg-primary rounded-full' />
-          </View>
-          <Text className='text-muted-foreground text-center text-sm font-medium'>
-            Explore castaways, tribe timelines, and events from every season
-          </Text>
-        </View>
-
-        {/* Season Selector */}
-        {seasons && seasons.length > 0 && (
-          <Pressable
-            className='max-w-lg self-center w-full mt-3 border-2 border-primary/20 
+      {/* Season Selector */}
+      {seasons && seasons.length > 0 && (
+        <Pressable
+          className='max-w-lg self-center w-full mt-3 border-2 border-primary/20 
               bg-primary/5 rounded-md px-3 py-2.5 active:border-primary/40'>
-            <Text className='font-medium text-foreground text-center'>
-              {selectedSeasonName}
+          <Text className='font-medium text-foreground text-center'>
+            {selectedSeasonName}
+          </Text>
+        </Pressable>
+      )}
+
+      {/* Tab Bar */}
+      <View className='flex-row mt-4 bg-muted rounded-lg p-1'>
+        {TABS.map((tab) => (
+          <Pressable
+            key={tab.value}
+            className={cn(
+              'flex-1 py-2 rounded-md',
+              selectedTab === tab.value && 'bg-background shadow-sm'
+            )}
+            onPress={() => setSelectedTab(tab.value)}>
+            <Text
+              className={cn(
+                'text-center font-medium text-sm',
+                selectedTab === tab.value
+                  ? 'text-foreground'
+                  : 'text-muted-foreground'
+              )}>
+              {tab.label}
             </Text>
           </Pressable>
-        )}
-
-        {/* Tab Bar */}
-        <View className='flex-row mt-4 bg-muted rounded-lg p-1'>
-          {TABS.map((tab) => (
-            <Pressable
-              key={tab.value}
-              className={cn(
-                'flex-1 py-2 rounded-md',
-                selectedTab === tab.value && 'bg-background shadow-sm'
-              )}
-              onPress={() => setSelectedTab(tab.value)}>
-              <Text
-                className={cn(
-                  'text-center font-medium text-sm',
-                  selectedTab === tab.value
-                    ? 'text-foreground'
-                    : 'text-muted-foreground'
-                )}>
-                {tab.label}
-              </Text>
-            </Pressable>
-          ))}
-        </View>
+        ))}
       </View>
 
       {/* Content */}

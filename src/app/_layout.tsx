@@ -5,6 +5,7 @@ import '~/global.css';
 import QueryClientContextProvider from '~/context/reactQueryContext';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as ScreenOrientation from 'expo-screen-orientation';
+import { StatusBar } from 'react-native';
 
 // Suppress specific warning from react-native-reanimated-carousel
 const originalWarn = console.warn;
@@ -20,6 +21,7 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView className='flex-1 bg-background'>
+      <StatusBar barStyle='dark-content' />
       <ClerkProvider
         tokenCache={tokenCache}
         telemetry={false}>

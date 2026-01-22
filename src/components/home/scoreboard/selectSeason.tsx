@@ -4,15 +4,18 @@ import { Ellipsis } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import SearchableSelect from '~/components/common/searchableSelect';
 import { type SearchableOption, useSearchableSelect } from '~/hooks/ui/useSearchableSelect';
+import { cn } from '~/lib/utils';
+import { colors } from '~/lib/colors';
 
 interface SelectSeasonProps {
   seasons: SearchableOption<string>[];
   value: string;
   setValue: (_: string) => void;
   someHidden?: boolean;
+  className?: string;
 }
 
-export default function SelectSeason({ seasons, value, setValue, someHidden }: SelectSeasonProps) {
+export default function SelectSeason({ seasons, value, setValue, someHidden, className }: SelectSeasonProps) {
   const router = useRouter();
   const { isVisible, searchText, setSearchText, openModal, closeModal, filterOptions } =
     useSearchableSelect<string>();
@@ -34,9 +37,9 @@ export default function SelectSeason({ seasons, value, setValue, someHidden }: S
   return (
     <>
       <Button
-        className='absolute right-3 top-1'
+        className={cn('absolute right-3 top-1', className)}
         onPress={openModal}>
-        <Ellipsis size={20} />
+        <Ellipsis size={32} color={colors.primary} />
       </Button>
       <SearchableSelect<string>
         isVisible={isVisible}
