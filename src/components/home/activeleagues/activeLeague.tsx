@@ -69,7 +69,9 @@ export default function ActiveLeague({ league }: ActiveLeagueProps) {
         asChild>
         <Button className='stroke-green-600 relative bg-primary/5 border-2 border-primary/20 rounded-lg p-1 active:bg-primary/10'>
           {/* League Name */}
-          <Text className='text-2xl font-black leading-tight mb-2 line-clamp-2 h-16 text-center'>
+          <Text
+            allowFontScaling={false}
+            className='text-2xl font-black leading-tight mb-2 line-clamp-2 h-16 text-center'>
             {league.name}
           </Text>
 

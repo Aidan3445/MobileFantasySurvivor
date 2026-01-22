@@ -30,20 +30,36 @@ export default function Scoreboard({ overrideHash, maxRows, className }: Scorebo
     <View className={cn('', className)}>
       <View className='flex-row bg-white gap-0.5 px-0.5 rounded-t-md'>
         <View className='w-11 justify-center'>
-          <Text className='text-base text-center font-medium'>Place</Text>
+          <Text
+            allowFontScaling={false}
+            className='text-base text-center font-medium'>
+            Place
+          </Text>
         </View>
         <View className='w-10 -ml-2 items-center justify-center'>
           <Flame size={14} className='text-muted-foreground' />
         </View>
         <View className='flex-1 justify-center pl-1'>
-          <Text className='text-base text-left font-medium'>Member</Text>
+          <Text
+            allowFontScaling={false}
+            className='text-base text-left font-medium'>
+            Member
+          </Text>
         </View>
         <View className='w-24 justify-center'>
-          <Text className='text-left font-medium'>Survivor</Text>
+          <Text
+            allowFontScaling={false}
+            className='text-left font-medium'>
+            Survivor
+          </Text>
         </View>
         {leagueSettings?.secondaryPickEnabled && (
           <View className='w-24 justify-center'>
-            <Text className='text-left font-medium'>Secondary</Text>
+            <Text
+              allowFontScaling={false}
+              className='text-left font-medium'>
+              Secondary
+            </Text>
           </View>
         )}
         <View className='w-6 items-center justify-center'>

@@ -7,6 +7,7 @@ interface ModalProps {
   isVisible: boolean;
   onClose: () => void;
   animationType?: 'slide' | 'fade' | 'none';
+  className?: string;
   children: ReactElement | ReactElement[];
 }
 
@@ -14,6 +15,7 @@ export default function Modal({
   isVisible,
   onClose,
   animationType = 'slide',
+  className,
   children
 }: ModalProps) {
   return (
@@ -33,7 +35,7 @@ export default function Modal({
           className='flex-1 items-center justify-center'
           onPress={onClose}>
           <Pressable
-            className='max-h-4/5 w-11/12 rounded-lg bg-card p-4'
+            className={cn('max-h-4/5 w-11/12 rounded-xl bg-card p-4 border-2 border-primary/20', className)}
             onPress={e => e.stopPropagation()}>
             {children}
           </Pressable>

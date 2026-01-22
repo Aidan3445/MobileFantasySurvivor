@@ -125,7 +125,11 @@ export default function ScoreboardTable({
             {!allZero && (
               <>
                 <View className='w-11 justify-center'>
-                  <Text className='text-base text-center font-medium'>Place</Text>
+                  <Text
+                    allowFontScaling={false}
+                    className='text-base text-center font-medium'>
+                    Place
+                  </Text>
                 </View>
                 <View className='w-10 -ml-2 items-center justify-center'>
                   <Flame size={14} className='text-muted-foreground' />
@@ -133,10 +137,12 @@ export default function ScoreboardTable({
               </>
             )}
             <View className='flex-1 justify-center'>
-              <Text className={cn(
-                'text-base text-left font-medium',
-                allZero && 'text-center'
-              )}>
+              <Text
+                allowFontScaling={false}
+                className={cn(
+                  'text-base text-left font-medium',
+                  allZero && 'text-center'
+                )}>
                 Castaway
               </Text>
             </View>
