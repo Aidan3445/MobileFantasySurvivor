@@ -1,5 +1,6 @@
 import { useRef, useState, useCallback, useMemo } from 'react';
 import { Dimensions } from 'react-native';
+import { type PanGestureType } from 'react-native-gesture-handler/lib/typescript/handlers/gestures/panGesture';
 import { useSharedValue } from 'react-native-reanimated';
 import { type ICarouselInstance } from 'react-native-reanimated-carousel';
 import { colors } from '~/lib/colors';
@@ -37,7 +38,8 @@ export function useCarousel<T>(initialData: T[] = []) {
     onProgressChange: progress,
     width: PAGE_WIDTH - 12,
     loop: carouselData.length > 2,
-    enabled: carouselData.length > 1
+    enabled: carouselData.length > 1,
+    onConfigurePanGesture: (gesture: PanGestureType) => gesture.activeOffsetX([-10, 10]),
   }), [carouselData, progress, ref]);
 
   const progressProps = useMemo(() => ({
