@@ -1,9 +1,10 @@
 import React from 'react';
-import { Animated, RefreshControl, ScrollView, View, Text } from 'react-native';
+import { Animated, RefreshControl, ScrollView, View } from 'react-native';
 import RefreshIndicator from '~/components/common/refresh';
 import { cn } from '~/lib/utils';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRefresh } from '~/hooks/helpers/refresh/useRefresh';
+import * as Screen from '~/components/seasons/page';
 
 export default function SeasonsScreen() {
   const { refreshing, onRefresh, scrollY } = useRefresh([['seasons']]);
@@ -32,8 +33,7 @@ export default function SeasonsScreen() {
           'page justify-start gap-y-4 transition-all',
           refreshing && 'pt-8'
         )}>
-          <Text className='text-base text-center font-medium bg-red-400'
-          >Seasons Screen Content Goes Here</Text>
+          <Screen.default />
         </View>
       </ScrollView>
     </SafeAreaView >
