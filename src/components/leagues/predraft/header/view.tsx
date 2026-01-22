@@ -5,36 +5,34 @@ import { ArrowLeft, Settings } from 'lucide-react-native';
 import { Text, View } from 'react-native';
 import Button from '~/components/common/button';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
+import useHeaderHeight from '~/hooks/ui/useHeaderHeight';
 
 interface PredraftHeaderProps {
   inSettings?: boolean;
 }
 
 export default function PredraftHeader({ inSettings }: PredraftHeaderProps) {
+  const height = useHeaderHeight();
   const { data: league } = useLeague();
   const router = useRouter();
   return (
-    <View className='absolute top-0 z-10 h-24 w-full items-center justify-end bg-secondary pb-2'>
+    <View
+      className='absolute top-0 z-10 w-full items-center justify-end bg-secondary'
+      style={{ height }}>
       <Text className='text-2xl font-bold text-white'>{league?.name ?? 'League'}</Text>
       {inSettings ? (
         <Button
           className='absolute bottom-0 left-4 py-2 px-4'
           onPress={() => router.back()}>
           <Text className='text-lg text-white'>
-            <ArrowLeft
-              color='white'
-              size={24}
-            />
+            <ArrowLeft color='white' size={24} />
           </Text>
         </Button>
       ) : (
         <Button
-          className='absolute bottom-0 right-4 py-2 px-4'
+          className='absolute bottom-0 right-4 py-0.5 px-4'
           onPress={() => router.push(`/leagues/${league?.hash}/predraft/settings`)}>
-          <Settings
-            color='white'
-            size={24}
-          />
+          <Settings color='white' size={24} />
         </Button>
       )}
     </View>

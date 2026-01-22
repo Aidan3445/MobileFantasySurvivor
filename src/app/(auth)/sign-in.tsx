@@ -4,6 +4,7 @@ import { KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View
 import React from 'react';
 import Header from '~/components/auth/header';
 import { SignInWithGoogle } from '~/components/auth/signInWithGoogle';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -38,7 +39,7 @@ export default function Page() {
   };
 
   return (
-    <View className='flex-1 justify-around bg-background p-6 pb-safe-offset-40'>
+    <SafeAreaView className='flex-1 justify-center start bg-background px-6'>
       <Header />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -51,30 +52,30 @@ export default function Page() {
             <Text className='mb-2 text-3xl font-bold text-primary'>Welcome Back!</Text>
             <Text className='text-lg text-secondary'>Sign in to continue</Text>
           </View>
+
           <View className='gap-y-2'>
             <TextInput
               autoCapitalize='none'
               value={emailAddress}
               placeholder='Enter email'
-              className='rounded-2xl border border-accent bg-accent/20 px-4 py-4 text-lg leading-5'
+              className='rounded-2xl border border-accent bg-accent/20 px-4 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
               placeholderTextColor='#B58553'
-              onChangeText={emailAddress => setEmailAddress(emailAddress)}
-            />
+              onChangeText={emailAddress => setEmailAddress(emailAddress)} />
             <TextInput
               value={password}
               placeholder='Enter password'
               secureTextEntry={true}
-              className='rounded-2xl border border-accent bg-accent/20 px-4 py-4 text-lg leading-5'
+              className='rounded-2xl border border-accent bg-accent/20 px-4 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
               placeholderTextColor='#B58553'
-              onChangeText={password => setPassword(password)}
-            />
+              onChangeText={password => setPassword(password)} />
             <TouchableOpacity
               onPress={onSignInPress}
-              className='mt-6 rounded-2xl bg-primary py-4 shadow-sm'>
+              className='mt-6 rounded-full bg-primary h-10 justify-center'>
               <Text className='text-center text-lg font-semibold text-white'>Continue</Text>
             </TouchableOpacity>
             <SignInWithGoogle />
           </View>
+
           <View className='flex-row items-center justify-center'>
             <Text className='text-base text-secondary'>Don't have an account? </Text>
             <Link href='/sign-up'>
@@ -83,6 +84,6 @@ export default function Page() {
           </View>
         </View>
       </KeyboardAvoidingView>
-    </View>
+    </SafeAreaView>
   );
 }

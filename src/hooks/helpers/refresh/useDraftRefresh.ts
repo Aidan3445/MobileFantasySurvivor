@@ -1,37 +1,25 @@
-import { useCallback, useState } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMemo } from 'react';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
+import { useRefresh } from '~/hooks/helpers/refresh/useRefresh';
 
 export function useDraftRefresh(overrideHash?: string) {
-  const [refreshing, setRefreshing] = useState(false);
-  const queryClient = useQueryClient();
   const { data: league } = useLeague(overrideHash);
 
-  const onRefresh = useCallback(async () => {
-    if (!league) return;
+  const keysToInvalidate = useMemo(() => [
+    // Core league data
+    ['league', league?.hash],
+    ['leagueMembers', league?.hash],
+    ['settings', league?.hash],
 
-    setRefreshing(true);
+    // Rules and customization
+    ['rules', league?.hash],
+    ['customEvents', league?.hash],
+    ['basePredictions', league?.hash],
 
-    try {
-      await Promise.all([
-        // Core league data
-        queryClient.invalidateQueries({ queryKey: ['league', league.hash] }),
-        queryClient.invalidateQueries({ queryKey: ['leagueMembers', league.hash] }),
-        queryClient.invalidateQueries({ queryKey: ['settings', league.hash] }),
+    // Draft-specific queries
+    ['predictionTiming', league?.hash],
+    ['selectionTimeline', league?.hash],
+  ], [league?.hash]);
 
-        // Rules and customization
-        queryClient.invalidateQueries({ queryKey: ['rules', league.hash] }),
-        queryClient.invalidateQueries({ queryKey: ['customEvents', league.hash] }),
-        queryClient.invalidateQueries({ queryKey: ['basePredictions', league.hash] }),
-
-        // Draft-specific queries
-        queryClient.invalidateQueries({ queryKey: ['predictionTiming', league.hash] }),
-        queryClient.invalidateQueries({ queryKey: ['selectionTimeline', league.hash] })
-      ]);
-    } finally {
-      setRefreshing(false);
-    }
-  }, [league, queryClient]);
-
-  return { refreshing, onRefresh };
+  return useRefresh(keysToInvalidate);
 }

@@ -38,10 +38,7 @@ export default function LeaguesList() {
   }, [leagues]);
 
   return (
-    <View className='w-full px-2 py-6 flex flex-col items-center'>
-      <View className='w-full rounded-full bg-primary mb-4 mt-2'>
-        <Text className='text-2xl font-semibold text-white text-center'>My Leagues</Text>
-      </View>
+    <View className='w-full flex flex-col items-center'>
       <View className='flex-col'>
         {currentLeagues.map(({ league, member, currentSelection }) => (
           <LeagueCard

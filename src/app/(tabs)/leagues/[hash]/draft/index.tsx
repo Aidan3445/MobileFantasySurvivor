@@ -78,12 +78,7 @@ export default function DraftTrackerScreen() {
 
   return (
     <View className='flex-1 items-center justify-center bg-background'>
-      <RefreshIndicator
-        refreshing={refreshing}
-        scrollY={scrollY}
-        logoSize={60}
-        topBuffer={90}
-      />
+      <RefreshIndicator refreshing={refreshing} scrollY={scrollY} />
       <DraftHeader />
       <ScrollView
         className='w-full pt-28'

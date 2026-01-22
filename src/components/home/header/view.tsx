@@ -52,12 +52,11 @@ export default function Header({ className, refreshing = false }: HeaderProps) {
     <View className={cn('items-center', className)}>
       <Animated.Image
         source={LogoImage}
-        className={cn('h-40 w-40 mt-5')}
+        className={cn('h-40 w-40')}
         style={{
           transform: [{ rotate: spin }]
         }}
-        resizeMode='contain'
-      />
+        resizeMode='contain' />
     </View>
   );
 }

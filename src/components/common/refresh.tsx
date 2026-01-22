@@ -1,20 +1,20 @@
 import React, { useRef, useEffect } from 'react';
 import { Animated } from 'react-native';
+import useHeaderHeight from '~/hooks/ui/useHeaderHeight';
 const LogoImage = require('~/assets/Logo.png');
 
 interface RefreshIndicatorProps {
   refreshing: boolean;
   scrollY: Animated.Value;
   logoSize?: number;
-  topBuffer?: number;
 }
 
 export default function RefreshIndicator({
   refreshing,
   scrollY,
   logoSize = 80,
-  topBuffer = 60
 }: RefreshIndicatorProps) {
+  const height = useHeaderHeight();
   const logoOpacity = useRef(new Animated.Value(0)).current;
   const logoRotation = useRef(new Animated.Value(0)).current;
   const logoTranslateY = useRef(new Animated.Value(-logoSize - 20)).current;
@@ -108,8 +108,10 @@ export default function RefreshIndicator({
     <Animated.View
       style={{
         position: 'absolute',
-        top: topBuffer,
-        zIndex: 10,
+        left: 0,
+        right: 0,
+        top: height,
+        zIndex: 9,
         opacity: logoOpacity,
         transform: [{ translateY: logoTranslateY }]
       }}
