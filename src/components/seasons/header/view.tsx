@@ -38,7 +38,7 @@ export default function SeasonsHeader({ seasons, value, setValue }: SeasonsHeade
             seasons={seasonOptions}
             value={value}
             setValue={setValue}
-            className='right-4 top-0' />
+            className='right-4 top-1/2 translate-y-[-50%]' />
         </View>
         <TabsList className='h-10'>
           <TabsTrigger value='events' className='flex-1'>

@@ -44,7 +44,7 @@ export default function SeasonsScreen() {
               progressBackgroundColor='transparent' />
           }>
           <View className={cn(
-            'page justify-start gap-y-4 transition-all px-1 pt-6',
+            'page justify-start gap-y-4 transition-all px-1 pt-8',
             refreshing && 'pt-12'
           )}>
             <TabsContent value='events'>

@@ -21,32 +21,34 @@ export default function PredraftHeader({ inSettings }: PredraftHeaderProps) {
     <View
       className='absolute top-0 z-10 w-full items-center justify-end bg-card shadow-lg'
       style={{ height }}>
-      <View className='flex-row justify-center px-20 pb-1'>
-        <View className='h-6 w-1 bg-primary rounded-full' />
-        <MarqueeText
-          text={league?.name ?? 'League'}
-          center
-          allowFontScaling={false}
-          className='text-2xl font-black uppercase leading-none tracking-tight text-foreground !translate-y-0.5'
-          containerClassName='flex-row'
-          noMarqueeContainerClassName='w-min px-0.5' />
-        <View className='h-6 w-1 bg-primary rounded-full' />
+      <View className='items-center justify-center w-full'>
+        <View className='relative flex-row items-center justify-center w-full max-w-72'>
+          <View className='h-6 w-1 bg-primary rounded-full' />
+          <MarqueeText
+            text={'League'}
+            center
+            allowFontScaling={false}
+            className='text-2xl font-black uppercase tracking-tight text-foreground'
+            containerClassName='flex-row'
+            noMarqueeContainerClassName='w-min px-0.5' />
+          <View className='h-6 w-1 bg-primary rounded-full' />
+        </View>
+        {inSettings ? (
+          <Button
+            className='absolute left-4 px-4'
+            onPress={() => router.back()}>
+            <Text className='text-lg'>
+              <ArrowLeft color={colors.primary} size={24} />
+            </Text>
+          </Button>
+        ) : (
+          <Button
+            className='absolute right-4 px-4'
+            onPress={() => router.push(`/leagues/${league?.hash}/predraft/settings`)}>
+            <Settings color={colors.primary} size={24} />
+          </Button>
+        )}
       </View>
-      {inSettings ? (
-        <Button
-          className='absolute bottom-0 left-4 py-0.5 px-4'
-          onPress={() => router.back()}>
-          <Text className='text-lg'>
-            <ArrowLeft color={colors.primary} size={24} />
-          </Text>
-        </Button>
-      ) : (
-        <Button
-          className='absolute bottom-0 right-4 py-0.5 px-4'
-          onPress={() => router.push(`/leagues/${league?.hash}/predraft/settings`)}>
-          <Settings color={colors.primary} size={24} />
-        </Button>
-      )}
     </View>
   );
 }

@@ -9,8 +9,8 @@ export default function LeaguesHeader() {
     <View
       className='absolute top-0 z-10 w-full items-center justify-end bg-card shadow-lg'
       style={{ height }}>
-      <View className='items-center justify-center'>
-        <View className='flex-row items-center justify-center gap-0.5'>
+      <View className='items-center justify-center w-full'>
+        <View className='relative flex-row items-center justify-center gap-0.5 w-full'>
           <View className='h-6 w-1 bg-primary rounded-full' />
           <Text
             allowFontScaling={false}
