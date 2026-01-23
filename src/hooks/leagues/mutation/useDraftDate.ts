@@ -37,7 +37,6 @@ export function useDraftDate(overrideHash?: string, onSubmit?: () => void) {
   }, [leagueSettings, reactForm]);
 
   const handleSubmit = reactForm.handleSubmit(async data => {
-    console.log('Submitting draft date update:', data);
     if (!hash) {
       Alert.alert('Error', 'League data not available');
       return;

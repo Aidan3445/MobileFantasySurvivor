@@ -79,11 +79,6 @@ export default function ScoreboardTable({
   // Reset to first season if current selection is invalid
   // or if scoreData changes and there is only one season
   useEffect(() => {
-    console.log('ScoreboardTable: scoreData or selectedSeasonIndex changed', {
-      scoreDataLength: scoreData.length,
-      selectedSeasonIndex,
-      name: scoreData[selectedSeasonIndex]?.season.name
-    });
     if (
       (selectedSeasonIndex >= scoreData.length && scoreData.length > 0)
       || scoreData.length === 1

@@ -7,14 +7,16 @@ interface RefreshIndicatorProps {
   refreshing: boolean;
   scrollY: Animated.Value;
   logoSize?: number;
+  extraHeight?: number;
 }
 
 export default function RefreshIndicator({
   refreshing,
   scrollY,
   logoSize = 80,
+  extraHeight
 }: RefreshIndicatorProps) {
-  const height = useHeaderHeight();
+  const height = useHeaderHeight(extraHeight);
   const logoOpacity = useRef(new Animated.Value(0)).current;
   const logoRotation = useRef(new Animated.Value(0)).current;
   const logoTranslateY = useRef(new Animated.Value(-logoSize - 20)).current;
@@ -110,7 +112,7 @@ export default function RefreshIndicator({
         position: 'absolute',
         left: 0,
         right: 0,
-        top: height,
+        top: height + 4,
         zIndex: 9,
         opacity: logoOpacity,
         transform: [{ translateY: logoTranslateY }]
@@ -123,8 +125,7 @@ export default function RefreshIndicator({
           height: logoSize,
           transform: [{ rotate: spin }]
         }}
-        resizeMode='contain'
-      />
+        resizeMode='contain' />
     </Animated.View>
   );
 }
