@@ -1,4 +1,4 @@
-import { type ReactElement } from 'react';
+import { type ReactNode } from 'react';
 import { KeyboardAvoidingView, Pressable, Modal as RNModal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { cn } from '~/lib/utils';
@@ -8,7 +8,7 @@ interface ModalProps {
   onClose: () => void;
   animationType?: 'slide' | 'fade' | 'none';
   className?: string;
-  children: ReactElement | ReactElement[];
+  children: ReactNode;
 }
 
 export default function Modal({

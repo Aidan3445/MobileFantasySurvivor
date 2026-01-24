@@ -1,4 +1,4 @@
-import { type ReactElement } from 'react';
+import { type ReactNode } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '~/components/auth/header';
 import { cn } from '~/lib/utils';
@@ -6,7 +6,7 @@ import { cn } from '~/lib/utils';
 interface LoadingScreenProps {
   noBounce?: boolean;
   className?: string;
-  children?: ReactElement | ReactElement[];
+  children?: ReactNode;
 }
 
 export default function LoadingScreen({ noBounce, className, children }: LoadingScreenProps) {

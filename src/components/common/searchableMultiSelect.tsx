@@ -1,6 +1,6 @@
 import { View, Text, TextInput, FlatList } from 'react-native';
 import { useSearchableSelect, type SearchableOption } from '~/hooks/ui/useSearchableSelect';
-import { type ReactElement } from 'react';
+import { type ReactElement, type ReactNode } from 'react';
 import { Check } from 'lucide-react-native';
 import Modal from '~/components/common/modal';
 import Button from '~/components/common/button';
@@ -12,8 +12,8 @@ interface SearchableMultiSelectProps<T extends string | number> {
   overrideState?: [boolean, (_open: boolean) => void];
   placeholder?: string;
   emptyMessage?: string;
-  footerComponent?: ReactElement;
-  children?: ReactElement;
+  footerComponent?: ReactNode;
+  children?: ReactNode;
   asChild?: boolean;
 }
 
@@ -123,7 +123,7 @@ export default function SearchableMultiSelect<T extends string | number>({
               {emptyMessage}
             </Text>
           }
-          ListFooterComponent={footerComponent} />
+          ListFooterComponent={footerComponent as ReactElement} />
       </Modal>
       {renderTrigger()}
     </>

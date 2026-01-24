@@ -1,4 +1,4 @@
-import { type ReactElement } from 'react';
+import { type ReactNode } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { cn } from '~/lib/utils';
 
@@ -7,7 +7,7 @@ interface ButtonProps {
   onLongPress?: () => void;
   disabled?: boolean;
   className?: string;
-  children: ReactElement | (ReactElement | null)[];
+  children: ReactNode;
 }
 
 export default function Button({
