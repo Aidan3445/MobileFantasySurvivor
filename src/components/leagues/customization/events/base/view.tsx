@@ -9,8 +9,15 @@ import AdvantageScoreSettings from '~/components/leagues/customization/events/ba
 import OtherScoreSettings from '~/components/leagues/customization/events/base/other';
 
 export default function BaseEventRules() {
-  const { reactForm, locked, setLocked, rulesChanged, handleSubmit, resetSettings, disabled } =
-    useBaseEventRules();
+  const {
+    reactForm,
+    locked,
+    setLocked,
+    rulesChanged,
+    handleSubmit,
+    resetSettings,
+    disabled
+  } = useBaseEventRules();
 
   return (
     <View className='w-full rounded-xl bg-card p-2'>
@@ -60,18 +67,9 @@ export default function BaseEventRules() {
           </View>
         )}
         <View className='gap-2'>
-          <ChallengeScoreSettings
-            reactForm={reactForm}
-            disabled={locked || disabled}
-          />
-          <AdvantageScoreSettings
-            reactForm={reactForm}
-            disabled={locked || disabled}
-          />
-          <OtherScoreSettings
-            reactForm={reactForm}
-            disabled={locked || disabled}
-          />
+          <ChallengeScoreSettings reactForm={reactForm} disabled={locked || disabled} />
+          <AdvantageScoreSettings reactForm={reactForm} disabled={locked || disabled} />
+          <OtherScoreSettings reactForm={reactForm} disabled={locked || disabled} />
         </View>
       </View>
     </View>

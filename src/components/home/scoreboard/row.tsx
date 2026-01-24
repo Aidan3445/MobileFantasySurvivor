@@ -73,7 +73,7 @@ export default function CastawayRow({
       )}
 
       {/* Castaway */}
-      <View className='flex-1 flex-row items-center gap-2'>
+      <View className='flex-1 flex-row items-center gap-2 pr-2'>
         <CastawayModal castaway={castaway}>
           <Text
             className={cn(

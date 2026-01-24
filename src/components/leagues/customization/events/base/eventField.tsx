@@ -1,7 +1,6 @@
 import { Flame } from 'lucide-react-native';
 import { Controller, type UseFormReturn } from 'react-hook-form';
-import { Text, View } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { Text, View, TextInput } from 'react-native';
 import { colors } from '~/lib/colors';
 import { BaseEventDescriptions, BaseEventFullName } from '~/lib/events';
 import { cn } from '~/lib/utils';
@@ -13,75 +12,89 @@ interface EventFieldProps {
   eventName: ScoringBaseEventName;
   fieldPath: string;
   disabled?: boolean;
+  hidePrediction?: boolean;
 }
 
-export default function EventField({ reactForm, eventName, fieldPath, disabled }: EventFieldProps) {
+export default function EventField({
+  reactForm,
+  eventName,
+  fieldPath,
+  disabled,
+  hidePrediction,
+}: EventFieldProps) {
   const currentValue = reactForm.watch(fieldPath);
   const hasItalicDescription =
     BaseEventDescriptions.italics?.[eventName as keyof typeof BaseEventDescriptions.italics];
 
+  const getPointsColor = () => {
+    if (currentValue === 0) return colors.neutral;
+    return currentValue > 0 ? colors.positive : colors.destructive;
+  };
+
   return (
-    <View className='gap-1 rounded-lg bg-accent px-2 pb-1'>
-      <View className='flex-row items-center justify-between pt-1'>
-        <Text className='flex-1 text-base font-semibold'>
+    <View className='gap-1.5 rounded-lg border-2 border-primary/10 bg-primary/5 px-3 py-2'>
+      {/* Header Row */}
+      <View className='flex-row items-center justify-between'>
+        <Text className='flex-1 text-sm font-semibold text-foreground'>
           {BaseEventFullName[eventName as keyof typeof BaseEventFullName]}
         </Text>
+
         {disabled ? (
-          <View className='flex-row items-center'>
+          <View className='flex-row items-center gap-1'>
             <Text
               className={cn(
-                'mr-1 text-lg font-bold',
-                currentValue <= 0 ? 'text-destructive' : 'text-positive',
-                currentValue === 0 && 'text-neutral'
+                'text-base font-bold',
+                currentValue === 0
+                  ? 'text-muted-foreground'
+                  : currentValue > 0
+                    ? 'text-green-700'
+                    : 'text-destructive'
               )}>
-              {currentValue}
+              {currentValue > 0 ? `+${currentValue}` : currentValue}
             </Text>
-            <Flame
-              size={16}
-              color={
-                currentValue <= 0
-                  ? currentValue < 0
-                    ? colors.destructive
-                    : colors.neutral
-                  : colors.positive
-              }
-            />
+            <Flame size={14} color={getPointsColor()} />
           </View>
         ) : (
           <Controller
             control={reactForm.control}
             name={fieldPath}
             render={({ field }) => (
-              <TextInput
-                className={cn(
-                  'w-24 rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
-                )}
-                value={field.value?.toString() ?? '0'}
-                onChangeText={text => {
-                  const value = parseInt(text) || 0;
-                  field.onChange(value);
-                }}
-                keyboardType='numeric'
-                placeholder='Points'
-              />
+              <View className='flex-row items-center gap-1'>
+                <TextInput
+                  className='w-16 rounded-lg border-2 border-primary/20 bg-card px-2 py-1 text-center text-base font-bold leading-5'
+                  value={field.value?.toString()}
+                  onChangeText={(text) => {
+                    // Handle negative numbers and empty input
+                    if (text === '-' || text === '') {
+                      field.onChange(text === '-' ? text : 0);
+                      return;
+                    }
+                    const value = parseInt(text) || 0;
+                    field.onChange(value);
+                  }}
+                  keyboardType='numbers-and-punctuation'
+                  placeholder='0'
+                  placeholderTextColor={colors['muted-foreground']}
+                />
+                <Flame size={14} color={getPointsColor()} />
+              </View>
             )}
           />
         )}
       </View>
 
-      <View>
-        <Text className='text-sm leading-none text-muted-foreground'>
-          {BaseEventDescriptions.main[eventName as keyof typeof BaseEventDescriptions.main]}
-          {hasItalicDescription && (
-            <Text className='text-xs italic text-muted-foreground'> {hasItalicDescription}</Text>
-          )}
-        </Text>
-      </View>
-      <BasePredictions
-        eventName={eventName}
-        reactForm={reactForm}
-        disabled={disabled}
-      />
+      {/* Description */}
+      <Text className='text-xs leading-tight text-muted-foreground'>
+        {BaseEventDescriptions.main[eventName as keyof typeof BaseEventDescriptions.main]}
+        {hasItalicDescription && (
+          <Text className='italic text-muted-foreground'> {hasItalicDescription}</Text>
+        )}
+      </Text>
+
+      {/* Predictions (if enabled) */}
+      {!hidePrediction && (
+        <BasePredictions eventName={eventName} reactForm={reactForm} disabled={disabled} />
+      )}
     </View>
   );
 }
