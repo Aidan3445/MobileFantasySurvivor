@@ -1,0 +1,50 @@
+import { View } from 'react-native';
+import { useEffect } from 'react';
+import Carousel, { Pagination } from 'react-native-reanimated-carousel';
+import { useCarousel } from '~/hooks/ui/useCarousel';
+import LeagueCard from '~/components/leagues/grid/leagueCard';
+import { type CurrentSelection, type LeagueMember } from '~/types/leagueMembers';
+import { type League } from '~/types/leagues';
+
+const CARD_HEIGHT = 140;
+
+interface LeagueSeasonCarouselProps {
+  leagues: { league: League; member: LeagueMember; currentSelection: CurrentSelection }[];
+}
+
+export default function LeagueSeasonCarousel({ leagues }: LeagueSeasonCarouselProps) {
+  const { setCarouselData, props, progressProps } = useCarousel<
+    { league: League; member: LeagueMember; currentSelection: CurrentSelection }
+  >([]);
+
+  useEffect(() => {
+    setCarouselData(leagues);
+  }, [leagues, setCarouselData]);
+
+  if (!props.data || props.data.length === 0) return null;
+
+  return (
+    <View>
+      <Carousel
+        {...props}
+        loop // force loop
+        height={CARD_HEIGHT}
+        renderItem={({ item }) => (
+          <LeagueCard
+            league={item.league}
+            member={item.member}
+            currentSelection={item.currentSelection} />
+        )} />
+      {props.data.length > 1 && (
+        <View className='items-center'>
+          <Pagination.Basic
+            {...progressProps}
+            containerStyle={{
+              ...progressProps.containerStyle,
+              marginTop: 8,
+            }} />
+        </View>
+      )}
+    </View>
+  );
+}

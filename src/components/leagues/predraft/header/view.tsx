@@ -44,7 +44,7 @@ export default function PredraftHeader({ inSettings }: PredraftHeaderProps) {
         ) : (
           <Button
             className='absolute right-4 px-4'
-            onPress={() => router.push(`/leagues/${league?.hash}/predraft/settings`)}>
+            onPress={() => router.push(`/leagues/${league?.hash}/settings`)}>
             <Settings color={colors.primary} size={24} />
           </Button>
         )}

@@ -1,39 +1,63 @@
 import { Link } from 'expo-router';
-import { FlameKindling } from 'lucide-react-native';
-import { Text, View } from 'react-native';
-import Button from '~/components/common/button';
+import { FlameKindling, ChevronRight } from 'lucide-react-native';
+import { Text, View, Pressable } from 'react-native';
 import { type CurrentSelection, type LeagueMember } from '~/types/leagueMembers';
 import { type League } from '~/types/leagues';
+import ColorRow from '~/components/shared/colorRow';
+import { colors } from '~/lib/colors';
 
 interface LeagueCardProps {
   league: League;
   member: LeagueMember;
   currentSelection: CurrentSelection;
+  width?: number;
 }
 
-export default function LeagueCard({ league, member, currentSelection }: LeagueCardProps) {
+export default function LeagueCard({ league, member, currentSelection, width }: LeagueCardProps) {
   return (
     <Link
-      key={league.hash}
       href={{ pathname: '/leagues/[hash]', params: { hash: league.hash } }}
       asChild>
-      <Button className='mb-3 flex-col rounded-lg bg-card p-4 w-96'>
-        <Text className='text-xl font-semibold text-card-foreground text-center'>{league.name}</Text>
-        <Text className='mt-1 text-sm text-muted-foreground text-center'>{league.season}</Text>
-        {currentSelection ? (
-          <View className='mt-2 flex-row items-center justify-center'>
-            <Text className='italic text-foreground'>{currentSelection.fullName}</Text>
-            {currentSelection.isEliminated && (<FlameKindling size={16} className='ml-1' />)}
+      <View className='flex-1 px-2 -ml-1'>
+        <Pressable
+          style={width ? { width } : undefined}
+          className='flex-1 rounded-lg border-2 border-primary/20 bg-primary/5 p-3 active:border-primary/30 active:bg-primary/10'>
+          {/* Header */}
+          <View className='flex-row items-start justify-between gap-2'>
+            <Text className='flex-1 text-lg font-bold leading-tight text-foreground'>
+              {league.name}
+            </Text>
+            <ChevronRight size={20} color={colors.primary} />
           </View>
-        ) : (
-          <Text className='mt-2 italic text-muted-foreground text-center'>Yet to draft</Text>
-        )}
-        <View
-          className='mt-3 items-center justify-center rounded-full py-1.5'
-          style={{ backgroundColor: member.color }}>
-          <Text className='font-semibold text-white'>{member.displayName}</Text>
-        </View>
-      </Button>
+
+          {/* Draft Status */}
+          <View className='mt-3'>
+            {currentSelection ? (
+              <View className='flex-row items-center gap-1'>
+                <Text className='font-bold text-muted-foreground'>Draft:</Text>
+                <Text className='italic text-muted-foreground' numberOfLines={1}>
+                  {currentSelection.fullName}
+                </Text>
+                {currentSelection.isEliminated && (
+                  <FlameKindling size={16} color={colors['muted-foreground']} />
+                )}
+              </View>
+            ) : (
+              <View className='flex-row items-center gap-1'>
+                <Text className='font-bold text-muted-foreground'>Draft:</Text>
+                <Text className='italic text-muted-foreground'>Yet to draft</Text>
+              </View>
+            )}
+          </View>
+
+          {/* Member Badge */}
+          <View className='mt-3'>
+            <ColorRow className='justify-center border-2 font-bold' color={member.color}>
+              <Text className='font-bold text-black'>{member.displayName}</Text>
+            </ColorRow>
+          </View>
+        </Pressable>
+      </View>
     </Link>
   );
 }
