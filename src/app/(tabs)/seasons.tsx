@@ -8,6 +8,7 @@ import SeasonsHeader from '~/components/seasons/header/view';
 import { useSeasonsData } from '~/hooks/seasons/useSeasonsData';
 import { Tabs, TabsContent } from '~/components/common/tabs';
 import EventTimeline from '~/components/shared/eventTimeline/view';
+import CastawaysView from '~/components/seasons/castaways/view';
 
 export default function SeasonsScreen() {
   const { refreshing, onRefresh, scrollY, handleScroll } = useRefresh([['seasons']]);
@@ -46,16 +47,14 @@ export default function SeasonsScreen() {
               progressBackgroundColor='transparent' />
           }>
           <View className={cn(
-            'page justify-start gap-y-4 transition-all px-1.5 pt-8',
-            refreshing && 'pt-12'
+            'page justify-start gap-y-4 transition-all px-1.5 pt-6',
+            refreshing && 'pt-10'
           )}>
             <TabsContent value='events'>
               <EventTimeline seasonData={selectedSeasonData!} hideMemberFilter />
             </TabsContent>
             <TabsContent value='castaways'>
-              <Text className='text-foreground mt-4 text-center'>
-                Castaways data coming soon!
-              </Text>
+              <CastawaysView seasonData={selectedSeasonData!} />
             </TabsContent>
             <TabsContent value='tribes'>
               <View className='relative overflow-hidden rounded-xl bg-card border-2 border-primary/20'>

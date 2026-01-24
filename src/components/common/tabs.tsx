@@ -118,7 +118,7 @@ const TabsContent = React.forwardRef<View, TabsContentProps>(
     if (selectedValue !== value) return null;
 
     return (
-      <View ref={ref} className={cn('flex-col items-center mt-2', className)} {...props}>
+      <View ref={ref} className={cn('flex-col items-center', className)} {...props}>
         {children}
       </View>
     );

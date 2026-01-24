@@ -15,7 +15,7 @@ export default function TribeHistoryCircles({ tribeTimeline }: TribeHistoryCircl
   return (
     <View className='ml-auto flex-row gap-0.5'>
       {tribeTimeline.map(({ episode, tribe }) =>
-        tribe ? (
+        tribe && (
           <Popover
             key={`${tribe.tribeName}-${episode}`}
             isVisible={visiblePopover === `${tribe.tribeName}-${episode}`}
@@ -51,8 +51,7 @@ export default function TribeHistoryCircles({ tribeTimeline }: TribeHistoryCircl
               <Text className='text-muted-foreground'> • Ep {episode}</Text>
             </View>
           </Popover>
-        ) : null
-      )}
+        ))}
     </View>
   );
 }
