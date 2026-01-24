@@ -1,6 +1,6 @@
 'use client';
 import { Lock, LockOpen } from 'lucide-react-native';
-import { Text, View, Switch, TextInput, Linking } from 'react-native';
+import { Text, View, Switch, TextInput } from 'react-native';
 import Button from '~/components/common/button';
 import { Controller } from 'react-hook-form';
 import { useShauhinMode } from '~/hooks/leagues/mutation/useShauhinMode';
@@ -12,6 +12,7 @@ import {
   ShauhinModeTimings
 } from '~/lib/leagues';
 import { BaseEventFullName } from '~/lib/events';
+import * as WebBrowser from 'expo-web-browser';
 import { type ScoringBaseEventName } from '~/types/events';
 import { useSearchableSelect } from '~/hooks/ui/useSearchableSelect';
 import SearchableMultiSelect from '~/components/common/searchableMultiSelect';
@@ -48,7 +49,7 @@ export default function ShauhinMode() {
     }));
 
   const openTikTokLink = () => {
-    Linking.openURL('https://www.tiktok.com/t/ZT62XJL2V/');
+    WebBrowser.openBrowserAsync('https://www.tiktok.com/t/ZT62XJL2V/');
   };
 
   return (

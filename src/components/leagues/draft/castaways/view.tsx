@@ -1,6 +1,7 @@
 'use client';
 
-import { ScrollView, Text, View, Image, Linking } from 'react-native';
+import { ScrollView, Text, View, Image } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
 import Button from '~/components/common/button';
 import { type DraftDetails } from '~/types/leagues';
 import { useState } from 'react';
@@ -23,7 +24,7 @@ function CastawayModal({ castaway, isVisible, onClose }: CastawayModalProps) {
 
   const handleLearnMore = () => {
     const url = `https://survivor.fandom.com/wiki/${encodeURIComponent(castaway.fullName)}`;
-    Linking.openURL(url);
+    WebBrowser.openBrowserAsync(url);
   };
 
   return (
