@@ -1,6 +1,6 @@
-'use client';
-
 import { Text, View } from 'react-native';
+import { useLocalSearchParams, Redirect } from 'expo-router';
+import { useAuth } from '@clerk/clerk-expo';
 import Button from '~/components/common/button';
 import KeyboardContainer from '~/components/common/keyboardContainer';
 import Header from '~/components/home/header/view';
@@ -9,7 +9,26 @@ import { useJoinLeague } from '~/hooks/leagues/mutation/useJoinLeague';
 import { cn } from '~/lib/utils';
 
 export default function JoinLeagueScreen() {
+  const { hash } = useLocalSearchParams<{ hash: string }>();
+  const { isSignedIn, isLoaded } = useAuth();
   const { reactForm, handleSubmit, getPublicLeague } = useJoinLeague();
+
+  // Redirect to sign-in if not authenticated
+  if (isLoaded && !isSignedIn) {
+    return <Redirect href={`/sign-in?returnTo=/leagues/join/${hash}`} />;
+  }
+
+  // Handle invalid/expired invite
+  if (getPublicLeague.isError) {
+    return (
+      <View className='flex-1 bg-background items-center justify-center p-4'>
+        <Text className='text-xl font-bold text-red-500 mb-2'>Invalid Invite</Text>
+        <Text className='text-muted-foreground text-center'>
+          This invite link is invalid or has expired.
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <KeyboardContainer>

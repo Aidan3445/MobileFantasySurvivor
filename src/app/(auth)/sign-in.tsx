@@ -1,5 +1,5 @@
 import { useSignIn } from '@clerk/clerk-expo';
-import { Link, useRouter } from 'expo-router';
+import { Link, useLocalSearchParams, useRouter } from 'expo-router';
 import { KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import Header from '~/components/auth/header';
@@ -7,6 +7,7 @@ import { SignInWithGoogle } from '~/components/auth/signInWithGoogle';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Page() {
+  const { returnTo } = useLocalSearchParams<{ returnTo?: string }>();
   const { signIn, setActive, isLoaded } = useSignIn();
   const router = useRouter();
 
@@ -25,7 +26,12 @@ export default function Page() {
       // and redirect the user
       if (signInAttempt.status === 'complete') {
         await setActive({ session: signInAttempt.createdSessionId });
-        router.replace('/');
+        if (returnTo) {
+          router.replace(returnTo);
+        } else {
+          router.replace('/');
+        }
+
       } else {
         // If the status isn't complete, check why. User might need to
         // complete further steps.

@@ -1,31 +1,26 @@
-'use client';
-
 import { Keyboard, KeyboardAvoidingView, Platform, TextInput, View } from 'react-native';
-import Button from '~/components/common/button';
-import { cn } from '~/lib/utils';
-import { Text } from 'react-native-gesture-handler';
-import { useEffect, useState } from 'react';
+import { Text } from 'react-native';
+import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Button from '~/components/common/button';
+import { cn } from '~/lib/utils';
 
-export default function JoinLeagueScreen() {
+export default function JoinLeagueEntryScreen() {
   const router = useRouter();
   const [joinCode, setJoinCode] = useState('');
 
-  useEffect(() => {
-    // if the join code is in the URL, cut out everything but the code
-    // http://localhost:1234/i/-rfJ3Ju9uNAsPBOy --> -rfJ3Ju9uNAsPBOy
-    const urlMaybe = joinCode;
-    const match = urlMaybe.match(/\/i\/([a-zA-Z0-9-_]+)/);
-    if (match) {
-      setJoinCode(match[1] ?? joinCode);
-    }
-  }, [joinCode]);
+  const parseCode = (input: string) => {
+    // Extract code from URL if pasted: http://localhost:1234/i/-rfJ3Ju9uNAsPBOy --> -rfJ3Ju9uNAsPBOy
+    const match = input.match(/\/i\/([a-zA-Z0-9-_]+)/);
+    return match?.[1] ?? input;
+  };
 
   const handleJoinLeague = () => {
-    if (joinCode.trim()) {
+    const code = parseCode(joinCode).trim();
+    if (code) {
       setJoinCode('');
-      router.push(`/leagues/join/${joinCode.trim()}`);
+      router.push(`/leagues/join/${code}`);
     }
   };
 
@@ -42,18 +37,19 @@ export default function JoinLeagueScreen() {
           </Text>
           <TextInput
             className={cn(
-              'text-xl rounded-lg border-2 border-primary/20 bg-card leading-tight p-4',
+              'text-xl rounded-lg border-2 border-primary/20 bg-card leading-tight p-4 placeholder:text-muted-foreground',
               joinCode.length === 0 && 'italic border-primary/40'
             )}
-            placeholder={'Enter league code...'}
+            placeholder='Enter league code...'
             textAlignVertical='center'
-            autoCapitalize='words'
+            autoCapitalize='none'
+            autoCorrect={false}
             onChangeText={setJoinCode}
-            value={joinCode} />
+            value={joinCode}
+            onSubmitEditing={handleJoinLeague}
+            returnKeyType='go' />
         </View>
-
         <View className='flex-row items-center justify-center gap-4 px-6 pb-4'>
-          {/* Main Action Button */}
           <Button
             onPress={() => {
               Keyboard.dismiss();

@@ -8,12 +8,13 @@ import {
   Platform,
 } from 'react-native';
 import { useSignUp } from '@clerk/clerk-expo';
-import { Link, useRouter } from 'expo-router';
+import { Link, useLocalSearchParams, useRouter } from 'expo-router';
 import Header from '~/components/auth/header';
 import { SignUpWithGoogle } from '~/components/auth/signUpWithGoogle';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SignUpScreen() {
+  const { returnTo } = useLocalSearchParams<{ returnTo?: string }>();
   const { isLoaded, signUp, setActive } = useSignUp();
   const router = useRouter();
 
@@ -75,7 +76,11 @@ export default function SignUpScreen() {
         await setActive({
           session: signUpAttempt.createdSessionId,
         });
-        router.replace('/');
+        if (returnTo) {
+          router.replace(returnTo);
+        } else {
+          router.replace('/');
+        }
       } else {
         setClerkError('Verification could not be completed.');
       }
