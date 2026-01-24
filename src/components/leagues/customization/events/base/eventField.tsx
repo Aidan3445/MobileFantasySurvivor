@@ -45,7 +45,7 @@ export default function EventField({
               className={cn(
                 'text-base font-bold',
                 currentValue === 0
-                  ? 'text-muted-foreground'
+                  ? 'text-neutral'
                   : currentValue > 0
                     ? 'text-green-700'
                     : 'text-destructive'
@@ -69,7 +69,8 @@ export default function EventField({
                     onPress={() => field.onChange(sign * -1 * absValue)}
                     className={cn(
                       'text-center text-2xl font-bold',
-                      sign === 1 ? 'text-positive' : 'text-destructive'
+                      sign === 1 ? 'text-positive' : 'text-destructive',
+                      field.value === 0 && 'text-neutral',
                     )}>
                     {sign === 1 ? '+' : '−'}
                   </Text>

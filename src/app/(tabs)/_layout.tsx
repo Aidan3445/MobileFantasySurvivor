@@ -1,6 +1,6 @@
 'use client';
 import { useIsFetching } from '@tanstack/react-query';
-import { Tabs, usePathname } from 'expo-router';
+import { Tabs, usePathname, useRouter } from 'expo-router';
 import { BookUser, Flame, Trophy, UserCircle2 } from 'lucide-react-native';
 import { useEffect, useState, useRef } from 'react';
 import { Animated, Image, Platform } from 'react-native';
@@ -13,6 +13,7 @@ const HomeImage = require('~/assets/Icon.png');
 
 export default function TabLayout() {
   const pathname = usePathname();
+  const router = useRouter();
   const isFetching = useIsFetching();
   const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
   const [showLoadingScreen, setShowLoadingScreen] = useState(true);
@@ -50,6 +51,7 @@ export default function TabLayout() {
   }, [isFetching, hasLoadedOnce, fadeAnim]);
 
   const isLeaguesPath = pathname.startsWith('/leagues');
+  const isOnLeaguesIndex = pathname === '/leagues';
 
   return (
     <>
@@ -95,6 +97,16 @@ export default function TabLayout() {
           }} />
         <Tabs.Screen
           name='leagues'
+          listeners={{
+            tabPress: (e) => {
+              // If we're already on a leagues sub-page (not index), prevent default and navigate to index
+              if (isLeaguesPath && !isOnLeaguesIndex) {
+                e.preventDefault();
+                router.dismissTo('/leagues');
+              }
+              // Otherwise, let default behavior handle it (preserve stack)
+            },
+          }}
           options={{
             title: 'Leagues',
             tabBarIcon: ({ color }) => (
@@ -104,8 +116,7 @@ export default function TabLayout() {
               fontSize: 12,
               color: isLeaguesPath ? colors!.primary : colors!.secondary,
             }
-          }}
-        />
+          }} />
         <Tabs.Screen
           name='profile'
           options={{

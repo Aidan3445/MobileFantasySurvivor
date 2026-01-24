@@ -29,6 +29,7 @@ export default function LeagueSeasonCarousel({ leagues, refresh }: LeagueSeasonC
     <View>
       <Carousel
         {...props}
+        loop={true}
         height={refresh ? CARD_HEIGHT_WITH_REFRESH : CARD_HEIGHT}
         renderItem={({ item }) => (
           <LeagueCard

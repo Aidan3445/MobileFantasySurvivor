@@ -7,6 +7,7 @@ import { useLeagueData } from '~/hooks/leagues/enrich/useLeagueData';
 
 export function useRecreateLeague(hash: string, onSuccess?: () => void) {
   const postData = useFetch('POST');
+  const fetchData = useFetch('GET');
   const router = useRouter();
   const queryClient = useQueryClient();
   const { sortedMemberScores, leagueMembers } = useLeagueData(hash);
@@ -75,9 +76,19 @@ export function useRecreateLeague(hash: string, onSuccess?: () => void) {
 
       await queryClient.invalidateQueries({ queryKey: ['leagues'] });
 
+      // now fetch the league to load details into cache
+      const leagueResponse = await fetchData(`/api/leagues/${newHash}`);
+      if (leagueResponse.status === 200) {
+        const leagueData = await leagueResponse.json();
+        await queryClient.setQueryData(['leagues', newHash], leagueData);
+      }
+      router.dismissTo('/leagues');
+      router.prefetch({ pathname: '/leagues/[hash]', params: { hash: newHash } });
+
       onSuccess?.();
       Alert.alert('Success', 'League cloned successfully!');
-      router.push({ pathname: '/leagues/[hash]/predraft', params: { hash: newHash } });
+      router.dismissTo('/leagues');
+      router.replace({ pathname: '/leagues/[hash]/predraft', params: { hash: newHash } });
     } catch (error) {
       console.error('Error recreating league:', error);
       Alert.alert('Error', 'Failed to clone league');

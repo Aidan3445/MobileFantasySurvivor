@@ -1,7 +1,8 @@
 import { useRef, useState, useCallback, useMemo } from 'react';
 import { Dimensions } from 'react-native';
 import { type PanGestureType } from 'react-native-gesture-handler/lib/typescript/handlers/gestures/panGesture';
-import { useSharedValue } from 'react-native-reanimated';
+import { useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 import { type ICarouselInstance } from 'react-native-reanimated-carousel';
 import { colors } from '~/lib/colors';
 
@@ -12,10 +13,17 @@ export function useCarousel<T>(initialData: T[] = []) {
   const [carouselData, setCarouselDataState] = useState<T[]>(initialData);
   const ref = useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
+  const [progressState, setProgressState] = useState(0);
+
+  useAnimatedReaction(() => progress.value,
+    (value) => {
+      // Update the progress state on the JS thread
+      scheduleOnRN(setProgressState, value);
+    });
 
   const setCarouselData = useCallback((newData: T[]) => {
     setCarouselDataState(newData);
-  }, []);
+  }, [setCarouselDataState]);
 
   const onPressPagination = useCallback(
     (index: number) => {
@@ -24,11 +32,11 @@ export function useCarousel<T>(initialData: T[] = []) {
          * Calculate the difference between the current index and the target index
          * to ensure that the carousel scrolls to the nearest index
          */
-        count: index - progress.value,
+        count: index - progressState,
         animated: true
       });
     },
-    [progress]
+    [progressState]
   );
 
   const props = useMemo(() => ({
@@ -53,7 +61,7 @@ export function useCarousel<T>(initialData: T[] = []) {
   return {
     setCarouselData,
     ref,
-    progress,
+    progress: progressState,
     onPressPagination,
     PAGE_WIDTH,
     PAGE_HEIGHT,

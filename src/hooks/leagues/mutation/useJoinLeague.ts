@@ -11,6 +11,7 @@ import { type PublicLeague } from '~/types/leagues';
 
 export function useJoinLeague(onSubmit?: () => void) {
   const postData = useFetch('POST');
+  const fetchData = useFetch('GET');
   const router = useRouter();
   const queryClient = useQueryClient();
   const { user } = useUser();
@@ -64,8 +65,18 @@ export function useJoinLeague(onSubmit?: () => void) {
       reactForm.reset();
       onSubmit?.();
       await queryClient.invalidateQueries({ queryKey: ['leagues'] });
+
+      // now fetch the league to load details into cache
+      const leagueResponse = await fetchData(`/api/leagues/${hash}`);
+      if (leagueResponse.status === 200) {
+        const leagueData = await leagueResponse.json();
+        await queryClient.setQueryData(['leagues', hash], leagueData);
+      }
+      router.prefetch({ pathname: '/leagues/[hash]', params: { hash: hash } });
+
       Alert.alert('Success', `League Joined: ${getPublicLeague.data.name}`);
-      router.push(`/leagues/${hash}`);
+      router.dismissTo('/leagues');
+      router.replace(`/leagues/${hash}`);
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to join league');

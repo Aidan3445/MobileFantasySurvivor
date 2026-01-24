@@ -8,7 +8,7 @@ import CustomEventCard from '~/components/leagues/customization/events/custom/ca
 import { colors } from '~/lib/colors';
 import { type CustomEventRule } from '~/types/leagues';
 import { useCarousel } from '~/hooks/ui/useCarousel';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import Carousel, { Pagination } from 'react-native-reanimated-carousel';
 
 export default function CustomEventRules() {
@@ -28,17 +28,14 @@ export default function CustomEventRules() {
 
   const { props, progressProps, setCarouselData } = useCarousel<CustomEventRule[]>([]);
 
-  const slides = useMemo(() => {
-    return customRules.reduce((threes, rule, index) => {
+  useEffect(() => {
+    const slides = customRules.reduce((threes, rule, index) => {
       if (index % 3 === 0) threes.push([]);
       threes[threes.length - 1]!.push(rule);
       return threes;
     }, [] as CustomEventRule[][]);
-  }, [customRules]);
-
-  useEffect(() => {
     setCarouselData(slides);
-  }, [slides, setCarouselData]);
+  }, [customRules, setCarouselData]);
 
   return (
     <View className='w-full rounded-xl bg-card p-2'>

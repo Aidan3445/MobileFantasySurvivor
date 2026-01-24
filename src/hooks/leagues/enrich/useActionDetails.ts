@@ -163,7 +163,7 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
   useEffect(() => {
     if (league && (onTheClockIndex === -1 || league.status !== 'Draft')) {
-      router.push(`/leagues/${league.hash}`);
+      router.replace(`/leagues/${league.hash}`);
     }
   }, [onTheClockIndex, league?.status, league?.hash, router, league]);
 

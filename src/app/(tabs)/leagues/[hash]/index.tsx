@@ -3,12 +3,23 @@
 import { Text, View } from 'react-native';
 import { Redirect, useLocalSearchParams } from 'expo-router';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
+import LoadingScreen from '~/components/auth/loadingScreen';
 
 export default function LeagueDetailScreen() {
   const { hash } = useLocalSearchParams<{ hash: string }>();
-  const { data: league } = useLeague(hash);
+  const { data: league, isFetching } = useLeague(hash);
 
-  if (!league) return <Redirect href='/leagues' />;
+  if (isFetching && !league) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
+  if (!league) {
+    console.log('League not found');
+    return <Redirect href='/leagues' />;
+  };
+
   if (league.status === 'Predraft') return <Redirect href={`/leagues/${hash}/predraft`} />;
   if (league.status === 'Draft') return <Redirect href={`/leagues/${hash}/draft`} />;
 

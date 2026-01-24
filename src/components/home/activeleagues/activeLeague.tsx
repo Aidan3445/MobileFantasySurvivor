@@ -1,4 +1,4 @@
-import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { Trophy, Clock } from 'lucide-react-native';
 import { Text, View } from 'react-native';
 import Button from '~/components/common/button';
@@ -57,54 +57,54 @@ const statusConfig: Record<League['status'], StatusConfig> = {
 };
 
 export default function ActiveLeague({ league }: ActiveLeagueProps) {
+  const router = useRouter();
   const status = statusConfig[league.status];
   const StatusIcon = status.icon;
 
   return (
     <View className='px-2 -ml-1'>
       {/* League Header Card */}
-      <Link
-        key={league.hash}
-        href={{ pathname: 'leagues/[hash]', params: { hash: league.hash } }}
-        asChild>
-        <Button className='stroke-green-600 relative bg-primary/5 border-2 border-primary/20 rounded-lg p-1 active:bg-primary/10'>
-          {/* League Name */}
-          <Text
-            allowFontScaling={false}
-            className='text-2xl font-black leading-tight mb-2 line-clamp-2 h-16 text-center'>
-            {league.name}
-          </Text>
+      <Button
+        className='stroke-green-600 relative bg-primary/5 border-2 border-primary/20 rounded-lg p-1 active:bg-primary/10'
+        onPress={() => {
+          router.replace({ pathname: '/leagues/[hash]', params: { hash: league.hash } });
+        }}>
+        {/* League Name */}
+        <Text
+          allowFontScaling={false}
+          className='text-2xl font-black leading-tight mb-2 line-clamp-2 h-16 text-center'>
+          {league.name}
+        </Text>
 
-          <View className='flex flex-row items-center justify-between gap-4'>
-            {/* Season Badge */}
-            <View className='self-start border border-primary/40 bg-accent rounded-md px-2 py-1'>
-              <Text
-                className='text-xs font-bold text-primary'
-                allowFontScaling={false}>
-                {league.season}
-              </Text>
-            </View>
-
-            {/* Status Badge */}
-            <View
-              className={cn(
-                'flex-row items-center gap-1.5 rounded-md border px-2 py-1',
-                status.color,
-                status.borderColor
-              )}>
-              <StatusIcon size={12} strokeWidth={3} stroke={status.strokeColor} />
-              <Text
-                className={cn(
-                  'text-xs font-black tracking-wider',
-                  status.textColor
-                )}
-                allowFontScaling={false}>
-                {status.label}
-              </Text>
-            </View>
+        <View className='flex flex-row items-center justify-between gap-4'>
+          {/* Season Badge */}
+          <View className='self-start border border-primary/40 bg-accent rounded-md px-2 py-1'>
+            <Text
+              className='text-xs font-bold text-primary'
+              allowFontScaling={false}>
+              {league.season}
+            </Text>
           </View>
-        </Button>
-      </Link>
+
+          {/* Status Badge */}
+          <View
+            className={cn(
+              'flex-row items-center gap-1.5 rounded-md border px-2 py-1',
+              status.color,
+              status.borderColor
+            )}>
+            <StatusIcon size={12} strokeWidth={3} stroke={status.strokeColor} />
+            <Text
+              className={cn(
+                'text-xs font-black tracking-wider',
+                status.textColor
+              )}
+              allowFontScaling={false}>
+              {status.label}
+            </Text>
+          </View>
+        </View>
+      </Button>
 
       {/* League Content */}
       <View className='mt-2'>
@@ -119,6 +119,6 @@ export default function ActiveLeague({ league }: ActiveLeagueProps) {
             className='bg-primary/5 border-2 border-primary/20 rounded-lg overflow-hidden' />
         )}
       </View>
-    </View>
+    </View >
   );
 }

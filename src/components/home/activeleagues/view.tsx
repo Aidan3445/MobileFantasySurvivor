@@ -54,7 +54,7 @@ export default function ActiveLeagues() {
         </Text>
         <Button
           className='mt-4 rounded-lg bg-primary/10 border border-primary/30 px-4 py-3'
-          onPress={() => router.push('/leagues')}>
+          onPress={() => router.replace('/leagues')}>
           <Text className='text-sm text-center font-bold text-primary uppercase tracking-wider' allowFontScaling={false}>
             View All Leagues
           </Text>
@@ -76,7 +76,7 @@ export default function ActiveLeagues() {
           </View>
           <Button
             className='rounded-md border border-primary/30 bg-primary/5 px-3 py-1.5 active:bg-primary/10'
-            onPress={() => router.push('/leagues')}>
+            onPress={() => router.replace('/leagues')}>
             <Text className='text-xs font-bold text-primary uppercase tracking-wider' allowFontScaling={false}>
               View All
             </Text>
