@@ -40,7 +40,7 @@ export default function SeasonsHeader({ seasons, value, setValue }: SeasonsHeade
             setValue={setValue}
             className='right-4 top-1/2 translate-y-[-50%]' />
         </View>
-        <TabsList className='h-10'>
+        <TabsList className='h-10 border-t-2 border-primary/20'>
           <TabsTrigger value='events' className='flex-1'>
             Events
           </TabsTrigger>

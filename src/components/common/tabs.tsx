@@ -56,7 +56,7 @@ const TabsList = React.forwardRef<View, ViewProps>(({ className, ...props }, ref
   <View
     ref={ref}
     className={cn(
-      'flex-row h-12 items-center gap-1 justify-center rounded-md bg-primary/5 p-1',
+      'flex-row h-12 items-center gap-1 justify-center bg-primary/5 p-1',
       className
     )}
     {...props}
@@ -88,8 +88,8 @@ const TabsTrigger = React.forwardRef<View, TabsTriggerProps>(
         onPress={() => onValueChange(value)}
         style={animatedStyle}
         className={cn(
-          'flex-row items-center justify-center rounded-sm px-3 py-2',
-          isActive ? 'bg-primary' : 'bg-primary/10',
+          'flex-row items-center justify-center rounded-sm px-3 py-2 bg-primary/10',
+          isActive && 'bg-primary',
           disabled && 'opacity-50',
           className
         )}

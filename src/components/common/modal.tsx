@@ -1,6 +1,6 @@
 import { type ReactElement } from 'react';
-import { Pressable, Modal as RNModal, View } from 'react-native';
-
+import { KeyboardAvoidingView, Pressable, Modal as RNModal } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { cn } from '~/lib/utils';
 
 interface ModalProps {
@@ -16,31 +16,37 @@ export default function Modal({
   onClose,
   animationType = 'slide',
   className,
-  children
+  children,
 }: ModalProps) {
   return (
-    <>
-      <RNModal
-        visible={isVisible}
-        transparent
-        animationType={animationType}
-        onRequestClose={onClose}>
-        <View
+    <RNModal
+      visible={isVisible}
+      transparent
+      animationType={animationType}
+      onRequestClose={onClose}>
+      <SafeAreaView
+        edges={{ top: 'maximum', bottom: 'maximum' }}
+        className='flex-1 px-2 py-32 items-center justify-center'>
+        <Pressable
+          onPress={onClose}
           className={cn(
             'absolute bottom-0 left-0 right-0 h-[200%] bg-black/50 transition-opacity',
             'animate-fade-in',
             !isVisible && '!opacity-0'
           )} />
-        <Pressable
-          className='flex-1 items-center justify-center'
-          onPress={onClose}>
+        <KeyboardAvoidingView
+          className='w-full transition-all duration-100'
+          behavior='padding'>
           <Pressable
-            className={cn('max-h-4/5 w-11/12 rounded-xl bg-card p-4 border-2 border-primary/20', className)}
-            onPress={e => e.stopPropagation()}>
+            className={cn(
+              'w-full rounded-xl border-2 border-primary/20 bg-card p-4 transition-all',
+              className
+            )}
+            onPress={(e) => e.stopPropagation()}>
             {children}
           </Pressable>
-        </Pressable>
-      </RNModal>
-    </>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </RNModal>
   );
 }

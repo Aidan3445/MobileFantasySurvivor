@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { type ReactElement } from 'react';
 
 export interface SearchableOption<T extends string | number> {
@@ -8,15 +8,25 @@ export interface SearchableOption<T extends string | number> {
   renderLabel?: () => ReactElement;
 }
 
-export function useSearchableSelect<T extends string | number>() {
-  const [isVisible, setIsVisible] = useState(false);
+export function useSearchableSelect<T extends string | number>(
+  overrideState?: [boolean, (_state: boolean) => void]
+) {
+  const state = useState(false);
+  const [isVisible, setIsVisible] = overrideState ?? state;
   const [searchText, setSearchText] = useState('');
 
-  const openModal = () => setIsVisible(true);
-  const closeModal = () => {
+  const openModal = useCallback(() => {
+    setIsVisible(true);
+  }, [setIsVisible]);
+
+  const closeModal = useCallback(() => {
     setIsVisible(false);
-    setSearchText('');
-  };
+    // eslint-disable-next-line no-undef
+    setTimeout(() => {
+      // Delay clearing search text to allow modal close animation to finish
+      setSearchText('');
+    }, 100);
+  }, [setIsVisible]);
 
   const filterOptions = (options: SearchableOption<T>[]) =>
     options.filter(option => option.label.toLowerCase().includes(searchText.toLowerCase()));

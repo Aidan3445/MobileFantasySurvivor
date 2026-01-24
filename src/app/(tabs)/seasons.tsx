@@ -7,6 +7,7 @@ import { useRefresh } from '~/hooks/helpers/refresh/useRefresh';
 import SeasonsHeader from '~/components/seasons/header/view';
 import { useSeasonsData } from '~/hooks/seasons/useSeasonsData';
 import { Tabs, TabsContent } from '~/components/common/tabs';
+import EventTimeline from '~/components/shared/eventTimeline/view';
 
 export default function SeasonsScreen() {
   const { refreshing, onRefresh, scrollY, handleScroll } = useRefresh([['seasons']]);
@@ -48,9 +49,7 @@ export default function SeasonsScreen() {
             refreshing && 'pt-12'
           )}>
             <TabsContent value='events'>
-              <Text className='text-foreground mt-4 text-center'>
-                Events data coming soon!
-              </Text>
+              <EventTimeline seasonData={selectedSeasonData!} hideMemberFilter />
             </TabsContent>
             <TabsContent value='castaways'>
               <Text className='text-foreground mt-4 text-center'>
