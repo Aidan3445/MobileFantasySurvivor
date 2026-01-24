@@ -94,20 +94,16 @@ export default function TabLayout() {
             ),
           }} />
         <Tabs.Screen
-          name='leagues/index'
+          name='leagues'
           options={{
             title: 'Leagues',
             tabBarIcon: ({ color }) => (
-              <Trophy
-                color={isLeaguesPath ? colors!.primary : color}
-                size={32}
-              />
+              <Trophy color={isLeaguesPath ? colors!.primary : color} size={32} />
             ),
             tabBarLabelStyle: {
               fontSize: 12,
               color: isLeaguesPath ? colors!.primary : colors!.secondary,
-            },
-            href: { pathname: '/leagues' },
+            }
           }}
         />
         <Tabs.Screen
@@ -118,13 +114,6 @@ export default function TabLayout() {
               <UserCircle2 color={color} size={32} />
             ),
           }} />
-        {/* Hidden screens */}
-        <Tabs.Screen name='leagues/create' options={{ href: null }} />
-        <Tabs.Screen name='leagues/join/index' options={{ href: null }} />
-        <Tabs.Screen name='leagues/join/[hash]' options={{ href: null }} />
-        <Tabs.Screen name='leagues/[hash]/index' options={{ href: null }} />
-        <Tabs.Screen name='leagues/[hash]/predraft' options={{ href: null }} />
-        <Tabs.Screen name='leagues/[hash]/draft' options={{ href: null }} />
       </Tabs>
 
       {showLoadingScreen && (
