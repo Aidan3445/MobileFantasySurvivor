@@ -1,0 +1,91 @@
+import { useMemo } from 'react';
+import { View, Text } from 'react-native';
+import { type SeasonsDataQuery } from '~/types/seasons';
+import EpisodeMarker from '~/components/seasons/tribes/episodeMarker';
+import { type EnrichedCastaway } from '~/types/castaways';
+
+interface TimelineViewProps {
+  seasonData: SeasonsDataQuery;
+}
+
+export default function TribesTimeline({ seasonData }: TimelineViewProps) {
+  const { episodes, castaways, tribes, tribesTimeline, keyEpisodes } = seasonData;
+
+  // Get all episode numbers from tribes timeline
+  const episodeNumbers = useMemo(() => {
+    return Object.keys(tribesTimeline)
+      .map(Number)
+      .sort((a, b) => a - b);
+  }, [tribesTimeline]);
+
+  // Group castaways by tribe for each episode
+  const episodeData = useMemo(() => {
+    return episodeNumbers.map((episodeNum) => {
+      const tribesInEpisode = tribesTimeline[episodeNum] ?? {};
+      const castawaysByTribe: Record<number, EnrichedCastaway[]> = {};
+
+      Object.entries(tribesInEpisode).forEach(([tribeIdStr, castawayIds]) => {
+        const tribeId = Number(tribeIdStr);
+        castawaysByTribe[tribeId] = castawayIds
+          .map((id) => castaways.find((c) => c.castawayId === id))
+          .filter(Boolean) as EnrichedCastaway[];
+      });
+
+      return {
+        episodeNumber: episodeNum,
+        castawaysByTribe,
+        tribes: tribes.filter((t) =>
+          Object.keys(tribesInEpisode).includes(t.tribeId.toString())
+        ),
+      };
+    });
+  }, [episodeNumbers, tribesTimeline, castaways, tribes]);
+
+  // Determine key episodes
+  const getKeyEpisodeLabel = (episodeNum: number): string | undefined => {
+    if (episodeNum === 1) return 'Premiere';
+    if (episodes?.find((e) => e.episodeNumber === episodeNum)?.isFinale) return 'Finale';
+    if (keyEpisodes?.mergeEpisode?.episodeNumber === episodeNum) return 'Merge';
+    return undefined;
+  };
+
+  return (
+    <View className='w-full gap-4'>
+      <View className='rounded-lg bg-card p-4 shadow-lg shadow-primary/10'>
+        {/* Header */}
+        <View className='mb-4 flex-row items-center gap-2'>
+          <View className='h-5 w-0.5 rounded-full bg-primary' />
+          <Text className='text-xl font-black uppercase tracking-tight text-foreground'>
+            Tribe Timeline
+          </Text>
+        </View>
+
+        {/* Description */}
+        <Text className='mb-4 font-medium text-muted-foreground'>
+          Explore how tribe compositions changed throughout the season. Tap an episode to
+          expand and see details.
+        </Text>
+
+        {/* Episode List */}
+        <View className='gap-2'>
+          {episodeData.map(({ episodeNumber, castawaysByTribe, tribes: episodeTribes }) => {
+            const episode = episodes?.find((e) => e.episodeNumber === episodeNumber);
+            const keyLabel = getKeyEpisodeLabel(episodeNumber);
+
+            return (
+              <EpisodeMarker
+                key={episodeNumber}
+                episodeNumber={episodeNumber}
+                episodeTitle={episode?.title}
+                tribes={episodeTribes}
+                castawaysByTribe={castawaysByTribe}
+                isKeyEpisode={!!keyLabel}
+                keyEpisodeLabel={keyLabel}
+              />
+            );
+          })}
+        </View>
+      </View>
+    </View>
+  );
+}

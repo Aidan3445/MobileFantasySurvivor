@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { RefreshControl, ScrollView, Text, View } from 'react-native';
+import { RefreshControl, ScrollView, View } from 'react-native';
 import RefreshIndicator from '~/components/common/refresh';
 import { cn } from '~/lib/utils';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,6 +9,7 @@ import { useSeasonsData } from '~/hooks/seasons/useSeasonsData';
 import { Tabs, TabsContent } from '~/components/common/tabs';
 import EventTimeline from '~/components/shared/eventTimeline/view';
 import CastawaysView from '~/components/seasons/castaways/view';
+import TribesTimeline from '~/components/seasons/tribes/view';
 
 export default function SeasonsScreen() {
   const { refreshing, onRefresh, scrollY, handleScroll } = useRefresh([['seasons']]);
@@ -57,12 +58,7 @@ export default function SeasonsScreen() {
               <CastawaysView seasonData={selectedSeasonData!} />
             </TabsContent>
             <TabsContent value='tribes'>
-              <View className='relative overflow-hidden rounded-xl bg-card border-2 border-primary/20'>
-                {/* Replace with TribesTable when available */}
-                <Text className='text-foreground p-4 text-center'>
-                  Tribes data coming soon!
-                </Text>
-              </View>
+              <TribesTimeline seasonData={selectedSeasonData!} />
             </TabsContent>
           </View>
         </ScrollView>
