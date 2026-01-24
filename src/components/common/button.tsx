@@ -1,10 +1,10 @@
 import { type ReactNode } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { type GestureResponderEvent, TouchableOpacity } from 'react-native';
 import { cn } from '~/lib/utils';
 
 interface ButtonProps {
-  onPress?: () => void;
-  onLongPress?: () => void;
+  onPress?: (_event: GestureResponderEvent) => void;
+  onLongPress?: (_event: GestureResponderEvent) => void;
   disabled?: boolean;
   className?: string;
   children: ReactNode;
