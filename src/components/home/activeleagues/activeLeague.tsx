@@ -61,7 +61,7 @@ export default function ActiveLeague({ league }: ActiveLeagueProps) {
   const StatusIcon = status.icon;
 
   return (
-    <View className='px-1'>
+    <View className='px-2 -ml-1'>
       {/* League Header Card */}
       <Link
         key={league.hash}

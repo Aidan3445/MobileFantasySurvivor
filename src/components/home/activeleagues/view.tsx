@@ -88,12 +88,10 @@ export default function ActiveLeagues() {
       </View>
 
       {/* Carousel */}
-      <View>
-        <Carousel
-          height={carouselHeight}
-          renderItem={({ item }) => <ActiveLeague league={item.league} />}
-          {...props} />
-      </View>
+      <Carousel
+        height={carouselHeight}
+        renderItem={({ item }) => <ActiveLeague league={item.league} />}
+        {...props} />
 
       {/* Pagination Footer */}
       <View className='items-center'>
