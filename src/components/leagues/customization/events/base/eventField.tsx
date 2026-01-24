@@ -58,27 +58,35 @@ export default function EventField({
           <Controller
             control={reactForm.control}
             name={fieldPath}
-            render={({ field }) => (
-              <View className='flex-row items-center gap-1'>
-                <TextInput
-                  className='w-16 rounded-lg border-2 border-primary/20 bg-card px-2 py-1 text-center text-base font-bold leading-5'
-                  value={field.value?.toString()}
-                  onChangeText={(text) => {
-                    // Handle negative numbers and empty input
-                    if (text === '-' || text === '') {
-                      field.onChange(text === '-' ? text : 0);
-                      return;
-                    }
-                    const value = parseInt(text) || 0;
-                    field.onChange(value);
-                  }}
-                  keyboardType='numbers-and-punctuation'
-                  placeholder='0'
-                  placeholderTextColor={colors['muted-foreground']}
-                />
-                <Flame size={14} color={getPointsColor()} />
-              </View>
-            )}
+            render={({ field }) => {
+              const numericValue = typeof field.value === 'number' ? field.value : 0;
+              const sign = numericValue < 0 ? -1 : 1;
+              const absValue = Math.abs(numericValue);
+
+              return (
+                <View className='flex-row items-center gap-1'>
+                  <Text
+                    onPress={() => field.onChange(sign * -1 * absValue)}
+                    className={cn(
+                      'text-center text-2xl font-bold',
+                      sign === 1 ? 'text-positive' : 'text-destructive'
+                    )}>
+                    {sign === 1 ? '+' : '−'}
+                  </Text>
+                  <TextInput
+                    className='w-16 rounded-lg border-2 border-primary/20 bg-card px-2 py-1 text-center text-base font-bold leading-5'
+                    keyboardType='number-pad'
+                    value={absValue === 0 ? '' : absValue.toString()}
+                    onChangeText={(text) => {
+                      const next = parseInt(text.replace(/[^0-9]/g, ''), 10);
+                      field.onChange(sign * (Number.isNaN(next) ? 0 : next));
+                    }}
+                    placeholder='0'
+                    placeholderTextColor={colors['muted-foreground']} />
+                  <Flame size={14} color={getPointsColor()} />
+                </View>
+              );
+            }}
           />
         )}
       </View>

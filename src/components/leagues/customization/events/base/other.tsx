@@ -42,8 +42,8 @@ export default function OtherScoreSettings({
       {/* Accordion Trigger */}
       <Button
         className={cn(
-          'flex-row items-center justify-between rounded-lg border-2 border-primary/20 bg-primary/5 p-3 active:bg-primary/10',
-          !isCollapsed && 'rounded-b-none border-b-0'
+          'flex-row items-center justify-between rounded-lg border-2 border-primary/20 bg-primary/5 p-3 active:bg-primary/10 transition-all',
+          !isCollapsed ? 'rounded-b-none duration-75' : 'delay-300 rounded-b-lg'
         )}
         onPress={toggleCollapsed}>
         <View className='flex-row items-center gap-2'>

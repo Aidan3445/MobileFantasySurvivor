@@ -34,8 +34,7 @@ export default function PlaygroundScreen() {
       <PlaygroundHeader
         seasons={scoreData ?? []}
         value={selectedSeason}
-        setValue={setSelectedSeason}
-      />
+        setValue={setSelectedSeason} />
       <RefreshIndicator refreshing={refreshing} scrollY={scrollY} />
       <ScrollView
         className='w-full'
@@ -49,8 +48,7 @@ export default function PlaygroundScreen() {
             onRefresh={onRefresh}
             tintColor='transparent'
             colors={['transparent']}
-            progressBackgroundColor='transparent'
-          />
+            progressBackgroundColor='transparent' />
         }>
         <View
           className={cn(

@@ -38,7 +38,6 @@ export default function MemberRow({
 }: MemberRowProps) {
   const { data: leagueSettings } = useLeagueSettings(overrideHash);
 
-  const isTopThree = place <= 3;
   const rankBadgeColor = place === 1
     ? 'bg-yellow-500/50 border-yellow-500/40'
     : place === 2
@@ -65,7 +64,6 @@ export default function MemberRow({
         <View className={cn(
           'w-8 h-8 rounded-md font-black text-sm border-2 transition-all flex items-center justify-center',
           rankBadgeColor,
-          isTopThree && 'shadow-md'
         )}>
           <Text className={cn('font-black', rankTextColor)}>
             {place}
