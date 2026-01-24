@@ -44,7 +44,7 @@ export default function SearchableSelect<T extends string | number>({
     if (children) {
       return (
         <Button
-          className='items-center justify-center bg-primary/10 p-1 rounded border border-primary/20'
+          className='w-full items-center justify-center bg-primary/10 p-1 rounded border border-primary/20'
           onPress={openModal}>
           {children}
         </Button>
@@ -54,7 +54,7 @@ export default function SearchableSelect<T extends string | number>({
     const selectedOption = options.find(option => option.value === selectedValue);
     return (
       <Button
-        className='items-center justify-center bg-primary/10 p-1 rounded border border-primary/20'
+        className='w-full items-center justify-center bg-primary/10 p-1 rounded border border-primary/20'
         onPress={openModal}>
         {selectedOption ?
           selectedOption.renderLabel

@@ -145,20 +145,19 @@ export default function TimelineFilters({
       value: episode.episodeNumber,
       label: `EP ${episode.episodeNumber}: ${episode.title}`,
       renderLabel: () => (
-        <View className='flex-row items-center'>
-          <Text className='font-bold text-foreground'>
-            EP {episode.episodeNumber}:
-          </Text>
-          <Text className='ml-1 text-foreground'>
+        <View className='flex-1'>
+          <Text className='text-foreground'>
+            <Text className='font-bold'>EP {episode.episodeNumber}: </Text>
             {episode.title}
+            {'  '}
+            <View style={{ transform: [{ translateY: 2 }] }}>
+              <AirStatus
+                airDate={episode.airDate}
+                airStatus={episode.airStatus}
+                showTime={false}
+                showDate={false} />
+            </View>
           </Text>
-          <View className='ml-2'>
-            <AirStatus
-              airDate={episode.airDate}
-              airStatus={episode.airStatus}
-              showTime={false}
-              showDate={false} />
-          </View>
         </View>
       ),
     })) ?? []),
@@ -223,42 +222,31 @@ export default function TimelineFilters({
 
   return (
     <View className='w-full'>
-      {/* Header Row */}
-      <View className='w-full flex-row flex-wrap items-center justify-between gap-x-4'>
-        {/* Title */}
-        <View className='h-8 flex-row items-center gap-3'>
-          <View className='h-4 w-1 rounded-full bg-primary' />
-          <Text className='text-base font-black uppercase tracking-tight text-foreground'>
-            Activity
-          </Text>
-        </View>
-
-        {/* Episode Select */}
-        <View className='flex-1 min-w-[200px]'>
-          <SearchableSelect
-            options={episodeOptions}
-            selectedValue={selectedEpisode}
-            onSelect={setSelectedEpisode}
-            placeholder='Search episodes...'
-            emptyMessage='No episodes found.' />
-        </View>
-
-        {/* Filters Accordion Trigger */}
-        <Pressable
-          onPress={toggleExpanded}
-          className='w-full flex-row items-center justify-center py-2'>
-          <Text className='text-xs font-bold uppercase tracking-wider text-foreground'>
-            Filters
-          </Text>
-          <Animated.View style={chevronStyle} className='ml-2'>
-            <ChevronDown size={16} className='text-foreground' />
-          </Animated.View>
-        </Pressable>
+      {/* Episode Select */}
+      <View className='flex-row items-center justify-center w-full'>
+        <SearchableSelect
+          options={episodeOptions}
+          selectedValue={selectedEpisode}
+          onSelect={setSelectedEpisode}
+          placeholder='Search episodes...'
+          emptyMessage='No episodes found.' />
       </View>
+
+      {/* Filters Accordion Trigger */}
+      <Pressable
+        onPress={toggleExpanded}
+        className='w-full flex-row items-center justify-center py-2'>
+        <Text className='text-xs font-bold uppercase tracking-wider text-foreground'>
+          Filters
+        </Text>
+        <Animated.View style={chevronStyle} className='ml-2'>
+          <ChevronDown size={16} className='text-foreground' />
+        </Animated.View>
+      </Pressable>
 
       {/* Accordion Content */}
       <Animated.View style={contentStyle} className='overflow-hidden'>
-        <View className='flex-row flex-wrap items-center justify-evenly gap-4 pb-4 pt-2'>
+        <View className='flex-row flex-wrap items-center justify-evenly gap-4 pb-4'>
           {/* Castaway Filter */}
           {castaways && (
             <View className='items-center gap-2'>
@@ -347,6 +335,6 @@ export default function TimelineFilters({
           </View>
         </View>
       </Animated.View>
-    </View>
+    </View >
   );
 }

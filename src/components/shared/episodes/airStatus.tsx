@@ -29,7 +29,7 @@ export default function AirStatus({
           airStatus === 'Upcoming' && 'bg-amber-500',
           airStatus === 'Airing' && 'bg-green-600'
         )}>
-        <Text className='text-xs text-destructive-foreground'>{airStatus}</Text>
+        <Text className='text-xs text-white'>{airStatus}</Text>
       </View>
     </View>
   );
