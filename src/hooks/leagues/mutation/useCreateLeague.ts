@@ -14,12 +14,12 @@ export function useCreateLeague(onSubmit?: () => void) {
   const queryClient = useQueryClient();
   const { user } = useUser();
   const reactForm = useForm<LeagueInsert>({
-    defaultValues: { leagueName: '', newMember: { displayName: user?.username || '', color: '' } },
+    defaultValues: { leagueName: '', member: { displayName: user?.username || '', color: '' } },
     resolver: zodResolver(LeagueInsertZod)
   });
 
   useEffect(() => {
-    reactForm.setValue('newMember.displayName', user?.username ?? '');
+    reactForm.setValue('member.displayName', user?.username ?? '');
   }, [user, reactForm]);
 
   const handleSubmit = reactForm.handleSubmit(async data => {

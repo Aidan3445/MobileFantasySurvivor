@@ -7,12 +7,14 @@ import { type CurrentSelection, type LeagueMember } from '~/types/leagueMembers'
 import { type League } from '~/types/leagues';
 
 const CARD_HEIGHT = 140;
+const CARD_HEIGHT_WITH_REFRESH = 185;
 
 interface LeagueSeasonCarouselProps {
   leagues: { league: League; member: LeagueMember; currentSelection: CurrentSelection }[];
+  refresh?: boolean;
 }
 
-export default function LeagueSeasonCarousel({ leagues }: LeagueSeasonCarouselProps) {
+export default function LeagueSeasonCarousel({ leagues, refresh }: LeagueSeasonCarouselProps) {
   const { setCarouselData, props, progressProps } = useCarousel<
     { league: League; member: LeagueMember; currentSelection: CurrentSelection }
   >([]);
@@ -27,14 +29,16 @@ export default function LeagueSeasonCarousel({ leagues }: LeagueSeasonCarouselPr
     <View>
       <Carousel
         {...props}
-        loop // force loop
-        height={CARD_HEIGHT}
+        height={refresh ? CARD_HEIGHT_WITH_REFRESH : CARD_HEIGHT}
         renderItem={({ item }) => (
           <LeagueCard
             league={item.league}
             member={item.member}
-            currentSelection={item.currentSelection} />
-        )} />
+            currentSelection={item.currentSelection}
+            refresh={refresh}
+          />
+        )}
+      />
       {props.data.length > 1 && (
         <View className='items-center'>
           <Pagination.Basic

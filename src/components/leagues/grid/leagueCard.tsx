@@ -4,24 +4,30 @@ import { Text, View, Pressable } from 'react-native';
 import { type CurrentSelection, type LeagueMember } from '~/types/leagueMembers';
 import { type League } from '~/types/leagues';
 import ColorRow from '~/components/shared/colorRow';
+import RecreateLeague from '~/components/leagues/actions/create/recreate';
 import { colors } from '~/lib/colors';
 
 interface LeagueCardProps {
   league: League;
   member: LeagueMember;
   currentSelection: CurrentSelection;
+  refresh?: boolean;
   width?: number;
 }
 
-export default function LeagueCard({ league, member, currentSelection, width }: LeagueCardProps) {
+export default function LeagueCard({
+  league,
+  member,
+  currentSelection,
+  refresh,
+  width,
+}: LeagueCardProps) {
   return (
-    <Link
-      href={{ pathname: '/leagues/[hash]', params: { hash: league.hash } }}
-      asChild>
-      <View className='flex-1 px-2 -ml-1'>
-        <Pressable
-          style={width ? { width } : undefined}
-          className='flex-1 rounded-lg border-2 border-primary/20 bg-primary/5 p-3 active:border-primary/30 active:bg-primary/10'>
+    <View className='flex-1 -ml-1 px-2' style={width ? { width } : undefined}>
+      <Link
+        href={{ pathname: '/leagues/[hash]', params: { hash: league.hash } }}
+        asChild>
+        <Pressable className='flex-1 rounded-lg border-2 border-primary/20 bg-primary/5 p-3 active:border-primary/30 active:bg-primary/10'>
           {/* Header */}
           <View className='flex-row items-start justify-between gap-2'>
             <Text className='flex-1 text-lg font-bold leading-tight text-foreground'>
@@ -57,7 +63,10 @@ export default function LeagueCard({ league, member, currentSelection, width }: 
             </ColorRow>
           </View>
         </Pressable>
-      </View>
-    </Link>
+      </Link>
+
+      {/* Clone League Button - Outside of Link to prevent navigation */}
+      {refresh && <RecreateLeague hash={league.hash} />}
+    </View>
   );
 }

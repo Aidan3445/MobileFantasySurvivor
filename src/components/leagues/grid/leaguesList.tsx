@@ -110,7 +110,7 @@ export default function LeaguesList() {
                   member={seasonLeagues[0]!.member}
                   currentSelection={seasonLeagues[0]!.currentSelection} />
               ) : (
-                <LeagueSeasonCarousel leagues={seasonLeagues} />
+                <LeagueSeasonCarousel leagues={seasonLeagues} refresh />
               )}
             </View>
           ))}
