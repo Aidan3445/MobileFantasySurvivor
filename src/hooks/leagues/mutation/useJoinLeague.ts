@@ -83,5 +83,5 @@ export function useJoinLeague(onSubmit?: () => void) {
     }
   });
 
-  return { reactForm, handleSubmit, getPublicLeague };
+  return { reactForm, handleSubmit, getPublicLeague, isSubmitting: reactForm.formState.isSubmitting };
 }

@@ -12,6 +12,7 @@ interface LeagueMemberProps {
   currentColor?: string;
   formPrefix?: string;
   className?: string;
+  noHeader?: boolean;
   onSubmitEditing?: () => void;
 }
 
@@ -20,6 +21,7 @@ export default function LeagueMember({
   usedColors,
   currentColor,
   formPrefix,
+  noHeader,
   className,
   onSubmitEditing,
 }: LeagueMemberProps) {
@@ -30,18 +32,20 @@ export default function LeagueMember({
 
   return (
     <View className={cn('items-center justify-start', className)}>
-      {/* Title Section */}
-      <View className='mb-6 items-center'>
-        <View className='mb-3 h-12 w-12 items-center justify-center rounded-full bg-primary/20'>
-          <User size={24} color={colors.primary} />
+      {/* Header Section */}
+      {!noHeader && (
+        <View className='mb-6 items-center'>
+          <View className='mb-3 h-12 w-12 items-center justify-center rounded-full bg-primary/20'>
+            <User size={24} color={colors.primary} />
+          </View>
+          <Text className='text-center text-xl font-black tracking-wide text-foreground'>
+            Create Your Profile
+          </Text>
+          <Text className='mt-1 text-center text-base text-muted-foreground'>
+            This is how you'll appear on the leaderboard
+          </Text>
         </View>
-        <Text className='text-center text-xl font-black tracking-wide text-foreground'>
-          Create Your Profile
-        </Text>
-        <Text className='mt-1 text-center text-base text-muted-foreground'>
-          This is how you'll appear on the leaderboard
-        </Text>
-      </View>
+      )}
 
       {/* Display Name Input */}
       <Controller
