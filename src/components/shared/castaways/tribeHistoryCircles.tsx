@@ -1,57 +1,73 @@
 import { useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { Circle } from 'lucide-react-native';
-import Popover from 'react-native-popover-view';
 import { type Tribe } from '~/types/tribes';
-import { colors } from '~/lib/colors';
+import Modal from '~/components/common/modal';
 
 interface TribeHistoryCirclesProps {
   tribeTimeline: Array<{ episode: number; tribe: Tribe | null }>;
 }
 
 export default function TribeHistoryCircles({ tribeTimeline }: TribeHistoryCirclesProps) {
-  const [visiblePopover, setVisiblePopover] = useState<string | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  // Filter out null tribes
+  const validTimeline = tribeTimeline.filter(
+    (item): item is { episode: number; tribe: Tribe } => item.tribe !== null
+  );
+
+  if (validTimeline.length === 0) return null;
 
   return (
-    <View className='ml-auto flex-row gap-0.5'>
-      {tribeTimeline.map(({ episode, tribe }) =>
-        tribe && (
-          <Popover
+    <>
+      <Pressable
+        onPress={() => setModalVisible(true)}
+        className='ml-auto flex-row gap-0.5 active:opacity-60'>
+        {validTimeline.map(({ episode, tribe }) => (
+          <Circle
             key={`${tribe.tribeName}-${episode}`}
-            isVisible={visiblePopover === `${tribe.tribeName}-${episode}`}
-            onRequestClose={() => setVisiblePopover(null)}
-            popoverStyle={{
-              backgroundColor: colors.primary,
-              borderRadius: 8,
-              borderWidth: 1,
-              borderColor: colors.primary,
-              transform: [{ translateY: 0 }],
-            }}
-            backgroundStyle={{ backgroundColor: 'transparent' }}
-            arrowSize={{ width: 5, height: 10 }}
-            from={
-              <Pressable
-                onPress={() =>
-                  setVisiblePopover(
-                    visiblePopover === `${tribe.tribeName}-${episode}`
-                      ? null
-                      : `${tribe.tribeName}-${episode}`
-                  )
-                }
-                className='opacity-80 active:opacity-60'>
-                <Circle
-                  size={16}
-                  fill={tribe.tribeColor}
-                  stroke='black'
-                  color={tribe.tribeColor} />
-              </Pressable>
-            }>
-            <View className='flex-row items-center p-2 bg-card rounded-lg m-[1px]'>
-              <Text className='font-bold text-foreground'>{tribe.tribeName}</Text>
-              <Text className='text-muted-foreground'> • Ep {episode}</Text>
-            </View>
-          </Popover>
+            size={16}
+            fill={tribe.tribeColor}
+            stroke='black'
+            color={tribe.tribeColor}
+          />
         ))}
-    </View>
+      </Pressable>
+
+      <Modal isVisible={modalVisible} onClose={() => setModalVisible(false)}>
+        {/* Header */}
+        <View className='mb-3 flex-row items-center gap-2'>
+          <View className='h-5 w-1 rounded-full bg-primary' />
+          <Text className='text-lg font-bold text-foreground'>Tribe History</Text>
+        </View>
+
+        {/* Timeline */}
+        <View className='gap-2'>
+          {validTimeline.map(({ episode, tribe }, index) => (
+            <View
+              key={`${tribe.tribeName}-${episode}`}
+              className='flex-row items-center gap-3 rounded-lg border-2 border-primary/20 bg-primary/5 px-3 py-2'>
+              {/* Episode Badge */}
+              <View className='items-center justify-center rounded-md bg-primary/20 px-2 py-1'>
+                <Text className='text-xs font-bold text-primary'>Ep {episode}</Text>
+              </View>
+
+              {/* Tribe Color Circle */}
+              <Circle size={20} fill={tribe.tribeColor} stroke='black' color={tribe.tribeColor} />
+
+              {/* Tribe Name */}
+              <Text className='flex-1 font-semibold text-foreground'>{tribe.tribeName}</Text>
+
+              {/* Current indicator */}
+              {index === validTimeline.length - 1 && (
+                <View className='rounded-full bg-green-500/20 px-2 py-0.5'>
+                  <Text className='text-xs font-bold text-green-600'>Current</Text>
+                </View>
+              )}
+            </View>
+          ))}
+        </View>
+      </Modal>
+    </>
   );
 }
