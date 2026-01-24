@@ -1,12 +1,11 @@
 import { Flame } from 'lucide-react-native';
 import { Text, View, TextInput, Switch } from 'react-native';
-import Button from '~/components/common/button';
 import { Controller, type UseFormReturn } from 'react-hook-form';
 import { colors } from '~/lib/colors';
 import { cn } from '~/lib/utils';
 import { type PredictionTiming } from '~/types/events';
 import { PredictionTimings } from '~/lib/events';
-import { useSearchableSelect, type SearchableOption } from '~/hooks/ui/useSearchableSelect';
+import { type SearchableOption } from '~/hooks/ui/useSearchableSelect';
 import SearchableMultiSelect from '~/components/common/searchableMultiSelect';
 
 interface BasePredictionFormFieldProps {
@@ -22,10 +21,7 @@ export function BasePredictions({ eventName, reactForm, disabled }: BasePredicti
     `basePredictionRules.${eventName}.timing`
   ) as PredictionTiming[];
 
-  const { isVisible, searchText, setSearchText, openModal, closeModal, filterOptions } =
-    useSearchableSelect();
-
-  const timingOptions: SearchableOption[] = PredictionTimings.map(timing => ({
+  const timingOptions: SearchableOption<PredictionTiming>[] = PredictionTimings.map(timing => ({
     value: timing,
     label: timing
   }));
@@ -105,30 +101,22 @@ export function BasePredictions({ eventName, reactForm, disabled }: BasePredicti
             </Text>
           ) : (
             <View>
-              <Button
-                className='mb-1 rounded-lg border border-primary bg-muted/50 p-2'
-                onPress={openModal}>
-                <Text className='text-sm'>
-                  {predictionTiming?.length > 0
-                    ? predictionTiming.join(', ')
-                    : 'Select prediction timing'}
-                </Text>
-              </Button>
               <Controller
                 control={reactForm.control}
                 name={`basePredictionRules.${eventName}.timing`}
                 render={({ field }) => (
                   <SearchableMultiSelect
-                    isVisible={isVisible}
-                    onClose={closeModal}
-                    options={filterOptions(timingOptions)}
+                    options={timingOptions}
                     selectedValues={field.value}
                     onToggleSelect={field.onChange}
-                    searchText={searchText}
-                    onSearchChange={setSearchText}
                     placeholder='Search timing options...'
-                    emptyMessage='No timing options found.'
-                  />
+                    emptyMessage='No timing options found.'>
+                    <Text className='text-sm'>
+                      {predictionTiming?.length > 0
+                        ? predictionTiming.join(', ')
+                        : 'Select prediction timing'}
+                    </Text>
+                  </SearchableMultiSelect>
                 )}
               />
             </View>

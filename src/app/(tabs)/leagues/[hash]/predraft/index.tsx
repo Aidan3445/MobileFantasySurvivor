@@ -23,8 +23,10 @@ export default function PredraftScreen() {
       <RefreshIndicator refreshing={refreshing} scrollY={scrollY} />
       <ScrollView
         className='w-full'
-        showsVerticalScrollIndicator={false}
+        showsVerticalScrollIndicator={true}
         onScroll={handleScroll}
+        scrollEventThrottle={16}
+        scrollIndicatorInsets={{ top: 10 }}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -34,7 +36,7 @@ export default function PredraftScreen() {
             progressBackgroundColor='transparent' />
         }>
         <View className={cn(
-          'page justify-start gap-y-4 transition-all px-1 pt-8',
+          'page justify-start gap-y-4 transition-all px-1.5 pt-8',
           refreshing && 'pt-12'
         )}>
           <InviteLink />

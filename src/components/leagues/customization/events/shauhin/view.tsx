@@ -14,7 +14,6 @@ import {
 import { BaseEventFullName } from '~/lib/events';
 import * as WebBrowser from 'expo-web-browser';
 import { type ScoringBaseEventName } from '~/types/events';
-import { useSearchableSelect } from '~/hooks/ui/useSearchableSelect';
 import SearchableMultiSelect from '~/components/common/searchableMultiSelect';
 import SearchableSelect from '~/components/common/searchableSelect';
 
@@ -29,8 +28,6 @@ export default function ShauhinMode() {
     disabled,
     rules
   } = useShauhinMode();
-  const timingModal = useSearchableSelect();
-  const betsModal = useSearchableSelect();
 
   const shauhinEnabled = reactForm.watch('enabled');
   const startWeek = reactForm.watch('startWeek');
@@ -150,13 +147,6 @@ export default function ShauhinMode() {
               </Text>
             ) : (
               <View>
-                <Button
-                  className={cn(
-                    'rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
-                  )}
-                  onPress={timingModal.openModal}>
-                  <Text className='text-gray-700'>{startWeek || 'Select Betting Start Week'}</Text>
-                </Button>
                 {startWeek === 'Custom' && (
                   <Controller
                     control={reactForm.control}
@@ -170,26 +160,21 @@ export default function ShauhinMode() {
                           placeholder='Enable after episode...'
                           value={Math.max(2, field.value || 2).toString()}
                           onChangeText={text => field.onChange(parseInt(text) || 2)}
-                          keyboardType='numeric'
-                        />
+                          keyboardType='numeric' />
                         {field?.value && field.value > 14 && (
                           <Text className='mt-1 text-xs text-red-500'>
                             Warning: Most seasons do not have this many weeks!
                           </Text>
                         )}
                         <SearchableSelect
-                          isVisible={timingModal.isVisible}
-                          onClose={timingModal.closeModal}
-                          options={timingModal.filterOptions(timingOptions)}
+                          options={timingOptions}
                           selectedValue={field.value ?? ''}
                           onSelect={field.onChange}
-                          searchText={timingModal.searchText}
-                          onSearchChange={timingModal.setSearchText}
-                          placeholder='Search timing options...'
-                        />
+                          placeholder='Search timing options...'>
+                          <Text className='text-gray-700'>{startWeek || 'Select Betting Start Week'}</Text>
+                        </SearchableSelect>
                       </View>
-                    )}
-                  />
+                    )} />
                 )}
               </View>
             )}
@@ -283,32 +268,21 @@ export default function ShauhinMode() {
                 name='enabledBets'
                 render={({ field }) => (
                   <View>
-                    <Button
-                      className={cn(
-                        'rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
-                      )}
-                      onPress={betsModal.openModal}>
-                      <Text className='text-gray-700'>
+                    <SearchableMultiSelect
+                      options={betsOptions}
+                      selectedValues={field.value || []}
+                      onToggleSelect={field.onChange}
+                      placeholder='Search bet options...' >
+                      <Text>
                         {enabledBets && enabledBets.length > 0
                           ? enabledBets
                             .map((name: ScoringBaseEventName) => BaseEventFullName[name])
                             .join(', ')
                           : 'Select enabled bets'}
                       </Text>
-                    </Button>
-                    <SearchableMultiSelect
-                      isVisible={betsModal.isVisible}
-                      onClose={betsModal.closeModal}
-                      options={betsModal.filterOptions(betsOptions)}
-                      selectedValues={field.value || []}
-                      onToggleSelect={field.onChange}
-                      searchText={betsModal.searchText}
-                      onSearchChange={betsModal.setSearchText}
-                      placeholder='Search bet options...'
-                    />
+                    </SearchableMultiSelect>
                   </View>
-                )}
-              />
+                )} />
             )}
             <Text className='mt-1 text-sm text-black'>
               Select what you can bet on from your enabled official and custom prediction events.

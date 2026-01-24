@@ -17,6 +17,8 @@ export default function Page() {
       <ScrollView
         className='w-full'
         showsVerticalScrollIndicator={false}
+        scrollEventThrottle={16}
+        scrollIndicatorInsets={{ top: 10 }}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -25,7 +27,7 @@ export default function Page() {
             colors={['transparent']}
             progressBackgroundColor='transparent' />
         }>
-        <View className='page justify-start gap-y-4 px-1'>
+        <View className='page justify-start gap-y-4 px-1.5'>
           <Header refreshing={refreshing} />
           <ActiveLeagues />
           <CastawayScoreboard />
