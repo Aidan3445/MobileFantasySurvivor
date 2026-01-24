@@ -1,4 +1,4 @@
-import { View, Text, useWindowDimensions } from 'react-native';
+import { View, Text } from 'react-native';
 import { type EnrichedCastaway } from '~/types/castaways';
 import { type Tribe, type TribesTimeline } from '~/types/tribes';
 import CastawayCard from '~/components/seasons/castaways/castawayCard';
@@ -24,16 +24,9 @@ export default function CastawayGrid({
   leagueData,
 }: CastawayGridProps) {
   const { selectionTimeline, leagueMembers } = leagueData ?? {};
-  const { width } = useWindowDimensions();
-
-  // Determine number of columns based on screen width
-  // Similar to md:grid-cols-2 lg:grid-cols-3
-  const numColumns = width >= 1024 ? 3 : width >= 768 ? 2 : 1;
-  const gap = 12; // gap-3 = 12px
-  const cardWidth = (width - 32 - gap * (numColumns - 1)) / numColumns; // 32 = p-4 padding
 
   return (
-    <View className='w-full rounded-lg bg-card p-4 shadow-lg shadow-primary/10 border-2 border-primary/20'>
+    <View className='rounded-lg bg-card px-4 pt-4 pb-3 shadow-lg shadow-primary/10 border-2 border-primary/20'>
       {/* Header */}
       <View className='mb-4 flex-row items-center gap-2'>
         <View className='h-5 w-0.5 rounded-full bg-primary' />
@@ -43,9 +36,9 @@ export default function CastawayGrid({
       </View>
 
       {/* Grid */}
-      <View className='flex-col' style={{ gap }}>
+      <View className='flex-col gap-1'>
         {castaways.map((castaway) => (
-          <View key={castaway.castawayId} style={{ width: cardWidth }}>
+          <View key={castaway.castawayId}>
             <CastawayCard
               castaway={castaway}
               tribesTimeline={tribesTimeline}
