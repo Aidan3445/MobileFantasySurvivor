@@ -44,7 +44,7 @@ export default function InviteLink() {
   };
 
   return (
-    <View className='w-full rounded-lg bg-card p-3 border-2 border-primary/20 shadow-sm shadow-primary/20'>
+    <View className='w-full rounded-xl bg-card p-3 border-2 border-primary/20'>
       <View className='flex-row items-center gap-1 h-8'>
         <View className='h-6 w-1 bg-primary rounded-full' />
         <Text className='text-xl font-black uppercase tracking-tight'>

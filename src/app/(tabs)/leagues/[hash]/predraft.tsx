@@ -40,9 +40,9 @@ export default function PredraftScreen() {
           refreshing && 'pt-12'
         )}>
           <InviteLink />
-          <DraftCountdown />
+          <DraftCountdown className='w-full rounded-xl bg-card p-3 border-2 border-primary/20' />
           <DraftOrder />
-          <View className='w-full flex-row items-center justify-center gap-2 p-2 bg-card rounded-lg border-2 border-primary/20 shadow-sm shadow-primary/20'>
+          <View className='w-full flex-row items-center justify-center gap-2 p-2 bg-card rounded-xl border-2 border-primary/20'>
             <View className='h-5 w-0.5 bg-primary rounded-full' />
             <Text className='text-2xl font-black tracking-tight text-center uppercase'>
               League Scoring
