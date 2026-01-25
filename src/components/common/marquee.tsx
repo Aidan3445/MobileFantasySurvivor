@@ -132,6 +132,7 @@ export default function MarqueeText({
           <Text
             className={cn('text-left align-middle', className)}
             allowFontScaling={allowFontScaling}
+            numberOfLines={1}
             style={{
               flexShrink: 0,
             }}>
@@ -143,6 +144,7 @@ export default function MarqueeText({
           <Text
             className={cn('text-left', className)}
             allowFontScaling={allowFontScaling}
+            numberOfLines={1}
             style={{ flexShrink: 0 }}>
             {text}
           </Text>
@@ -151,6 +153,7 @@ export default function MarqueeText({
         <Text
           className={cn(center ? 'text-center' : 'text-left', className)}
           allowFontScaling={allowFontScaling}
+          numberOfLines={1}
           style={{ flexShrink: 0 }}>
           {text}
         </Text>
