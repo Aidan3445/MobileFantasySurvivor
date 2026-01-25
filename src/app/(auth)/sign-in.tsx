@@ -27,9 +27,9 @@ export default function Page() {
       if (signInAttempt.status === 'complete') {
         await setActive({ session: signInAttempt.createdSessionId });
         if (returnTo) {
-          router.replace(returnTo);
+          router.replace(`/(tabs)?returnTo=${returnTo}`);
         } else {
-          router.replace('/');
+          router.replace('/(tabs)');
         }
 
       } else {

@@ -25,7 +25,7 @@ export default function RootLayout() {
 
       <ClerkProvider tokenCache={tokenCache} telemetry={false}>
         <QueryClientContextProvider>
-          <Stack>
+          <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen
               name='(tabs)'
               options={{ headerShown: false }} />

@@ -1,6 +1,6 @@
 'use client';
 import { useIsFetching } from '@tanstack/react-query';
-import { Tabs, usePathname, useRouter } from 'expo-router';
+import { Tabs, useLocalSearchParams, usePathname, useRouter } from 'expo-router';
 import { BookUser, Flame, Trophy, UserCircle2 } from 'lucide-react-native';
 import { useEffect, useState, useRef } from 'react';
 import { Animated, Image, Platform } from 'react-native';
@@ -12,6 +12,7 @@ import { colors } from '~/lib/colors';
 const HomeImage = require('~/assets/Icon.png');
 
 export default function TabLayout() {
+  const { returnTo } = useLocalSearchParams<{ returnTo?: string }>();
   const pathname = usePathname();
   const router = useRouter();
   const isFetching = useIsFetching();
@@ -52,6 +53,13 @@ export default function TabLayout() {
 
   const isLeaguesPath = pathname.startsWith('/leagues');
   const isOnLeaguesIndex = pathname === '/leagues';
+
+  // If returnTo param exists, navigate to that path
+  useEffect(() => {
+    if (returnTo) {
+      router.push(returnTo);
+    }
+  }, [returnTo, router]);
 
   return (
     <>

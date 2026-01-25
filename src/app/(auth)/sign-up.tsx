@@ -77,9 +77,9 @@ export default function SignUpScreen() {
           session: signUpAttempt.createdSessionId,
         });
         if (returnTo) {
-          router.replace(returnTo);
+          router.replace(`/(tabs)?returnTo=${returnTo}`);
         } else {
-          router.replace('/');
+          router.replace('/(tabs)');
         }
       } else {
         setClerkError('Verification could not be completed.');
