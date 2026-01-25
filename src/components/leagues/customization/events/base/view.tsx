@@ -25,7 +25,7 @@ export default function BaseEventRules() {
         <View className='flex-row items-center gap-1 h-8'>
           <View className='h-6 w-1 bg-primary rounded-full' />
           <Text className='text-xl font-black uppercase tracking-tight'>
-            Survival Streak
+            Official Events
           </Text>
         </View>
         {!disabled && (
@@ -38,15 +38,9 @@ export default function BaseEventRules() {
               }
             }}>
             {locked ? (
-              <Lock
-                size={24}
-                color={colors.primary}
-              />
+              <Lock size={24} color={colors.primary} />
             ) : (
-              <LockOpen
-                size={24}
-                color={colors.secondary}
-              />
+              <LockOpen size={24} color={colors.secondary} />
             )}
           </Button>
         )}

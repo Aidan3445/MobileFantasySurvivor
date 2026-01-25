@@ -65,29 +65,54 @@ export default function SurvivalStreaks() {
 
       {/* How it works */}
       <View className=''>
-        <Text className='text-base text-foreground'>
+        <Text className='text-base text-muted-foreground'>
           Each episode your pick survives, their streak grows:
         </Text>
         <View className='ml-4'>
-          <Text className='text-base text-foreground'>
+          <Text className='text-base text-muted-foreground'>
             • <Text className='font-bold'>Episode 1:</Text> Earn 1
-            <Flame size={14} color={colors.foreground} /> point
+            <View className='translate-y-0.5'>
+              <Flame size={14} color={colors['muted-foreground']} />
+            </View> point
           </Text>
-          <Text className='text-base text-foreground'>
+          <Text className='text-base text-muted-foreground'>
             • <Text className='font-bold'>Episode 2:</Text> Earn 2
-            <Flame size={14} color={colors.foreground} /> points
+            <View className='translate-y-0.5'>
+              <Flame size={14} color={colors['muted-foreground']} />
+            </View> point
           </Text>
-          <Text className='text-base text-foreground'>
+          <Text className='text-base text-muted-foreground'>
             • <Text className='font-bold'>Episode 3:</Text> Earn 3
-            <Flame size={14} color={colors.foreground} /> points, and so on...
+            <View className='translate-y-0.5'>
+              <Flame size={14} color={colors['muted-foreground']} />
+            </View> point
           </Text>
         </View>
-        <Text className='text-base text-foreground'>
+        <Text className='text-base text-muted-foreground'>
           If your pick is eliminated, you must choose a new unclaimed castaway, and your streak
           resets.
         </Text>
       </View>
 
+      {/* Action Buttons */}
+      {!locked && (
+        <View className='flex-row gap-2'>
+          <Button
+            className='flex-1 rounded-lg bg-destructive p-3 active:opacity-80'
+            onPress={resetSettings}>
+            <Text className='text-center font-semibold text-white'>Cancel</Text>
+          </Button>
+          <Button
+            className={cn(
+              'flex-1 rounded-lg bg-primary p-3 active:opacity-80',
+              !settingsChanged && 'opacity-50'
+            )}
+            disabled={!settingsChanged}
+            onPress={() => handleSubmit()}>
+            <Text className='text-center font-semibold text-white'>Save</Text>
+          </Button>
+        </View>
+      )}
       {/* Streak Cap */}
       <View className='rounded-lg border-2 border-primary/10 bg-primary/5 px-3 py-2'>
         <View className='flex-row items-center'>
@@ -234,26 +259,6 @@ export default function SurvivalStreaks() {
           </Text>
         )}
       </View>
-
-      {/* Action Buttons */}
-      {!locked && (
-        <View className='flex-row gap-2 mt-4'>
-          <Button
-            className='flex-1 rounded-lg bg-destructive p-3 active:opacity-80'
-            onPress={resetSettings}>
-            <Text className='text-center font-semibold text-white'>Cancel</Text>
-          </Button>
-          <Button
-            className={cn(
-              'flex-1 rounded-lg bg-primary p-3 active:opacity-80',
-              !settingsChanged && 'opacity-50'
-            )}
-            disabled={!settingsChanged}
-            onPress={() => handleSubmit()}>
-            <Text className='text-center font-semibold text-white'>Save</Text>
-          </Button>
-        </View>
-      )}
     </View>
   );
 }
