@@ -18,8 +18,13 @@ export default function SeasonsScreen() {
 
   const selectedSeasonData = useMemo(() => {
     if (!scoreData) return null;
-    return scoreData.find(season =>
-      season.season.name === selectedSeason) ?? scoreData[0];
+    const selected = scoreData.find(season => season.season.name === selectedSeason);
+    if (selected) return selected;
+    if (scoreData.length > 0) {
+      setSelectedSeason(scoreData[0]!.season.name);
+      return scoreData[0];
+    }
+    return null;
   }, [scoreData, selectedSeason]);
 
   return (

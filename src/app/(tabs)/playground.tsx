@@ -24,9 +24,15 @@ export default function PlaygroundScreen() {
 
   const selectedSeasonData = useMemo(() => {
     if (!scoreData) return null;
-    return (
-      scoreData.find((season) => season.season.name === selectedSeason) ?? scoreData[1]
-    );
+    const selected = scoreData.find(season => season.season.name === selectedSeason);
+    if (selected) return selected;
+    // defaulting to second most recent season for now
+    // no events in most recent season usually
+    if (scoreData.length > 1) {
+      setSelectedSeason(scoreData[1]!.season.name);
+      return scoreData[1];
+    }
+    return null;
   }, [scoreData, selectedSeason]);
 
   return (
