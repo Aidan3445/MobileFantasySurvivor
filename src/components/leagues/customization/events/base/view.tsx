@@ -22,7 +22,12 @@ export default function BaseEventRules() {
   return (
     <View className='w-full rounded-xl bg-card p-2'>
       <View className='flex-row items-center justify-between'>
-        <Text className='text-card-foreground text-lg font-bold'>Official Events</Text>
+        <View className='flex-row items-center gap-1 h-8'>
+          <View className='h-6 w-1 bg-primary rounded-full' />
+          <Text className='text-xl font-black uppercase tracking-tight'>
+            Survival Streak
+          </Text>
+        </View>
         {!disabled && (
           <Button
             onPress={() => {
@@ -46,7 +51,7 @@ export default function BaseEventRules() {
           </Button>
         )}
       </View>
-      <Text className='mb-2 text-sm text-muted-foreground'>
+      <Text className='mb-2 text-base text-muted-foreground'>
         These Official Events are automatically scored for your league based on what drafted
         castaways do in the show. Set the point values for each event.
       </Text>

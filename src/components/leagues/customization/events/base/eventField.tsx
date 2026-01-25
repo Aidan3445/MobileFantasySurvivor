@@ -35,19 +35,19 @@ export default function EventField({
     <View className='gap-1.5 rounded-lg border-2 border-primary/10 bg-primary/5 px-3 py-2'>
       {/* Header Row */}
       <View className='flex-row items-center justify-between'>
-        <Text className='flex-1 text-sm font-semibold text-foreground'>
+        <Text className='flex-1 text-base font-semibold text-foreground'>
           {BaseEventFullName[eventName as keyof typeof BaseEventFullName]}
         </Text>
 
         {disabled ? (
-          <View className='flex-row items-center gap-1'>
+          <View className='flex-row items-center'>
             <Text
               className={cn(
                 'text-base font-bold',
                 currentValue === 0
                   ? 'text-neutral'
                   : currentValue > 0
-                    ? 'text-green-700'
+                    ? 'text-positive'
                     : 'text-destructive'
               )}>
               {currentValue > 0 ? `+${currentValue}` : currentValue}
@@ -64,7 +64,7 @@ export default function EventField({
               const absValue = Math.abs(numericValue);
 
               return (
-                <View className='flex-row items-center gap-1'>
+                <View className='flex-row items-center'>
                   <Text
                     onPress={() => field.onChange(sign * -1 * absValue)}
                     className={cn(
@@ -93,7 +93,7 @@ export default function EventField({
       </View>
 
       {/* Description */}
-      <Text className='text-xs leading-tight text-muted-foreground'>
+      <Text className='text-sm leading-tight text-muted-foreground'>
         {BaseEventDescriptions.main[eventName as keyof typeof BaseEventDescriptions.main]}
         {hasItalicDescription && (
           <Text className='italic text-muted-foreground'> {hasItalicDescription}</Text>

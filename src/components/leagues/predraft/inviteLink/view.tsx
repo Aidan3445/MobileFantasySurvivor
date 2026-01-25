@@ -52,7 +52,7 @@ export default function InviteLink() {
         </Text>
       </View>
 
-      <Text className='text-sm text-muted-foreground mb-3'>
+      <Text className='text-base text-muted-foreground mb-3'>
         Grow your league by inviting friends to join
       </Text>
 

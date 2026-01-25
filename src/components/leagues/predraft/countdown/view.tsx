@@ -73,7 +73,7 @@ export function DraftCountdown({ overrideHash, className }: DraftCountdownProps)
             {leagueSettings?.draftDate && leagueSettings.draftDate.getTime() > Date.now() ? (
               <>
                 <Calendar size={16} stroke={colors.primary} />
-                <Text className='text-sm font-medium text-primary'>
+                <Text className='text-base font-medium text-primary'>
                   Starts: {leagueSettings.draftDate.toLocaleString(undefined, {
                     month: 'short',
                     day: 'numeric',
@@ -86,7 +86,7 @@ export function DraftCountdown({ overrideHash, className }: DraftCountdownProps)
             ) : (
               <>
                 <CalendarX2 size={16} stroke={colors.primary} />
-                <Text className='text-sm font-medium text-primary'>
+                <Text className='text-base font-medium text-primary'>
                   Draft date not scheduled
                 </Text>
               </>

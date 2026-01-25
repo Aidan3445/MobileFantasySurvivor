@@ -46,7 +46,10 @@ export default function DraftOrder({ className }: DraftOrderProps) {
             {(getIndex() ?? 0) + 1}
           </Text>
         </View>
-        <Text className='ml-4 flex-1 text-xl font-semibold'>
+        <Text className={cn(
+          'ml-4 flex-1 text-xl font-semibold',
+          item.loggedIn && 'text-primary'
+        )}>
           {item.displayName}
         </Text>
         {!orderLocked && (
@@ -58,12 +61,12 @@ export default function DraftOrder({ className }: DraftOrderProps) {
 
   return (
     <View className={cn('w-full rounded-xl bg-card p-3 border-2 border-primary/20', className)}>
-      <View className='mb-4 flex-row items-center justify-between'>
-        <View className='flex-row items-center gap-6'>
-          <Text className='text-card-foreground text-lg font-bold'>Draft Order</Text>
-          {!orderLocked && (
-            <Text className='text-sm text-muted-foreground'>Tap and hold to drag and reorder</Text>
-          )}
+      <View className='flex-row items-center justify-between mb-1'>
+        <View className='flex-row items-center gap-1'>
+          <View className='h-6 w-1 bg-primary rounded-full' />
+          <Text className='text-xl font-black uppercase tracking-tight'>
+            Draft Status
+          </Text>
         </View>
         <View className='flex-row items-center gap-2'>
           {leagueMembers?.loggedIn?.role === 'Owner' && (
@@ -92,7 +95,7 @@ export default function DraftOrder({ className }: DraftOrderProps) {
         </View>
       </View>
       {!orderLocked && (
-        <View className='mb-4 flex-row gap-2'>
+        <View className='flex-row gap-2'>
           <Button
             className={'flex-1 rounded-lg bg-destructive p-3'}
             onPress={() => {
@@ -109,6 +112,9 @@ export default function DraftOrder({ className }: DraftOrderProps) {
           </Button>
         </View>
       )}
+      {!orderLocked && (
+        <Text className='text-base text-muted-foreground mb-1'>Tap and hold to drag and reorder</Text>
+      )}
       <DraggableFlatList
         data={order}
         onDragEnd={({ data }) => !orderLocked && setOrder(data)}
@@ -116,6 +122,6 @@ export default function DraftOrder({ className }: DraftOrderProps) {
         renderItem={renderItem}
         scrollEnabled={false}
         activationDistance={orderLocked ? 999999 : 2} />
-    </View>
+    </View >
   );
 }

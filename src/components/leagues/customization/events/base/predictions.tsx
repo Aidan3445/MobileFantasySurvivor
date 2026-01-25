@@ -28,9 +28,10 @@ export function BasePredictions({ eventName, reactForm, disabled }: BasePredicti
 
   return (
     <View>
+      <View className='bg-primary/20 h-0.5 rounded-full' />
       <View className='flex-row items-center justify-between'>
         <View className='flex-row items-center gap-2'>
-          <Text className='text-sm font-medium'>Prediction:</Text>
+          <Text className='text-base font-medium'>Prediction:</Text>
           {disabled ? (
             <Text
               className={`font-semibold ${predictionEnabled ? 'text-positive' : 'text-destructive'}`}>
@@ -46,29 +47,24 @@ export function BasePredictions({ eventName, reactForm, disabled }: BasePredicti
                   onValueChange={field.onChange}
                   trackColor={{ false: colors.destructive, true: colors.positive }}
                   ios_backgroundColor={colors.destructive}
-                  thumbColor={colors.muted}
-                />
+                  thumbColor={colors.muted} />
               )}
             />
           )}
         </View>
         {predictionEnabled && (
-          <View className='flex-row items-center gap-2'>
-            <Text className='text-sm'>Points:</Text>
+          <View className='flex-row items-center'>
+            <Text className='text-base font-medium'>Points: </Text>
             {disabled ? (
               <View className='flex-row items-center'>
                 <Text
                   className={cn(
-                    'mr-1 text-lg font-bold',
+                    'text-base font-bold',
                     predictionPoints <= 0 ? 'text-destructive' : 'text-positive',
                     predictionPoints === 0 && 'text-neutral'
                   )}>
                   {predictionPoints}
                 </Text>
-                <Flame
-                  size={16}
-                  color={colors.positive}
-                />
               </View>
             ) : (
               <Controller
@@ -77,18 +73,17 @@ export function BasePredictions({ eventName, reactForm, disabled }: BasePredicti
                 render={({ field }) => (
                   <TextInput
                     className={cn(
-                      'w-24 rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
+                      'w-16 rounded-lg border-2 border-primary/20 bg-card px-2 py-1 text-center text-base font-bold leading-5'
                     )}
                     value={field.value?.toString() ?? '0'}
                     onChangeText={text => {
                       const value = parseInt(text) || 0;
                       field.onChange(value);
                     }}
-                    keyboardType='numeric'
-                  />
-                )}
-              />
+                    keyboardType='numeric' />
+                )} />
             )}
+            <Flame size={14} color={colors.positive} />
           </View>
         )}
       </View>
@@ -96,7 +91,7 @@ export function BasePredictions({ eventName, reactForm, disabled }: BasePredicti
       {predictionEnabled && (
         <View className='mt-2'>
           {disabled ? (
-            <Text className='text-xs italic text-muted-foreground'>
+            <Text className='text-sm italic text-muted-foreground'>
               {predictionTiming?.join(', ') || 'No timing set'}
             </Text>
           ) : (
@@ -111,15 +106,20 @@ export function BasePredictions({ eventName, reactForm, disabled }: BasePredicti
                     onToggleSelect={field.onChange}
                     placeholder='Search timing options...'
                     emptyMessage='No timing options found.'>
-                    <Text className='text-sm'>
+                    <Text className='text-base flex-shrink'>
                       {predictionTiming?.length > 0
                         ? predictionTiming.join(', ')
                         : 'Select prediction timing'}
                     </Text>
                   </SearchableMultiSelect>
-                )}
-              />
+                )} />
             </View>
+          )}
+          {predictionTiming.includes('Weekly') && predictionTiming.length > 1 && (
+            <Text className='mt-1 text-sm text-muted-foreground'>
+              <Text className='font-medium'>Note: </Text>
+              Weekly will cause predictions to be collected each week, ignoring any other timing options.
+            </Text>
           )}
         </View>
       )}

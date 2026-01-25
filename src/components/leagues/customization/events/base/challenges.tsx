@@ -77,15 +77,13 @@ export default function ChallengeScoreSettings({
             eventName='tribe1st'
             fieldPath='baseEventRules.tribe1st'
             disabled={disabled}
-            hidePrediction={hidePrediction}
-          />
+            hidePrediction={hidePrediction} />
           <EventField
             reactForm={reactForm}
             eventName='tribe2nd'
             fieldPath='baseEventRules.tribe2nd'
             disabled={disabled}
-            hidePrediction={hidePrediction}
-          />
+            hidePrediction={hidePrediction} />
         </View>
       </Collapsible>
     </View>

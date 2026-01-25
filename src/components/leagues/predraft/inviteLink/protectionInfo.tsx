@@ -44,7 +44,7 @@ export default function ProtectionInfo({ isProtected }: ProtectionInfoProps) {
           ) : (
             <Globe size={14} color={colors.mutedForeground} />
           )}
-          <Text className='text-sm font-medium text-muted-foreground'>
+          <Text className='text-base font-medium text-muted-foreground'>
             {isProtected ? 'This league is protected' : 'This league is public'}
           </Text>
         </View>
@@ -55,13 +55,13 @@ export default function ProtectionInfo({ isProtected }: ProtectionInfoProps) {
 
       <Collapsible collapsed={isCollapsed}>
         <View className='rounded-b-lg bg-muted/50 px-3'>
-          <Text className='text-sm text-muted-foreground'>
+          <Text className='text-base text-muted-foreground'>
             {isProtected
               ? 'A league admin/owner will need to approve new members. You can make your league public to allow anyone with the link to join.'
               : 'Anyone with the link can join without approval. You can require approval by making your league protected.'}
           </Text>
           <Link href={'./settings'}>
-            <Text className='text-sm font-semibold text-primary'>
+            <Text className='text-base font-semibold text-primary'>
               Go to Settings →
             </Text>
           </Link>

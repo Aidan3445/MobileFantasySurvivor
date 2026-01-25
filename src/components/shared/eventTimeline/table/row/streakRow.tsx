@@ -87,14 +87,14 @@ export default function StreakRow({
                   {selectedShotStatus?.status === 'saved' ? (
                     <>
                       <ShieldCheck size={12} color='#16a34a' />
-                      <Text className='text-xs font-semibold text-green-600'>
+                      <Text className='text-xs font-semibold text-positive'>
                         Shot in the Dark saved their streak
                       </Text>
                     </>
                   ) : (
                     <>
                       <ShieldAlert size={12} color='#dc2626' />
-                      <Text className='text-xs font-semibold text-red-600'>
+                      <Text className='text-xs font-semibold text-destructive'>
                         Shot in the Dark was wasted
                       </Text>
                     </>

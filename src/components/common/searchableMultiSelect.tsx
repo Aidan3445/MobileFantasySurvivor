@@ -55,7 +55,7 @@ export default function SearchableMultiSelect<T extends string | number>({
           className='w-full flex-row items-center justify-between rounded-lg border-2 border-primary/20 bg-primary/5 px-3 py-2 active:bg-primary/10'
           onPress={openModal}>
           {children}
-          <View className='flex-row items-center gap-1'>
+          <View className='w-max flex-row items-center gap-1'>
             {selectedValues.length > 0 && (
               <Button
                 className='rounded-full p-0.5 active:bg-primary/20'
