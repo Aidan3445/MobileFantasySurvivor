@@ -68,7 +68,8 @@ export default function LeagueMember({
               value={value}
               maxLength={DISPLAY_NAME_MAX_LENGTH}
               returnKeyType='done'
-              onSubmitEditing={onSubmitEditing} />
+              onSubmitEditing={onSubmitEditing}
+              onTouchStart={(e) => e.stopPropagation()} />
             <View className='mt-1 flex-row items-center justify-end px-1'>
               <Text
                 className={cn(

@@ -16,7 +16,6 @@ export default function LeagueDetailScreen() {
   }
 
   if (!league) {
-    console.log('League not found');
     return <Redirect href='/leagues' />;
   };
 

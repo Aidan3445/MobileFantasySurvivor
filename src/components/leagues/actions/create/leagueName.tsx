@@ -61,7 +61,8 @@ export default function LeagueName({ control, onSubmitEditing, canGoNext }: Leag
               value={value}
               maxLength={LEAGUE_NAME_MAX_LENGTH}
               returnKeyType='done'
-              onSubmitEditing={canGoNext ? onSubmitEditing : undefined} />
+              onSubmitEditing={canGoNext ? onSubmitEditing : undefined}
+              onTouchStart={(e) => e.stopPropagation()} />
             <View className='mt-2 flex-row items-center justify-end px-1'>
               <Text
                 className={cn(
@@ -72,8 +73,7 @@ export default function LeagueName({ control, onSubmitEditing, canGoNext }: Leag
               </Text>
             </View>
           </View>
-        )}
-      />
+        )} />
     </View>
   );
 }

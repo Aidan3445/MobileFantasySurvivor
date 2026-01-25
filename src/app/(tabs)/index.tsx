@@ -30,8 +30,8 @@ export default function Page() {
         <View className='page justify-start gap-y-4 px-1.5'>
           <Header refreshing={refreshing} />
           <ActiveLeagues />
-          <CastawayScoreboard />
           <QuickActions />
+          <CastawayScoreboard />
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -44,7 +44,7 @@
             {
               "scheme": "https",
               "host": "yourfantasysurvivor.com",
-              "pathPrefix": "/leagues/join/"
+              "pathPrefix": "/join/"
             }
           ],
           "category": ["BROWSABLE", "DEFAULT"]

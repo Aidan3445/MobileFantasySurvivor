@@ -1,4 +1,4 @@
-import { Slot } from 'expo-router';
+import { Stack } from 'expo-router';
 import { ClerkProvider } from '@clerk/clerk-expo';
 import { tokenCache } from '@clerk/clerk-expo/token-cache';
 import '~/global.css';
@@ -22,11 +22,17 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView className='flex-1 bg-background'>
       <StatusBar barStyle='dark-content' />
-      <ClerkProvider
-        tokenCache={tokenCache}
-        telemetry={false}>
+
+      <ClerkProvider tokenCache={tokenCache} telemetry={false}>
         <QueryClientContextProvider>
-          <Slot />
+          <Stack>
+            <Stack.Screen
+              name='(tabs)'
+              options={{ headerShown: false }} />
+            <Stack.Screen
+              name='(modals)'
+              options={{ presentation: 'modal', headerShown: false }} />
+          </Stack>
         </QueryClientContextProvider>
       </ClerkProvider>
     </GestureHandlerRootView>

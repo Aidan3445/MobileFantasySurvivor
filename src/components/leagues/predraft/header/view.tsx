@@ -33,21 +33,29 @@ export default function PredraftHeader({ inSettings }: PredraftHeaderProps) {
             noMarqueeContainerClassName='w-min px-0.5' />
           <View className='h-6 w-1 bg-primary rounded-full' />
         </View>
-        {inSettings ? (
-          <Button
-            className='absolute left-4 px-4'
-            onPress={() => router.back()}>
-            <Text className='text-lg'>
-              <ArrowLeft color={colors.primary} size={24} />
-            </Text>
-          </Button>
-        ) : (
-          <Button
-            className='absolute right-4 px-4'
-            onPress={() => router.push(`/leagues/${league?.hash}/settings`)}>
-            <Settings color={colors.primary} size={24} />
-          </Button>
-        )}
+        <Button
+          className='absolute left-4 px-4'
+          onPress={() => {
+            if (inSettings) {
+              router.back();
+            } else {
+              if (router.canDismiss()) router.dismissTo('/leagues');
+              router.replace('/leagues');
+            }
+          }}>
+          <Text className='text-lg'>
+            <ArrowLeft color={colors.primary} size={24} />
+          </Text>
+        </Button>
+
+        {!inSettings &&
+          (
+            <Button
+              className='absolute right-4 px-4'
+              onPress={() => router.push(`/leagues/${league?.hash}/settings`)}>
+              <Settings color={colors.primary} size={24} />
+            </Button>
+          )}
       </View>
     </View>
   );

@@ -30,14 +30,17 @@ export function useJoinLeague(onSubmit?: () => void) {
     queryFn: async () => {
       if (!hash) throw new Error('League hash is required');
 
-      const response = await postData(`/api/leagues/join?hash=${hash}`, { method: 'GET' });
+      const response = await fetchData(`/api/leagues/join?hash=${hash}`);
       if (!response.ok) {
+        console.log('Fetched public league data for joining:', hash, response.status);
         throw new Error('Failed to fetch league');
       }
       return response.json();
     },
     enabled: !!hash,
-    staleTime: 5 * 60 * 1000 // 5 minutes
+    gcTime: 0,
+    staleTime: 0, // 5 minutes
+    retry: false
   });
 
   const handleSubmit = reactForm.handleSubmit(async data => {
@@ -51,6 +54,13 @@ export function useJoinLeague(onSubmit?: () => void) {
     }
     try {
       const response = await postData('/api/leagues/join', { body: { hash, newMember: data } });
+      if (response.status === 409) {
+        const errorData = await response.json();
+        console.error('Conflict joining league:', errorData);
+        Alert.alert('Error', errorData.message || 'You are already a member of this league');
+        router.replace(`/leagues/${hash}`);
+        return;
+      }
       if (response.status !== 201) {
         const errorData = await response.json();
         console.error('Error joining league:', errorData);

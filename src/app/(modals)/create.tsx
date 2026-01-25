@@ -11,7 +11,6 @@ import { type ReactNode, useCallback } from 'react';
 import DraftDate from '~/components/leagues/actions/create/draftDate';
 import LeagueMember from '~/components/leagues/actions/create/leagueMember';
 import { colors } from '~/lib/colors';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import CreateLeagueHeader from '~/components/leagues/actions/create/header/view';
 
 interface CreateLeagueFormProps {
@@ -92,7 +91,7 @@ export default function CreateLeagueScreen({ onSubmit }: CreateLeagueFormProps) 
 
 
   return (
-    <SafeAreaView edges={['top', 'bottom']} className='page'>
+    <View className='page py-16'>
       <CreateLeagueHeader />
 
       <KeyboardAvoidingView
@@ -112,14 +111,16 @@ export default function CreateLeagueScreen({ onSubmit }: CreateLeagueFormProps) 
               const fieldTouched = reactForm.formState.touchedFields[item.name];
 
               return (
-                <View className='flex-1'>
+                <View
+                  className='flex-1'
+                  onTouchStart={() => Keyboard.dismiss()}>
                   {/* Content */}
                   <View className='flex-1 justify-start'>
                     {renderPageContent(item.name, !buttonDisabled)}
                   </View>
 
                   {/* Navigation */}
-                  <View className='flex-row items-center justify-center gap-4 px-6 pb-4'>
+                  <View className='flex-row items-center justify-center gap-4 px-6 pb-24'>
                     {/* Back Button */}
                     {!item.isFirst && (
                       <Button
@@ -141,7 +142,8 @@ export default function CreateLeagueScreen({ onSubmit }: CreateLeagueFormProps) 
                       }}
                       disabled={buttonDisabled || isSubmitting}
                       className={cn(
-                        'flex-1 rounded-lg bg-primary py-3 active:opacity-80',
+                        'rounded-lg bg-primary py-3 active:opacity-80 w-1/2',
+                        !item.isFirst && 'mr-16',
                         (buttonDisabled || isSubmitting) && 'opacity-50'
                       )}>
                       <Text className='text-center text-base font-bold text-white'>
@@ -154,6 +156,8 @@ export default function CreateLeagueScreen({ onSubmit }: CreateLeagueFormProps) 
                               : 'Next'}
                       </Text>
                     </Button>
+
+                    {/* Placeholder for alignment */}
                   </View>
                 </View>
               );
@@ -164,6 +168,6 @@ export default function CreateLeagueScreen({ onSubmit }: CreateLeagueFormProps) 
       <Pagination.Basic
         {...progressProps}
         containerStyle={{ ...progressProps.containerStyle }} />
-    </SafeAreaView>
+    </View>
   );
 }

@@ -60,8 +60,7 @@ export function useCreateLeague(onSubmit?: () => void) {
 
       Alert.alert('Success', `League created: ${data.leagueName}`);
       console.log('Navigating to league with hash:', newHash);
-      router.dismissTo('/leagues');
-      router.push({ pathname: '/leagues/[hash]', params: { hash: newHash } });
+      router.replace({ pathname: '/leagues/[hash]', params: { hash: newHash } });
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to create league');
