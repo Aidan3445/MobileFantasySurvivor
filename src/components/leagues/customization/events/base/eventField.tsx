@@ -87,8 +87,7 @@ export default function EventField({
                   <Flame size={14} color={getPointsColor()} />
                 </View>
               );
-            }}
-          />
+            }} />
         )}
       </View>
 

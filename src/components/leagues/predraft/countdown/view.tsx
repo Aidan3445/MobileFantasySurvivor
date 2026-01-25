@@ -73,7 +73,9 @@ export function DraftCountdown({ overrideHash, className }: DraftCountdownProps)
             {leagueSettings?.draftDate && leagueSettings.draftDate.getTime() > Date.now() ? (
               <>
                 <Calendar size={16} stroke={colors.primary} />
-                <Text className='text-base font-medium text-primary'>
+                <Text
+                  allowFontScaling={false}
+                  className='text-base font-medium text-primary'>
                   Starts: {leagueSettings.draftDate.toLocaleString(undefined, {
                     month: 'short',
                     day: 'numeric',

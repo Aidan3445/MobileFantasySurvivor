@@ -31,30 +31,30 @@ export default function ProtectionInfo({ isProtected }: ProtectionInfoProps) {
   }));
 
   return (
-    <View className='mt-3'>
+    <View>
       <Button
         className={cn(
-          'flex-row items-center justify-between rounded-lg bg-muted/50 p-2 transition-all',
+          'flex-row items-center justify-between rounded-lg border-2 border-primary/20 bg-primary/5 p-2 active:bg-primary/10 transition-all',
           !isCollapsed ? 'rounded-b-none duration-75' : 'delay-300 rounded-b-lg'
         )}
         onPress={toggleCollapsed}>
         <View className='flex-row items-center gap-2'>
           {isProtected ? (
-            <Lock size={14} color={colors.mutedForeground} />
+            <Lock size={14} color={colors.primary} />
           ) : (
-            <Globe size={14} color={colors.mutedForeground} />
+            <Globe size={14} color={colors.primary} />
           )}
-          <Text className='text-base font-medium text-muted-foreground'>
+          <Text className='text-base font-medium text-muted-foreground w-max'>
             {isProtected ? 'This league is protected' : 'This league is public'}
           </Text>
         </View>
         <Animated.View style={chevronStyle}>
-          <ChevronDown size={16} color={colors.mutedForeground} />
+          <ChevronDown size={16} color={colors.primary} />
         </Animated.View>
       </Button>
 
       <Collapsible collapsed={isCollapsed}>
-        <View className='rounded-b-lg bg-muted/50 px-3'>
+        <View className='gap-2 rounded-b-lg border-2 border-t-0 border-primary/20 bg-card p-3'>
           <Text className='text-base text-muted-foreground'>
             {isProtected
               ? 'A league admin/owner will need to approve new members. You can make your league public to allow anyone with the link to join.'

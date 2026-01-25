@@ -44,7 +44,7 @@ export default function InviteLink() {
   };
 
   return (
-    <View className='w-full rounded-xl bg-card p-3 border-2 border-primary/20'>
+    <View className='w-full rounded-xl bg-card p-2 border-2 border-primary/20 gap-2'>
       <View className='flex-row items-center gap-1 h-8'>
         <View className='h-6 w-1 bg-primary rounded-full' />
         <Text className='text-xl font-black uppercase tracking-tight'>
@@ -52,14 +52,14 @@ export default function InviteLink() {
         </Text>
       </View>
 
-      <Text className='text-base text-muted-foreground mb-3'>
+      <Text className='text-base text-muted-foreground leading-none'>
         Grow your league by inviting friends to join
       </Text>
 
       <View className='flex-row gap-2'>
         <Pressable
           className={cn(
-            'flex-1 flex-row items-center justify-center gap-2 rounded-lg p-3 active:opacity-80',
+            'flex-1 flex-row items-center justify-center gap-2 rounded-lg p-2 active:opacity-80',
             hasCopied ? 'bg-green-500/20' : 'bg-secondary'
           )}
           onPress={copyLink}>
@@ -77,7 +77,7 @@ export default function InviteLink() {
         </Pressable>
 
         <Pressable
-          className='flex-1 flex-row items-center justify-center gap-2 rounded-lg bg-primary p-3 active:opacity-80'
+          className='flex-1 flex-row items-center justify-center gap-2 rounded-lg bg-primary p-2 active:opacity-80'
           onPress={shareLink}>
           <Share size={20} color='white' />
           <Text className='font-semibold text-white'>

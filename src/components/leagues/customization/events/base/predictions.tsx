@@ -48,8 +48,7 @@ export function BasePredictions({ eventName, reactForm, disabled }: BasePredicti
                   trackColor={{ false: colors.destructive, true: colors.positive }}
                   ios_backgroundColor={colors.destructive}
                   thumbColor={colors.muted} />
-              )}
-            />
+              )} />
           )}
         </View>
         {predictionEnabled && (

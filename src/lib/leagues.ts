@@ -124,7 +124,7 @@ export const defaultShauhinModeSettings: ShauhinModeSettings = {
   maxBet: ABS_MAX_EVENT_POINTS,
   maxBetsPerWeek: 5,
   startWeek: 'After Merge',
-  customStartWeek: 8,
+  customStartWeek: null,
   enabledBets: [
     'indivWin',
     'finalists',

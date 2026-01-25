@@ -53,7 +53,7 @@ export default function OtherScoreSettings({
           </Text>
         </View>
         <Animated.View style={chevronStyle}>
-          <ChevronDown size={20} color={colors.foreground} />
+          <ChevronDown size={20} color={colors.primary} />
         </Animated.View>
       </Button>
 

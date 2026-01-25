@@ -34,7 +34,7 @@ export default function SetDraftDate({ overrideHash }: SetDraftDateProps) {
       <Modal
         isVisible={modalOpen}
         onClose={handleCancel}>
-        <View className='h-72 w-full rounded-xl bg-card'>
+        <View className='w-full rounded-xl bg-card gap-2'>
           <Text className='text-card-foreground text-center text-lg font-bold'>Set Draft Date</Text>
           <DraftDate
             control={reactForm.control}

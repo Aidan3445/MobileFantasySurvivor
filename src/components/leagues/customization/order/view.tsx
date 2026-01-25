@@ -60,7 +60,7 @@ export default function DraftOrder({ className }: DraftOrderProps) {
   );
 
   return (
-    <View className={cn('w-full rounded-xl bg-card p-3 border-2 border-primary/20', className)}>
+    <View className={cn('w-full rounded-xl bg-card p-2 border-2 border-primary/20', className)}>
       <View className='flex-row items-center justify-between mb-1'>
         <View className='flex-row items-center gap-1'>
           <View className='h-6 w-1 bg-primary rounded-full' />

@@ -30,7 +30,7 @@ export default function SurvivalStreaks() {
   const shotInTheDarkValue = reactForm.watch('shotInTheDarkEnabled');
 
   return (
-    <View className='w-full rounded-xl bg-card p-3 border-2 border-primary/20 gap-3'>
+    <View className='w-full rounded-xl bg-card p-2 border-2 border-primary/20 gap-3'>
       {/* Header */}
       <View className='flex-row items-center justify-between'>
         <View className='flex-row items-center gap-1 h-8'>

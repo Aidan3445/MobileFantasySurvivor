@@ -27,7 +27,7 @@ export default function SurvivalStreaks({
       ) {
         return <ShieldCheck size={20} color='#16a34a' />;
       }
-      return <Skull size={18} color={colors.mutedForeground} />;
+      return <Skull size={18} color={colors.primary} />;
     }
     return (
       <Text className='text-base font-bold'>
@@ -71,7 +71,7 @@ export default function SurvivalStreaks({
             <Text className='text-sm font-medium text-foreground tabular-nums'>
               Point cap: {survivalCap}
             </Text>
-            <Flame size={16} color={colors.mutedForeground} className='ml-1' />
+            <Flame size={16} color={colors.primary} className='ml-1' />
           </View>
         </View>
 

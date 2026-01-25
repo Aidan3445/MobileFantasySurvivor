@@ -20,7 +20,7 @@ export default function BaseEventRules() {
   } = useBaseEventRules();
 
   return (
-    <View className='w-full rounded-xl bg-card p-2'>
+    <View className='w-full rounded-xl bg-card p-2 border-2 border-primary/20 gap-2'>
       <View className='flex-row items-center justify-between'>
         <View className='flex-row items-center gap-1 h-8'>
           <View className='h-6 w-1 bg-primary rounded-full' />
@@ -45,7 +45,7 @@ export default function BaseEventRules() {
           </Button>
         )}
       </View>
-      <Text className='mb-2 text-base text-muted-foreground'>
+      <Text className='text-base text-muted-foreground'>
         These Official Events are automatically scored for your league based on what drafted
         castaways do in the show. Set the point values for each event.
       </Text>
