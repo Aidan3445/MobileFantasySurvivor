@@ -1,14 +1,15 @@
 import { Text, View, TextInput } from 'react-native';
-import Button from '~/components/common/button';
 import { Controller, type UseFormReturn } from 'react-hook-form';
 import { useState } from 'react';
 import { type CustomEventRuleInsert } from '~/types/leagues';
 import { EventTypes, PredictionTimings, ReferenceTypes } from '~/lib/events';
 import SearchableMultiSelect from '~/components/common/searchableMultiSelect';
 import SearchableSelect from '~/components/common/searchableSelect';
-import { useSearchableSelect } from '~/hooks/ui/useSearchableSelect';
 import { cn } from '~/lib/utils';
+import { colors, getPointsColor } from '~/lib/colors';
 import { type EventType, type PredictionTiming, type ReferenceType } from '~/types/events';
+import PredictionTimingHelp from '~/components/leagues/actions/events/predictions/timingHelp';
+import { Flame } from 'lucide-react-native';
 
 interface CustomEventFieldsProps {
   reactForm: UseFormReturn<CustomEventRuleInsert>;
@@ -20,9 +21,6 @@ export default function CustomEventFields({
   predictionDefault
 }: CustomEventFieldsProps) {
   const [isPrediction, setIsPrediction] = useState(predictionDefault ?? false);
-  const typeModal = useSearchableSelect<EventType>();
-  const referenceModal = useSearchableSelect<ReferenceType>();
-  const timingModal = useSearchableSelect<PredictionTiming>();
 
   const eventTypeOptions = EventTypes.map(type => ({ value: type, label: type }));
   const referenceTypeOptions = ReferenceTypes.map(type => ({ value: type, label: type }));
@@ -34,144 +32,158 @@ export default function CustomEventFields({
 
   return (
     <View className='gap-4'>
+      {/* Event Name */}
       <View>
-        <Text className='mb-1 text-sm font-medium'>Event Name</Text>
+        <Text className='text-sm font-bold uppercase tracking-wider text-muted-foreground mb-1'>
+          Event Name
+        </Text>
         <Controller
           control={reactForm.control}
           name='eventName'
           render={({ field }) => (
             <TextInput
-              className={cn(
-                'rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
-              )}
+              className='rounded-lg border-2 border-primary/20 bg-card px-2 py-1 text-left text-base font-bold leading-5'
               placeholder='Enter the name of the event'
+              placeholderTextColor={colors.primary}
               value={field.value}
-              onChangeText={field.onChange}
-            />
-          )}
-        />
+              onChangeText={field.onChange} />
+          )} />
       </View>
+
+      {/* Description */}
       <View>
-        <Text className='mb-1 text-sm font-medium'>Description</Text>
+        <Text className='text-sm font-bold uppercase tracking-wider text-muted-foreground mb-1'>
+          Description
+        </Text>
         <Controller
           control={reactForm.control}
           name='description'
           render={({ field }) => (
             <TextInput
-              className={cn(
-                'h-20 rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
-              )}
+              className='rounded-lg border-2 border-primary/20 bg-card px-2 py-1 text-left text-base leading-5 h-20'
               placeholder='Points awarded to...'
+              placeholderTextColor={colors.primary}
               value={field.value}
               onChangeText={field.onChange}
               multiline
-              textAlignVertical='top'
-            />
-          )}
-        />
+              textAlignVertical='top' />
+          )} />
       </View>
+
+      {/* Reference Type */}
       <View>
-        <Text className='mb-1 text-sm font-medium'>Reference Type</Text>
-        <Button
-          className={cn(
-            'rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
-          )}
-          onPress={referenceModal.openModal}>
-          <Text className='text-muted-foreground'>
-            {selectedReferences.length > 0
-              ? selectedReferences.join(', ')
-              : 'Select reference types'}
-          </Text>
-        </Button>
+        <Text className='text-sm font-bold uppercase tracking-wider text-muted-foreground mb-1'>
+          Reference Type
+        </Text>
         <Controller
           control={reactForm.control}
           name='referenceTypes'
           render={({ field }) => (
             <SearchableMultiSelect<ReferenceType>
-              isVisible={referenceModal.isVisible}
-              onClose={referenceModal.closeModal}
-              options={referenceModal.filterOptions(referenceTypeOptions)}
+              options={referenceTypeOptions}
               selectedValues={selectedReferences}
               onToggleSelect={field.onChange}
-              searchText={referenceModal.searchText}
-              onSearchChange={referenceModal.setSearchText}
-              placeholder='Search reference types...'
-            />
+              placeholder='Search reference types...'>
+              <Text className='text-base flex-shrink'>
+                {selectedReferences?.length > 0
+                  ? selectedReferences.join(', ')
+                  : 'Select prediction timing'}
+              </Text>
+            </SearchableMultiSelect>
           )}
         />
       </View>
+
+      {/* Points & Event Type Row */}
       <View className='flex-row gap-4'>
         <View className='flex-1'>
-          <Text className='mb-1 text-sm font-medium'>Points</Text>
+          <Text className='text-sm font-bold uppercase tracking-wider text-muted-foreground mb-1'>
+            Points
+          </Text>
           <Controller
             control={reactForm.control}
-            name='points'
-            render={({ field }) => (
-              <TextInput
-                className={cn(
-                  'rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
-                )}
-                placeholder='Points'
-                value={field.value?.toString() ?? ''}
-                onChangeText={text => field.onChange(parseInt(text) || 0)}
-                keyboardType='numeric'
-              />
-            )}
-          />
+            name={'points'}
+            render={({ field }) => {
+              const numericValue = typeof field.value === 'number' ? field.value : 0;
+              const sign = numericValue < 0 ? -1 : 1;
+              const absValue = Math.abs(numericValue);
+
+              return (
+                <View className='flex-row items-center'>
+                  <Text
+                    onPress={() => field.onChange(sign * -1 * absValue)}
+                    className={cn(
+                      'text-center text-3xl font-bold leading-none',
+                      sign === 1 ? 'text-positive' : 'text-destructive',
+                      field.value === 0 && 'text-neutral',
+                    )}>
+                    {sign === 1 ? '+' : '−'}
+                  </Text>
+                  <TextInput
+                    className='w-16 rounded-lg border-2 border-primary/20 bg-card px-2 py-1 text-center text-base font-bold leading-5'
+                    keyboardType='number-pad'
+                    value={absValue === 0 ? '' : absValue.toString()}
+                    onChangeText={(text) => {
+                      const next = parseInt(text.replace(/[^0-9]/g, ''), 10);
+                      field.onChange(sign * (Number.isNaN(next) ? 0 : next));
+                    }}
+                    placeholder='0'
+                    placeholderTextColor={colors['muted-foreground']} />
+                  <Flame size={20} color={getPointsColor(numericValue)} />
+                </View>
+              );
+            }} />
         </View>
-        <View className='flex-2'>
-          <Text className='mb-1 text-sm font-medium'>Event Type</Text>
-          <Button
-            className={cn(
-              'rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
+        <View className='flex-[2]'>
+          <Text className='text-sm font-bold uppercase tracking-wider text-muted-foreground mb-1'>
+            Event Type
+          </Text>
+          <Controller
+            control={reactForm.control}
+            name='eventType'
+            render={({ field }) => (
+              <SearchableSelect<EventType>
+                options={eventTypeOptions}
+                selectedValue={selectedEventType}
+                onSelect={value => {
+                  setIsPrediction(value === 'Prediction');
+                  field.onChange(value);
+                  reactForm.trigger('timing');
+                }}
+                placeholder='Search event types...'>
+                <Text className='text-base flex-shrink'>
+                  {selectedEventType ?? 'Select event type'}
+                </Text>
+              </SearchableSelect>
             )}
-            onPress={typeModal.openModal}>
-            <Text className='text-muted-foreground'>
-              {selectedEventType || 'Select event type'}
-            </Text>
-          </Button>
-          <SearchableSelect<EventType>
-            isVisible={typeModal.isVisible}
-            onClose={typeModal.closeModal}
-            options={typeModal.filterOptions(eventTypeOptions)}
-            selectedValue={selectedEventType}
-            onSelect={value => {
-              setIsPrediction(value === 'Prediction');
-              reactForm.setValue('eventType', value as any);
-              reactForm.trigger('timing');
-            }}
-            searchText={typeModal.searchText}
-            onSearchChange={typeModal.setSearchText}
-            placeholder='Search event types...'
           />
         </View>
       </View>
+
+      {/* Timing (only for Prediction type) */}
       {isPrediction && (
         <View>
-          <Text className='mb-1 text-sm font-medium'>Timing</Text>
-          <Button
-            className={cn(
-              'rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
-            )}
-            onPress={timingModal.openModal}>
-            <Text className='text-muted-foreground'>
-              {selectedTimings.length > 0 ? selectedTimings.join(', ') : 'Select prediction timing'}
+          <View className='flex-row items-center gap-2 mb-1'>
+            <Text className='text-sm font-bold uppercase tracking-wider text-muted-foreground'>
+              Timing
             </Text>
-          </Button>
+            <PredictionTimingHelp />
+          </View>
           <Controller
             control={reactForm.control}
             name='timing'
             render={({ field }) => (
               <SearchableMultiSelect<PredictionTiming>
-                isVisible={timingModal.isVisible}
-                onClose={timingModal.closeModal}
-                options={timingModal.filterOptions(timingOptions)}
-                selectedValues={field.value}
+                options={timingOptions}
+                selectedValues={selectedTimings}
                 onToggleSelect={field.onChange}
-                searchText={timingModal.searchText}
-                onSearchChange={timingModal.setSearchText}
-                placeholder='Search timing options...'
-              />
+                placeholder='Search timing options...'>
+                <Text className='text-base flex-shrink'>
+                  {selectedTimings?.length > 0
+                    ? selectedTimings.join(', ')
+                    : 'Select prediction timing'}
+                </Text>
+              </SearchableMultiSelect>
             )}
           />
         </View>

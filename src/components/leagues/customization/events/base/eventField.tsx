@@ -1,7 +1,7 @@
 import { Flame } from 'lucide-react-native';
 import { Controller, type UseFormReturn } from 'react-hook-form';
 import { Text, View, TextInput } from 'react-native';
-import { colors } from '~/lib/colors';
+import { colors, getPointsColor } from '~/lib/colors';
 import { BaseEventDescriptions, BaseEventFullName } from '~/lib/events';
 import { cn } from '~/lib/utils';
 import { BasePredictions } from '~/components/leagues/customization/events/base/predictions';
@@ -26,11 +26,6 @@ export default function EventField({
   const hasItalicDescription =
     BaseEventDescriptions.italics?.[eventName as keyof typeof BaseEventDescriptions.italics];
 
-  const getPointsColor = () => {
-    if (currentValue === 0) return colors.neutral;
-    return currentValue > 0 ? colors.positive : colors.destructive;
-  };
-
   return (
     <View className='gap-1.5 rounded-lg border-2 border-primary/10 bg-primary/5 px-3 py-2'>
       {/* Header Row */}
@@ -52,7 +47,7 @@ export default function EventField({
               )}>
               {currentValue > 0 ? `+${currentValue}` : currentValue}
             </Text>
-            <Flame size={14} color={getPointsColor()} />
+            <Flame size={14} color={getPointsColor(currentValue)} />
           </View>
         ) : (
           <Controller
@@ -84,7 +79,7 @@ export default function EventField({
                     }}
                     placeholder='0'
                     placeholderTextColor={colors['muted-foreground']} />
-                  <Flame size={14} color={getPointsColor()} />
+                  <Flame size={20} color={getPointsColor(numericValue)} />
                 </View>
               );
             }} />

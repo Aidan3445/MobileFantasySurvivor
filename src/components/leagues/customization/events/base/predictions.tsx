@@ -71,9 +71,7 @@ export function BasePredictions({ eventName, reactForm, disabled }: BasePredicti
                 name={`basePredictionRules.${eventName}.points`}
                 render={({ field }) => (
                   <TextInput
-                    className={cn(
-                      'w-16 rounded-lg border-2 border-primary/20 bg-card px-2 py-1 text-center text-base font-bold leading-5'
-                    )}
+                    className='w-16 rounded-lg border-2 border-primary/20 bg-card px-2 py-1 text-center text-base font-bold leading-5'
                     value={field.value?.toString() ?? '0'}
                     onChangeText={text => {
                       const value = parseInt(text) || 0;
@@ -82,7 +80,7 @@ export function BasePredictions({ eventName, reactForm, disabled }: BasePredicti
                     keyboardType='numeric' />
                 )} />
             )}
-            <Flame size={14} color={colors.positive} />
+            <Flame size={20} color={colors.positive} />
           </View>
         )}
       </View>

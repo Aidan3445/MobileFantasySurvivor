@@ -1,4 +1,3 @@
-'use client';
 import { CircleAlert, Lock, LockOpen, Plus } from 'lucide-react-native';
 import { Text, View } from 'react-native';
 import Button from '~/components/common/button';
@@ -6,10 +5,6 @@ import { useCustomEventRules } from '~/hooks/leagues/mutation/useCustomEventRule
 import CustomEventModal from '~/components/leagues/customization/events/custom/modal';
 import CustomEventCard from '~/components/leagues/customization/events/custom/card';
 import { colors } from '~/lib/colors';
-import { type CustomEventRule } from '~/types/leagues';
-import { useCarousel } from '~/hooks/ui/useCarousel';
-import { useEffect } from 'react';
-import Carousel, { Pagination } from 'react-native-reanimated-carousel';
 
 export default function CustomEventRules() {
   const {
@@ -26,26 +21,19 @@ export default function CustomEventRules() {
     leagueMembers
   } = useCustomEventRules();
 
-  const { props, progressProps, setCarouselData } = useCarousel<CustomEventRule[]>([]);
-
-  useEffect(() => {
-    const slides = customRules.reduce((threes, rule, index) => {
-      if (index % 3 === 0) threes.push([]);
-      threes[threes.length - 1]!.push(rule);
-      return threes;
-    }, [] as CustomEventRule[][]);
-    setCarouselData(slides);
-  }, [customRules, setCarouselData]);
-
   return (
-    <View className='w-full rounded-xl bg-card p-2'>
-      <View className='mb-4 flex-row items-center justify-between'>
-        <Text className='text-card-foreground text-lg font-bold'>
-          Custom Events{' '}
-          <Text className='text-sm font-normal text-muted-foreground'>
+    <View className='w-full rounded-xl bg-card p-2 border-2 border-primary/20 gap-2'>
+      {/* Header */}
+      <View className='flex-row items-center justify-between'>
+        <View className='flex-row items-center gap-1 h-8'>
+          <View className='h-6 w-1 bg-primary rounded-full' />
+          <Text className='text-xl font-black uppercase tracking-tight'>
+            Custom Events
+          </Text>
+          <Text className='text-sm font-medium text-muted-foreground'>
             ({customRules.length}/6)
           </Text>
-        </Text>
+        </View>
         {!disabled && (
           <Button
             onPress={() => {
@@ -59,42 +47,45 @@ export default function CustomEventRules() {
             {locked ? (
               <Lock size={24} color={colors.primary} />
             ) : (
-              <LockOpen size={24} color={colors.secondary} />
+              <LockOpen size={24} color={colors.primary} />
             )}
           </Button>
         )}
       </View>
-      <View className='mb-4 gap-2'>
-        <Text className='text-sm leading-relaxed text-muted-foreground'>
+
+      {/* Description */}
+      <View className='gap-2'>
+        <Text className='text-base text-muted-foreground'>
           These <Text className='italic'>Custom Events</Text> let you make your league truly unique!
           Anything can be scored—from speaking the first word of the episode to orchestrating a
-          blindside.
-          {'\n'}The possibilities are endless!
+          blindside.{'\n'}The possibilities are endless!
         </Text>
-        <Text className='text-sm leading-relaxed text-muted-foreground'>
+        <Text className='text-base text-muted-foreground'>
           Custom events require manual scoring. Once your league drafts, you'll see a new tab on
           this page where you can score, edit and delete custom events during the season.
         </Text>
         <View>
-          <Text className='mb-2 text-sm text-muted-foreground'>
+          <Text className='text-base text-muted-foreground'>
             <Text className='italic'>Custom Events</Text> can be scored in two ways:
           </Text>
           <View className='ml-4 gap-1'>
-            <Text className='text-sm text-muted-foreground'>
-              1. <Text className='font-semibold'>Direct</Text>: Points are awarded like{' '}
+            <Text className='text-base text-muted-foreground'>
+              1. <Text className='font-bold'>Direct</Text>: Points are awarded like{' '}
               <Text className='italic'>Official Events</Text>, based on a player's pick.
             </Text>
-            <Text className='text-sm text-muted-foreground'>
-              2. <Text className='font-semibold'>Prediction</Text>: Points are awarded to members
-              who correctly predict an event's outcome. Predictions can be made before each episode
-              or at specific times throughout the season.
+            <Text className='text-base text-muted-foreground'>
+              2. <Text className='font-bold'>Prediction</Text>: Points are awarded to members who
+              correctly predict an event's outcome. Predictions can be made before each episode or
+              at specific times throughout the season.
             </Text>
           </View>
         </View>
       </View>
+
+      {/* Add Button */}
       {!disabled && !locked && (
         <Button
-          className='mb-4 flex-row items-center justify-center gap-2 rounded-lg bg-primary p-3'
+          className='flex-row items-center justify-center gap-2 rounded-lg bg-primary p-3 active:opacity-80'
           disabled={customRules.length >= 6}
           onPress={() => setModalOpen(true)}>
           {customRules.length >= 6 ? (
@@ -103,43 +94,31 @@ export default function CustomEventRules() {
             <Plus size={20} color='white' />
           )}
           <Text className='font-semibold text-white'>
-            {customRules.length >= 6 ? '6 Custom Events Max' : 'Add Custom Event'}
+            {customRules.length >= 6 ? 'Custom Event Limit Reached' : 'Create New Custom Event'}
           </Text>
         </Button>
       )}
+
+      {/* Custom Event Cards */}
       {customRules.length > 0 ? (
-        <View className='relative items-center'>
-          <Carousel
-            height={Math.min(320, 105 * customRules.length)}
-            renderItem={({ item, index }) => (
-              <View
-                key={index}
-                className='flex-col gap-2 px-2'>
-                {item.map(rule => (
-                  <CustomEventCard
-                    key={rule.customEventRuleId}
-                    rule={rule}
-                    locked={disabled || locked}
-                    onUpdate={updateCustomEvent}
-                    onDelete={deleteCustomEvent}
-                    leagueMembers={leagueMembers} />
-                ))}
-              </View>
-            )}
-            {...props}
-            enabled={customRules.length > 3}
-            loop={customRules.length > 3} />
-          {customRules.length > 3 && (
-            <Pagination.Basic
-              {...progressProps}
-              containerStyle={{ ...progressProps.containerStyle, marginBottom: 3 }} />
-          )}
+        <View className='gap-2'>
+          {customRules.map(rule => (
+            <CustomEventCard
+              key={rule.customEventRuleId}
+              rule={rule}
+              locked={disabled || locked}
+              onUpdate={updateCustomEvent}
+              onDelete={deleteCustomEvent}
+              leagueMembers={leagueMembers} />
+          ))}
         </View>
       ) : (
-        <Text className='text-card-foreground px-2 py-8 text-center text-lg font-semibold'>
-          No custom events have been created yet.
+        <Text className='text-base w-full text-center font-bold uppercase tracking-wider text-muted-foreground py-4'>
+          No custom events created yet
         </Text>
       )}
+
+      {/* Create Modal */}
       <CustomEventModal
         type='Create'
         isVisible={modalOpen}
@@ -148,8 +127,7 @@ export default function CustomEventRules() {
           reactForm.reset();
         }}
         onSubmit={() => handleSubmit()}
-        reactForm={reactForm}
-      />
+        reactForm={reactForm} />
     </View>
   );
 }

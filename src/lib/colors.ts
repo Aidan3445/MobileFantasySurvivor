@@ -14,3 +14,8 @@ export const twentyFourColors = [
   '#00ffd5', '#00ffff', '#00d5ff', '#00aaff', '#0055ff', '#0000ff',
   '#2a00ff', '#8000ff', '#d500ff', '#ff00d5', '#ff0080', '#ff002a',
 ];
+
+export const getPointsColor = (currentValue: number) => {
+  if (currentValue === 0) return colors.neutral;
+  return currentValue > 0 ? colors.positive : colors.destructive;
+};
