@@ -51,7 +51,7 @@ export default function LeaguesList() {
           {/* Header */}
           <View className='p-4 flex-row items-center gap-2'>
             <View className='h-full w-1 rounded-full bg-primary' />
-            <Text className='text-xl font-black uppercase tracking-tight text-foreground leading-none'>
+            <Text className='text-xl font-black uppercase tracking-tight text-foreground'>
               {currentLeagues[0]?.league.season}
             </Text>
           </View>
@@ -86,7 +86,7 @@ export default function LeaguesList() {
       )}
 
       {/* Quick Actions */}
-      <QuickActions />
+      <QuickActions showClone={inactiveLeaguesBySeason.length > 0} />
 
       {/* Inactive Leagues by Season */}
       {inactiveLeaguesBySeason.length > 0 && (
@@ -97,8 +97,8 @@ export default function LeaguesList() {
               className='rounded-lg border-2 border-primary/20 bg-card opacity-80 pb-2'>
               {/* Season Header */}
               <View className='flex-row items-center gap-2 p-4'>
-                <View className='h-full w-1 rounded-full bg-secondary' />
-                <Text className='text-xl font-black uppercase tracking-tight text-muted-foreground'>
+                <View className='h-full w-1 rounded-full bg-primary' />
+                <Text className='text-xl font-black uppercase tracking-tight text-foreground'>
                   {season}
                 </Text>
               </View>
@@ -110,7 +110,7 @@ export default function LeaguesList() {
                   member={seasonLeagues[0]!.member}
                   currentSelection={seasonLeagues[0]!.currentSelection} />
               ) : (
-                <LeagueSeasonCarousel leagues={seasonLeagues} refresh />
+                <LeagueSeasonCarousel leagues={seasonLeagues} />
               )}
             </View>
           ))}

@@ -82,12 +82,10 @@ export function useRecreateLeague(hash: string, onSuccess?: () => void) {
         const leagueData = await leagueResponse.json();
         await queryClient.setQueryData(['leagues', newHash], leagueData);
       }
-      router.dismissTo('/leagues');
-      router.prefetch({ pathname: '/leagues/[hash]', params: { hash: newHash } });
+      router.prefetch({ pathname: '/leagues/[hash]/predraft', params: { hash: newHash } });
 
       onSuccess?.();
       Alert.alert('Success', 'League cloned successfully!');
-      router.dismissTo('/leagues');
       router.replace({ pathname: '/leagues/[hash]/predraft', params: { hash: newHash } });
     } catch (error) {
       console.error('Error recreating league:', error);

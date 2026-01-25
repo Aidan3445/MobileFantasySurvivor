@@ -85,7 +85,6 @@ export function useJoinLeague(onSubmit?: () => void) {
       router.prefetch({ pathname: '/leagues/[hash]', params: { hash: hash } });
 
       Alert.alert('Success', `League Joined: ${getPublicLeague.data.name}`);
-      router.dismissTo('/leagues');
       router.replace(`/leagues/${hash}`);
     } catch (error) {
       console.error(error);

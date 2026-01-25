@@ -4,7 +4,6 @@ import { Text, View, Pressable } from 'react-native';
 import { type CurrentSelection, type LeagueMember } from '~/types/leagueMembers';
 import { type League } from '~/types/leagues';
 import ColorRow from '~/components/shared/colorRow';
-import RecreateLeague from '~/components/leagues/actions/create/recreate';
 import { colors } from '~/lib/colors';
 
 interface LeagueCardProps {
@@ -19,7 +18,6 @@ export default function LeagueCard({
   league,
   member,
   currentSelection,
-  refresh,
   width,
 }: LeagueCardProps) {
   return (
@@ -28,7 +26,7 @@ export default function LeagueCard({
         <Pressable className='flex-1 rounded-lg border-2 border-primary/20 bg-primary/5 p-3 active:border-primary/30 active:bg-primary/10'>
           {/* Header */}
           <View className='flex-row items-start justify-between gap-2'>
-            <Text className='flex-1 text-lg font-bold leading-tight text-foreground'>
+            <Text className='flex-1 text-lg font-bold leading-none text-foreground'>
               {league.name}
             </Text>
             <ChevronRight size={20} color={colors.primary} />
@@ -62,9 +60,6 @@ export default function LeagueCard({
           </View>
         </Pressable>
       </Link>
-
-      {/* Clone League Button - Outside of Link to prevent navigation */}
-      {refresh && <RecreateLeague hash={league.hash} />}
     </View>
   );
 }

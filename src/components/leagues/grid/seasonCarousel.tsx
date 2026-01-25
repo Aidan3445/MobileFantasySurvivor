@@ -36,10 +36,8 @@ export default function LeagueSeasonCarousel({ leagues, refresh }: LeagueSeasonC
             league={item.league}
             member={item.member}
             currentSelection={item.currentSelection}
-            refresh={refresh}
-          />
-        )}
-      />
+            refresh={refresh} />
+        )} />
       {props.data.length > 1 && (
         <View className='items-center'>
           <Pagination.Basic

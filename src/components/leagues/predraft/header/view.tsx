@@ -39,8 +39,8 @@ export default function PredraftHeader({ inSettings }: PredraftHeaderProps) {
             if (inSettings) {
               router.back();
             } else {
-              if (router.canDismiss()) router.dismissTo('/leagues');
-              router.replace('/leagues');
+              if (router.canGoBack()) router.back();
+              else router.replace('/leagues');
             }
           }}>
           <Text className='text-lg'>
