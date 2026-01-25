@@ -14,7 +14,6 @@ import AirStatus from '~/components/shared/episodes/airStatus';
 import { BaseEventFullName } from '~/lib/events';
 import { getAirStatusPollingInterval } from '~/lib/episodes';
 import { type SeasonsDataQuery } from '~/types/seasons';
-import { cn } from '~/lib/utils';
 import {
   type SelectionTimelines,
   type League,
@@ -261,7 +260,7 @@ export default function TimelineFilters({
                 selectedValues={filterCastaway}
                 onToggleSelect={(value) => setFilterCastaway(value)}
                 placeholder='Search castaways...'>
-                <View className={cn('min-w-[224px]', hideMemberFilter ? 'w-1/3' : 'w-1/4')}>
+                <View>
                   <Text className='text-sm text-foreground'>
                     {getSelectedCastawayLabel()}
                   </Text>
@@ -284,7 +283,7 @@ export default function TimelineFilters({
                 selectedValues={filterTribe}
                 onToggleSelect={(value) => setFilterTribe(value)}
                 placeholder='Search tribes...'>
-                <View className={cn('min-w-[224px]', hideMemberFilter ? 'w-1/3' : 'w-1/4')}>
+                <View>
                   <Text className='text-sm text-foreground'>
                     {getSelectedTribeLabel()}
                   </Text>
@@ -307,7 +306,7 @@ export default function TimelineFilters({
                 selectedValues={filterMember}
                 onToggleSelect={(value) => setFilterMember(value)}
                 placeholder='Search members...'>
-                <View className={cn('min-w-[224px]', hideMemberFilter ? 'w-1/3' : 'w-1/4')}>
+                <View>
                   <Text className='text-sm text-foreground'>
                     {getSelectedMemberLabel()}
                   </Text>
@@ -326,7 +325,7 @@ export default function TimelineFilters({
               selectedValues={filterEvent}
               onToggleSelect={(value) => setFilterEvent(value)}
               placeholder='Search events...'>
-              <View className={cn('min-w-[224px]', hideMemberFilter ? 'w-1/3' : 'w-1/4')}>
+              <View>
                 <Text className='text-sm text-foreground'>
                   {getSelectedEventLabel()}
                 </Text>

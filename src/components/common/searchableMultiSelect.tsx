@@ -52,7 +52,7 @@ export default function SearchableMultiSelect<T extends string | number>({
     if (children) {
       return (
         <Button
-          className='w-full mx-10 flex-row items-center justify-between rounded-lg border-2 border-primary/20 bg-primary/5 px-3 py-2 active:bg-primary/10'
+          className='w-full flex-row items-center justify-between rounded-lg border-2 border-primary/20 bg-primary/5 px-3 py-2 active:bg-primary/10'
           onPress={openModal}>
           {children}
           <View className='flex-row items-center gap-1'>
