@@ -14,10 +14,10 @@ export default function QuickActions({ showClone, className }: QuickActionsProps
   const router = useRouter();
 
   return (
-    <View className='w-full gap-3'>
-      <View className={cn('flex-row gap-3', className)}>
+    <View className={cn('w-full gap-3', className)}>
+      <View className='flex-row gap-3'>
         <Button
-          className='flex-1 flex-row items-center rounded-lg border-2 border-primary/30 bg-card/30 p-2 active:bg-primary/20'
+          className='flex-1 flex-row items-center rounded-lg border-2 border-primary/30 bg-accent p-2 active:bg-primary/20'
           onPress={() => router.push('/create')}>
           <View className='mr-1 h-10 w-10 items-center justify-center rounded-full bg-primary/20'>
             <ListPlus size={20} color={colors.primary} />
@@ -30,7 +30,7 @@ export default function QuickActions({ showClone, className }: QuickActionsProps
         </Button>
 
         <Button
-          className='flex-1 flex-row items-center rounded-lg border-2 border-primary/30 bg-card/30 p-2 active:bg-primary/20'
+          className='flex-1 flex-row items-center rounded-lg border-2 border-primary/30 bg-accent p-2 active:bg-primary/20'
           onPress={() => router.push('/join')}>
           <View className='mr-1 h-10 w-10 items-center justify-center rounded-full bg-primary/20'>
             <Users size={20} color={colors.primary} />
@@ -45,7 +45,7 @@ export default function QuickActions({ showClone, className }: QuickActionsProps
 
       {showClone && (
         <Button
-          className='flex-row items-center rounded-lg border-2 border-primary/30 bg-card/30 p-2 active:bg-primary/20'
+          className='flex-row items-center rounded-lg border-2 border-primary/30 bg-accent p-2 active:bg-primary/20'
           onPress={() => router.push('/recreate')}>
           <View className='mr-3 h-10 w-10 items-center justify-center rounded-full bg-primary/20'>
             <Recycle size={20} color={colors.primary} />

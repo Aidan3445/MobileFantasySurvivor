@@ -47,7 +47,7 @@ export default function LeaguesList() {
     <View className='w-full gap-4'>
       {/* Active Leagues Section */}
       {currentLeagues.length > 0 ? (
-        <View className='rounded-lg border-2 border-primary/20 bg-card pb-2'>
+        <View className='rounded-xl border-2 border-primary/20 bg-card pb-2'>
           {/* Header */}
           <View className='p-4 flex-row items-center gap-2'>
             <View className='h-full w-1 rounded-full bg-primary' />
@@ -67,7 +67,7 @@ export default function LeaguesList() {
           )}
         </View>
       ) : (
-        <View className='rounded-lg border-2 border-primary/20 bg-card p-4'>
+        <View className='rounded-xl border-2 border-primary/20 bg-card p-4'>
           <View className='mb-4 flex-row items-center gap-2'>
             <View className='h-full w-1 rounded-full bg-primary' />
             <Text className='text-xl font-black uppercase tracking-tight text-foreground'>
@@ -86,7 +86,9 @@ export default function LeaguesList() {
       )}
 
       {/* Quick Actions */}
-      <QuickActions showClone={inactiveLeaguesBySeason.length > 0} />
+      <QuickActions
+        className='rounded-xl border-2 border-primary/20 bg-card opacity-80 p-2'
+        showClone={inactiveLeaguesBySeason.length > 0} />
 
       {/* Inactive Leagues by Season */}
       {inactiveLeaguesBySeason.length > 0 && (
@@ -94,7 +96,7 @@ export default function LeaguesList() {
           {inactiveLeaguesBySeason.map(({ season, leagues: seasonLeagues }) => (
             <View
               key={season}
-              className='rounded-lg border-2 border-primary/20 bg-card opacity-80 pb-2'>
+              className='rounded-xl border-2 border-primary/20 bg-card opacity-80 pb-2'>
               {/* Season Header */}
               <View className='flex-row items-center gap-2 p-4'>
                 <View className='h-full w-1 rounded-full bg-primary' />
