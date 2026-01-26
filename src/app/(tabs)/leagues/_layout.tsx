@@ -1,20 +1,17 @@
 import { Stack } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import UnifiedLeagueHeader from '~/components/leagues/shared/header/view';
 
 export default function LeaguesLayout() {
   return (
-    <Stack
-      initialRouteName='index'
-      screenOptions={{
-        headerShown: false,
-      }}>
-      <Stack.Screen
-        name='index'
-        options={{
-          animation: 'slide_from_left',
-        }} />
-      <Stack.Screen name='[hash]/index' />
-      <Stack.Screen name='[hash]/predraft' />
-      <Stack.Screen name='[hash]/draft' />
-    </Stack>
+    <SafeAreaView edges={['top']} className='flex-1 bg-background relative'>
+      <UnifiedLeagueHeader />
+      <Stack initialRouteName='index' screenOptions={{ headerShown: false }}>
+        <Stack.Screen name='index' options={{ animation: 'slide_from_left' }} />
+        <Stack.Screen name='[hash]/index' />
+        <Stack.Screen name='[hash]/predraft' />
+        <Stack.Screen name='[hash]/draft' />
+      </Stack>
+    </SafeAreaView>
   );
 }

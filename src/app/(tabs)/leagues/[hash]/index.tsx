@@ -1,6 +1,5 @@
 'use client';
 
-import { Text, View } from 'react-native';
 import { Redirect, useLocalSearchParams } from 'expo-router';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 import LoadingScreen from '~/components/auth/loadingScreen';
@@ -22,9 +21,5 @@ export default function LeagueDetailScreen() {
   if (league.status === 'Predraft') return <Redirect href={`/leagues/${hash}/predraft`} />;
   if (league.status === 'Draft') return <Redirect href={`/leagues/${hash}/draft`} />;
 
-  return (
-    <View className='flex-1 items-center justify-center bg-background'>
-      <Text className='text-center text-2xl font-bold text-primary'>League Hash: {hash}</Text>
-    </View>
-  );
+  return <Redirect href={`/leagues/${hash}/hub`} />;
 }

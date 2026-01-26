@@ -3,7 +3,6 @@ import BaseEventRules from '~/components/leagues/customization/events/base/view'
 import CustomEventRules from '~/components/leagues/customization/events/custom/view';
 import ShauhinMode from '~/components/leagues/customization/events/shauhin/view';
 import SurvivalStreaks from '~/components/leagues/customization/settings/survivalStreak/view';
-import PredraftHeader from '~/components/leagues/predraft/header/view';
 import { useLeagueRefresh } from '~/hooks/helpers/refresh/useLeagueRefresh';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import RefreshIndicator from '~/components/common/refresh';
@@ -19,7 +18,6 @@ export default function LeagueSettingsScreen() {
 
   return (
     <SafeAreaView edges={['top']} className='flex-1 bg-background relative'>
-      <PredraftHeader inSettings />
       <RefreshIndicator refreshing={refreshing} scrollY={scrollY} />
       <ScrollView
         className='w-full'

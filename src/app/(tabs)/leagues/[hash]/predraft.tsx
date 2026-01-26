@@ -6,11 +6,9 @@ import CustomEventRules from '~/components/leagues/customization/events/custom/v
 import ShauhinMode from '~/components/leagues/customization/events/shauhin/view';
 import SurvivalStreaks from '~/components/leagues/customization/settings/survivalStreak/view';
 import { DraftCountdown } from '~/components/leagues/predraft/countdown/view';
-import PredraftHeader from '~/components/leagues/predraft/header/view';
 import InviteLink from '~/components/leagues/predraft/inviteLink/view';
 import DraftOrder from '~/components/leagues/customization/order/view';
 import { useLeagueRefresh } from '~/hooks/helpers/refresh/useLeagueRefresh';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import RefreshIndicator from '~/components/common/refresh';
 import { cn } from '~/lib/utils';
 
@@ -18,8 +16,7 @@ export default function PredraftScreen() {
   const { refreshing, onRefresh, scrollY, handleScroll } = useLeagueRefresh();
 
   return (
-    <SafeAreaView edges={['top']} className='flex-1 bg-background relative'>
-      <PredraftHeader />
+    <>
       <RefreshIndicator refreshing={refreshing} scrollY={scrollY} />
       <ScrollView
         className='w-full'
@@ -55,6 +52,6 @@ export default function PredraftScreen() {
           <CustomEventRules />
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </>
   );
 }

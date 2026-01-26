@@ -5,7 +5,6 @@ import { Redirect, useLocalSearchParams, useRouter } from 'expo-router';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 import { useLeagueActionDetails } from '~/hooks/leagues/enrich/useActionDetails';
 import { useEffect, useRef, useMemo } from 'react';
-import DraftHeader from '~/components/leagues/draft/header/view';
 import DraftOrder from '~/components/leagues/draft/order/view';
 import ChooseCastaway from '~/components/leagues/draft/chooseCastaway/view';
 import PredictionsCarousel from '~/components/leagues/draft/predictions/view';
@@ -79,9 +78,8 @@ export default function DraftTrackerScreen() {
   return (
     <View className='flex-1 items-center justify-center bg-background'>
       <RefreshIndicator refreshing={refreshing} scrollY={scrollY} />
-      <DraftHeader />
       <ScrollView
-        className='w-full pt-28'
+        className='w-full pt-8'
         showsVerticalScrollIndicator={false}
         onScroll={handleScroll}
         refreshControl={

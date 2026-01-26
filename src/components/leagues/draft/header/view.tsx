@@ -24,7 +24,7 @@ export default function DraftHeader({ inCastawaysView }: DraftHeaderProps) {
   };
 
   const handleCastawaysPress = () => {
-    router.push(`/(tabs)/leagues/${league?.hash}/draft/castaways`);
+    router.push(`/(modals)/castaways?hash=${league?.hash}`);
   };
 
   return (
