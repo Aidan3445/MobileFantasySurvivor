@@ -16,14 +16,14 @@ export default function PredraftScreen() {
   const { refreshing, onRefresh, scrollY, handleScroll } = useLeagueRefresh();
 
   return (
-    <>
-      <RefreshIndicator refreshing={refreshing} scrollY={scrollY} />
+    <View className='flex-1 bg-background relative'>
+      <RefreshIndicator refreshing={refreshing} scrollY={scrollY} extraHeight={-50} />
       <ScrollView
         className='w-full'
         showsVerticalScrollIndicator={true}
         onScroll={handleScroll}
         scrollEventThrottle={16}
-        scrollIndicatorInsets={{ top: 10 }}
+        scrollIndicatorInsets={{ top: 16 }}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -33,7 +33,7 @@ export default function PredraftScreen() {
             progressBackgroundColor='transparent' />
         }>
         <View className={cn(
-          'page justify-start gap-y-4 transition-all px-1.5 pt-8',
+          'page justify-start gap-y-4 transition-all px-1.5 pt-8 pb-1.5',
           refreshing && 'pt-12'
         )}>
           <InviteLink />
@@ -52,6 +52,6 @@ export default function PredraftScreen() {
           <CustomEventRules />
         </View>
       </ScrollView>
-    </>
+    </View>
   );
 }

@@ -4,7 +4,6 @@ import CustomEventRules from '~/components/leagues/customization/events/custom/v
 import ShauhinMode from '~/components/leagues/customization/events/shauhin/view';
 import SurvivalStreaks from '~/components/leagues/customization/settings/survivalStreak/view';
 import { useLeagueRefresh } from '~/hooks/helpers/refresh/useLeagueRefresh';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import RefreshIndicator from '~/components/common/refresh';
 import { cn } from '~/lib/utils';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
@@ -17,14 +16,14 @@ export default function LeagueSettingsScreen() {
   const { data: leagueMembers } = useLeagueMembers();
 
   return (
-    <SafeAreaView edges={['top']} className='flex-1 bg-background relative'>
-      <RefreshIndicator refreshing={refreshing} scrollY={scrollY} />
+    <View className='flex-1 bg-background relative'>
+      <RefreshIndicator refreshing={refreshing} scrollY={scrollY} extraHeight={-50} />
       <ScrollView
         className='w-full'
         showsVerticalScrollIndicator={true}
         onScroll={handleScroll}
         scrollEventThrottle={16}
-        scrollIndicatorInsets={{ top: 10 }}
+        scrollIndicatorInsets={{ top: 16 }}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -35,7 +34,7 @@ export default function LeagueSettingsScreen() {
         }>
         <View
           className={cn(
-            'page justify-start gap-4 px-1.5 pt-8 pb-8',
+            'page justify-start gap-4 px-1.5 pt-8 pb-1.5',
             refreshing && 'pt-12'
           )}>
           <LeagueSettings
@@ -59,6 +58,6 @@ export default function LeagueSettingsScreen() {
           )}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

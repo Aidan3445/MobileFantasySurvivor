@@ -18,15 +18,27 @@ export default function useLeaguesHeader() {
   const { data: league } = useLeague(hashFromPath);
 
   // Page state flags
-  const pageState = useMemo(() => ({
-    isModal: !pathname.includes('leagues'),
-    isCastawaysModal: pathname.includes('castaways'),
-    isIndex: pathname === '/leagues',
-    isPredraft: pathname.includes('/predraft'),
-    isDraft: pathname.includes('/draft'),
-    isSettings: pathname.includes('/settings'),
-    isLeagueHub: pathname.includes('/hub'),
-  }), [pathname]);
+  const pageState = useMemo(() => {
+    const isIndex = pathname === '/leagues';
+    const isPredraft = pathname.includes('/predraft');
+    const isDraft = pathname.includes('/draft');
+    const isSettings = pathname.includes('/settings');
+    const isModal = !pathname.includes('leagues');
+    const isCastawaysModal = pathname.includes('castaways');
+
+    // Hub is now any [hash] route that isn't predraft/draft/settings
+    const isLeagueHub = !!hashFromPath && !isPredraft && !isDraft && !isSettings;
+
+    return {
+      isModal,
+      isCastawaysModal,
+      isIndex,
+      isPredraft,
+      isDraft,
+      isSettings,
+      isLeagueHub,
+    };
+  }, [pathname, hashFromPath]);
 
   const { isModal, isCastawaysModal, isIndex, isPredraft, isDraft, isSettings, isLeagueHub } = pageState;
 
@@ -70,7 +82,11 @@ export default function useLeaguesHeader() {
     const animate = async () => {
       // Crush
       while (currentText.length > 0 && !newState.cancelled) {
-        currentText = currentText.slice(0, -1);
+        if (currentText.length > 30) {
+          currentText = currentText.slice(0, 30);
+        } else {
+          currentText = currentText.slice(0, -1);
+        }
         setDisplayedText(currentText);
         // eslint-disable-next-line no-undef
         await new Promise(r => setTimeout(r, 0));
@@ -81,6 +97,13 @@ export default function useLeaguesHeader() {
         setDisplayedText(currentText);
         // eslint-disable-next-line no-undef
         await new Promise(r => setTimeout(r, 0));
+
+        // We only display a max of ~30 characters before marquee kicks in
+        // so if we exceed that, jump to the full title
+        if (currentText.length >= 30) {
+          setDisplayedText(title);
+          break;
+        }
       }
     };
 
@@ -96,12 +119,12 @@ export default function useLeaguesHeader() {
   }, [router]);
 
   const handleSettingsPress = useCallback(() => {
-    router.push('./settings');
-  }, [router]);
+    if (hashFromPath) router.push(`/leagues/${hashFromPath}/settings`);
+  }, [router, hashFromPath]);
 
   const handleUsersPress = useCallback(() => {
-    if (league?.hash) router.push(`/(modals)/castaways?hash=${league.hash}`);
-  }, [router, league?.hash]);
+    if (hashFromPath) router.push(`/(modals)/castaways?hash=${hashFromPath}`);
+  }, [router, hashFromPath]);
 
   return {
     height,

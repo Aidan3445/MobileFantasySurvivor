@@ -2,10 +2,11 @@
 import { useIsFetching } from '@tanstack/react-query';
 import { Tabs, useLocalSearchParams, usePathname, useRouter } from 'expo-router';
 import { BookUser, Flame, Trophy, UserCircle2 } from 'lucide-react-native';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect } from 'react';
 import { Animated, Image, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import LoadingScreen from '~/components/auth/loadingScreen';
+import useFadeLoading from '~/hooks/ui/useFadeLoading';
 import { colors } from '~/lib/colors';
 
 
@@ -16,40 +17,11 @@ export default function TabLayout() {
   const pathname = usePathname();
   const router = useRouter();
   const isFetching = useIsFetching();
-  const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
-  const [showLoadingScreen, setShowLoadingScreen] = useState(true);
-  const fadeAnim = useRef(new Animated.Value(1)).current;
+  const { showLoading, fadeAnim } = useFadeLoading({ isLoading: isFetching > 0 });
 
   const insets = useSafeAreaInsets();
   const isAndroid = Platform.OS === 'android';
 
-  useEffect(() => {
-    // eslint-disable-next-line no-undef
-    let timeoutRef: ReturnType<typeof setTimeout> | null = null;
-
-    if (isFetching === 0 && !hasLoadedOnce) {
-      // eslint-disable-next-line no-undef
-      timeoutRef = setTimeout(() => {
-        setHasLoadedOnce(true);
-        // Fade out animation
-        Animated.timing(fadeAnim, {
-          toValue: 0,
-          duration: 400,
-          useNativeDriver: true,
-        }).start(() => {
-          // Hide the loading screen after animation completes
-          setShowLoadingScreen(false);
-        });
-      }, 50);
-    }
-
-    return () => {
-      if (timeoutRef) {
-        // eslint-disable-next-line no-undef
-        clearTimeout(timeoutRef);
-      }
-    };
-  }, [isFetching, hasLoadedOnce, fadeAnim]);
 
   const isLeaguesPath = pathname.startsWith('/leagues');
   const isOnLeaguesIndex = pathname === '/leagues';
@@ -135,7 +107,7 @@ export default function TabLayout() {
           }} />
       </Tabs>
 
-      {showLoadingScreen && (
+      {showLoading && (
         <Animated.View
           style={{ opacity: fadeAnim }}
           className='absolute inset-0 z-50 bg-background'
