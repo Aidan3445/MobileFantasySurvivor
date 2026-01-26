@@ -1,4 +1,6 @@
 import { useMemo, useCallback } from 'react';
+import { Text, View } from 'react-native';
+import ColorRow from '~/components/shared/colorRow';
 import { useEnrichedTribeMembers } from '~/hooks/seasons/enrich/useEnrichedTribeMembers';
 import { type ReferenceType } from '~/types/events';
 
@@ -17,15 +19,32 @@ export function useEventOptions(seasonId: number | null, selectedEpisode: number
       tribeMembersArray.map(({ tribe }) => ({
         value: tribe.tribeId,
         label: tribe.tribeName,
-        color: tribe.tribeColor
+        renderLabel: () => (
+          <View className='flex-row items-center gap-2'>
+            <ColorRow color={tribe.tribeColor} className='w-min px-1 py-0'>
+              <Text className='text-base font-medium'>{tribe.tribeName}</Text>
+            </ColorRow>
+          </View>
+        ),
       })),
     [tribeMembersArray]
   );
 
   const castawayOptions = useMemo(
     () =>
-      tribeMembersArray.flatMap(({ castaways }) =>
-        castaways.map(castaway => ({ value: castaway.castawayId, label: castaway.fullName }))
+      tribeMembersArray.flatMap(({ tribe, castaways }) =>
+        castaways.map(castaway => ({
+          value: castaway.castawayId,
+          label: castaway.fullName,
+          renderLabel: () => (
+            <View className='flex-row items-center gap-2'>
+              <ColorRow color={tribe.tribeColor} className='w-min px-1 py-0'>
+                <Text className='text-base font-medium'>{tribe.tribeName}</Text>
+              </ColorRow>
+              <Text className='text-base font-medium'>{castaway.fullName}</Text>
+            </View>
+          )
+        }))
       ),
     [tribeMembersArray]
   );
@@ -36,12 +55,13 @@ export function useEventOptions(seasonId: number | null, selectedEpisode: number
       ...tribeOptions.map(tribe => ({
         label: tribe.label,
         value: `Tribe_${tribe.value}`,
-        color: tribe.color
+        renderLabel: tribe.renderLabel
       })),
       { label: 'Castaways', value: null },
       ...castawayOptions.map(castaway => ({
         label: castaway.label,
-        value: `Castaway_${castaway.value}`
+        value: `Castaway_${castaway.value}`,
+        renderLabel: castaway.renderLabel
       }))
     ],
     [tribeOptions, castawayOptions]

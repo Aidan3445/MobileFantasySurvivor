@@ -10,6 +10,7 @@ import EditEvent from '~/components/leagues/actions/events/edit';
 import { useEventLabel } from '~/hooks/helpers/useEventLabel';
 import CastawayModal from '~/components/shared/castaways/castawayModal';
 import Modal from '~/components/common/modal';
+import MarqueeText from '~/components/common/marquee';
 
 interface EventRowProps {
   className?: string;
@@ -78,7 +79,7 @@ export default function EventRow({
           {event.referenceMap?.map(({ tribe }, index) =>
             tribe ? (
               <ColorRow key={index} className='leading-tight' color={tribe.tribeColor}>
-                <Text className='text-base text-foreground'>
+                <Text className='text-base text-foreground ml-1'>
                   {tribe.tribeName}
                 </Text>
               </ColorRow>
@@ -96,7 +97,7 @@ export default function EventRow({
               className='leading-tight'
               color={castaway.tribe?.color ?? '#AAAAAA'}>
               <CastawayModal castaway={castaway}>
-                <Text className='text-base text-foreground'>{castaway.shortName}</Text>
+                <Text className='text-base text-foreground ml-1'>{castaway.shortName}</Text>
               </CastawayModal>
             </ColorRow>
           ))
@@ -105,7 +106,7 @@ export default function EventRow({
 
       {/* Members */}
       {!noMembers && (
-        <View className='min-w-[120px] flex-1 justify-center gap-0.5'>
+        <View className='w-24 justify-center gap-0.5'>
           {event.referenceMap?.map(({ pairs }, index) =>
             pairs.map(({ castaway, member, secondaries }) => (
               <View
@@ -113,7 +114,13 @@ export default function EventRow({
                 className='flex-row items-center gap-1'>
                 {member ? (
                   <ColorRow className='leading-tight' color={member.color}>
-                    {member.displayName}
+                    <MarqueeText
+                      text={member.displayName}
+                      className={cn(
+                        'text-base transition-all text-black cursor-pointer ml-1',
+                        member.loggedIn && 'text-primary'
+                      )}
+                      containerClassName='flex-row' />
                   </ColorRow>
                 ) : (
                   <ColorRow
@@ -122,7 +129,9 @@ export default function EventRow({
                       'leading-tight text-muted-foreground',
                       (secondaries?.length === 0 || !event.points) && 'opacity-0'
                     )}>
-                    None
+                    <Text className='text-base text-foreground ml-1'>
+                      None
+                    </Text>
                   </ColorRow>
                 )}
                 {secondaries && secondaries.length > 0 && !!event.points && (
@@ -154,7 +163,9 @@ export default function EventRow({
               key={`secondary-${secMember.memberId}`}
               className='leading-tight'
               color={secMember.color}>
-              {secMember.displayName}
+              <Text className='text-lg font-medium text-foreground ml-1'>
+                {secMember.displayName}
+              </Text>
             </ColorRow>
           ))}
         </View>

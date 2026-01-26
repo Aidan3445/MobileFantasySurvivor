@@ -145,14 +145,14 @@ export default function EpisodeEventsTableBody({
           </Text>
         </View>
         {!noMembers && (
-          <View className='min-w-[120px] flex-1'>
+          <View className='w-24'>
             <Text className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
               Members
             </Text>
           </View>
         )}
-        <View className='w-12'>
-          <Text className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+        <View className='w-20'>
+          <Text className='text-right text-xs font-bold uppercase tracking-wider text-muted-foreground'>
             Notes
           </Text>
         </View>

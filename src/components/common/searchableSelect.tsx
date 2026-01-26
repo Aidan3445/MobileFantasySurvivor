@@ -16,6 +16,7 @@ interface SearchableSelectProps<T extends string | number> {
   footerComponent?: ReactNode;
   children?: ReactNode;
   asChild?: boolean;
+  disabled?: boolean;
 }
 
 export default function SearchableSelect<T extends string | number>({
@@ -28,6 +29,7 @@ export default function SearchableSelect<T extends string | number>({
   footerComponent,
   children,
   asChild,
+  disabled
 }: SearchableSelectProps<T>) {
   const { isVisible, searchText, setSearchText, openModal, closeModal, filterOptions } =
     useSearchableSelect<T>(overrideState);
@@ -41,6 +43,7 @@ export default function SearchableSelect<T extends string | number>({
       return (
         <Button
           className='w-full flex-row items-center justify-between rounded-lg border-2 border-primary/20 bg-primary/5 px-3 py-2 active:bg-primary/10'
+          disabled={disabled}
           onPress={openModal}>
           {children}
           <ChevronDown size={18} color={colors['muted-foreground']} />
@@ -52,6 +55,7 @@ export default function SearchableSelect<T extends string | number>({
     return (
       <Button
         className='w-full flex-row items-center justify-between rounded-lg border-2 border-primary/20 bg-primary/5 px-3 py-2 active:bg-primary/10'
+        disabled={disabled}
         onPress={openModal}>
         {selectedOption ? (
           selectedOption.renderLabel ? (
@@ -89,6 +93,16 @@ export default function SearchableSelect<T extends string | number>({
           keyExtractor={(item) => String(item.value)}
           ItemSeparatorComponent={() => <View className='h-1' />}
           renderItem={({ item }) => {
+            if (!item.value) {
+              return (
+                <View className='px-3 py-2'>
+                  <Text className='text-center font-bold tracking-widest text-primary'>
+                    {item.label}
+                  </Text>
+                </View>
+              );
+            }
+
             const isSelected = selectedValue === item.value;
             return (
               <Button
@@ -97,7 +111,7 @@ export default function SearchableSelect<T extends string | number>({
                 disabled={item.disabled}
                 onPress={() => {
                   if (item.disabled) return;
-                  onSelect(item.value);
+                  onSelect(item.value!);
                   closeModal();
                 }}>
                 <View className='w-6'>
@@ -119,8 +133,7 @@ export default function SearchableSelect<T extends string | number>({
               <Text className='text-muted-foreground'>{emptyMessage}</Text>
             </View>
           }
-          ListFooterComponent={footerComponent as ReactElement}
-        />
+          ListFooterComponent={footerComponent as ReactElement} />
       </Modal>
       {renderTrigger()}
     </>

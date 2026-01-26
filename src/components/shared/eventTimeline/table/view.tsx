@@ -1,7 +1,7 @@
 import { Fragment, useMemo } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import EpisodeEventsTableBody from '~/components/shared/eventTimeline/table/body';
-import { findTribeCastaways } from '~/lib/utils';
+import { cn, findTribeCastaways } from '~/lib/utils';
 import { type Prediction, type EventWithReferences } from '~/types/events';
 import { type SeasonsDataQuery } from '~/types/seasons';
 import type { LeagueData } from '~/components/shared/eventTimeline/filters';
@@ -18,6 +18,7 @@ export interface EpisodeEventsProps {
     member: number[];
     event: string[];
   };
+  className?: string;
 }
 
 export type EventWithReferencesAndPredOnly = EventWithReferences & {
@@ -35,6 +36,7 @@ export default function EpisodeEvents({
   mockEvents,
   edit,
   filters,
+  className,
 }: EpisodeEventsProps) {
   const { league, selectionTimeline, customEvents, basePredictions } = leagueData ?? {};
 
@@ -276,7 +278,7 @@ export default function EpisodeEvents({
   const noMembers = useMemo(() => !selectionTimeline || !league, [selectionTimeline, league]);
 
   return (
-    <View className='bg-card'>
+    <View className={cn('bg-card', className)}>
       {episodes
         ?.filter((episode) => episodeNumber === -1 || episode.episodeNumber === episodeNumber)
         .map((episode) => (

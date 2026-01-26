@@ -29,7 +29,7 @@ export default function AirStatus({
           airStatus === 'Upcoming' && 'bg-amber-500',
           airStatus === 'Airing' && 'bg-green-600'
         )}>
-        <Text className='text-xs text-white'>{airStatus}</Text>
+        <Text className='text-xs text-white font-medium leading-none py-0.5'>{airStatus}</Text>
       </View>
     </View>
   );

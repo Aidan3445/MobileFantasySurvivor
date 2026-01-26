@@ -14,7 +14,7 @@ export default function NotesCell({ notes }: NotesCellProps) {
 
   if (!filteredNotes || filteredNotes.length === 0) {
     return (
-      <View className='w-12 items-end justify-center'>
+      <View className='w-20 items-end justify-center'>
         <ScrollText size={32} color='#888' />
       </View>
     );
