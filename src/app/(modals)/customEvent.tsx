@@ -1,11 +1,11 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { View, Text, KeyboardAvoidingView, Platform } from 'react-native';
 import Button from '~/components/common/button';
-import CreateLeagueHeader from '~/components/leagues/actions/create/header/view';
+import CustomEventHeader from '~/components/leagues/actions/events/header/view';
 import { useLeagueRules } from '~/hooks/leagues/query/useRules';
 
 
-export default function CreateCustomEventScreen() {
+export default function CustomEventScreen() {
   const { hash } = useLocalSearchParams<{ hash: string }>();
   const { data: leagueRules, isFetching, isError } = useLeagueRules(hash);
   const router = useRouter();
@@ -13,6 +13,7 @@ export default function CreateCustomEventScreen() {
   if (isFetching) {
     return (
       <View className='page py-16 justify-center items-center'>
+        <CustomEventHeader />
         <Text className='text-lg text-center'>Loading League Rules...</Text>
       </View>
     );
@@ -34,7 +35,7 @@ export default function CreateCustomEventScreen() {
 
   return (
     <View className='page py-16'>
-      <CreateLeagueHeader />
+      <CustomEventHeader />
 
       <KeyboardAvoidingView
         className='flex-1'

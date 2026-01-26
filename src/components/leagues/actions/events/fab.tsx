@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { Plus } from 'lucide-react-native';
+import { Pencil } from 'lucide-react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   useAnimatedStyle,
@@ -66,7 +66,7 @@ export default function EventFAB({ hash, isLeagueAdmin, isSysAdmin, isActive }: 
     });
 
   const navigate = useCallback(() => {
-    if (!isSysAdmin) {
+    if (isSysAdmin) {
       router.push(`/(modals)/sysAdmin?hash=${hash}`);
     } else if (isLeagueAdmin) {
       router.push(`/(modals)/customEvent?hash=${hash}`);
@@ -96,7 +96,7 @@ export default function EventFAB({ hash, isLeagueAdmin, isSysAdmin, isActive }: 
       <Animated.View
         className='absolute h-14 w-14 items-center justify-center rounded-full bg-primary'
         style={[{ top: 0, left: 0 }, animatedStyle]}>
-        <Plus size={28} color={colors.card} />
+        <Pencil size={28} color={colors.card} />
       </Animated.View>
     </GestureDetector>
   );
