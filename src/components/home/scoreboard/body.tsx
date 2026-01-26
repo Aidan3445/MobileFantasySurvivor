@@ -41,7 +41,7 @@ export default function ScoreboardBody({
           {...props}
           width={props.width - 10}
           renderItem={({ item, index: col }) => (
-            <View>
+            <View className='flex-1 mr-3'>
               {item.map(([castawayId, scores], index) => {
                 const castaway = castawayData?.castaways.find(c => c.castawayId === castawayId);
                 const points = scores.slice().pop() ?? 0;

@@ -17,7 +17,7 @@ export default function LeagueSettingsScreen() {
 
   return (
     <View className='flex-1 bg-background relative'>
-      <RefreshIndicator refreshing={refreshing} scrollY={scrollY} extraHeight={-50} />
+      <RefreshIndicator refreshing={refreshing} scrollY={scrollY} extraHeight={-45} />
       <ScrollView
         className='w-full'
         showsVerticalScrollIndicator={true}

@@ -33,13 +33,13 @@ export default function LeagueDetailScreen() {
       {/* Hub content renders underneath (or null while loading) */}
       {league &&
         <View className='flex-1 bg-background relative'>
-          <RefreshIndicator refreshing={refreshing} scrollY={scrollY} />
+          <RefreshIndicator refreshing={refreshing} scrollY={scrollY} extraHeight={-45} />
           <ScrollView
             className='w-full'
             showsVerticalScrollIndicator={true}
             onScroll={handleScroll}
             scrollEventThrottle={16}
-            scrollIndicatorInsets={{ top: 10 }}
+            scrollIndicatorInsets={{ top: 16 }}
             refreshControl={
               <RefreshControl
                 refreshing={refreshing}
@@ -49,7 +49,7 @@ export default function LeagueDetailScreen() {
                 progressBackgroundColor='transparent' />
             }>
             <View className={cn(
-              'page justify-start gap-y-4 transition-all px-1.5 pt-8',
+              'page justify-start gap-y-4 transition-all px-1.5 pt-8 pb-1.5',
               refreshing && 'pt-12'
             )}>
               <View className='flex-1'>

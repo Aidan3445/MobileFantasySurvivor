@@ -32,11 +32,13 @@ export default function LeagueSeasonCarousel({ leagues, refresh }: LeagueSeasonC
         loop={true}
         height={refresh ? CARD_HEIGHT_WITH_REFRESH : CARD_HEIGHT}
         renderItem={({ item }) => (
-          <LeagueCard
-            league={item.league}
-            member={item.member}
-            currentSelection={item.currentSelection}
-            refresh={refresh} />
+          <View className='flex-1 mr-1'>
+            <LeagueCard
+              league={item.league}
+              member={item.member}
+              currentSelection={item.currentSelection}
+              refresh={refresh} />
+          </View>
         )} />
       {props.data.length > 1 && (
         <View className='items-center'>

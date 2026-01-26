@@ -122,7 +122,7 @@ export default function ScoreboardTable({
       </View>
 
       {/* Scoreboard Table */}
-      <View className='px-1'>
+      <View className='px-2'>
         {/* Table Header */}
         <View className='rounded-t-lg border-2 border-b-0 border-primary/20 overflow-hidden'>
           <View className='flex-row bg-white gap-0.5 px-0.5 rounded-t-md'>

@@ -90,8 +90,13 @@ export default function ActiveLeagues() {
       {/* Carousel */}
       <Carousel
         height={carouselHeight}
-        renderItem={({ item }) => <ActiveLeague league={item.league} />}
-        {...props} />
+        renderItem={({ item }) => (
+          <View className='flex-1 mr-1'>
+            <ActiveLeague league={item.league} />
+          </View>
+        )}
+        {...props}
+        loop />
 
       {/* Pagination Footer */}
       <View className='items-center'>

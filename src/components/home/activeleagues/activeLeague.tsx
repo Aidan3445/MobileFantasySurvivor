@@ -62,7 +62,7 @@ export default function ActiveLeague({ league }: ActiveLeagueProps) {
   const StatusIcon = status.icon;
 
   return (
-    <View className='px-2 -ml-1'>
+    <View className='px-2'>
       {/* League Header Card */}
       <Button
         className='stroke-green-600 relative bg-primary/5 border-2 border-primary/20 rounded-lg p-1 active:bg-primary/10'
