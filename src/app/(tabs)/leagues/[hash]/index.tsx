@@ -8,12 +8,17 @@ import useFadeLoading from '~/hooks/ui/useFadeLoading';
 import { useLeagueRefresh } from '~/hooks/helpers/refresh/useLeagueRefresh';
 import RefreshIndicator from '~/components/common/refresh';
 import { cn } from '~/lib/utils';
+import { useSysAdmin } from '~/hooks/user/useSysAdmin';
+import EventFAB from '~/components/leagues/actions/events/fab';
+import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
 
 export default function LeagueDetailScreen() {
   const { hash } = useLocalSearchParams<{ hash: string }>();
   const { data: league, isFetching } = useLeague(hash);
+  const { data: leagueMembers } = useLeagueMembers(hash);
   const { refreshing, onRefresh, scrollY, handleScroll } = useLeagueRefresh();
   const { showLoading, fadeAnim } = useFadeLoading({ isLoading: isFetching && !league });
+  const { data: userId } = useSysAdmin();
 
   // Redirect to other screens based on status
   if (league?.status === 'Predraft') {
@@ -54,9 +59,18 @@ export default function LeagueDetailScreen() {
             )}>
               <View className='flex-1'>
                 <Text className='text-center text-2xl font-bold text-primary'>League Hash: {hash}</Text>
+                <Text className='text-center text-lg font-medium text-secondary mt-2'>
+                  Sys Admin Access: {userId ? 'Granted' : 'Not Granted'}
+                </Text>
               </View>
+
             </View>
           </ScrollView>
+          <EventFAB
+            hash={hash}
+            isLeagueAdmin={leagueMembers?.loggedIn?.role !== 'Member'}
+            isSysAdmin={!!userId}
+            isActive={league?.status === 'Active'} />
         </View>
       }
 
