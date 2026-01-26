@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react';
-import { KeyboardAvoidingView, Pressable, Modal as RNModal } from 'react-native';
+import { KeyboardAvoidingView, Platform, Pressable, Modal as RNModal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { cn } from '~/lib/utils';
 
@@ -20,7 +20,7 @@ export default function Modal({
 }: ModalProps) {
   return (
     <RNModal
-      visible={isVisible}
+      visible={isVisible ?? false}
       transparent
       animationType={animationType}
       onRequestClose={onClose}>
@@ -36,7 +36,7 @@ export default function Modal({
           )} />
         <KeyboardAvoidingView
           className='w-full transition-all duration-100'
-          behavior='padding'>
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <Pressable
             className={cn(
               'w-full rounded-xl border-2 border-primary/20 bg-card p-4 transition-all',

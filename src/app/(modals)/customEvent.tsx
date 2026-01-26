@@ -1,6 +1,7 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { View, Text, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import Button from '~/components/common/button';
+import CreateCustomEvents from '~/components/leagues/actions/events/custom/create';
 import CustomEventHeader from '~/components/leagues/actions/events/header/view';
 import { useLeagueRules } from '~/hooks/leagues/query/useLeagueRules';
 
@@ -34,17 +35,18 @@ export default function CustomEventScreen() {
 
 
   return (
-    <View className='page py-16'>
+    <View className='flex-1 items-center justify-center bg-background'>
       <CustomEventHeader />
-
-      <KeyboardAvoidingView
-        className='flex-1'
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}>
-        <View className='flex-1 justify-center items-center px-4'>
-          <Text className='text-lg text-center'>Custom Event Creation Coming Soon! {hash}</Text>
+      <ScrollView className='w-full pt-20' showsVerticalScrollIndicator={false}>
+        <View className='gap-y-4 px-1.5 pb-16'>
+          <KeyboardAvoidingView
+            className='flex-1'
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}>
+            <CreateCustomEvents />
+          </KeyboardAvoidingView>
         </View>
-      </KeyboardAvoidingView>
+      </ScrollView>
     </View>
   );
 }

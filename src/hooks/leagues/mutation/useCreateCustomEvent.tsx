@@ -7,32 +7,38 @@ import { useLeagueRules } from '~/hooks/leagues/query/useLeagueRules';
 import { useEpisodes } from '~/hooks/seasons/useEpisodes';
 import { useSeasonsData } from '~/hooks/seasons/useSeasonsData';
 import { useEventOptions } from '~/hooks/seasons/enrich/useEventOptions';
+import { useFetch } from '~/hooks/helpers/useFetch';
 import {
   CustomEventInsertZod,
   type CustomEventInsert,
   type EventWithReferences,
 } from '~/types/events';
-import { createCustomEvent } from '~/lib/api/events';
+import { useRouter } from 'expo-router';
+import { Alert, Text, View } from 'react-native';
+import AirStatus from '~/components/shared/episodes/airStatus';
 
-export function useManageCustomEvents() {
+export function useCreateCustomEvent() {
   const queryClient = useQueryClient();
+  const router = useRouter();
   const leagueData = useLeagueData();
   const { data: rules } = useLeagueRules();
   const { data: episodes } = useEpisodes(leagueData?.league?.seasonId ?? null);
   const { data: seasonData } = useSeasonsData(true, leagueData?.league?.seasonId ?? undefined);
   const season = seasonData?.[0];
 
+  const postEvent = useFetch('POST');
+
   // Form setup
   const form = useForm<CustomEventInsert>({
     defaultValues: {
-      episodeId:
-        episodes?.find((ep) => ep.airStatus === 'Airing')?.episodeId ??
+      episodeId: episodes?.find((ep) => ep.airStatus === 'Airing')?.episodeId ??
         episodes?.findLast((ep) => ep.airStatus === 'Aired')?.episodeId ??
         episodes?.[0]?.episodeId,
       notes: null,
     },
     resolver: zodResolver(CustomEventInsertZod),
   });
+
 
   // Watched values
   const selectedRuleId = form.watch('customEventRuleId');
@@ -42,13 +48,13 @@ export function useManageCustomEvents() {
   const setNotes = form.watch('notes');
 
   // Derived state
-  const selectedEvent = useMemo(
-    () => rules?.custom.find((rule) => rule.customEventRuleId === selectedRuleId),
+  const selectedEvent = useMemo(() =>
+    rules?.custom.find((rule) => rule.customEventRuleId === selectedRuleId),
     [rules?.custom, selectedRuleId]
   );
 
-  const selectedEpisode = useMemo(
-    () => episodes?.find((ep) => ep.episodeId === selectedEpisodeId)?.episodeNumber,
+  const selectedEpisode = useMemo(() =>
+    episodes?.find((ep) => ep.episodeId === selectedEpisodeId)?.episodeNumber,
     [episodes, selectedEpisodeId]
   );
 
@@ -83,19 +89,34 @@ export function useManageCustomEvents() {
   // Select options
   const episodeOptions = useMemo(
     () =>
-      episodes?.map((ep) => ({
-        label: `${ep.episodeNumber}: ${ep.title}`,
-        value: ep.episodeId,
+      episodes?.map((episode) => ({
+        value: episode.episodeId,
+        label: `EP ${episode.episodeNumber}: ${episode.title}`,
+        renderLabel: () => (
+          <View className='flex-1' >
+            <Text className='text-foreground'>
+              <Text className='font-bold'> EP {episode.episodeNumber}: </Text>
+              {episode.title}
+              {'  '}
+              <View style={{ transform: [{ translateY: 2 }] }}>
+                <AirStatus
+                  airDate={episode.airDate}
+                  airStatus={episode.airStatus}
+                  showTime={false}
+                  showDate={false} />
+              </View>
+            </Text>
+          </View>
+        ),
       })) ?? [],
     [episodes]
   );
 
-  const eventOptions = useMemo(
-    () =>
-      rules?.custom.map((rule) => ({
-        label: `${rule.eventName} (${rule.eventType})`,
-        value: rule.customEventRuleId,
-      })) ?? [],
+  const eventOptions = useMemo(() =>
+    rules?.custom.map((rule) => ({
+      label: `${rule.eventName} (${rule.eventType})`,
+      value: rule.customEventRuleId,
+    })) ?? [],
     [rules?.custom]
   );
 
@@ -103,13 +124,45 @@ export function useManageCustomEvents() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleCreate = form.handleSubmit(async (data) => {
-    if (!leagueData?.league) return;
+    const hash = leagueData?.league?.hash;
+    if (!hash) return { success: false, error: 'No league found' };
+
     setIsSubmitting(true);
     try {
-      await createCustomEvent(leagueData.league.hash, data);
-      clearReferences();
-      form.reset({ episodeId: data.episodeId, notes: null });
-      await queryClient.invalidateQueries({ queryKey: ['customEvents', leagueData.league.hash] });
+      const response = await postEvent(`/api/leagues/${hash}/customEvents`, {
+        body: { event: data },
+      });
+
+      if (!response.ok) {
+        throw new Error(response.status === 401 || response.status === 403
+          ? 'Unauthorized'
+          : 'Failed to create event');
+      }
+
+      await queryClient.invalidateQueries({ queryKey: ['customEvents', hash] });
+
+      // Alert user of success and ask if there is another event to score
+      Alert.alert(
+        'Success',
+        'Custom event created successfully! Do you want to create another?',
+        [
+          {
+            text: 'Yes',
+            onPress: () => {
+              clearReferences();
+              form.reset({ episodeId: data.episodeId, notes: null });
+            },
+          },
+          {
+            text: 'No',
+            onPress: () => {
+              router.dismiss();
+            },
+            style: 'cancel',
+          },
+        ]
+      );
+
       return { success: true };
     } catch (e) {
       console.error('Failed to create custom event', e);
@@ -122,7 +175,6 @@ export function useManageCustomEvents() {
   // Validation state
   const canSubmit =
     !!selectedEvent &&
-    setLabel !== '' &&
     !!selectedReferences &&
     selectedReferences.length > 0 &&
     !isSubmitting;

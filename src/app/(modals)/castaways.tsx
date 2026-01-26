@@ -26,7 +26,7 @@ export default function DraftCastawaysScreen() {
             refreshing={refreshing}
             onRefresh={onRefresh} />
         }>
-        <View className='gap-y-4 px-2 pb-4'>
+        <View className='gap-y-4 px-1.5 pb-4'>
           {actionDetails && <DraftCastaways actionDetails={actionDetails} />}
         </View>
       </ScrollView>
