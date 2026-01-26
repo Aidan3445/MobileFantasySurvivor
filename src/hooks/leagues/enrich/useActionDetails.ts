@@ -1,5 +1,5 @@
 import { useEnrichedTribeMembers } from '~/hooks/seasons/enrich/useEnrichedTribeMembers';
-import { useLeagueRules } from '~/hooks/leagues/query/useRules';
+import { useLeagueRules } from '~/hooks/leagues/query/useLeagueRules';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 import { useKeyEpisodes } from '~/hooks/seasons/useKeyEpisodes';
 import { useEffect, useMemo, useState } from 'react';

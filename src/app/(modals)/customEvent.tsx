@@ -2,7 +2,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { View, Text, KeyboardAvoidingView, Platform } from 'react-native';
 import Button from '~/components/common/button';
 import CustomEventHeader from '~/components/leagues/actions/events/header/view';
-import { useLeagueRules } from '~/hooks/leagues/query/useRules';
+import { useLeagueRules } from '~/hooks/leagues/query/useLeagueRules';
 
 
 export default function CustomEventScreen() {

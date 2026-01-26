@@ -4,7 +4,7 @@ import { useSeasonsData } from '~/hooks/seasons/useSeasonsData';
 import { useSelectionTimeline } from '~/hooks/leagues/query/useSelectionTimeline';
 import { useCustomEvents } from '~/hooks/leagues/query/useCustomEvents';
 import { useBasePredictions } from '~/hooks/leagues/query/useBasePredictions';
-import { useLeagueRules } from '~/hooks/leagues/query/useRules';
+import { useLeagueRules } from '~/hooks/leagues/query/useLeagueRules';
 import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
 import { compileScores } from '~/lib/scores';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
