@@ -1,19 +1,66 @@
-import { View } from 'react-native';
-import KeyboardContainer from '~/components/common/keyboardContainer';
-import { LeagueSettings } from '~/components/leagues/customization/settings/league/view';
+import { RefreshControl, ScrollView, Text, View } from 'react-native';
+import BaseEventRules from '~/components/leagues/customization/events/base/view';
+import CustomEventRules from '~/components/leagues/customization/events/custom/view';
+import ShauhinMode from '~/components/leagues/customization/events/shauhin/view';
+import SurvivalStreaks from '~/components/leagues/customization/settings/survivalStreak/view';
 import PredraftHeader from '~/components/leagues/predraft/header/view';
-import EditMember from '~/components/leagues/predraft/settings/editMember';
+import { useLeagueRefresh } from '~/hooks/helpers/refresh/useLeagueRefresh';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import RefreshIndicator from '~/components/common/refresh';
+import { cn } from '~/lib/utils';
+import { useLeague } from '~/hooks/leagues/query/useLeague';
+import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
+import LeagueSettings from '~/components/leagues/customization/settings/league/view';
 
-export default function PredraftSettingsScreen() {
+export default function LeagueSettingsScreen() {
+  const { refreshing, onRefresh, scrollY, handleScroll } = useLeagueRefresh();
+  const { data: league } = useLeague();
+  const { data: leagueMembers } = useLeagueMembers();
+
   return (
-    <KeyboardContainer>
-      <View className='flex-1 items-center justify-center bg-background'>
-        <PredraftHeader inSettings />
-        <View className='gap-y-4 px-2 pb-4 pt-28'>
-          <EditMember />
-          <LeagueSettings />
+    <SafeAreaView edges={['top']} className='flex-1 bg-background relative'>
+      <PredraftHeader inSettings />
+      <RefreshIndicator refreshing={refreshing} scrollY={scrollY} />
+      <ScrollView
+        className='w-full'
+        showsVerticalScrollIndicator={true}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+        scrollIndicatorInsets={{ top: 10 }}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor='transparent'
+            colors={['transparent']}
+            progressBackgroundColor='transparent' />
+        }>
+        <View
+          className={cn(
+            'page justify-start gap-4 px-1.5 pt-8 pb-8',
+            refreshing && 'pt-12'
+          )}>
+          <LeagueSettings
+            isAdmin={leagueMembers?.loggedIn?.role === 'Admin'}
+            isOwner={leagueMembers?.loggedIn?.role === 'Owner'} />
+
+          {league?.status !== 'Predraft' && (
+            <>
+              <View className='w-full flex-row items-center justify-center gap-2 p-2 bg-card rounded-xl border-2 border-primary/20'>
+                <View className='h-5 w-0.5 bg-primary rounded-full' />
+                <Text className='text-2xl font-black tracking-tight text-center uppercase'>
+                  League Scoring
+                </Text>
+                <View className='h-5 w-0.5 bg-primary rounded-full' />
+              </View>
+              <SurvivalStreaks />
+              <BaseEventRules />
+              <ShauhinMode />
+              <CustomEventRules />
+            </>
+          )}
         </View>
-      </View>
-    </KeyboardContainer>
+      </ScrollView>
+    </SafeAreaView>
   );
 }

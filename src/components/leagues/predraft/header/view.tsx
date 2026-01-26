@@ -25,7 +25,7 @@ export default function PredraftHeader({ inSettings }: PredraftHeaderProps) {
         <View className='relative flex-row items-center justify-center w-full max-w-72'>
           <View className='h-6 w-1 bg-primary rounded-full' />
           <MarqueeText
-            text={league?.name ?? 'League'}
+            text={inSettings ? 'League Settings' : league?.name || 'Loading...'}
             center
             allowFontScaling={false}
             className='text-2xl font-black uppercase tracking-tight text-foreground'

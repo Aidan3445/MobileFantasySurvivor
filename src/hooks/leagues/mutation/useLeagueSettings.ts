@@ -2,13 +2,13 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useFetch } from '~/hooks/helpers/useFetch';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
+import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
 import { useForm } from 'react-hook-form';
-import { LeagueDetailsUpdateZod, type LeagueDetailsUpdate } from '~/types/leagues';
-import { useEffect, useMemo } from 'react';
+import { type LeagueDetailsUpdate, LeagueDetailsUpdateZod } from '~/types/leagues';
+import { useEffect } from 'react';
 import { Alert } from 'react-native';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLocalSearchParams } from 'expo-router';
-import { useSearchableSelect } from '~/hooks/ui/useSearchableSelect';
 
 export function useLeagueDetails(onSubmit?: () => void) {
   const putData = useFetch('PUT');
@@ -16,35 +16,20 @@ export function useLeagueDetails(onSubmit?: () => void) {
   const { hash } = useLocalSearchParams<{ hash: string }>();
   const { data: league } = useLeague();
   const { data: leagueMembers } = useLeagueMembers();
-  const adminsModal = useSearchableSelect<number>();
-
-  const membersList = useMemo(
-    () =>
-      leagueMembers?.members
-        .map(member => ({ value: member.memberId, label: member.displayName, role: member.role }))
-        .filter(
-          member => member.value !== leagueMembers.loggedIn?.memberId && member.role !== 'Owner'
-        ) ?? [],
-    [leagueMembers]
-  );
+  const { data: leagueSettings } = useLeagueSettings();
 
   const reactForm = useForm<LeagueDetailsUpdate>({
     defaultValues: {
       name: league?.name ?? '',
-      admins: membersList.filter(m => m.role === 'Admin').map(m => m.value) ?? []
+      isProtected: leagueSettings?.isProtected ?? true
     },
     resolver: zodResolver(LeagueDetailsUpdateZod)
   });
 
-  const selectedAdmins = reactForm.watch('admins') || [];
-
   useEffect(() => {
     if (league) reactForm.setValue('name', league.name);
-    if (membersList.length > 0) {
-      const adminIds = membersList.filter(m => m.role === 'Admin').map(m => m.value) ?? [];
-      reactForm.setValue('admins', adminIds);
-    }
-  }, [league, membersList, reactForm]);
+    if (leagueSettings) reactForm.setValue('isProtected', leagueSettings.isProtected);
+  }, [league, leagueSettings, reactForm]);
 
   const handleSubmit = reactForm.handleSubmit(async data => {
     if (!league || !hash) {
@@ -54,7 +39,7 @@ export function useLeagueDetails(onSubmit?: () => void) {
 
     try {
       const response = await putData(`/api/leagues/${hash}/settings`, {
-        body: { name: data.name, admins: data.admins }
+        body: { name: data.name, isProtected: data.isProtected }
       });
 
       if (response.status !== 200) {
@@ -79,35 +64,27 @@ export function useLeagueDetails(onSubmit?: () => void) {
       Alert.alert('Success', `League settings updated for ${data.name}`);
     } catch (error) {
       console.error(error);
-      Alert.alert('Error', 'Failed to update league some or all settings');
+      Alert.alert('Error', 'Failed to update league settings');
     }
   });
 
   const resetForm = () => {
-    if (league && membersList.length > 0) {
-      const adminIds = membersList.filter(m => m.role === 'Admin').map(m => m.value) ?? [];
-      reactForm.reset({ name: league.name, admins: adminIds });
-    } else {
-      reactForm.reset();
-    }
+    reactForm.reset({
+      name: league?.name ?? '',
+      isProtected: leagueSettings?.isProtected ?? true
+    });
   };
 
   const editable =
-    !!leagueMembers && leagueMembers.loggedIn?.role === 'Owner' && league?.status !== 'Inactive';
-
-  const selectedAdminNames = membersList
-    .filter(member => selectedAdmins.includes(member.value))
-    .map(member => member.label)
-    .join(', ');
+    !!leagueMembers &&
+    leagueMembers.loggedIn?.role === 'Owner' &&
+    league?.status !== 'Inactive';
 
   return {
     reactForm,
     handleSubmit,
     resetForm,
     editable,
-    membersList,
-    selectedAdmins,
-    selectedAdminNames,
-    adminsModal
+    isDirty: reactForm.formState.isDirty
   };
 }
