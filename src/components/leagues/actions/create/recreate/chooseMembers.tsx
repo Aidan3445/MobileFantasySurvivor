@@ -60,7 +60,7 @@ export default function ChooseMembers({
                   disabled={member.loggedIn}
                   trackColor={{ false: '#00000030', true: colors.primary }}
                   thumbColor='white'
-                />
+                  ios_backgroundColor={colors.destructive} />
               </ColorRow>
             </Pressable>
           ))}

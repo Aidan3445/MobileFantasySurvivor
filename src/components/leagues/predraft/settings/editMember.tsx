@@ -17,7 +17,7 @@ export default function EditMember() {
       <View className='flex-row items-center gap-1 h-8'>
         <View className='h-6 w-1 bg-primary rounded-full' />
         <Text className='text-xl font-black uppercase tracking-tight'>
-          Edit Member Details
+          Member Details
         </Text>
       </View>
 

@@ -36,8 +36,7 @@ export default function RemoveMember({ member, loggedInMember }: CurrentMemberPr
         <Ban
           size={20}
           color={enabled ? colors.destructive : colors.mutedForeground}
-          className={cn(!enabled && 'opacity-50')}
-        />
+          className={cn(!enabled && 'opacity-50')} />
       </Button>
 
       <Modal isVisible={isOpen} onClose={() => setIsOpen(false)}>
@@ -50,7 +49,7 @@ export default function RemoveMember({ member, loggedInMember }: CurrentMemberPr
 
         <Text className='text-base text-foreground mb-4'>
           Are you sure you want to remove{' '}
-          <View className='translate-y-1'>
+          <View className='translate-y-4'>
             <ColorRow color={member.color} className='px-1'>
               <Text className='font-medium'>{member.displayName}</Text>
             </ColorRow>

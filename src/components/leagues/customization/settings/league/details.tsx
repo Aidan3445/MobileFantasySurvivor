@@ -25,7 +25,7 @@ export default function LeagueDetails() {
       <View className='flex-row items-center gap-1 h-8'>
         <View className='h-6 w-1 bg-primary rounded-full' />
         <Text className='text-xl font-black uppercase tracking-tight'>
-          Edit League Details
+          League Details
         </Text>
       </View>
 
@@ -40,15 +40,14 @@ export default function LeagueDetails() {
           render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
             <View>
               <TextInput
-                className='rounded-lg border-2 border-primary/20 bg-card px-2 py-2 text-base'
+                className='rounded-lg border-2 border-primary/20 bg-card px-2 py-1 text-left text-base leading-5'
                 placeholder='League Name'
-                placeholderTextColor={colors.mutedForeground}
+                placeholderTextColor={colors.primary}
                 autoCapitalize='words'
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
-                maxLength={LEAGUE_NAME_MAX_LENGTH}
-              />
+                maxLength={LEAGUE_NAME_MAX_LENGTH} />
               <Text className='mt-1 text-right text-sm text-muted-foreground'>
                 {value?.length || 0}/{LEAGUE_NAME_MAX_LENGTH}
               </Text>
@@ -80,9 +79,8 @@ export default function LeagueDetails() {
                 onValueChange={field.onChange}
                 trackColor={{ false: colors.muted, true: colors.positive }}
                 thumbColor='white'
-              />
-            )}
-          />
+                ios_backgroundColor={colors.destructive} />
+            )} />
         </View>
       </View>
 

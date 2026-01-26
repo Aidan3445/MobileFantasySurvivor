@@ -47,13 +47,12 @@ export default function DeleteLeague() {
           Type the league name to confirm deletion
         </Text>
         <TextInput
-          className='rounded-lg border-2 border-destructive/20 bg-card px-2 py-2 text-base'
+          className='rounded-lg border-2 border-primary/20 bg-card px-2 py-1 text-left text-base leading-5'
           placeholder={`Enter "${league?.name ?? 'League Name'}" to confirm`}
-          placeholderTextColor={colors.mutedForeground}
+          placeholderTextColor={colors.primary}
           value={confirmName}
           onChangeText={setConfirmName}
-          editable={!isInactive}
-        />
+          editable={!isInactive} />
       </View>
 
       {/* Delete Button */}

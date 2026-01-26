@@ -36,8 +36,7 @@ export default function AdminToggle({ member, loggedInMember }: CurrentMemberPro
           size={20}
           color={enabled ? colors.foreground : colors.mutedForeground}
           fill={isAdmin ? colors.foreground : 'none'}
-          className={cn(!enabled && 'opacity-50')}
-        />
+          className={cn(!enabled && 'opacity-50')} />
       </Button>
 
       <Modal isVisible={isOpen} onClose={() => setIsOpen(false)}>
@@ -50,7 +49,7 @@ export default function AdminToggle({ member, loggedInMember }: CurrentMemberPro
 
         <Text className='text-base text-foreground mb-4'>
           Are you sure you want to {isAdmin ? 'demote' : 'promote'}{' '}
-          <View className='translate-y-1'>
+          <View className='translate-y-3'>
             <ColorRow color={member.color} className='px-1'>
               <Text className='font-medium'>{member.displayName}</Text>
             </ColorRow>

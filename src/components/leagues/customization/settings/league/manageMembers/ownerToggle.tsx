@@ -59,7 +59,7 @@ export default function OwnerToggle({ member, loggedInMember }: CurrentMemberPro
 
         <Text className='text-base text-foreground mb-4'>
           Are you sure you want to make{' '}
-          <View className='translate-y-1'>
+          <View className='translate-y-4'>
             <ColorRow color={member.color} className='px-1'>
               <Text className='font-medium'>{member.displayName}</Text>
             </ColorRow>
@@ -74,7 +74,7 @@ export default function OwnerToggle({ member, loggedInMember }: CurrentMemberPro
             onValueChange={setIUnderstand}
             trackColor={{ false: colors.muted, true: colors.destructive }}
             thumbColor='white'
-          />
+            ios_backgroundColor={colors.destructive} />
           <Text className='flex-1 text-sm text-muted-foreground'>
             I understand that this will transfer ownership rights to this member and only they will
             be able to undo this action.

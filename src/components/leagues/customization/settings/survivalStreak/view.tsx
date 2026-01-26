@@ -200,7 +200,7 @@ export default function SurvivalStreaks() {
                   disabled={survivalCapValue === 0}
                   trackColor={{ false: colors.muted, true: colors.positive }}
                   thumbColor='white'
-                />
+                  ios_backgroundColor={colors.destructive} />
               )}
             />
           )}
@@ -245,6 +245,7 @@ export default function SurvivalStreaks() {
                   onValueChange={field.onChange}
                   disabled={survivalCapValue === 0}
                   trackColor={{ false: colors.muted, true: colors.positive }}
+                  ios_backgroundColor={colors.destructive}
                   thumbColor='white' />
               )} />
           )}
