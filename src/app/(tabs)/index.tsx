@@ -27,7 +27,7 @@ export default function Page() {
             colors={['transparent']}
             progressBackgroundColor='transparent' />
         }>
-        <View className='page justify-start gap-y-4 px-1.5'>
+        <View className='page justify-start gap-y-4 px-1.5 pb-1.5'>
           <Header refreshing={refreshing} />
           <ActiveLeagues />
           <QuickActions className='rounded-xl border-2 border-primary/20 bg-card opacity-80 p-2' />

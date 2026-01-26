@@ -58,7 +58,7 @@ export default function PlaygroundScreen() {
         }>
         <View
           className={cn(
-            'page justify-start gap-y-4 px-2 pt-8 transition-all',
+            'page justify-start gap-y-4 px-1.5 pt-8 pb-1.5',
             refreshing && 'pt-12'
           )}>
           {/* Scoring Settings Card */}

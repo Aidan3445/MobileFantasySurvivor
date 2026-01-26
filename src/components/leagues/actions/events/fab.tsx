@@ -6,7 +6,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
-import { useWindowDimensions } from 'react-native';
+import { Text, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useCallback } from 'react';
 import { colors } from '~/lib/colors';
@@ -39,29 +39,34 @@ export default function EventFAB({ hash, isLeagueAdmin, isSysAdmin, isActive }: 
   const translateY = useSharedValue(maxY);
   const contextX = useSharedValue(0);
   const contextY = useSharedValue(0);
-  const isPressed = useSharedValue(false);
+  const isDragging = useSharedValue(false);
 
   const snapToCorner = () => {
     'worklet';
     const midX = width / 2;
-    const midY = height / 2;
+    const fabCenterX = translateX.value + FAB_SIZE / 2;
+    translateX.value = withSpring(fabCenterX < midX ? minX : maxX, { damping: 100 });
 
-    translateX.value = withSpring(translateX.value < midX ? minX : maxX, { damping: 100 });
-    translateY.value = withSpring(translateY.value < midY ? minY : maxY, { damping: 100 });
+    const midY = (minY + maxY) / 2;
+    const fabCenterY = translateY.value;
+    translateY.value = withSpring(
+      fabCenterY < midY ? minY : maxY,
+      { damping: 100 }
+    );
   };
 
   const gesture = Gesture.Pan()
     .onStart(() => {
       contextX.value = translateX.value;
       contextY.value = translateY.value;
-      isPressed.value = true;
+      isDragging.value = true;
     })
     .onUpdate((event) => {
       translateX.value = Math.max(minX, Math.min(maxX, contextX.value + event.translationX));
       translateY.value = Math.max(minY, Math.min(maxY, contextY.value + event.translationY));
     })
     .onEnd(() => {
-      isPressed.value = false;
+      isDragging.value = false;
       snapToCorner();
     });
 
@@ -84,20 +89,35 @@ export default function EventFAB({ hash, isLeagueAdmin, isSysAdmin, isActive }: 
     transform: [
       { translateX: translateX.value },
       { translateY: translateY.value },
-      { scale: withSpring(isPressed.value ? 1.1 : 1) },
+      { scale: withSpring(isDragging.value ? 1.1 : 1) },
     ],
+  }));
+
+  const animatedSectionStyle = useAnimatedStyle(() => ({
+    opacity: withSpring(isDragging.value ? 0.5 : 0),
   }));
 
   if (!isActive || (!isLeagueAdmin && !isSysAdmin)) return null;
 
 
   return (
-    <GestureDetector gesture={composed}>
+    <>
       <Animated.View
-        className='absolute h-14 w-14 items-center justify-center rounded-full bg-primary'
-        style={[{ top: 0, left: 0 }, animatedStyle]}>
-        <Pencil size={28} color={colors.card} />
+        className='absolute bottom-0 left-0 right-0 top-0'
+        style={[animatedSectionStyle]}>
+        <View className='w-full h-0 border-t border-primary border-dashed absolute top-1/2' />
+        <View className='h-full w-0 border-l border-primary border-dashed absolute left-1/2' />
+        <Text className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-primary font-medium bg-background p-1'>
+          Snap to corner
+        </Text>
       </Animated.View>
-    </GestureDetector>
+      <GestureDetector gesture={composed}>
+        <Animated.View
+          className='absolute h-14 w-14 items-center justify-center rounded-full bg-primary'
+          style={[{ top: 0, left: 0 }, animatedStyle]}>
+          <Pencil size={28} color={colors.card} />
+        </Animated.View>
+      </GestureDetector>
+    </>
   );
 }

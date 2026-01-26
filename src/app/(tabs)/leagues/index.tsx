@@ -26,7 +26,7 @@ export default function LeaguesScreen() {
             progressBackgroundColor='transparent' />
         }>
         <View className={cn(
-          'page justify-start gap-y-4 transition-all px-1.5 pt-8 pb-1.5',
+          'page justify-start gap-y-4 px-1.5 pt-8 pb-1.5',
           refreshing && 'pt-12'
         )}>
           <LeaguesList />
