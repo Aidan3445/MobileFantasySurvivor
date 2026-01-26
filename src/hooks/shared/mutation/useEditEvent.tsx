@@ -16,9 +16,10 @@ import {
 } from '~/types/events';
 import { Alert } from 'react-native';
 
-export function useEditEvent(event: EnrichedEvent) {
+export function useEditEvent(event: EnrichedEvent, seasonIdOverride?: number) {
   const queryClient = useQueryClient();
   const { data: league } = useLeague();
+  const seasonId = seasonIdOverride ?? league?.seasonId;
 
   const putEvent = useFetch('PUT');
   const deleteEvent = useFetch('DELETE');
@@ -41,7 +42,7 @@ export function useEditEvent(event: EnrichedEvent) {
     combinedReferenceOptions,
     handleCombinedReferenceSelection,
     getDefaultStringValues,
-  } = useEventOptions(league?.seasonId ?? null, event.episodeNumber);
+  } = useEventOptions(seasonId ?? null, event.episodeNumber);
 
   // Clear key for resetting MultiSelect
   const [clearKey, setClearKey] = useState(0);
@@ -57,12 +58,12 @@ export function useEditEvent(event: EnrichedEvent) {
 
   const invalidateQueries = useCallback(async () => {
     if (isBaseEvent) {
-      await queryClient.invalidateQueries({ queryKey: ['baseEvents', league?.seasonId] });
-      await queryClient.invalidateQueries({ queryKey: ['seasons', league?.seasonId] });
+      await queryClient.invalidateQueries({ queryKey: ['baseEvents', seasonId] });
+      await queryClient.invalidateQueries({ queryKey: ['seasons'] });
     } else {
       await queryClient.invalidateQueries({ queryKey: ['customEvents', league?.hash] });
     }
-  }, [isBaseEvent, league?.seasonId, league?.hash, queryClient]);
+  }, [isBaseEvent, seasonId, league?.hash, queryClient]);
 
   const handleUpdate = form.handleSubmit(async (data) => {
     setIsUpdating(true);

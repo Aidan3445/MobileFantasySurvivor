@@ -15,6 +15,7 @@ import MarqueeText from '~/components/common/marquee';
 interface EventRowProps {
   className?: string;
   event: EnrichedEvent;
+  seasonId?: number;
   editCol?: boolean;
   isMock?: boolean;
   noTribes?: boolean;
@@ -25,6 +26,7 @@ interface EventRowProps {
 export default function EventRow({
   className,
   event,
+  seasonId,
   editCol: edit,
   isMock,
   noTribes,
@@ -55,7 +57,7 @@ export default function EventRow({
           <View className='w-12' />
         ) : (
           <View className='w-12'>
-            <EditEvent event={event} />
+            <EditEvent event={event} overrideSeasonId={seasonId} />
           </View>
         )
       ) : null}

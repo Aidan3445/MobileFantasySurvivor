@@ -181,7 +181,8 @@ export default function EpisodeEventsTableBody({
             editCol={edit}
             noPoints={!leagueData}
             noTribes={noTribes}
-            noMembers={noMembers} />
+            noMembers={noMembers}
+            seasonId={seasonData.season.seasonId} />
         ))}
 
       {/* Custom Events Section */}

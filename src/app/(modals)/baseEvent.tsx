@@ -1,9 +1,10 @@
 import { useRouter } from 'expo-router';
-import { View, Text, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { useSysAdmin } from '~/hooks/user/useSysAdmin';
 import { useMemo, useState } from 'react';
 import PlaygroundHeader from '~/components/playground/header/view';
 import { useSeasonsData } from '~/hooks/seasons/useSeasonsData';
+import CreateBaseEvent from '~/components/leagues/actions/events/base/create';
 
 export default function BaseEventScreen() {
   const { data: userId, isFetching, isError } = useSysAdmin();
@@ -43,25 +44,23 @@ export default function BaseEventScreen() {
   }
 
   return (
-    <View className='page py-16'>
+    <View className='flex-1 items-center justify-center bg-background'>
       <PlaygroundHeader
         seasons={scoreData ?? []}
         value={selectedSeason}
         setValue={setSelectedSeason}
         extraHeight={0}
         className='justify-center' />
-
-      <KeyboardAvoidingView
-        className='flex-1'
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}>
-        <View className='flex-1 justify-center items-center px-4'>
-          <Text className='text-lg text-center'>
-            Base Event Creation Coming Soon!
-            Selected season: {selectedSeasonData?.season.name}
-          </Text>
+      <ScrollView className='w-full pt-20' showsVerticalScrollIndicator={false}>
+        <View className='gap-y-4 px-1.5 pb-16'>
+          <KeyboardAvoidingView
+            className='flex-1'
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}>
+            <CreateBaseEvent seasonId={selectedSeasonData?.season.seasonId ?? null} />
+          </KeyboardAvoidingView>
         </View>
-      </KeyboardAvoidingView>
+      </ScrollView>
     </View>
   );
 }

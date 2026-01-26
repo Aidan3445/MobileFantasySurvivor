@@ -12,9 +12,10 @@ import { useSysAdmin } from '~/hooks/user/useSysAdmin';
 
 interface EditEventModalProps {
   event: EnrichedEvent;
+  overrideSeasonId?: number;
 }
 
-export default function EditEventModal({ event }: EditEventModalProps) {
+export default function EditEvent({ event, overrideSeasonId }: EditEventModalProps) {
   const userId = useSysAdmin();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -31,7 +32,7 @@ export default function EditEventModal({ event }: EditEventModalProps) {
     handleDelete,
     isUpdating,
     isDeleting,
-  } = useEditEvent(event);
+  } = useEditEvent(event, overrideSeasonId);
 
   if (!userId && event.eventSource === 'Base') return null;
 
@@ -44,9 +45,14 @@ export default function EditEventModal({ event }: EditEventModalProps) {
     void (async () => {
       const result = await handleDelete();
       if (result?.success) {
-        Alert.alert('Success', 'Event deleted');
         setShowDeleteConfirm(false);
-        setIsOpen(false);
+        // wait to close edit modal until after alert
+        Alert.alert('Success', 'Event deleted successfully.', [
+          {
+            text: 'OK',
+            onPress: () => setIsOpen(false),
+          },
+        ]);
       } else {
         Alert.alert('Error', 'Failed to delete event');
       }
@@ -174,42 +180,43 @@ export default function EditEventModal({ event }: EditEventModalProps) {
             </Pressable>
           </View>
         </View>
-      </Modal>
 
-      {/* Delete Confirmation Modal */}
-      <Modal
-        isVisible={showDeleteConfirm}
-        onClose={() => setShowDeleteConfirm(false)}>
-        {/* Destructive Header */}
-        <View className='h-1 w-12 rounded-full bg-destructive self-center' />
+        {/* Delete Confirmation Modal */}
+        <Modal
+          isVisible={showDeleteConfirm && isOpen}
+          onClose={() => setShowDeleteConfirm(false)}>
+          {/* Destructive Header */}
+          <View className='h-1 w-12 rounded-full bg-destructive self-center' />
 
-        <Text className='text-xl font-black uppercase tracking-tight text-foreground text-center'>
-          Delete Event
-        </Text>
-        <Text className='text-base text-muted-foreground text-center'>
-          Are you sure you want to delete this event? This action cannot be undone.
-        </Text>
+          <Text className='text-xl font-black uppercase tracking-tight text-destructive text-center'>
+            Delete Event
+          </Text>
+          <Text className='text-base text-muted-foreground text-center'>
+            Are you sure you want to delete this event? This action cannot be undone.
+          </Text>
 
-        <View className='flex-row gap-2 pt-2'>
-          <Pressable
-            onPress={() => setShowDeleteConfirm(false)}
-            className='flex-1 rounded-lg border-2 border-primary/20 bg-card p-3 active:opacity-80'>
-            <Text className='text-center text-base font-bold uppercase tracking-wider text-foreground'>
-              Cancel
-            </Text>
-          </Pressable>
-          <Pressable
-            onPress={onDelete}
-            disabled={isDeleting}
-            className={cn(
-              'flex-1 rounded-lg bg-destructive p-3 active:opacity-80',
-              isDeleting && 'opacity-50'
-            )}>
-            <Text className='text-center text-base font-bold uppercase tracking-wider text-white'>
-              {isDeleting ? 'Deleting...' : 'Delete'}
-            </Text>
-          </Pressable>
-        </View>
+          <View className='flex-row gap-2 pt-2'>
+            <Pressable
+              onPress={() => setShowDeleteConfirm(false)}
+              className='flex-1 rounded-lg border-2 border-primary/20 bg-card p-3 active:opacity-80'>
+              <Text className='text-center text-base font-bold uppercase tracking-wider text-foreground'>
+                Cancel
+              </Text>
+            </Pressable>
+            <Pressable
+              onPress={onDelete}
+              disabled={isDeleting}
+              className={cn(
+                'flex-1 rounded-lg bg-destructive p-3 active:opacity-80',
+                isDeleting && 'opacity-50'
+              )}>
+              <Text className='text-center text-base font-bold uppercase tracking-wider text-white'>
+                {isDeleting ? 'Deleting...' : 'Delete'}
+              </Text>
+            </Pressable>
+          </View>
+        </Modal>
+
       </Modal>
     </>
   );
