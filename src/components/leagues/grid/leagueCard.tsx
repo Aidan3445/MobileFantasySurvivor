@@ -1,10 +1,11 @@
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { FlameKindling, ChevronRight } from 'lucide-react-native';
-import { Text, View, Pressable } from 'react-native';
+import { Text, View } from 'react-native';
 import { type CurrentSelection, type LeagueMember } from '~/types/leagueMembers';
 import { type League } from '~/types/leagues';
 import ColorRow from '~/components/shared/colorRow';
 import { colors } from '~/lib/colors';
+import Button from '~/components/common/button';
 
 interface LeagueCardProps {
   league: League;
@@ -20,10 +21,15 @@ export default function LeagueCard({
   currentSelection,
   width,
 }: LeagueCardProps) {
+  const router = useRouter();
   return (
     <View className='flex-1  px-2' style={width ? { width } : undefined}>
       <Link href={{ pathname: '/leagues/[hash]', params: { hash: league.hash } }} asChild>
-        <Pressable className='flex-1 rounded-lg border-2 border-primary/20 bg-primary/5 p-3 active:border-primary/30 active:bg-primary/10'>
+        <Button
+          className='flex-1 rounded-lg border-2 border-primary/20 bg-primary/5 p-3 active:border-primary/30 active:bg-primary/10'
+          onPress={() => {
+            router.push({ pathname: '/leagues/[hash]', params: { hash: league.hash } });
+          }}>
           {/* Header */}
           <View className='flex-row items-start justify-between gap-2'>
             <Text className='flex-1 text-lg font-bold leading-none text-foreground'>
@@ -58,7 +64,7 @@ export default function LeagueCard({
               <Text className='font-bold text-black'>{member.displayName}</Text>
             </ColorRow>
           </View>
-        </Pressable>
+        </Button>
       </Link>
     </View>
   );

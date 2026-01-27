@@ -168,21 +168,19 @@ export default function Chart() {
 
       {/* Interactive Legend */}
       <View className='flex-row flex-wrap gap-2 px-2 pt-2 items-center'>
-        {sortedMemberScores.map(({ member }, index) => {
+        {sortedMemberScores.map(({ member }) => {
           const isSelected = selectedMember === member.displayName;
           const isOther = selectedMember && !isSelected;
 
           return (
-            <>
+            <Fragment key={member.displayName}>
               {member.loggedIn && (
                 <View
-                  key={`pointer-${member.memberId}-${index}`}
                   className='-mr-2 rotate-90 animate-pulse'>
                   <Pointer size={16} color={colors.primary} />
                 </View>
               )}
               <Pressable
-                key={`legend-${member.memberId}-${index}`}
                 onPress={() => handleLegendPress(member.displayName)}
                 className='flex-row items-center gap-1 py-1 active:opacity-70'>
                 <View
@@ -202,7 +200,7 @@ export default function Chart() {
                   </Text>
                 </View>
               </Pressable>
-            </>
+            </Fragment>
           );
         })}
       </View>

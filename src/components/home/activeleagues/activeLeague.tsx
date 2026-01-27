@@ -67,7 +67,11 @@ export default function ActiveLeague({ league }: ActiveLeagueProps) {
       <Button
         className='stroke-green-600 relative bg-primary/5 border-2 border-primary/20 rounded-lg p-1 active:bg-primary/10'
         onPress={() => {
-          router.replace({ pathname: '/leagues/[hash]', params: { hash: league.hash } });
+          router.replace('/leagues');
+          // eslint-disable-next-line no-undef
+          setTimeout(() => {
+            router.push({ pathname: '/leagues/[hash]', params: { hash: league.hash } });
+          }, 10);
         }}>
         {/* League Name */}
         <Text

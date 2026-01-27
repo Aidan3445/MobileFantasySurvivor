@@ -5,6 +5,7 @@ import { Check, ChevronDown, Search } from 'lucide-react-native';
 import Modal from '~/components/common/modal';
 import Button from '~/components/common/button';
 import { colors } from '~/lib/colors';
+import { cn } from '~/lib/utils';
 
 interface SearchableSelectProps<T extends string | number> {
   options: SearchableOption<T>[];
@@ -17,6 +18,7 @@ interface SearchableSelectProps<T extends string | number> {
   children?: ReactNode;
   asChild?: boolean;
   disabled?: boolean;
+  className?: string;
 }
 
 export default function SearchableSelect<T extends string | number>({
@@ -29,7 +31,8 @@ export default function SearchableSelect<T extends string | number>({
   footerComponent,
   children,
   asChild,
-  disabled
+  disabled,
+  className
 }: SearchableSelectProps<T>) {
   const { isVisible, searchText, setSearchText, openModal, closeModal, filterOptions } =
     useSearchableSelect<T>(overrideState);
@@ -42,7 +45,10 @@ export default function SearchableSelect<T extends string | number>({
     if (children) {
       return (
         <Button
-          className='w-full flex-row items-center justify-between rounded-lg border-2 border-primary/20 bg-primary/5 px-3 py-2 active:bg-primary/10'
+          className={cn(
+            'w-full flex-row items-center justify-between rounded-lg border-2 border-primary/20 bg-primary/5 px-3 h-10 active:bg-primary/10',
+            className
+          )}
           disabled={disabled}
           onPress={openModal}>
           {children}
@@ -54,7 +60,10 @@ export default function SearchableSelect<T extends string | number>({
     const selectedOption = options.find((option) => option.value === selectedValue);
     return (
       <Button
-        className='w-full flex-row items-center justify-between rounded-lg border-2 border-primary/20 bg-primary/5 px-3 py-2 active:bg-primary/10'
+        className={cn(
+          'w-full flex-row items-center justify-between rounded-lg border-2 border-primary/20 bg-primary/5 px-3 h-10 active:bg-primary/10',
+          className
+        )}
         disabled={disabled}
         onPress={openModal}>
         {selectedOption ? (

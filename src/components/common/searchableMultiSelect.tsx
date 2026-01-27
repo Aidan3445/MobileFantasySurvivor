@@ -5,6 +5,7 @@ import { Check, ChevronDown, Search, X } from 'lucide-react-native';
 import Modal from '~/components/common/modal';
 import Button from '~/components/common/button';
 import { colors } from '~/lib/colors';
+import { cn } from '~/lib/utils';
 
 interface SearchableMultiSelectProps<T extends string | number> {
   options: SearchableOption<T>[];
@@ -17,6 +18,7 @@ interface SearchableMultiSelectProps<T extends string | number> {
   children?: ReactNode;
   asChild?: boolean;
   disabled?: boolean;
+  className?: string;
 }
 
 export default function SearchableMultiSelect<T extends string | number>({
@@ -29,7 +31,8 @@ export default function SearchableMultiSelect<T extends string | number>({
   footerComponent,
   children,
   asChild,
-  disabled
+  disabled,
+  className
 }: SearchableMultiSelectProps<T>) {
   const { isVisible, searchText, setSearchText, openModal, closeModal, filterOptions } =
     useSearchableSelect<T>(overrideState);
@@ -54,7 +57,10 @@ export default function SearchableMultiSelect<T extends string | number>({
     if (children) {
       return (
         <Button
-          className='w-full flex-row items-center justify-between rounded-lg border-2 border-primary/20 bg-primary/5 px-3 py-2 active:bg-primary/10'
+          className={cn(
+            'w-full flex-row items-center justify-between rounded-lg border-2 border-primary/20 bg-primary/5 px-3 h-10 active:bg-primary/10',
+            className
+          )}
           disabled={disabled}
           onPress={openModal}>
           {children}
@@ -84,7 +90,10 @@ export default function SearchableMultiSelect<T extends string | number>({
 
     return (
       <Button
-        className='w-full flex-row items-center justify-between rounded-lg border-2 border-primary/20 bg-primary/5 px-3 py-2 active:bg-primary/10'
+        className={cn(
+          'w-full flex-row items-center justify-between rounded-lg border-2 border-primary/20 bg-primary/5 px-3 h-10 active:bg-primary/10',
+          className
+        )}
         disabled={disabled}
         onPress={openModal}>
         <Text

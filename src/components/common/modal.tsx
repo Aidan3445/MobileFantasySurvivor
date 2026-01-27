@@ -63,7 +63,7 @@ export default function Modal({
 
   return (
     <RNModal
-      visible={isVisible ?? false}
+      visible={isVisible}
       transparent
       animationType={animationType}
       onRequestClose={onClose}>
