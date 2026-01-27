@@ -56,10 +56,10 @@ export default function Modal({
   }));
 
   useEffect(() => {
-    if (!isVisible) {
+    if (!isVisible && swipeToDismiss && translateY.value !== 0) {
       translateY.value = 0;
     }
-  }, [isVisible, translateY]);
+  }, [isVisible, swipeToDismiss, translateY]);
 
   return (
     <RNModal

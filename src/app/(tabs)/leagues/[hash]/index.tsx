@@ -14,13 +14,15 @@ import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
 import Scores from '~/components/leagues/hub/shared/scores';
 import ChangeCastaway from '~/components/leagues/hub/picks/changeCastaway';
 
-export default function LeagueDetailScreen() {
+export default function LeagueHubScreen() {
   const { hash } = useLocalSearchParams<{ hash: string }>();
   const { data: league, isFetching } = useLeague(hash);
   const { data: leagueMembers } = useLeagueMembers(hash);
   const { refreshing, onRefresh, scrollY, handleScroll } = useLeagueRefresh();
   const { showLoading, fadeAnim } = useFadeLoading({ isLoading: isFetching && !league });
   const { data: userId } = useSysAdmin();
+
+  console.log('Rendering LeagueDetailScreen for league:', hash);
 
   // Redirect to other screens based on status
   if (league?.status === 'Predraft') {

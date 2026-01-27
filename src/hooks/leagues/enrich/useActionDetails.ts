@@ -13,13 +13,13 @@ import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
 import { type DraftDetails } from '~/types/leagues';
 import { usePredictionsMade } from '~/hooks/leagues/enrich/usePredictionsMade';
 import { type ScoringBaseEventName } from '~/types/events';
-import { useRouter } from 'expo-router';
 import { useCastaways } from '~/hooks/seasons/useCastaways';
+import { useRouter } from 'expo-router';
 
 /**
- * Custom hook to get league action details
- * @param {string} overrideHash Optional hash to override the URL parameter.
- */
+  * Custom hook to get league action details
+  * @param {string} overrideHash Optional hash to override the URL parameter.
+  */
 export function useLeagueActionDetails(overrideHash?: string) {
   const { data: league } = useLeague(overrideHash);
   const { data: rules } = useLeagueRules(overrideHash);
@@ -31,14 +31,15 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
   const { data: keyEpisodes } = useKeyEpisodes(league?.seasonId ?? null);
 
-  const nextEpisode = useMemo(
-    () => keyEpisodes?.nextEpisode?.episodeNumber ?? null,
+  const nextEpisode = useMemo(() =>
+    keyEpisodes?.nextEpisode?.episodeNumber ?? null,
     [keyEpisodes?.nextEpisode?.episodeNumber]
   );
 
   const tribeMembers = useEnrichedTribeMembers(league?.seasonId ?? null, nextEpisode);
-  const { data: eliminations } = useEliminations(league?.seasonId ?? null);
   const { data: castaways } = useCastaways(league?.seasonId ?? null);
+
+  const { data: eliminations } = useEliminations(league?.seasonId ?? null);
 
   const eliminationLookup = useMemo(() => {
     if (!eliminations) return new Map<number, number>();
@@ -119,15 +120,8 @@ export function useLeagueActionDetails(overrideHash?: string) {
   ]);
 
   const actionDetails = useMemo(() => {
-    if (
-      !league
-      || !rules
-      || !selectionTimeline
-      || !nextEpisode
-      || !tribeMembers
-      || !leagueMembers
-      || !eliminationLookup
-    ) {
+    if (!league || !rules || !selectionTimeline || !nextEpisode ||
+      !tribeMembers || !leagueMembers || !eliminationLookup) {
       return undefined;
     }
 
@@ -135,7 +129,9 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
     Object.entries(tribeMembers).forEach(([tribeId, { tribe, castaways }]) => {
       const selections = castaways.map(castaway => {
-        const selection = selectionTimeline.castawayMembers[castaway.castawayId]?.[nextEpisode];
+        const castawaySelections = selectionTimeline.castawayMembers[castaway.castawayId] ?? [null];
+        const latestSelection = Math.min(nextEpisode, castawaySelections.length - 1);
+        const selection = selectionTimeline.castawayMembers[castaway.castawayId]?.[latestSelection];
         const eliminatedEpisode = eliminationLookup.get(castaway.castawayId) ?? null;
 
         const castawayWithTribe: EnrichedCastaway = {
@@ -144,37 +140,33 @@ export function useLeagueActionDetails(overrideHash?: string) {
           eliminatedEpisode
         };
 
-        const member = selection
-          ? (leagueMembers.members.find(m => m.memberId === selection) ?? null)
-          : null;
+        const member = selection ? leagueMembers.members.find(m => m.memberId === selection) ?? null : null;
 
-        return { castaway: castawayWithTribe, member };
+        return {
+          castaway: castawayWithTribe,
+          member
+        };
       });
 
-      details[Number(tribeId)] = { tribe, castaways: selections };
+      details[Number(tribeId)] = {
+        tribe,
+        castaways: selections,
+      };
     });
 
     return details;
-  }, [
-    league,
-    rules,
-    selectionTimeline,
-    nextEpisode,
-    tribeMembers,
-    leagueMembers,
-    eliminationLookup
-  ]);
+  }, [league, rules, selectionTimeline, nextEpisode, tribeMembers, leagueMembers, eliminationLookup]);
 
   const router = useRouter();
   const [dialogOpen, setDialogOpen] = useState<boolean>();
 
   const { onTheClock, onDeck, onTheClockIndex } = useMemo(() => {
     if (!leagueMembers?.members || !selectionTimeline?.memberCastaways || !nextEpisode) {
-      return { onTheClock: null, onDeck: null, onTheClockIndex: -1 };
+      return { onTheClock: null, onDeck: null, onTheClockIndex: null };
     }
 
-    const onTheClockIndex = leagueMembers.members.findIndex(
-      member => selectionTimeline.memberCastaways[member.memberId]?.[nextEpisode] === undefined
+    const onTheClockIndex = leagueMembers.members.findIndex(member =>
+      selectionTimeline.memberCastaways[member.memberId]?.[nextEpisode] === undefined
     );
 
     const onTheClock = leagueMembers.members[onTheClockIndex];
@@ -182,11 +174,15 @@ export function useLeagueActionDetails(overrideHash?: string) {
     const loggedInId = leagueMembers.loggedIn?.memberId;
 
     return {
-      onTheClock: onTheClock
-        ? { ...onTheClock, loggedIn: onTheClock.memberId === loggedInId }
-        : null,
-      onDeck: onDeck ? { ...onDeck, loggedIn: onDeck.memberId === loggedInId } : null,
-      onTheClockIndex: onTheClockIndex >= 0 ? onTheClockIndex : -1
+      onTheClock: onTheClock ? {
+        ...onTheClock,
+        loggedIn: onTheClock.memberId === loggedInId,
+      } : null,
+      onDeck: onDeck ? {
+        ...onDeck,
+        loggedIn: onDeck.memberId === loggedInId,
+      } : null,
+      onTheClockIndex: onTheClockIndex
     };
   }, [
     leagueMembers?.members,
@@ -206,8 +202,8 @@ export function useLeagueActionDetails(overrideHash?: string) {
   }, [leagueMembers?.loggedIn?.draftOrder]);
 
   useEffect(() => {
-    if (league && (onTheClockIndex === -1 || league.status !== 'Draft')) {
-      router.replace(`/leagues/${league.hash}`);
+    if (league && onTheClockIndex !== null && (onTheClockIndex === -1 || league.status !== 'Draft')) {
+      router.push(`/leagues/${league.hash}`);
     }
   }, [onTheClockIndex, league?.status, league?.hash, router, league]);
 
@@ -215,14 +211,10 @@ export function useLeagueActionDetails(overrideHash?: string) {
     if (!rules) return 0;
 
     const enabledBasePredictions = rules.basePrediction
-      ? Object.values(rules.basePrediction).reduce(
-        (count, event) => count + Number(event.enabled),
-        0
-      )
+      ? Object.values(rules.basePrediction).reduce((count, event) => count + Number(event.enabled), 0)
       : 0;
 
-    return enabledBasePredictions + (rules.custom?.filter(rule =>
-      rule.eventType === 'Prediction').length ?? 0);
+    return enabledBasePredictions + (rules.custom?.length ?? 0);
   }, [rules]);
 
   const predictionsMade = useMemo(() => {
@@ -238,24 +230,33 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
     const timingSet = new Set(predictionTiming);
 
-    const filteredCustom =
-      rules.custom?.filter(
-        rule => rule.eventType === 'Direct' || rule.timing.some(t => timingSet.has(t))
-      ) ?? [];
+    const filteredCustom = rules.custom?.filter(rule =>
+      rule.eventType === 'Direct' || rule.timing.some(t => timingSet.has(t))
+    ) ?? [];
 
     if (rules.basePrediction) {
       const filteredBase = { ...rules.basePrediction };
 
       Object.entries(filteredBase).forEach(([eventName, rule]) => {
         if (rule.enabled && !rule.timing.some(t => timingSet.has(t))) {
-          filteredBase[eventName as ScoringBaseEventName] = { ...rule, enabled: false };
+          filteredBase[eventName as ScoringBaseEventName] = {
+            ...rule,
+            enabled: false
+          };
         }
       });
 
-      return { ...rules, custom: filteredCustom, basePrediction: filteredBase };
+      return {
+        ...rules,
+        custom: filteredCustom,
+        basePrediction: filteredBase
+      };
     }
 
-    return { ...rules, custom: filteredCustom };
+    return {
+      ...rules,
+      custom: filteredCustom,
+    };
   }, [rules, predictionTiming]);
 
   return {
@@ -269,9 +270,11 @@ export function useLeagueActionDetails(overrideHash?: string) {
     predictionRuleCount,
     settings,
     predictionsMade,
+    basePredictionsMade,
     selectionTimeline,
     keyEpisodes,
     dialogOpen,
-    setDialogOpen
+    setDialogOpen,
   };
 }
+
