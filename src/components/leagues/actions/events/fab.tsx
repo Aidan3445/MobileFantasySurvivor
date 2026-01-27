@@ -107,8 +107,8 @@ export default function EventFAB({ hash, isLeagueAdmin, isSysAdmin, isActive }: 
         style={[animatedSectionStyle]}>
         <View className='w-full h-0 border-t border-primary border-dashed absolute top-1/2' />
         <View className='h-full w-0 border-l border-primary border-dashed absolute left-1/2' />
-        <Text className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-primary font-medium bg-background p-1'>
-          Snap to corner
+        <Text className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-primary font-black tracking-wide bg-background p-1'>
+          SNAP TO CORNER
         </Text>
       </Animated.View>
       <GestureDetector gesture={composed}>

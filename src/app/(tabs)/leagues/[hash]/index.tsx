@@ -1,6 +1,6 @@
 'use client';
 
-import { Animated, RefreshControl, ScrollView, Text, View } from 'react-native';
+import { Animated, RefreshControl, ScrollView, View } from 'react-native';
 import { Redirect, useLocalSearchParams } from 'expo-router';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 import LoadingScreen from '~/components/auth/loadingScreen';
@@ -11,6 +11,7 @@ import { cn } from '~/lib/utils';
 import { useSysAdmin } from '~/hooks/user/useSysAdmin';
 import EventFAB from '~/components/leagues/actions/events/fab';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
+import Scores from '~/components/leagues/hub/shared/scores';
 
 export default function LeagueDetailScreen() {
   const { hash } = useLocalSearchParams<{ hash: string }>();
@@ -57,13 +58,7 @@ export default function LeagueDetailScreen() {
               'page justify-start gap-y-4 px-1.5 pt-8 pb-1.5',
               refreshing && 'pt-12'
             )}>
-              <View className='flex-1'>
-                <Text className='text-center text-2xl font-bold text-primary'>League Hash: {hash}</Text>
-                <Text className='text-center text-lg font-medium text-secondary mt-2'>
-                  Sys Admin Access: {userId ? 'Granted' : 'Not Granted'}
-                </Text>
-              </View>
-
+              <Scores isActive={league.status === 'Active'} />
             </View>
           </ScrollView>
           <EventFAB
