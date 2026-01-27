@@ -14,7 +14,6 @@ import { type DraftDetails } from '~/types/leagues';
 import { usePredictionsMade } from '~/hooks/leagues/enrich/usePredictionsMade';
 import { type ScoringBaseEventName } from '~/types/events';
 import { useCastaways } from '~/hooks/seasons/useCastaways';
-import { useRouter } from 'expo-router';
 
 /**
   * Custom hook to get league action details
@@ -157,7 +156,6 @@ export function useLeagueActionDetails(overrideHash?: string) {
     return details;
   }, [league, rules, selectionTimeline, nextEpisode, tribeMembers, leagueMembers, eliminationLookup]);
 
-  const router = useRouter();
   const [dialogOpen, setDialogOpen] = useState<boolean>();
 
   const { onTheClock, onDeck, onTheClockIndex } = useMemo(() => {
@@ -200,12 +198,6 @@ export function useLeagueActionDetails(overrideHash?: string) {
   useEffect(() => {
     setDialogOpen(undefined);
   }, [leagueMembers?.loggedIn?.draftOrder]);
-
-  useEffect(() => {
-    if (league && onTheClockIndex !== null && (onTheClockIndex === -1 || league.status !== 'Draft')) {
-      router.push(`/leagues/${league.hash}`);
-    }
-  }, [onTheClockIndex, league?.status, league?.hash, router, league]);
 
   const predictionRuleCount = useMemo(() => {
     if (!rules) return 0;
@@ -264,6 +256,7 @@ export function useLeagueActionDetails(overrideHash?: string) {
     actionDetails,
     membersWithPicks,
     onTheClock,
+    onTheClockIndex,
     onDeck,
     leagueMembers,
     rules: rulesBasedOnTiming,
@@ -277,4 +270,3 @@ export function useLeagueActionDetails(overrideHash?: string) {
     setDialogOpen,
   };
 }
-

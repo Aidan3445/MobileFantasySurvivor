@@ -1,16 +1,19 @@
 'use client';
 
 import React from 'react';
-import { RefreshControl, ScrollView, View } from 'react-native';
+import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ActiveLeagues from '~/components/home/activeleagues/view';
 import Header from '~/components/home/header/view';
 import QuickActions from '~/components/home/quickActions/view';
 import { CastawayScoreboard } from '~/components/home/scoreboard/view';
 import { useRefresh } from '~/hooks/helpers/refresh/useRefresh';
+import { useLeagueActionDetails } from '~/hooks/leagues/enrich/useActionDetails';
 
 export default function Page() {
   const { refreshing, onRefresh } = useRefresh([[]]);
+
+  const hook = useLeagueActionDetails('orP0ShUVr-NlJwms');
 
   return (
     <SafeAreaView edges={['top']} className='flex-1 bg-background'>
@@ -32,6 +35,11 @@ export default function Page() {
           <ActiveLeagues />
           <QuickActions className='rounded-xl border-2 border-primary/20 bg-card opacity-80 p-2' />
           <CastawayScoreboard />
+          <View>
+            <Text>
+              {JSON.stringify(hook, null, 2)}
+            </Text>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
