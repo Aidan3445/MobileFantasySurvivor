@@ -113,7 +113,7 @@ export default function EventFAB({ hash, isLeagueAdmin, isSysAdmin, isActive }: 
       </Animated.View>
       <GestureDetector gesture={composed}>
         <Animated.View
-          className='absolute h-14 w-14 items-center justify-center rounded-full bg-primary'
+          className='absolute h-14 w-14 items-center justify-center rounded-full bg-primary/90 border-2 border-accent/50 shadow-lg'
           style={[{ top: 0, left: 0 }, animatedStyle]}>
           <Pencil size={28} color={colors.card} />
         </Animated.View>

@@ -8,6 +8,7 @@ import { useFetch } from '~/hooks/helpers/useFetch';
 export function useShotInTheDark() {
   const queryClient = useQueryClient();
   const postAction = useFetch('POST');
+  const deleteAction = useFetch('DELETE');
   const { data: league } = useLeague();
   const leagueData = useLeagueData();
 
@@ -60,7 +61,7 @@ export function useShotInTheDark() {
     setIsSubmitting(true);
 
     try {
-      const response = await postAction(`/api/leagues/${league.hash}/shotInTheDark/play`, {});
+      const response = await postAction(`/api/leagues/${league.hash}/shotInTheDark`);
 
       if (!response.ok) {
         throw new Error('Failed to play Shot in the Dark');
@@ -87,7 +88,7 @@ export function useShotInTheDark() {
     setIsSubmitting(true);
 
     try {
-      const response = await postAction(`/api/leagues/${league.hash}/shotInTheDark/cancel`, {});
+      const response = await deleteAction(`/api/leagues/${league.hash}/shotInTheDark`);
 
       if (!response.ok) {
         throw new Error('Failed to cancel Shot in the Dark');

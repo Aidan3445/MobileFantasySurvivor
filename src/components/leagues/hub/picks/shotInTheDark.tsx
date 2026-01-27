@@ -100,8 +100,8 @@ export default function ShotInTheDark({ className }: ShotInTheDarkProps) {
                 'flex-row items-center justify-center gap-2 rounded-lg bg-primary p-3 active:opacity-80',
                 isSubmitting && 'opacity-50'
               )}>
-              <Dices size={18} color={colors.primaryForeground} />
-              <Text className='text-base font-bold uppercase tracking-wider text-primary-foreground'>
+              <Dices size={18} color='white' />
+              <Text className='text-base font-bold uppercase tracking-wider text-white'>
                 Play Protection
               </Text>
             </Pressable>

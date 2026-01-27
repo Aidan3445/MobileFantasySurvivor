@@ -82,7 +82,8 @@ export default function MemberRow({
             'text-base font-bold transition-all text-black cursor-pointer',
             member.loggedIn && 'text-primary'
           )}
-          containerClassName='flex-row' />
+          containerClassName='flex-row'>
+        </MarqueeText>
       </ColorRow>
       <View className='w-24 justify-center'>
         <CastawayModal castaway={castaway}>
@@ -117,6 +118,7 @@ export default function MemberRow({
       {leagueSettings && leagueSettings.survivalCap > 0 && (
         <View className='w-6 items-center justify-center'>
           <SurvivalStreaks
+            isLoggedIn={member.loggedIn}
             currentStreak={currentStreak}
             eliminatedEpisode={castaway?.eliminatedEpisode}
             shotInTheDarkStatus={shotInTheDarkStatus}
