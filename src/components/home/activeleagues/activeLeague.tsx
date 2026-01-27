@@ -70,7 +70,7 @@ export default function ActiveLeague({ league }: ActiveLeagueProps) {
           router.replace('/leagues');
           // eslint-disable-next-line no-undef
           setTimeout(() => {
-            router.push({ pathname: '/leagues/[hash]', params: { hash: league.hash } });
+            router.navigate({ pathname: '/leagues/[hash]', params: { hash: league.hash } });
           }, 10);
         }}>
         {/* League Name */}

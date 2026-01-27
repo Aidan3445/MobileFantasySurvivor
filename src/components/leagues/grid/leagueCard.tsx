@@ -28,7 +28,7 @@ export default function LeagueCard({
         <Button
           className='flex-1 rounded-lg border-2 border-primary/20 bg-primary/5 p-3 active:border-primary/30 active:bg-primary/10'
           onPress={() => {
-            router.push({ pathname: '/leagues/[hash]', params: { hash: league.hash } });
+            router.navigate({ pathname: '/leagues/[hash]', params: { hash: league.hash } });
           }}>
           {/* Header */}
           <View className='flex-row items-start justify-between gap-2'>
