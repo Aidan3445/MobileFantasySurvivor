@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { usePredictionTiming } from '~/hooks/leagues/query/usePredictionTiming';
 import { useSelectionTimeline } from '~/hooks/leagues/query/useSelectionTimeline';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
-import { type EnrichedCastaway } from '~/types/castaways';
+import { type Castaway, type EnrichedCastaway } from '~/types/castaways';
 import { type LeagueMember } from '~/types/leagueMembers';
 import { useEliminations } from '~/hooks/seasons/useEliminations';
 import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
@@ -14,6 +14,7 @@ import { type DraftDetails } from '~/types/leagues';
 import { usePredictionsMade } from '~/hooks/leagues/enrich/usePredictionsMade';
 import { type ScoringBaseEventName } from '~/types/events';
 import { useRouter } from 'expo-router';
+import { useCastaways } from '~/hooks/seasons/useCastaways';
 
 /**
  * Custom hook to get league action details
@@ -37,6 +38,7 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
   const tribeMembers = useEnrichedTribeMembers(league?.seasonId ?? null, nextEpisode);
   const { data: eliminations } = useEliminations(league?.seasonId ?? null);
+  const { data: castaways } = useCastaways(league?.seasonId ?? null);
 
   const eliminationLookup = useMemo(() => {
     if (!eliminations) return new Map<number, number>();
@@ -57,22 +59,64 @@ export function useLeagueActionDetails(overrideHash?: string) {
       return [];
     }
 
-    const picks: { member: LeagueMember; castawayFullName: string }[] = [];
+    const picks: {
+      member: LeagueMember;
+      castawayFullName: string;
+      castawayId: number;
+      secondary?: {
+        castawayFullName: string;
+        castawayId: number;
+      };
+      out: boolean
+    }[] = [];
 
-    Object.values(tribeMembers).forEach(({ castaways }) => {
-      castaways.forEach(castaway => {
-        const selection = selectionTimeline.castawayMembers[castaway.castawayId]?.[nextEpisode];
-        if (selection) {
-          const member = leagueMembers.members.find(m => m.memberId === selection);
-          if (member) {
-            picks.push({ member, castawayFullName: castaway.fullName });
-          }
-        }
+    leagueMembers.members.forEach(member => {
+      const selections = selectionTimeline.memberCastaways[member.memberId] ?? [];
+      const selectionId = selections[nextEpisode];
+
+      if (!selectionId) {
+        const lastSelectionId = selections.findLast(id => id !== null);
+        const lastCastaway = castaways?.find(c => c.castawayId === lastSelectionId);
+        picks.push({
+          member,
+          castawayFullName: lastCastaway ? lastCastaway.fullName : 'No Pick',
+          castawayId: lastCastaway ? lastCastaway.castawayId : -1,
+          out: true
+        });
+      }
+
+      const castaway = castaways?.find(c => c.castawayId === selectionId);
+
+      let secondaryCastaway: Castaway | undefined = undefined;
+
+      if (settings?.secondaryPickEnabled) {
+        const secondarySelections = selectionTimeline.secondaryPicks?.[member.memberId] ?? [];
+        const secondarySelectionId = secondarySelections[nextEpisode];
+
+        secondaryCastaway = castaways?.find(c => c.castawayId === secondarySelectionId);
+      }
+
+      picks.push({
+        member,
+        castawayFullName: castaway ? castaway.fullName : 'No Pick',
+        castawayId: castaway ? castaway.castawayId : -1,
+        secondary: secondaryCastaway ? {
+          castawayFullName: secondaryCastaway.fullName,
+          castawayId: secondaryCastaway.castawayId
+        } : undefined,
+        out: false
       });
     });
 
     return picks;
-  }, [nextEpisode, tribeMembers, leagueMembers, selectionTimeline]);
+  }, [
+    nextEpisode,
+    tribeMembers,
+    leagueMembers,
+    selectionTimeline,
+    castaways,
+    settings?.secondaryPickEnabled
+  ]);
 
   const actionDetails = useMemo(() => {
     if (
@@ -215,6 +259,7 @@ export function useLeagueActionDetails(overrideHash?: string) {
   }, [rules, predictionTiming]);
 
   return {
+    league,
     actionDetails,
     membersWithPicks,
     onTheClock,

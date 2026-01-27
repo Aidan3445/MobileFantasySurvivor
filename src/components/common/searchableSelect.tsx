@@ -87,7 +87,7 @@ export default function SearchableSelect<T extends string | number>({
 
         {/* Options List */}
         <FlatList
-          className='mt-3 max-h-64'
+          className='mt-2 max-h-64'
           showsVerticalScrollIndicator={false}
           data={filterOptions(options)}
           keyExtractor={(item) => String(item.value)}
@@ -121,7 +121,7 @@ export default function SearchableSelect<T extends string | number>({
                   item.renderLabel()
                 ) : (
                   <Text
-                    className={`flex-1 ${isSelected ? 'font-semibold text-primary' : 'text-foreground'}`}>
+                    className={`text-base flex-1 ${isSelected ? 'font-semibold text-primary' : 'text-foreground'}`}>
                     {item.label}
                   </Text>
                 )}

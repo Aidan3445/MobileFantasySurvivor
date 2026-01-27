@@ -48,7 +48,7 @@ export default function Scores({ isActive = false }: ScoresProps) {
   );
 
   return (
-    <View className='rounded-xl border-2 border-primary/20 bg-card'>
+    <View className='shrink rounded-xl border-2 border-primary/20 bg-card'>
       {/* Tabs */}
       <View className='flex-row rounded-lg bg-accent p-1 gap-1 m-2'>
         {!isActive && renderTab('podium', 'Podium')}
@@ -74,7 +74,7 @@ export default function Scores({ isActive = false }: ScoresProps) {
           </View>
         )}
         <View
-          className='flex-1 justify-center items-center p-2 pr-1.5'
+          className='flex-1 justify-start items-center p-2 pr-1.5'
           style={{ width: contentWidth }}>
           <Scoreboard className='w-full bg-primary/5 border-2 border-primary/20 rounded-lg overflow-hidden' />
         </View>

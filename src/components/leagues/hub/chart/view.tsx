@@ -88,9 +88,10 @@ export default function Chart() {
           xKey='episode'
           yKeys={yKeys}
           domain={{
-            y: [minY, maxY * 1.1],
-            x: [0, maxEpisode + 0.5],
+            y: [minY, maxY],
+            x: [0, maxEpisode],
           }}
+          domainPadding={{ top: 25, right: 15 }}
           axisOptions={{
             font,
             tickCount: { x: maxEpisode + 1, y: 6 },
@@ -167,19 +168,21 @@ export default function Chart() {
 
       {/* Interactive Legend */}
       <View className='flex-row flex-wrap gap-2 px-2 pt-2 items-center'>
-        {sortedMemberScores.map(({ member }) => {
+        {sortedMemberScores.map(({ member }, index) => {
           const isSelected = selectedMember === member.displayName;
           const isOther = selectedMember && !isSelected;
 
           return (
             <>
               {member.loggedIn && (
-                <View key='pointer' className='-mr-2 rotate-90 animate-pulse'>
+                <View
+                  key={`pointer-${member.memberId}-${index}`}
+                  className='-mr-2 rotate-90 animate-pulse'>
                   <Pointer size={16} color={colors.primary} />
                 </View>
               )}
               <Pressable
-                key={member.memberId}
+                key={`legend-${member.memberId}-${index}`}
                 onPress={() => handleLegendPress(member.displayName)}
                 className='flex-row items-center gap-1 py-1 active:opacity-70'>
                 <View

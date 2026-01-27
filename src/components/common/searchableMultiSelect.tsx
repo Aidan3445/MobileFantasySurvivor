@@ -115,7 +115,7 @@ export default function SearchableMultiSelect<T extends string | number>({
 
   return (
     <>
-      <Modal isVisible={isVisible} onClose={closeModal} className='gap-2 pb-0'>
+      <Modal isVisible={isVisible} onClose={closeModal}>
         {/* Header with Search and Done */}
         <View className='flex-row items-center gap-2'>
           <View className='flex-1 flex-row items-center gap-2 rounded-lg border-2 border-primary/20 bg-primary/5 px-3'>
@@ -152,7 +152,7 @@ export default function SearchableMultiSelect<T extends string | number>({
 
         {/* Options List */}
         <FlatList
-          className='max-h-64 pb-4'
+          className='max-h-64'
           showsVerticalScrollIndicator={false}
           data={filterOptions(options)}
           keyExtractor={(item) => String(item.value)}
@@ -189,7 +189,7 @@ export default function SearchableMultiSelect<T extends string | number>({
                   item.renderLabel()
                 ) : (
                   <Text
-                    className={`flex-1 ${selected ? 'font-semibold text-foreground' : 'text-foreground'}`}>
+                    className={`text-base flex-1 ${selected ? 'font-semibold text-foreground' : 'text-foreground'}`}>
                     {item.label}
                   </Text>
                 )}

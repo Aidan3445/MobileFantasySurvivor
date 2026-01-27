@@ -12,6 +12,7 @@ import { useSysAdmin } from '~/hooks/user/useSysAdmin';
 import EventFAB from '~/components/leagues/actions/events/fab';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
 import Scores from '~/components/leagues/hub/shared/scores';
+import ChangeCastaway from '~/components/leagues/hub/picks/changeCastaway';
 
 export default function LeagueDetailScreen() {
   const { hash } = useLocalSearchParams<{ hash: string }>();
@@ -59,6 +60,7 @@ export default function LeagueDetailScreen() {
               refreshing && 'pt-12'
             )}>
               <Scores isActive={league.status === 'Active'} />
+              <ChangeCastaway />
             </View>
           </ScrollView>
           <EventFAB
