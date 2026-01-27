@@ -81,7 +81,7 @@ export default function EventRow({
           {event.referenceMap?.map(({ tribe }, index) =>
             tribe ? (
               <ColorRow key={index} className='leading-tight' color={tribe.tribeColor}>
-                <Text className='text-base text-foreground ml-1'>
+                <Text className='text-base text-foreground'>
                   {tribe.tribeName}
                 </Text>
               </ColorRow>
@@ -99,7 +99,7 @@ export default function EventRow({
               className='leading-tight'
               color={castaway.tribe?.color ?? '#AAAAAA'}>
               <CastawayModal castaway={castaway}>
-                <Text className='text-base text-foreground ml-1'>{castaway.shortName}</Text>
+                <Text className='text-base text-foreground'>{castaway.shortName}</Text>
               </CastawayModal>
             </ColorRow>
           ))
@@ -119,7 +119,7 @@ export default function EventRow({
                     <MarqueeText
                       text={member.displayName}
                       className={cn(
-                        'text-base transition-all text-black cursor-pointer ml-1',
+                        'text-base transition-all text-black cursor-pointer',
                         member.loggedIn && 'text-primary'
                       )}
                       containerClassName='flex-row' />
@@ -131,7 +131,7 @@ export default function EventRow({
                       'leading-tight text-muted-foreground',
                       (secondaries?.length === 0 || !event.points) && 'opacity-0'
                     )}>
-                    <Text className='text-base text-foreground ml-1'>
+                    <Text className='text-base text-foreground'>
                       None
                     </Text>
                   </ColorRow>

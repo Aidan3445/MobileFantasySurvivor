@@ -11,7 +11,7 @@ interface ColorRowProps {
 }
 
 export const ColorRowClassNames = {
-  base: 'w-full flex flex-row py-0.5 gap-4 text-nowrap items-center rounded-md border-t border-b border-r border-transparent',
+  base: 'w-full flex flex-row p-0.5 pr-0 gap-4 text-nowrap items-center rounded-md border-t border-b border-r border-transparent',
 };
 
 export default function ColorRow({ color, className, children }: ColorRowProps) {

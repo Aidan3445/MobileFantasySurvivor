@@ -1,5 +1,9 @@
 import { useCallback, useRef, useState } from 'react';
-import { type ScrollView, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native';
+import {
+  type ScrollView,
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
+} from 'react-native';
 
 interface UseTabsCarouselOptions<T extends string> {
   tabs: readonly [T, ...T[]];
@@ -14,30 +18,35 @@ export function useTabsCarousel<T extends string>({
 }: UseTabsCarouselOptions<T>) {
   const scrollRef = useRef<ScrollView>(null);
   const [activeTab, setActiveTab] = useState<T>(defaultTab ?? tabs[0]);
-  const isScrollingRef = useRef(false);
+  const isProgrammaticScroll = useRef(false);
 
-  // Sync carousel to tab changes
+  /** Tap → scroll */
   const handleTabChange = useCallback(
     (tab: T) => {
       const index = tabs.indexOf(tab);
-      if (index !== -1 && scrollRef.current) {
-        isScrollingRef.current = true;
-        setActiveTab(tab);
-        scrollRef.current.scrollTo({ x: index * width, animated: true });
-        // Reset flag after animation
-        // eslint-disable-next-line no-undef
-        setTimeout(() => {
-          isScrollingRef.current = false;
-        }, 350);
-      }
+      if (index === -1 || !scrollRef.current) return;
+
+      isProgrammaticScroll.current = true;
+      setActiveTab(tab);
+
+      scrollRef.current.scrollTo({
+        x: index * width,
+        animated: true,
+      });
+
+      // release after animation finishes
+      // eslint-disable-next-line no-undef
+      setTimeout(() => {
+        isProgrammaticScroll.current = false;
+      }, 300);
     },
     [tabs, width]
   );
 
-  // Sync tab to carousel scroll
+  /** Swipe → update active tab */
   const handleScroll = useCallback(
     (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      if (isScrollingRef.current) return;
+      if (isProgrammaticScroll.current) return;
 
       const offsetX = event.nativeEvent.contentOffset.x;
       const index = Math.round(offsetX / width);

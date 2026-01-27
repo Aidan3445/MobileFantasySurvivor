@@ -1,4 +1,3 @@
-// components/leagues/hub/shared/scores/Scores.tsx
 import { useCallback } from 'react';
 import { View, Text, ScrollView, Pressable, useWindowDimensions } from 'react-native';
 import { useTabsCarousel } from '~/hooks/ui/useTabsCarousel';
@@ -33,7 +32,7 @@ export default function Scores({ isActive = false }: ScoresProps) {
         key={tab}
         onPress={() => setActiveTab(tab)}
         className={cn(
-          'flex-1 items-center justify-center rounded-lg py-2 transition-colors',
+          'flex-1 items-center justify-center rounded-md py-2 transition-colors',
           activeTab === tab ? 'bg-primary' : 'bg-transparent'
         )}>
         <Text
@@ -64,23 +63,23 @@ export default function Scores({ isActive = false }: ScoresProps) {
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         onScroll={handleScroll}
-        scrollEventThrottle={16}
+        scrollEventThrottle={100}
         decelerationRate='fast'
         contentContainerStyle={{ width: contentWidth * tabs.length }}>
         {!isActive && (
           <View
-            className='justify-center items-center'
+            className='flex-1 justify-center items-center p-2 pr-1.5'
             style={{ width: contentWidth }}>
             <Podium />
           </View>
         )}
         <View
-          className='justify-center items-center p-2'
+          className='flex-1 justify-center items-center p-2 pr-1.5'
           style={{ width: contentWidth }}>
           <Scoreboard className='w-full bg-primary/5 border-2 border-primary/20 rounded-lg overflow-hidden' />
         </View>
         <View
-          className='justify-center items-center'
+          className='justify-center items-center p-2 pr-1.5'
           style={{ width: contentWidth }}>
           <Chart />
         </View>
