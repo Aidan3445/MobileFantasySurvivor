@@ -231,10 +231,7 @@ export default function ChangeCastaway() {
       </View>
 
       {/* Elimination Dialog */}
-      <Modal
-        isVisible={dialogOpen && !closedDialog}
-        onClose={markDialogClosed}
-        animationType='fade'>
+      <Modal isVisible={dialogOpen && !closedDialog} onClose={markDialogClosed}>
         <View className='gap-4'>
           <Text className='text-xl font-black uppercase tracking-tight text-foreground text-center'>
             Oh no!

@@ -94,16 +94,10 @@ export default function Modal({
   }, [isVisible]);
 
   return (
-    <RNModal
-      visible={isVisible}
-      transparent
-      animationType='none'
-      onRequestClose={onClose}
-    >
+    <RNModal visible={isVisible} transparent animationType='none' onRequestClose={onClose}>
       <SafeAreaView
         edges={{ top: 'maximum', bottom: 'maximum' }}
-        className='flex-1 px-2 py-32 items-center justify-center'
-      >
+        className='flex-1 px-2 py-32 items-center justify-center'>
         {/* Backdrop */}
         <Pressable className='absolute inset-0' onPress={dismiss}>
           <Animated.View
@@ -112,8 +106,7 @@ export default function Modal({
 
         <KeyboardAvoidingView
           className='w-full'
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        >
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <GestureDetector gesture={panGesture}>
             <Animated.View style={modalStyle}>
               <Pressable
@@ -121,8 +114,7 @@ export default function Modal({
                   'w-full rounded-xl border-2 border-primary/20 bg-card p-4',
                   className
                 )}
-                onPress={(e) => e.stopPropagation()}
-              >
+                onPress={(e) => e.stopPropagation()}>
                 {children}
               </Pressable>
             </Animated.View>

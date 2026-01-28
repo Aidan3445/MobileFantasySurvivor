@@ -28,10 +28,7 @@ function CastawayModal({ castaway, isVisible, onClose }: CastawayModalProps) {
   };
 
   return (
-    <Modal
-      isVisible={isVisible}
-      onClose={onClose}
-      animationType='fade'>
+    <Modal isVisible={isVisible} onClose={onClose}>
       <View className='items-center gap-4'>
         <Image
           source={{ uri: castaway.imageUrl }}
