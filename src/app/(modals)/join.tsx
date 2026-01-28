@@ -168,7 +168,7 @@ export default function JoinLeagueScreen() {
       </KeyboardAvoidingView>
 
       {/* Error Modal */}
-      <Modal isVisible={errorModalVisible} onClose={handleErrorDismiss}>
+      <Modal visible={errorModalVisible} onClose={handleErrorDismiss}>
         <ErrorHash onBack={handleErrorDismiss} />
       </Modal>
     </View>

@@ -49,7 +49,7 @@ export default function OwnerToggle({ member, loggedInMember }: CurrentMemberPro
         />
       </Button>
 
-      <Modal isVisible={isOpen} onClose={handleClose}>
+      <Modal visible={isOpen} onClose={handleClose}>
         <View className='flex-row items-center gap-1 mb-2'>
           <View className='h-6 w-1 bg-primary rounded-full' />
           <Text className='text-xl font-black uppercase tracking-tight'>

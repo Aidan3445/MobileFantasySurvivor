@@ -124,7 +124,7 @@ export default function SearchableMultiSelect<T extends string | number>({
 
   return (
     <>
-      <Modal isVisible={isVisible} onClose={closeModal}>
+      <Modal visible={isVisible} onClose={closeModal}>
         {/* Header with Search and Done */}
         <View className='flex-row items-center gap-2'>
           <View className='flex-1 flex-row items-center gap-2 rounded-lg border-2 border-primary/20 bg-primary/5 px-3'>

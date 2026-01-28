@@ -82,7 +82,7 @@ export default function SearchableSelect<T extends string | number>({
 
   return (
     <>
-      <Modal isVisible={isVisible} onClose={closeModal}>
+      <Modal visible={isVisible} onClose={closeModal}>
         {/* Search Input */}
         <View className='flex-row items-center gap-2 rounded-lg border-2 border-primary/20 bg-primary/5 px-3'>
           <Search size={18} color={colors['muted-foreground']} />

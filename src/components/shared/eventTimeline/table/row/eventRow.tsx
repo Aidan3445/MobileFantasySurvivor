@@ -155,7 +155,7 @@ export default function EventRow({
       <NotesCell notes={event.notes} />
 
       {/* Secondary Picks Modal */}
-      <Modal isVisible={secondaryModalVisible} onClose={() => setSecondaryModalVisible(false)}>
+      <Modal visible={secondaryModalVisible} onClose={() => setSecondaryModalVisible(false)}>
         <Text className='text-center text-lg font-semibold uppercase tracking-wide'>
           Secondary Points
         </Text>

@@ -32,7 +32,7 @@ export default function SetDraftDate({ overrideHash }: SetDraftDateProps) {
         )}
       </Button>
       <Modal
-        isVisible={modalOpen}
+        visible={modalOpen}
         onClose={handleCancel}>
         <View className='w-full rounded-xl bg-card gap-2'>
           <Text className='text-card-foreground text-center text-lg font-bold'>Set Draft Date</Text>

@@ -41,7 +41,7 @@ export default function CastawayModal({ castaway, children }: CastawayModalProps
       <Pressable onPress={() => setModalOpen(true)}>
         {children}
       </Pressable>
-      <Modal isVisible={modalOpen} onClose={() => setModalOpen(false)}>
+      <Modal visible={modalOpen} onClose={() => setModalOpen(false)}>
         {/* Header with name and image */}
         <View className='flex-row justify-between gap-3 items-start mb-1'>
           <View className='flex-1'>

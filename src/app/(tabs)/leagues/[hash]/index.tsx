@@ -1,6 +1,7 @@
 'use client';
 
-import { Animated, RefreshControl, ScrollView, View } from 'react-native';
+import { Animated, RefreshControl, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { Redirect, useLocalSearchParams } from 'expo-router';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 import LoadingScreen from '~/components/auth/loadingScreen';
@@ -43,12 +44,13 @@ export default function LeagueHubScreen() {
       {league &&
         <View className='flex-1 bg-background relative'>
           <RefreshIndicator refreshing={refreshing} scrollY={scrollY} extraHeight={-45} />
-          <ScrollView
+          <KeyboardAwareScrollView
             className='w-full'
             showsVerticalScrollIndicator={true}
             onScroll={handleScroll}
             scrollEventThrottle={16}
             scrollIndicatorInsets={{ top: 16 }}
+            bottomOffset={80}
             refreshControl={
               <RefreshControl
                 refreshing={refreshing}
@@ -66,7 +68,7 @@ export default function LeagueHubScreen() {
               <PredictionHistory />
               <MakePredictions />
             </View>
-          </ScrollView>
+          </KeyboardAwareScrollView>
           <EventFAB
             hash={hash}
             isLeagueAdmin={leagueMembers?.loggedIn?.role !== 'Member'}

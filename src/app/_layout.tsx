@@ -6,6 +6,7 @@ import QueryClientContextProvider from '~/context/reactQueryContext';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { StatusBar } from 'react-native';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 // Suppress specific warning from react-native-reanimated-carousel
 const originalWarn = console.warn;
@@ -25,14 +26,16 @@ export default function RootLayout() {
 
       <ClerkProvider tokenCache={tokenCache} telemetry={false}>
         <QueryClientContextProvider>
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen
-              name='(tabs)'
-              options={{ headerShown: false }} />
-            <Stack.Screen
-              name='(modals)'
-              options={{ presentation: 'modal', headerShown: false }} />
-          </Stack>
+          <KeyboardProvider>
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen
+                name='(tabs)'
+                options={{ headerShown: false }} />
+              <Stack.Screen
+                name='(modals)'
+                options={{ presentation: 'modal', headerShown: false }} />
+            </Stack>
+          </KeyboardProvider>
         </QueryClientContextProvider>
       </ClerkProvider>
     </GestureHandlerRootView>

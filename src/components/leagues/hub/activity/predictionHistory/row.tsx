@@ -78,7 +78,7 @@ export default function PredictionRow({
       </View>
 
       {/* Timing Modal */}
-      <Modal isVisible={showTimingModal} onClose={() => setShowTimingModal(false)}>
+      <Modal visible={showTimingModal} onClose={() => setShowTimingModal(false)}>
         <View className='gap-3'>
           <View className='flex-row items-center justify-center gap-2'>
             <Clock size={20} color={colors.primary} />

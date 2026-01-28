@@ -34,7 +34,7 @@ export default function TribeHistoryCircles({ tribeTimeline }: TribeHistoryCircl
         ))}
       </Pressable>
 
-      <Modal isVisible={modalVisible} onClose={() => setModalVisible(false)}>
+      <Modal visible={modalVisible} onClose={() => setModalVisible(false)}>
         {/* Header */}
         <View className='mb-3 flex-row items-center gap-2'>
           <View className='h-5 w-1 rounded-full bg-primary' />

@@ -134,7 +134,7 @@ export default function ShotInTheDark({ className }: ShotInTheDarkProps) {
       </View>
 
       {/* Confirmation Modal */}
-      <Modal isVisible={showConfirmation} onClose={() => setShowConfirmation(false)}>
+      <Modal visible={showConfirmation} onClose={() => setShowConfirmation(false)}>
         <View className='gap-4'>
           <Text className='text-xl font-black uppercase tracking-tight text-foreground text-center'>
             Play Shot in the Dark?

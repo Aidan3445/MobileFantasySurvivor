@@ -39,7 +39,7 @@ export default function RecreateLeague({ hash }: RecreateLeagueProps) {
         <Recycle size={16} color='white' />
       </Button>
 
-      <Modal isVisible={isOpen} onClose={() => setIsOpen(false)}>
+      <Modal visible={isOpen} onClose={() => setIsOpen(false)}>
         {ownerLoggedIn ? (
           <View>
             {/* Header */}

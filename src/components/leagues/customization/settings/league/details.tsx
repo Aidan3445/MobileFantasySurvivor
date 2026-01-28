@@ -88,6 +88,7 @@ export default function LeagueDetails() {
       <View className='flex-row gap-2'>
         <Button
           className='flex-1 rounded-lg bg-destructive p-3 active:opacity-80'
+          disabled={!isDirty}
           onPress={resetForm}>
           <Text className='text-center font-semibold text-white'>Cancel</Text>
         </Button>

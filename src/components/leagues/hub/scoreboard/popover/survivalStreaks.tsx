@@ -53,7 +53,7 @@ export default function SurvivalStreaks({
         {renderTriggerContent()}
       </Pressable>
 
-      <Modal isVisible={isVisible} onClose={() => setIsVisible(false)}>
+      <Modal visible={isVisible} onClose={() => setIsVisible(false)}>
         <View className='gap-3'>
           {/* Header */}
           <View className='flex-row items-center justify-center gap-2'>

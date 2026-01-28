@@ -21,7 +21,7 @@ export default function CustomEventModal({
   type
 }: CustomEventModalProps) {
   return (
-    <Modal isVisible={isVisible} onClose={onClose}>
+    <Modal visible={isVisible} onClose={onClose}>
       {/* Header */}
       <View className='flex-row items-center gap-1 mb-4'>
         <View className='h-6 w-1 bg-primary rounded-full' />

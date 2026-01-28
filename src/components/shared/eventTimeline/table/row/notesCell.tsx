@@ -30,7 +30,7 @@ export default function NotesCell({ notes }: NotesCellProps) {
         <ScrollText size={32} className='text-primary' />
       </Pressable>
 
-      <Modal isVisible={modalVisible} onClose={() => setModalVisible(false)}>
+      <Modal visible={modalVisible} onClose={() => setModalVisible(false)}>
         <Text className='mb-2 text-center text-sm font-semibold uppercase tracking-wide'>
           Notes
         </Text>

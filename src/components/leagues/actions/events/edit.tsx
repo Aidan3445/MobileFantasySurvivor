@@ -68,7 +68,7 @@ export default function EditEvent({ event, overrideSeasonId }: EditEventModalPro
 
       {/* Edit Modal */}
       <Modal
-        isVisible={isOpen}
+        visible={isOpen}
         onClose={() => setIsOpen(false)}>
         {/* Header */}
         <View className='flex-row items-center justify-between px-1'>
@@ -183,7 +183,7 @@ export default function EditEvent({ event, overrideSeasonId }: EditEventModalPro
 
         {/* Delete Confirmation Modal */}
         <Modal
-          isVisible={showDeleteConfirm && isOpen}
+          visible={showDeleteConfirm && isOpen}
           onClose={() => setShowDeleteConfirm(false)}>
           {/* Destructive Header */}
           <View className='h-1 w-12 rounded-full bg-destructive self-center' />

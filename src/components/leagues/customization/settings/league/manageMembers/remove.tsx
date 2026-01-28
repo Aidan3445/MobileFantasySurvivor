@@ -39,7 +39,7 @@ export default function RemoveMember({ member, loggedInMember }: CurrentMemberPr
           className={cn(!enabled && 'opacity-50')} />
       </Button>
 
-      <Modal isVisible={isOpen} onClose={() => setIsOpen(false)}>
+      <Modal visible={isOpen} onClose={() => setIsOpen(false)}>
         <View className='flex-row items-center gap-1 mb-2'>
           <View className='h-6 w-1 bg-destructive rounded-full' />
           <Text className='text-xl font-black uppercase tracking-tight text-destructive'>

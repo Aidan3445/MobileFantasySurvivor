@@ -70,7 +70,7 @@ export default function StreakRow({
       </View>
 
       {/* Member Streak Modal */}
-      <Modal isVisible={modalVisible} onClose={() => setModalVisible(false)}>
+      <Modal visible={modalVisible} onClose={() => setModalVisible(false)}>
         <Text className='text-center text-sm font-semibold uppercase tracking-wide'>
           Survival Streak
         </Text>

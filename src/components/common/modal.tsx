@@ -23,7 +23,7 @@ const DISMISS_THRESHOLD = 120;
 const BACKDROP_MAX_OPACITY = 0.5;
 
 interface ModalProps {
-  isVisible: boolean;
+  visible: boolean;
   onClose: () => void;
   className?: string;
   children: ReactNode;
@@ -31,7 +31,7 @@ interface ModalProps {
 }
 
 export default function Modal({
-  isVisible,
+  visible: isVisible,
   onClose,
   className,
   children,

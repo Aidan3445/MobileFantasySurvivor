@@ -52,11 +52,11 @@ export default function LeagueMember({
         control={control}
         name={formPrefix ? `${formPrefix}.displayName` : 'displayName'}
         render={({ field: { onChange, onBlur, value } }) => (
-          <View className='mb-6 w-full'>
+          <View className='w-full'>
             <Text className='mb-2 text-sm font-medium text-muted-foreground'>Display Name</Text>
             <TextInput
               className={cn(
-                'text-xl rounded-lg border-2 border-primary/20 bg-card leading-tight p-4',
+                'text-2xl rounded-lg border-2 border-primary/20 bg-card leading-tight p-4',
                 value.length === 0 && 'italic border-primary/40'
               )}
               textAlignVertical='center'
