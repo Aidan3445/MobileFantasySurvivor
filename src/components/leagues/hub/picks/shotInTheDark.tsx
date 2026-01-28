@@ -134,10 +134,7 @@ export default function ShotInTheDark({ className }: ShotInTheDarkProps) {
       </View>
 
       {/* Confirmation Modal */}
-      <Modal
-        isVisible={showConfirmation}
-        onClose={() => setShowConfirmation(false)}
-        animationType='fade'>
+      <Modal isVisible={showConfirmation} onClose={() => setShowConfirmation(false)}>
         <View className='gap-4'>
           <Text className='text-xl font-black uppercase tracking-tight text-foreground text-center'>
             Play Shot in the Dark?
@@ -167,7 +164,7 @@ export default function ShotInTheDark({ className }: ShotInTheDarkProps) {
                 'flex-1 rounded-lg bg-primary p-3 active:opacity-80',
                 isSubmitting && 'opacity-50'
               )}>
-              <Text className='text-center text-base font-bold uppercase tracking-wider text-primary-foreground'>
+              <Text className='text-center text-base font-bold uppercase tracking-wider text-white'>
                 Confirm
               </Text>
             </Pressable>
