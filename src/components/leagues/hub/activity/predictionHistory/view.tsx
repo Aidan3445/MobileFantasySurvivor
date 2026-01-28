@@ -35,6 +35,11 @@ export default function PredictionHistory() {
     }
   }, [carouselData, ref, setCarouselData]);
 
+  useEffect(() => {
+    // Reset carousel data when history data changes
+    setCarouselData(carouselData);
+  }, [carouselData, setCarouselData]);
+
   if (!hasData) return null;
 
   // Single episode - simpler layout without carousel
