@@ -5,29 +5,30 @@ import { useCustomEvents } from '~/hooks/leagues/query/useCustomEvents';
 import { type Prediction } from '~/types/events';
 
 /**
- * Custom hook to get predictions made by the logged in user in a league.
- * @param {string} overrideHash Optional hash to override the URL parameter.
- * @returnObj `{ basePredictionsMade: Record<number, Prediction[]>, customPredictionsMade: Record<number, Prediction[]> }`
- */
-export function usePredictionsMade(overrideHash?: string) {
+  * Custom hook to get predictions made by the logged in user in a league.
+  * @param {string} overrideHash Optional hash to override the URL parameter.
+  * @returnObj `{ basePredictionsMade: Record<number, Prediction[]>, customPredictionsMade: Record<number, Prediction[]> }`
+  */
+export function usePredictionsMade(overrideHash?: string, selectedMemberId?: number) {
   const { data: leagueMembers } = useLeagueMembers(overrideHash);
   const { data: basePredictions } = useBasePredictions(overrideHash);
   const { data: customEvents } = useCustomEvents(overrideHash);
 
-  const loggedInMemberId = useMemo(
-    () => leagueMembers?.loggedIn?.memberId,
-    [leagueMembers?.loggedIn?.memberId]
+  const memberId = useMemo(() =>
+    selectedMemberId ??
+    leagueMembers?.loggedIn?.memberId,
+    [selectedMemberId, leagueMembers?.loggedIn?.memberId]
   );
 
   const filterPredictionsByUser = useMemo(() => {
-    if (!loggedInMemberId) return () => [];
+    if (!memberId) return () => [];
 
     return (predictions: Prediction[] | undefined) =>
-      predictions?.filter(pred => pred.predictionMakerId === loggedInMemberId) ?? [];
-  }, [loggedInMemberId]);
+      predictions?.filter(pred => pred.predictionMakerId === memberId) ?? [];
+  }, [memberId]);
 
   const basePredictionsMade = useMemo(() => {
-    if (!basePredictions || !loggedInMemberId) return {};
+    if (!basePredictions || !memberId) return {};
 
     const result: Record<number, Prediction[]> = {};
 
@@ -51,10 +52,10 @@ export function usePredictionsMade(overrideHash?: string) {
     });
 
     return result;
-  }, [basePredictions, loggedInMemberId, filterPredictionsByUser]);
+  }, [basePredictions, memberId, filterPredictionsByUser]);
 
   const customPredictionsMade = useMemo(() => {
-    if (!customEvents?.predictions || !loggedInMemberId) return {};
+    if (!customEvents?.predictions || !memberId) return {};
 
     const result: Record<number, Prediction[]> = {};
 
@@ -78,7 +79,11 @@ export function usePredictionsMade(overrideHash?: string) {
     });
 
     return result;
-  }, [customEvents?.predictions, loggedInMemberId, filterPredictionsByUser]);
+  }, [customEvents?.predictions, memberId, filterPredictionsByUser]);
 
-  return { basePredictionsMade, customPredictionsMade };
+  return {
+    basePredictionsMade,
+    customPredictionsMade,
+  };
 }
+

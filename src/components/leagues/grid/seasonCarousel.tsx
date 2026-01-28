@@ -15,7 +15,7 @@ interface LeagueSeasonCarouselProps {
 }
 
 export default function LeagueSeasonCarousel({ leagues, refresh }: LeagueSeasonCarouselProps) {
-  const { setCarouselData, props, progressProps } = useCarousel<
+  const { ref, setCarouselData, props, progressProps } = useCarousel<
     { league: League; member: LeagueMember; currentSelection: CurrentSelection }
   >([]);
 
@@ -28,6 +28,7 @@ export default function LeagueSeasonCarousel({ leagues, refresh }: LeagueSeasonC
   return (
     <View>
       <Carousel
+        ref={ref}
         {...props}
         loop={true}
         height={refresh ? CARD_HEIGHT_WITH_REFRESH : CARD_HEIGHT}
@@ -42,12 +43,7 @@ export default function LeagueSeasonCarousel({ leagues, refresh }: LeagueSeasonC
         )} />
       {props.data.length > 1 && (
         <View className='items-center'>
-          <Pagination.Basic
-            {...progressProps}
-            containerStyle={{
-              ...progressProps.containerStyle,
-              marginTop: 8,
-            }} />
+          <Pagination.Basic {...progressProps} containerStyle={{ marginTop: 8 }} />
         </View>
       )}
     </View>

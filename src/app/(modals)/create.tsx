@@ -102,6 +102,7 @@ export default function CreateLeagueScreen({ onSubmit }: CreateLeagueFormProps) 
         <View className='flex-1 px-1.5 pt-8'>
           {/* Carousel */}
           <Carousel
+            ref={ref}
             {...props}
             enabled={false}
             renderItem={({ item }) => {
@@ -165,9 +166,7 @@ export default function CreateLeagueScreen({ onSubmit }: CreateLeagueFormProps) 
         </View>
       </KeyboardAvoidingView>
       {/* Pagination */}
-      <Pagination.Basic
-        {...progressProps}
-        containerStyle={{ ...progressProps.containerStyle }} />
+      <Pagination.Basic {...progressProps} />
     </View>
   );
 }

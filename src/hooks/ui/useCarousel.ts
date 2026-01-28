@@ -25,22 +25,18 @@ export function useCarousel<T>(initialData: T[] = []) {
     setCarouselDataState(newData);
   }, [setCarouselDataState]);
 
-  const onPressPagination = useCallback(
-    (index: number) => {
-      ref.current?.scrollTo({
-        /**
-         * Calculate the difference between the current index and the target index
-         * to ensure that the carousel scrolls to the nearest index
-         */
-        count: index - progressState,
-        animated: true
-      });
-    },
+  const onPressPagination = useCallback((index: number) => {
+    const currentIndex = Math.round(progressState);
+
+    ref.current?.scrollTo({
+      count: index - currentIndex,
+      animated: true,
+    });
+  },
     [progressState]
   );
 
   const props = useMemo(() => ({
-    ref,
     data: carouselData,
     progress,
     onProgressChange: progress,
@@ -48,13 +44,12 @@ export function useCarousel<T>(initialData: T[] = []) {
     loop: carouselData.length > 2,
     enabled: carouselData.length > 1,
     onConfigurePanGesture: (gesture: PanGestureType) => gesture.activeOffsetX([-10, 10]),
-  }), [carouselData, progress, ref]);
+  }), [carouselData, progress]);
 
   const progressProps = useMemo(() => ({
-    dotStyle: { backgroundColor: colors.secondary, borderRadius: 50 },
+    dotStyle: { backgroundColor: colors.secondary, borderRadius: 50, margin: 3 },
     activeDotStyle: { backgroundColor: colors.primary, borderRadius: 50 },
-    containerStyle: { gap: 5 },
-    onPressPagination,
+    onPress: onPressPagination,
     ...props
   }), [onPressPagination, props]);
 

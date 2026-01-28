@@ -173,34 +173,33 @@ export default function Chart() {
           const isOther = selectedMember && !isSelected;
 
           return (
-            <Fragment key={member.displayName}>
+            <Pressable
+              key={member.memberId}
+              onPress={() => handleLegendPress(member.displayName)}
+              className='flex-row items-center gap-1 py-1 active:opacity-70'>
               {member.loggedIn && (
                 <View
-                  className='-mr-2 rotate-90 animate-pulse'>
+                  className='-mr-1 rotate-90 animate-pulse'>
                   <Pointer size={16} color={colors.primary} />
                 </View>
               )}
-              <Pressable
-                onPress={() => handleLegendPress(member.displayName)}
-                className='flex-row items-center gap-1 py-1 active:opacity-70'>
-                <View
+              <View
+                className={cn(
+                  'w-4 h-4 rounded-full border border-primary',
+                  isOther && 'opacity-30',
+                )}
+                style={{ backgroundColor: member.color }} />
+              <View className={cn('px-0.5',
+                isSelected && 'bg-primary/30 rounded')}>
+                <Text
                   className={cn(
-                    'w-4 h-4 rounded-full border border-primary',
-                    isOther && 'opacity-30',
-                  )}
-                  style={{ backgroundColor: member.color }} />
-                <View className={cn('px-0.5',
-                  isSelected && 'bg-primary/30 rounded')}>
-                  <Text
-                    className={cn(
-                      'text-base transition-all',
-                      isOther ? 'text-muted-foreground' : 'text-primary'
-                    )}>
-                    {member.displayName.split(' ')[0]}
-                  </Text>
-                </View>
-              </Pressable>
-            </Fragment>
+                    'text-base transition-all',
+                    isOther ? 'text-muted-foreground' : 'text-primary'
+                  )}>
+                  {member.displayName.split(' ')[0]}
+                </Text>
+              </View>
+            </Pressable>
           );
         })}
       </View>

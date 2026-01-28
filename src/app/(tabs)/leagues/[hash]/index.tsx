@@ -13,6 +13,7 @@ import EventFAB from '~/components/leagues/actions/events/fab';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
 import Scores from '~/components/leagues/hub/shared/scores';
 import ChangeCastaway from '~/components/leagues/hub/picks/changeCastaway';
+import PredictionHistory from '~/components/leagues/hub/activity/predictionHistory/view';
 
 export default function LeagueHubScreen() {
   const { hash } = useLocalSearchParams<{ hash: string }>();
@@ -21,8 +22,6 @@ export default function LeagueHubScreen() {
   const { refreshing, onRefresh, scrollY, handleScroll } = useLeagueRefresh();
   const { showLoading, fadeAnim } = useFadeLoading({ isLoading: isFetching && !league });
   const { data: userId } = useSysAdmin();
-
-  console.log('Rendering LeagueDetailScreen for league:', hash);
 
   // Redirect to other screens based on status
   if (league?.status === 'Predraft') {
@@ -63,6 +62,7 @@ export default function LeagueHubScreen() {
             )}>
               <Scores isActive={league.status === 'Active'} />
               <ChangeCastaway />
+              <PredictionHistory />
             </View>
           </ScrollView>
           <EventFAB

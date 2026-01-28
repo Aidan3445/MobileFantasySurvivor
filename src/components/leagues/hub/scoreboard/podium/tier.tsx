@@ -42,7 +42,7 @@ export default function Tier({ member, points, place, className }: TierProps) {
   return (
     <View className='flex-1 flex-col items-center justify-end gap-1 h-full'>
       {/* Name */}
-      <View className='rounded bg-secondary/80 px-2 py-1 items-center justify-center'>
+      <View className='rounded bg-econdary/80 px-2 py-1 items-center justify-center h-min'>
         <Text
           className='text-base font-black uppercase tracking-tight text-foreground text-center leading-none'
           numberOfLines={1}

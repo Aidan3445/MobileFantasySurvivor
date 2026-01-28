@@ -18,8 +18,6 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export function useChangeCastaway() {
-  console.log('useChangeCastaway called');
-
   const queryClient = useQueryClient();
   const postCastaway = useFetch('POST');
 
@@ -132,7 +130,6 @@ export function useChangeCastaway() {
 
   // Set initial secondary pick
   useEffect(() => {
-    console.log('Setting initial secondary pick');
     if (!secondaryPickSettings?.enabled || !leagueMembers?.loggedIn || !membersWithPicks.length)
       return;
 

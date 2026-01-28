@@ -89,7 +89,7 @@ export default function PredictionCards({
     [...enabledBasePredictions, ...customPredictions],
     [enabledBasePredictions, customPredictions]);
 
-  const { props, progressProps, setCarouselData } = useCarousel<MakePrediction>([]);
+  const { ref, props, progressProps, setCarouselData } = useCarousel<MakePrediction>([]);
 
   useEffect(() => {
     setCarouselData(allPredictions);
@@ -125,6 +125,7 @@ export default function PredictionCards({
   return (
     <View className='w-full'>
       <Carousel
+        ref={ref}
         height={275}
         renderItem={({ item: prediction, index }) => (
           <View key={index} className='px-8'>
@@ -150,9 +151,7 @@ export default function PredictionCards({
           </View>
         )}
         {...props} />
-      <Pagination.Basic
-        {...progressProps}
-        containerStyle={{ ...progressProps.containerStyle, marginTop: 8 }} />
+      <Pagination.Basic {...progressProps} containerStyle={{ marginTop: 8 }} />
     </View>
   );
 }

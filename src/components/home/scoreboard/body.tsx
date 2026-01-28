@@ -23,7 +23,7 @@ export default function ScoreboardBody({
   data,
   allZero
 }: ScoreboardBodyProps) {
-  const { setCarouselData, props, progressProps, } = useCarousel<[number, number[]][]>([]);
+  const { ref, setCarouselData, props, progressProps, } = useCarousel<[number, number[]][]>([]);
   const [castawayData, setCastawayData] = useState<SeasonsDataQuery | null>(null);
 
   useEffect(() => {
@@ -37,6 +37,7 @@ export default function ScoreboardBody({
     <View>
       <View className='bg-primary/5 border-2 border-primary/20 rounded-lg overflow-hidden border-t-0 rounded-t-none mb-2'>
         <Carousel
+          ref={ref}
           height={(castawaySplitIndex) * ROW_HEIGHT}
           {...props}
           width={props.width - 10}
@@ -67,7 +68,7 @@ export default function ScoreboardBody({
       </View>
       <Pagination.Basic
         {...progressProps}
-        containerStyle={{ ...progressProps.containerStyle, marginBottom: 8 }} />
+        containerStyle={{ marginBottom: 8 }} />
     </View>
   );
 }

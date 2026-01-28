@@ -14,7 +14,7 @@ import { type LeagueDetails } from '~/types/leagues';
 export default function ActiveLeagues() {
   const router = useRouter();
   const { data: leagues } = useLeagues();
-  const { props, progressProps, setCarouselData } = useCarousel(leagues);
+  const { ref, props, progressProps, setCarouselData } = useCarousel(leagues);
   const [inactive, setInactive] = useState<LeagueDetails[]>([]);
 
   useEffect(() => {
@@ -89,6 +89,7 @@ export default function ActiveLeagues() {
 
       {/* Carousel */}
       <Carousel
+        ref={ref}
         height={carouselHeight}
         renderItem={({ item }) => (
           <View className='flex-1 mr-1'>
@@ -100,12 +101,7 @@ export default function ActiveLeagues() {
 
       {/* Pagination Footer */}
       <View className='items-center'>
-        <Pagination.Basic
-          {...progressProps}
-          containerStyle={{
-            ...progressProps.containerStyle,
-            marginVertical: 8,
-          }} />
+        <Pagination.Basic {...progressProps} containerStyle={{ marginVertical: 8 }} />
       </View>
     </View>
   );

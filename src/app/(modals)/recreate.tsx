@@ -86,6 +86,7 @@ export default function RecreateLeagueScreen() {
         <View className='flex-1 px-1.5 pt-8'>
           {/* Carousel */}
           <Carousel
+            ref={ref}
             {...props}
             enabled={false}
             renderItem={({ item }) => {
