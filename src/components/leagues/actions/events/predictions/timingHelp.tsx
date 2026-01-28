@@ -11,7 +11,7 @@ export default function PredictionTimingHelp() {
   return (
     <>
       <Button
-        className='w-6 h-6 items-center justify-center rounded-md bg-primary/10'
+        className='w-6 h-6 items-center justify-center'
         onPress={() => setIsVisible(true)}>
         <HelpCircle size={16} color={colors.primary} />
       </Button>
