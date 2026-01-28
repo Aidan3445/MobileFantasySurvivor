@@ -29,7 +29,7 @@ export function useMakePrediction(
     resolver: zodResolver(formSchema),
   });
 
-  const handleSubmit = reactForm.handleSubmit(async data => {
+  const handleSubmit = (onSuccess?: () => void) => reactForm.handleSubmit(async data => {
     if (!user) {
       Alert.alert('Error', 'You must be logged in to make a prediction');
       return;
@@ -72,11 +72,12 @@ export function useMakePrediction(
       await queryClient.invalidateQueries({ queryKey: ['customEvents', hash] });
 
       Alert.alert('Success', result.wasUpdate ? 'Prediction updated!' : 'Prediction submitted!');
+      onSuccess?.();
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to make prediction');
     }
-  });
+  })();
 
   return { reactForm, handleSubmit };
 }

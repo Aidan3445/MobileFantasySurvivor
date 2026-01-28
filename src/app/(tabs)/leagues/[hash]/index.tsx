@@ -14,6 +14,7 @@ import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
 import Scores from '~/components/leagues/hub/shared/scores';
 import ChangeCastaway from '~/components/leagues/hub/picks/changeCastaway';
 import PredictionHistory from '~/components/leagues/hub/activity/predictionHistory/view';
+import MakePredictions from '~/components/leagues/actions/events/predictions/view';
 
 export default function LeagueHubScreen() {
   const { hash } = useLocalSearchParams<{ hash: string }>();
@@ -63,6 +64,7 @@ export default function LeagueHubScreen() {
               <Scores isActive={league.status === 'Active'} />
               <ChangeCastaway />
               <PredictionHistory />
+              <MakePredictions />
             </View>
           </ScrollView>
           <EventFAB

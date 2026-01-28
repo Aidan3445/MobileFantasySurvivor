@@ -36,6 +36,14 @@ export function useCarousel<T>(initialData: T[] = []) {
     [progressState]
   );
 
+  const scrollNext = useCallback(() => {
+    console.log('Scrolling to next item');
+    ref.current?.scrollTo({
+      count: 1,
+      animated: true,
+    });
+  }, []);
+
   const props = useMemo(() => ({
     data: carouselData,
     progress,
@@ -61,6 +69,7 @@ export function useCarousel<T>(initialData: T[] = []) {
     PAGE_WIDTH,
     PAGE_HEIGHT,
     props,
-    progressProps
+    progressProps,
+    scrollNext,
   };
 }
