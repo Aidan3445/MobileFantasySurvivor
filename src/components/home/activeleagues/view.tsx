@@ -35,16 +35,16 @@ export default function ActiveLeagues() {
     setCarouselData(currentLeagues ?? []);
   }, [leagues, setCarouselData]);
 
-  const carouselHeight = useMemo(() => {
+  const { carouselHeight, maxLeagueMembers } = useMemo(() => {
     const maxLeagueMembers =
       leagues?.reduce((max, league) =>
         league?.league.status === 'Active'
           ? Math.max(max, league.memberCount)
           : max, 0) ?? 0;
     if (maxLeagueMembers < MAX_LEAGUE_MEMBERS_HOME_DISPLAY) {
-      return 35 * maxLeagueMembers + 130;
+      return { carouselHeight: 35 * maxLeagueMembers + 130, maxLeagueMembers };
     }
-    return 35 * MAX_LEAGUE_MEMBERS_HOME_DISPLAY + 130;
+    return { carouselHeight: 35 * MAX_LEAGUE_MEMBERS_HOME_DISPLAY + 130, maxLeagueMembers };
   }, [leagues]);
 
   if ((!props.data || props.data.length === 0) && inactive.length === 0) {
@@ -98,7 +98,10 @@ export default function ActiveLeagues() {
           <View
             className='flex mr-1'
             style={{ height: carouselHeight }}>
-            <ActiveLeague league={item.league} />
+            <ActiveLeague
+              league={item.league}
+              memberCount={item.memberCount}
+              maxMembers={maxLeagueMembers} />
           </View>
         )}
         {...props}

@@ -11,6 +11,7 @@ import CastawayModal from '~/components/shared/castaways/castawayModal';
 
 interface MemberRowProps {
   place: number;
+  index: number;
   member: LeagueMember;
   currentStreak?: number;
   castaway?: EnrichedCastaway;
@@ -26,6 +27,7 @@ interface MemberRowProps {
 
 export default function MemberRow({
   place,
+  index,
   member,
   currentStreak,
   castaway,
@@ -57,7 +59,7 @@ export default function MemberRow({
     <View
       className={cn(
         'h-10 flex-row px-0.5 gap-0.5 items-center',
-        divideY(place - 1),
+        divideY(index),
         doubleBelow && 'border-dashed'
       )}>
       <View className='w-11 inline-flex items-center justify-center'>

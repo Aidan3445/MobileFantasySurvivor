@@ -10,6 +10,8 @@ import { cn } from '~/lib/utils';
 
 interface ActiveLeagueProps {
   league: League;
+  memberCount: number;
+  maxMembers: number;
 }
 
 type StatusConfig = {
@@ -56,7 +58,7 @@ const statusConfig: Record<League['status'], StatusConfig> = {
   },
 };
 
-export default function ActiveLeague({ league }: ActiveLeagueProps) {
+export default function ActiveLeague({ league, memberCount, maxMembers }: ActiveLeagueProps) {
   const router = useRouter();
   const status = statusConfig[league.status];
   const StatusIcon = status.icon;
@@ -115,7 +117,8 @@ export default function ActiveLeague({ league }: ActiveLeagueProps) {
       <View className='flex-1'>
         {league.status === 'Active' ? (
           <Scoreboard
-            className='bg-primary/5 border-2 border-primary/20 rounded-lg overflow-hidden'
+            className={cn('bg-primary/5 border-2 border-primary/20 rounded-lg overflow-hidden',
+              memberCount >= maxMembers && 'flex-1')}
             overrideHash={league.hash}
             maxRows={MAX_LEAGUE_MEMBERS_HOME_DISPLAY} />
         ) : (

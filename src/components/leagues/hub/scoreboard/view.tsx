@@ -1,6 +1,5 @@
 import { View, Text } from 'react-native';
 import { Flame, TrendingUp } from 'lucide-react-native';
-import { cn } from '~/lib/utils';
 import { useLeagueData } from '~/hooks/leagues/enrich/useLeagueData';
 import MemberRow from '~/components/leagues/hub/scoreboard/row';
 import { type EnrichedCastaway } from '~/types/castaways';
@@ -27,7 +26,7 @@ export default function Scoreboard({ overrideHash, maxRows, className }: Scorebo
   const episodeNum = keyEpisodes?.nextEpisode?.episodeNumber ?? Infinity;
 
   return (
-    <View className={cn('flex-1', className)}>
+    <View className={className}>
       <View className='flex-row bg-white gap-0.5 px-0.5 rounded-t-md'>
         <View className='w-11 justify-center'>
           <Text
@@ -102,6 +101,7 @@ export default function Scoreboard({ overrideHash, maxRows, className }: Scorebo
             <MemberRow
               key={index}
               place={place}
+              index={index}
               member={member}
               currentStreak={currentStreaks?.[member.memberId] ?? 0}
               castaway={castaway}
