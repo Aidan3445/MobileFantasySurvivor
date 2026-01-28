@@ -1,4 +1,5 @@
-import { type ReactNode, useEffect, useState } from 'react';
+import { useFocusEffect } from 'expo-router';
+import { type ReactNode, useState, useCallback } from 'react';
 import { View, Text } from 'react-native';
 
 interface ClockProps {
@@ -9,22 +10,23 @@ interface ClockProps {
 export default function Clock({ endDate, replacedBy }: ClockProps) {
   const [timer, setTimer] = useState<number | null>(null);
 
-  useEffect(() => {
-    if (!endDate && timer !== null) {
-      setTimer(null);
-      return;
-    }
-    if (!endDate || (timer !== null && timer <= 0)) return;
-    if (timer === null) setTimer(endDate.getTime() - Date.now());
+  useFocusEffect(
+    useCallback(() => {
+      if (!endDate) return;
 
-    // eslint-disable-next-line no-undef
-    const interval = setInterval(() => {
       setTimer(endDate.getTime() - Date.now());
-    }, 1000);
 
-    // eslint-disable-next-line no-undef
-    return () => clearInterval(interval);
-  }, [endDate, timer]);
+      // eslint-disable-next-line no-undef
+      const interval = setInterval(() => {
+        setTimer(endDate.getTime() - Date.now());
+      }, 1000);
+
+      return () => {
+        // eslint-disable-next-line no-undef
+        clearInterval(interval);
+      };
+    }, [endDate])
+  );
 
   const days = timer ? Math.floor(timer / (1000 * 60 * 60 * 24)) : '--';
   const hours = timer ? Math.floor((timer / (1000 * 60 * 60)) % 24) : '--';
@@ -32,7 +34,7 @@ export default function Clock({ endDate, replacedBy }: ClockProps) {
   const seconds = timer ? Math.floor((timer / 1000) % 60) : '--';
 
   if (timer && timer <= 0) {
-    return <>{replacedBy}</>;
+    return replacedBy;
   }
 
   return (

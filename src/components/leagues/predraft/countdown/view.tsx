@@ -30,10 +30,13 @@ export function DraftCountdown({ overrideHash, className }: DraftCountdownProps)
     () =>
       leagueMembers?.loggedIn
       && leagueMembers.loggedIn.role === 'Owner'
-      && leagueSettings
-      && (leagueSettings.draftDate === null || Date.now() < leagueSettings.draftDate.getTime()),
+      && leagueSettings,
     [leagueMembers, leagueSettings]
   );
+
+  const trackedDraftDate = useMemo(() => {
+    return leagueSettings?.draftDate ? new Date(leagueSettings.draftDate) : null;
+  }, [leagueSettings]);
 
   const onDraftJoin = async () => {
     if (!league) return;
@@ -50,7 +53,7 @@ export function DraftCountdown({ overrideHash, className }: DraftCountdownProps)
   };
 
   return (
-    <View className={cn('w-full p-2 pt-1', className)}>
+    <View className={cn('w-full flex-1 p-2 pt-1 justify-between', className)}>
       {/* Header */}
       <View>
         <View className='flex-row items-center justify-between mb-1'>
@@ -67,16 +70,16 @@ export function DraftCountdown({ overrideHash, className }: DraftCountdownProps)
       </View>
 
       {/* Countdown / Action */}
-      <View>
+      <View className='justify-end'>
         <View className='bg-accent border border-primary/40 rounded-md overflow-hidden'>
           <View className='px-3 pb-1 flex-row items-center gap-2'>
-            {leagueSettings?.draftDate && leagueSettings.draftDate.getTime() > Date.now() ? (
+            {trackedDraftDate ? (trackedDraftDate.getTime() > Date.now() && (
               <>
                 <Calendar size={16} stroke={colors.primary} />
                 <Text
                   allowFontScaling={false}
                   className='text-base font-medium text-primary'>
-                  Starts: {leagueSettings.draftDate.toLocaleString(undefined, {
+                  Starts: {trackedDraftDate.toLocaleString(undefined, {
                     month: 'short',
                     day: 'numeric',
                     year: 'numeric',
@@ -85,7 +88,7 @@ export function DraftCountdown({ overrideHash, className }: DraftCountdownProps)
                   })}
                 </Text>
               </>
-            ) : (
+            )) : (
               <>
                 <CalendarX2 size={16} stroke={colors.primary} />
                 <Text className='text-base font-medium text-primary'>
@@ -95,10 +98,10 @@ export function DraftCountdown({ overrideHash, className }: DraftCountdownProps)
             )}
           </View>
           <Clock
-            endDate={leagueSettings?.draftDate ?? null}
+            endDate={trackedDraftDate}
             replacedBy={
               <Button
-                className='w-full rounded-none p-4'
+                className='rounded-md p-4 bg-primary m-2 mt-1'
                 disabled={!league || (leagueMembers?.loggedIn?.role !== 'Owner' && league?.status !== 'Draft')}
                 onPress={onDraftJoin}>
                 <Text className='text-center text-2xl font-black uppercase tracking-wider text-primary-foreground'>

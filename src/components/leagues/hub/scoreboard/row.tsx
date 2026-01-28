@@ -20,7 +20,7 @@ interface MemberRowProps {
   points: number;
   color: string;
   overrideHash?: string;
-  doubleBelow?: boolean;
+  dashedAbove?: boolean;
   shotInTheDarkStatus?: { episodeNumber: number, status: 'pending' | 'saved' | 'wasted' } | null;
 }
 
@@ -32,7 +32,7 @@ export default function MemberRow({
   secondaryPick,
   points,
   color,
-  doubleBelow,
+  dashedAbove: doubleBelow,
   overrideHash,
   shotInTheDarkStatus
 }: MemberRowProps) {

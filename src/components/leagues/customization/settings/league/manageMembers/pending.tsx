@@ -65,15 +65,13 @@ export default function PendingMember({ member, loggedInMember }: PendingMemberP
             <UserX
               size={20}
               color={enabled ? colors.destructive : colors.mutedForeground}
-              className={cn(!enabled && 'opacity-50')}
-            />
+              className={cn(!enabled && 'opacity-50')} />
           </Button>
           <Button disabled={!enabled} onPress={handleAdmitMember}>
             <UserCheck
               size={20}
               color={enabled ? colors.positive : colors.mutedForeground}
-              className={cn(!enabled && 'opacity-50')}
-            />
+              className={cn(!enabled && 'opacity-50')} />
           </Button>
         </View>
       </View>

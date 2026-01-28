@@ -62,7 +62,7 @@ export default function ActiveLeague({ league }: ActiveLeagueProps) {
   const StatusIcon = status.icon;
 
   return (
-    <View className='px-2'>
+    <View className='px-2 flex-1 gap-2'>
       {/* League Header Card */}
       <Button
         className='stroke-green-600 relative bg-primary/5 border-2 border-primary/20 rounded-lg p-1 active:bg-primary/10'
@@ -75,8 +75,9 @@ export default function ActiveLeague({ league }: ActiveLeagueProps) {
         }}>
         {/* League Name */}
         <Text
-          allowFontScaling={false}
-          className='text-2xl font-black leading-tight mb-2 line-clamp-2 h-16 text-center'>
+          adjustsFontSizeToFit
+          numberOfLines={2}
+          className='text-2xl font-black leading-tight mb-2 h-16 text-center'>
           {league.name}
         </Text>
 
@@ -111,7 +112,7 @@ export default function ActiveLeague({ league }: ActiveLeagueProps) {
       </Button>
 
       {/* League Content */}
-      <View className='mt-2'>
+      <View className='flex-1'>
         {league.status === 'Active' ? (
           <Scoreboard
             className='bg-primary/5 border-2 border-primary/20 rounded-lg overflow-hidden'

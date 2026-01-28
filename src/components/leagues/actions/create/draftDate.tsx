@@ -58,9 +58,16 @@ export default function DraftDate({ control, editing, submit }: DraftDateProps) 
                 <DateTimePicker
                   minimumDate={new Date()}
                   maximumDate={new Date(Date.now() + 15778476000)}
-                  value={value ?? new Date()}
+                  value={value ?? new Date(Date.now() + 604800000)}
                   onChange={(_, date) => {
-                    onChange(date);
+                    if (!date) return;
+                    const prev = value ?? new Date();
+                    const newDate = new Date(date);
+                    newDate.setHours(prev.getHours());
+                    newDate.setMinutes(prev.getMinutes());
+                    newDate.setSeconds(0);
+                    newDate.setMilliseconds(0);
+                    onChange(newDate);
                     onBlur();
                   }}
                   accentColor={colors.card}
@@ -77,15 +84,14 @@ export default function DraftDate({ control, editing, submit }: DraftDateProps) 
                   minimumDate={new Date()}
                   value={value ?? new Date()}
                   onChange={(_, date) => {
-                    onChange((prev: Date) => {
-                      if (!date) return prev;
-                      const newDate = new Date(prev ?? Date.now());
-                      newDate.setHours(date.getHours());
-                      newDate.setMinutes(date.getMinutes());
-                      newDate.setSeconds(0);
-                      newDate.setMilliseconds(0);
-                      return newDate;
-                    });
+                    if (!date) return;
+                    const prev = value ?? new Date();
+                    const newDate = new Date(prev);
+                    newDate.setHours(date.getHours());
+                    newDate.setMinutes(date.getMinutes());
+                    newDate.setSeconds(0);
+                    newDate.setMilliseconds(0);
+                    onChange(newDate);
                     onBlur();
                   }}
                   accentColor={colors.card}

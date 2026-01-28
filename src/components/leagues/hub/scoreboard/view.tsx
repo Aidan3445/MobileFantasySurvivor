@@ -27,7 +27,7 @@ export default function Scoreboard({ overrideHash, maxRows, className }: Scorebo
   const episodeNum = keyEpisodes?.nextEpisode?.episodeNumber ?? Infinity;
 
   return (
-    <View className={cn('', className)}>
+    <View className={cn('flex-1', className)}>
       <View className='flex-row bg-white gap-0.5 px-0.5 rounded-t-md'>
         <View className='w-11 justify-center'>
           <Text
@@ -111,7 +111,7 @@ export default function Scoreboard({ overrideHash, maxRows, className }: Scorebo
                 (id) => castaways?.find((c) => c.castawayId === id) ?? null) ?? []}
               points={scores.slice().pop() ?? 0}
               color={member.color}
-              doubleBelow={!!maxRows && maxRows <= loggedInIndex && maxRows - 2 === index}
+              dashedAbove={!!maxRows && loggedInIndex > maxRows && member.loggedIn}
               overrideHash={overrideHash}
               shotInTheDarkStatus={shotInTheDarkStatus?.[member.memberId]} />
           );
