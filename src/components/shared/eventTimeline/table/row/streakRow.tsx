@@ -55,8 +55,8 @@ export default function StreakRow({
 
           return (
             <Pressable key={member.memberId} onPress={() => openMemberModal(member)}>
-              <ColorRow className='flex-row items-center gap-1 text-sm font-medium' color={member.color}>
-                <Text className='text-sm'>{member.displayName}</Text>
+              <ColorRow className='flex-row items-center gap-1 text-sm' color={member.color}>
+                <Text className='text-sm font-medium'>{member.displayName}</Text>
                 {shotUsedThisEpisode && shotStatus.status === 'saved' && (
                   <ShieldCheck size={16} color='#16a34a' />
                 )}

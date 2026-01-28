@@ -82,7 +82,9 @@ export default function PredictionRow({
           {event.referenceMap.map(({ tribe }, index) =>
             tribe ? (
               <ColorRow key={index} className='leading-tight' color={tribe.tribeColor}>
-                {tribe.tribeName}
+                <Text className='text-sm text-foreground font-medium'>
+                  {tribe.tribeName}
+                </Text>
               </ColorRow>
             ) : null
           )}
@@ -98,7 +100,7 @@ export default function PredictionRow({
               className='leading-tight'
               color={castaway.tribe?.color ?? '#AAAAAA'}>
               <CastawayModal castaway={castaway}>
-                <Text className='text-sm text-foreground'>{castaway.fullName}</Text>
+                <Text className='text-sm text-foreground font-medium'>{castaway.fullName}</Text>
               </CastawayModal>
             </ColorRow>
           ))
@@ -113,13 +115,13 @@ export default function PredictionRow({
             prediction.hits.map((hit, index) => (
               <View key={index} className='flex-row items-center gap-1'>
                 <ColorRow className='leading-tight' color={hit.member.color}>
-                  <Text className='text-sm'>{hit.member.displayName}</Text>
+                  <Text className='text-sm font-medium'>{hit.member.displayName}</Text>
                   {(hit.bet ?? 0) > 0 && <ColoredPoints points={hit.bet} />}
                 </ColorRow>
                 {event.references.length > 1 && hit.reference && (
                   <>
                     <MoveRight size={12} color='#000000' />
-                    <ColorRow className='leading-tight' color={hit.reference.color}>
+                    <ColorRow className='leading-tight font-medium' color={hit.reference.color}>
                       {hit.reference.name}
                     </ColorRow>
                   </>
@@ -141,14 +143,16 @@ export default function PredictionRow({
                   {prediction.misses.map((miss, index) => (
                     <View key={index} className='flex-row items-center gap-1 opacity-60'>
                       <ColorRow className='leading-tight' color={miss.member.color}>
-                        <Text className='text-sm'>{miss.member.displayName}</Text>
+                        <Text className='text-sm font-medium'>{miss.member.displayName}</Text>
                         {(miss.bet ?? 0) > 0 && <ColoredPoints points={-miss.bet!} />}
                       </ColorRow>
                       {miss.reference && (
                         <>
                           <MoveRight size={12} color='#000000' />
                           <ColorRow className='leading-tight' color={miss.reference.color}>
-                            {miss.reference.name}
+                            <Text className='text-sm font-medium'>
+                              {miss.reference.name}
+                            </Text>
                           </ColorRow>
                         </>
                       )}

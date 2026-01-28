@@ -81,7 +81,7 @@ export default function EventRow({
           {event.referenceMap?.map(({ tribe }, index) =>
             tribe ? (
               <ColorRow key={index} className='leading-tight' color={tribe.tribeColor}>
-                <Text className='text-base text-foreground'>
+                <Text className='text-base text-foreground font-medium'>
                   {tribe.tribeName}
                 </Text>
               </ColorRow>
@@ -99,7 +99,7 @@ export default function EventRow({
               className='leading-tight'
               color={castaway.tribe?.color ?? '#AAAAAA'}>
               <CastawayModal castaway={castaway}>
-                <Text className='text-base text-foreground'>{castaway.shortName}</Text>
+                <Text className='text-base text-foreground font-medium'>{castaway.shortName}</Text>
               </CastawayModal>
             </ColorRow>
           ))
@@ -119,7 +119,7 @@ export default function EventRow({
                     <MarqueeText
                       text={member.displayName}
                       className={cn(
-                        'text-base transition-all text-black cursor-pointer',
+                        'text-base transition-all text-black cursor-pointer font-medium',
                         member.loggedIn && 'text-primary'
                       )}
                       containerClassName='flex-row' />
@@ -131,7 +131,7 @@ export default function EventRow({
                       'leading-tight text-muted-foreground',
                       (secondaries?.length === 0 || !event.points) && 'opacity-0'
                     )}>
-                    <Text className='text-base text-foreground'>
+                    <Text className='text-base text-foreground font-medium'>
                       None
                     </Text>
                   </ColorRow>
@@ -140,8 +140,8 @@ export default function EventRow({
                   <Pressable
                     onPress={() => openSecondaryModal(secondaries)}
                     className='rounded border border-primary/20 px-1'>
-                    <Text className='text-xs text-muted-foreground'>
-                      2<Text className='text-[10px]'>nd</Text>
+                    <Text className='text-xs text-muted-foreground font-medium'>
+                      2<Text className='text-[10px] font-medium'>nd</Text>
                     </Text>
                   </Pressable>
                 )}
