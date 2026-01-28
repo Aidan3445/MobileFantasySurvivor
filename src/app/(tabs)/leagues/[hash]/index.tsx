@@ -65,9 +65,9 @@ export default function LeagueHubScreen() {
               refreshing && 'pt-12'
             )}>
               <Scores isActive={league.status === 'Active'} />
+              <MakePredictions />
               <ChangeCastaway />
               <PredictionHistory />
-              <MakePredictions />
               <LeagueTimeline />
             </View>
           </KeyboardAwareScrollView>
