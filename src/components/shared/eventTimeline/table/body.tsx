@@ -145,7 +145,7 @@ export default function EpisodeEventsTableBody({
           </Text>
         </View>
         {!noMembers && (
-          <View className='w-24'>
+          <View className='w-36'>
             <Text className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
               Members
             </Text>

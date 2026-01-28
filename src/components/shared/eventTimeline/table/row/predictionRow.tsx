@@ -14,6 +14,7 @@ import { type BaseEventName, type EnrichedPrediction } from '~/types/events';
 import PointsCell, { ColoredPoints } from '~/components/shared/eventTimeline/table/row/pointsCell';
 import ColorRow from '~/components/shared/colorRow';
 import CastawayModal from '~/components/shared/castaways/castawayModal';
+import MarqueeText from '~/components/common/marquee';
 
 interface PredictionRowProps {
   className?: string;
@@ -66,11 +67,11 @@ export default function PredictionRow({
       {/* Event Name */}
       <View className='flex-1 max-w-40'>
         {isBaseEvent && (
-          <Text className='text-xs text-muted-foreground'>
+          <Text className='text-sm text-muted-foreground'>
             {BaseEventFullName[event.eventName as BaseEventName]}
           </Text>
         )}
-        <Text className='text-sm text-foreground'>{label}</Text>
+        <Text className='text-base text-foreground'>{label}</Text>
       </View>
 
       {/* Points */}
@@ -82,7 +83,7 @@ export default function PredictionRow({
           {event.referenceMap.map(({ tribe }, index) =>
             tribe ? (
               <ColorRow key={index} className='leading-tight' color={tribe.tribeColor}>
-                <Text className='text-sm text-foreground font-medium'>
+                <Text className='text-base text-foreground font-medium'>
                   {tribe.tribeName}
                 </Text>
               </ColorRow>
@@ -95,34 +96,43 @@ export default function PredictionRow({
       <View className='w-32 items-end justify-center gap-0.5'>
         {event.referenceMap.map(({ pairs }) =>
           pairs.map(({ castaway }) => (
-            <ColorRow
-              key={castaway.castawayId}
-              className='leading-tight'
-              color={castaway.tribe?.color ?? '#AAAAAA'}>
-              <CastawayModal castaway={castaway}>
-                <Text className='text-sm text-foreground font-medium'>{castaway.fullName}</Text>
-              </CastawayModal>
-            </ColorRow>
+            <CastawayModal key={castaway.castawayId} castaway={castaway}>
+              <ColorRow
+                className='leading-tight'
+                color={castaway.tribe?.color ?? '#AAAAAA'}>
+                <MarqueeText
+                  text={castaway.shortName}
+                  className='text-base text-foreground font-medium' />
+              </ColorRow>
+            </CastawayModal>
           ))
         )}
       </View>
 
       {/* Members (Hits & Misses) */}
       {!noMembers && (
-        <View className='min-w-[144px] flex-1 justify-center gap-0.5'>
+        <View className='w-36 justify-center gap-0.5'>
           {/* Hits */}
           {prediction.hits.length > 0 &&
             prediction.hits.map((hit, index) => (
               <View key={index} className='flex-row items-center gap-1'>
-                <ColorRow className='leading-tight' color={hit.member.color}>
-                  <Text className='text-sm font-medium'>{hit.member.displayName}</Text>
-                  {(hit.bet ?? 0) > 0 && <ColoredPoints points={hit.bet} />}
+                <ColorRow className='leading-tight w-min' color={hit.member.color}>
+                  <MarqueeText
+                    text={hit.member.displayName}
+                    className={cn(
+                      'text-base transition-all text-black font-medium',
+                      hit.member.loggedIn && 'text-primary'
+                    )}>
+                    {(hit.bet ?? 0) > 0 && <ColoredPoints points={hit.bet} />}
+                  </MarqueeText>
                 </ColorRow>
                 {event.references.length > 1 && hit.reference && (
                   <>
                     <MoveRight size={12} color='#000000' />
-                    <ColorRow className='leading-tight font-medium' color={hit.reference.color}>
-                      {hit.reference.name}
+                    <ColorRow className='leading-tight font-medium w-20' color={hit.reference.color}>
+                      <MarqueeText
+                        text={hit.reference.shortName}
+                        className='text-xs text-foreground font-medium' />
                     </ColorRow>
                   </>
                 )}
@@ -133,26 +143,32 @@ export default function PredictionRow({
           {prediction.misses.length > 0 && (
             <View>
               <Pressable onPress={toggleMisses} className='flex-row items-center py-1'>
-                <Text className='text-xs text-muted-foreground'>Missed Predictions</Text>
+                <Text className='text-sm text-muted-foreground'>Missed Predictions</Text>
                 <Animated.View style={chevronStyle} className='ml-1'>
                   <ChevronDown size={12} color='#888888' />
                 </Animated.View>
               </Pressable>
-              <Animated.View style={contentStyle} className='overflow-hidden'>
+              <Animated.View style={contentStyle}>
                 <View className='gap-0.5'>
                   {prediction.misses.map((miss, index) => (
                     <View key={index} className='flex-row items-center gap-1 opacity-60'>
-                      <ColorRow className='leading-tight' color={miss.member.color}>
-                        <Text className='text-sm font-medium'>{miss.member.displayName}</Text>
-                        {(miss.bet ?? 0) > 0 && <ColoredPoints points={-miss.bet!} />}
+                      <ColorRow className='leading-tight w-min' color={miss.member.color}>
+                        <MarqueeText
+                          text={miss.member.displayName}
+                          className={cn(
+                            'text-base transition-all text-black font-medium',
+                            miss.member.loggedIn && 'text-primary'
+                          )}>
+                          {(miss.bet ?? 0) > 0 && <ColoredPoints points={-miss.bet!} />}
+                        </MarqueeText>
                       </ColorRow>
                       {miss.reference && (
                         <>
                           <MoveRight size={12} color='#000000' />
-                          <ColorRow className='leading-tight' color={miss.reference.color}>
-                            <Text className='text-sm font-medium'>
-                              {miss.reference.name}
-                            </Text>
+                          <ColorRow className='leading-tight font-medium w-20' color={miss.reference.color}>
+                            <MarqueeText
+                              text={miss.reference.shortName}
+                              className='text-xs text-foreground font-medium' />
                           </ColorRow>
                         </>
                       )}
@@ -161,12 +177,10 @@ export default function PredictionRow({
                 </View>
               </Animated.View>
             </View>
-          )}
-        </View>
+          )
+          }
+        </View >
       )}
-
-      {/* Empty Notes column spacer for alignment */}
-      <View className='w-24' />
-    </View>
+    </View >
   );
 }

@@ -94,35 +94,37 @@ export default function EventRow({
       <View className='w-32 items-end justify-center gap-0.5'>
         {event.referenceMap?.map(({ pairs }) =>
           pairs.map(({ castaway }) => (
-            <ColorRow
-              key={castaway.castawayId}
-              className='leading-tight'
-              color={castaway.tribe?.color ?? '#AAAAAA'}>
-              <CastawayModal castaway={castaway}>
-                <Text className='text-base text-foreground font-medium'>{castaway.shortName}</Text>
-              </CastawayModal>
-            </ColorRow>
+            <CastawayModal key={castaway.castawayId} castaway={castaway}>
+              <ColorRow
+                className='leading-tight'
+                color={castaway.tribe?.color ?? '#AAAAAA'}>
+                <MarqueeText
+                  text={castaway.shortName}
+                  className='text-base text-foreground font-medium' />
+              </ColorRow>
+            </CastawayModal>
           ))
         )}
       </View>
 
       {/* Members */}
       {!noMembers && (
-        <View className='w-24 justify-center gap-0.5'>
+        <View className='w-36 justify-center gap-0.5'>
           {event.referenceMap?.map(({ pairs }, index) =>
             pairs.map(({ castaway, member, secondaries }) => (
               <View
                 key={`${castaway.castawayId}-${index}`}
                 className='flex-row items-center gap-1'>
                 {member ? (
-                  <ColorRow className='leading-tight' color={member.color}>
+                  <ColorRow className='leading-tight w-min' color={member.color}>
                     <MarqueeText
                       text={member.displayName}
                       className={cn(
-                        'text-base transition-all text-black cursor-pointer font-medium',
+                        'text-base transition-all text-black font-medium',
                         member.loggedIn && 'text-primary'
                       )}
-                      containerClassName='flex-row' />
+                      containerClassName='flex-row'
+                      noMarqueeContainerClassName='w-min' />
                   </ColorRow>
                 ) : (
                   <ColorRow

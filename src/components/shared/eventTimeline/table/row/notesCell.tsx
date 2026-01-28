@@ -25,7 +25,7 @@ export default function NotesCell({ notes }: NotesCellProps) {
   };
 
   return (
-    <View className='w-12 items-end justify-center'>
+    <View className='w-20 items-end justify-center'>
       <Pressable onPress={() => setModalVisible(true)} className='active:opacity-50'>
         <ScrollText size={32} className='text-primary' />
       </Pressable>

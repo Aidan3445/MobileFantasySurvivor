@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback, type ReactNode } from 'react';
 import {
   View,
   Text,
@@ -27,6 +27,8 @@ interface MarqueeTextProps {
   scrollSpeed?: number;
   /** Gap between the end of text and restart in pixels (default: 50) */
   trailingGap?: number;
+  /** Element to render at the end of the container */
+  children?: ReactNode;
 }
 
 export default function MarqueeText({
@@ -39,13 +41,18 @@ export default function MarqueeText({
   pauseDuration = 2000,
   scrollSpeed = 30,
   trailingGap = 12,
+  children,
 }: MarqueeTextProps) {
   const [containerWidth, setContainerWidth] = useState(0);
   const [textWidth, setTextWidth] = useState(0);
+  const [childWidth, setChildWidth] = useState(0);
   const [needsMarquee, setNeedsMarquee] = useState(false);
 
   const scrollAnim = useRef(new Animated.Value(0)).current;
   const animationRef = useRef<Animated.CompositeAnimation | null>(null);
+
+  // gap-0.5 = 2px
+  const childGap = children ? 2 : 0;
 
   /* -------------------- Layout measurement -------------------- */
 
@@ -58,13 +65,19 @@ export default function MarqueeText({
     setTextWidth(width);
   }, []);
 
+  const onChildLayout = useCallback((event: LayoutChangeEvent) => {
+    setChildWidth(event.nativeEvent.layout.width);
+  }, []);
+
   /* -------------------- Decide if marquee is needed -------------------- */
+
+  const availableWidth = containerWidth - childWidth - childGap;
 
   useEffect(() => {
     if (containerWidth > 0 && textWidth > 0) {
-      setNeedsMarquee(textWidth > containerWidth);
+      setNeedsMarquee(textWidth > availableWidth);
     }
-  }, [containerWidth, textWidth]);
+  }, [containerWidth, textWidth, availableWidth]);
 
   /* -------------------- Marquee animation -------------------- */
 
@@ -116,47 +129,57 @@ export default function MarqueeText({
   return (
     <View
       className={cn(
-        'w-full overflow-hidden',
+        'w-full overflow-hidden flex-row items-center',
         containerClassName,
         !needsMarquee && noMarqueeContainerClassName
       )}
       onLayout={onContainerLayout}>
-      {needsMarquee ? (
-        <Animated.View
-          key={`marquee-${textWidth}-${containerWidth}-${trailingGap}`}
-          className='flex-row items-center'
-          style={{
-            transform: [{ translateX: scrollAnim }],
-            width: textWidth * 2 + trailingGap,
-          }}>
-          <Text
-            className={cn('text-left align-middle', className)}
-            allowFontScaling={allowFontScaling}
-            numberOfLines={1}
+      {/* Text area */}
+      <View
+        className='flex-1 overflow-hidden'
+        style={{ marginRight: children ? childGap : 0 }}>
+        {needsMarquee ? (
+          <Animated.View
+            key={`marquee-${textWidth}-${containerWidth}-${trailingGap}`}
+            className='flex-row items-center'
             style={{
-              flexShrink: 0,
+              transform: [{ translateX: scrollAnim }],
+              width: textWidth * 2 + trailingGap,
             }}>
-            {text}
-          </Text>
+            <Text
+              className={cn('text-left align-middle', className)}
+              allowFontScaling={allowFontScaling}
+              numberOfLines={1}
+              style={{ flexShrink: 0 }}>
+              {text}
+            </Text>
 
-          <View style={{ width: trailingGap }} />
+            <View style={{ width: trailingGap }} />
 
+            <Text
+              className={cn('text-left', className)}
+              allowFontScaling={allowFontScaling}
+              numberOfLines={1}
+              style={{ flexShrink: 0 }}>
+              {text}
+            </Text>
+          </Animated.View>
+        ) : (
           <Text
-            className={cn('text-left', className)}
+            className={cn(center ? 'text-center' : 'text-left', className)}
             allowFontScaling={allowFontScaling}
             numberOfLines={1}
             style={{ flexShrink: 0 }}>
             {text}
           </Text>
-        </Animated.View>
-      ) : (
-        <Text
-          className={cn(center ? 'text-center' : 'text-left', className)}
-          allowFontScaling={allowFontScaling}
-          numberOfLines={1}
-          style={{ flexShrink: 0 }}>
-          {text}
-        </Text>
+        )}
+      </View>
+
+      {/* Child element at end */}
+      {children && (
+        <View onLayout={onChildLayout}>
+          {children}
+        </View>
       )}
 
       {/* Hidden text used only for width measurement */}
