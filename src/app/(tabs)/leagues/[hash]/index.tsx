@@ -16,6 +16,7 @@ import Scores from '~/components/leagues/hub/shared/scores';
 import ChangeCastaway from '~/components/leagues/hub/picks/changeCastaway';
 import PredictionHistory from '~/components/leagues/hub/activity/predictionHistory/view';
 import MakePredictions from '~/components/leagues/actions/events/predictions/view';
+import LeagueTimeline from '~/components/leagues/hub/activity/timeline/view';
 
 export default function LeagueHubScreen() {
   const { hash } = useLocalSearchParams<{ hash: string }>();
@@ -67,6 +68,7 @@ export default function LeagueHubScreen() {
               <ChangeCastaway />
               <PredictionHistory />
               <MakePredictions />
+              <LeagueTimeline />
             </View>
           </KeyboardAwareScrollView>
           <EventFAB
