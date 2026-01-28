@@ -57,27 +57,27 @@ export default function PredictionTable({
     <View>
       {/* Header */}
       <View className='flex-row bg-accent border-b-2 border-primary/20 px-2 py-2 gap-1'>
-        <Text className='flex-1 text-xs font-bold uppercase tracking-wider text-muted-foreground text-left'>
+        <Text className='flex-1 text-sm font-bold uppercase tracking-wider text-muted-foreground text-left'>
           Event
         </Text>
-        <View className='items-center w-12 text-xs font-bold uppercase tracking-wider text-muted-foreground text-center'>
-          <Flame size={12} color={colors['muted-foreground']} />
+        <View className='items-center w-12 text-sm font-bold uppercase tracking-wider text-muted-foreground text-center'>
+          <Flame size={14} color={colors['muted-foreground']} />
         </View>
         {hasBets && (
-          <Text className='w-12 text-xs font-bold uppercase tracking-wider text-muted-foreground text-center'>
+          <Text className='w-12 text-sm font-bold uppercase tracking-wider text-muted-foreground text-center'>
             Bet
           </Text>
         )}
-        <Text className='w-20 text-xs font-bold uppercase tracking-wider text-muted-foreground text-left'>
+        <Text className='w-20 text-sm font-bold uppercase tracking-wider text-muted-foreground text-left'>
           Pick
         </Text>
-        <Text className='w-20 text-xs font-bold uppercase tracking-wider text-muted-foreground text-left'>
+        <Text className='w-20 text-sm font-bold uppercase tracking-wider text-muted-foreground text-left'>
           Result
         </Text>
       </View>
 
       {/* Rows */}
-      <ScrollView className='max-h-36'>
+      <ScrollView className='max-h-40'>
         {sortedPredictions.map((pred, index) => (
           <PredictionRow
             key={index}
@@ -86,7 +86,9 @@ export default function PredictionTable({
             findReferenceNames={findReferenceNames}
             previousEpisodeNumber={previousEpisodeNumber} />
         ))}
-        <View className='h-3' />
+        {sortedPredictions.length > 3 && (
+          <View className='h-5' />
+        )}
       </ScrollView>
     </View>
   );

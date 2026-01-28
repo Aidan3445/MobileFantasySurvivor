@@ -5,6 +5,7 @@ import { useCarousel } from '~/hooks/ui/useCarousel';
 import SearchableSelect from '~/components/common/searchableSelect';
 import ColorRow from '~/components/shared/colorRow';
 import PredictionTable from '~/components/leagues/hub/activity/predictionHistory/table';
+import { useEffect } from 'react';
 
 export default function PredictionHistory() {
   const {
@@ -24,8 +25,15 @@ export default function PredictionHistory() {
   // Reset carousel when member changes
   const handleMemberChange = (memberId: number) => {
     setSelectedMemberId(memberId);
-    setCarouselData(carouselData);
   };
+
+  useEffect(() => {
+    setCarouselData(carouselData);
+    // Reset to first item when member changes
+    if (ref.current) {
+      ref.current.scrollTo({ index: 0, animated: false });
+    }
+  }, [carouselData, ref, setCarouselData]);
 
   if (!hasData) return null;
 
@@ -45,13 +53,13 @@ export default function PredictionHistory() {
 
         {/* Stats */}
         <View className='flex-row justify-center gap-4 px-1'>
-          <Text className='text-sm text-muted-foreground'>
+          <Text className='text-base text-muted-foreground'>
             Accuracy:{' '}
             <Text className='font-bold text-foreground'>
               {stats.count.correct}/{stats.count.total}
             </Text>
           </Text>
-          <Text className='text-sm text-muted-foreground'>
+          <Text className='text-base text-muted-foreground'>
             Points:{' '}
             <Text className='font-bold text-foreground'>
               {stats.points.earned}/{stats.points.possible}
@@ -92,7 +100,7 @@ export default function PredictionHistory() {
           label: m.label,
           renderLabel: () => (
             <ColorRow color={m.color} className='w-min px-1'>
-              <Text className='text-foreground'>{m.label}</Text>
+              <Text className='text-foreground font-medium'>{m.label}</Text>
             </ColorRow>
           ),
         }))}
@@ -102,13 +110,13 @@ export default function PredictionHistory() {
       {/* Stats & Member Selector */}
       <View className='gap-2 px-1'>
         <View className='flex-row justify-center gap-4'>
-          <Text className='text-sm text-muted-foreground'>
+          <Text className='text-base text-muted-foreground'>
             Accuracy:{' '}
             <Text className='font-bold text-foreground'>
               {stats.count.correct}/{stats.count.total}
             </Text>
           </Text>
-          <Text className='text-sm text-muted-foreground'>
+          <Text className='text-base text-muted-foreground'>
             Points:{' '}
             <Text className='font-bold text-foreground'>
               {stats.points.earned}/{stats.points.possible}
@@ -121,7 +129,7 @@ export default function PredictionHistory() {
       <Carousel
         ref={ref}
         {...props}
-        height={170}
+        height={180}
         renderItem={({ item }) => (
           <View className='flex-1 rounded-lg border-2 border-primary/20 bg-accent/50 overflow-hidden mr-2.5 ml-1.5'>
             <View className='bg-primary/10 h-6'>

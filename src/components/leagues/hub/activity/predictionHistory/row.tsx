@@ -40,12 +40,12 @@ export default function PredictionRow({
           onPress={() => setShowTimingModal(true)}
           className='flex-1 flex-row items-center gap-1 active:opacity-70'>
           <Clock size={14} color={colors.primary} />
-          {differentEpisode && (
-            <Text className='text-xs font-semibold text-primary'>
-              ({pred.eventEpisodeNumber})
-            </Text>
-          )}
-          <Text className='text-sm font-medium text-foreground' numberOfLines={1}>
+          <Text className='text-base font-medium text-foreground' numberOfLines={1}>
+            {differentEpisode && (
+              <Text className='text-sm font-semibold text-primary'>
+                {pred.eventEpisodeNumber}{': '}
+              </Text>
+            )}
             {eventName}
           </Text>
         </Pressable>
@@ -62,17 +62,17 @@ export default function PredictionRow({
               neutral={!pred.eventId}
             />
           ) : (
-            <Text className='w-12 text-sm text-center text-muted-foreground'>-</Text>
+            <Text className='w-12 text-base text-center text-muted-foreground'>-</Text>
           )
         )}
 
         {/* Prediction */}
-        <Text className='w-20 text-sm font-medium text-foreground text-left' numberOfLines={1}>
+        <Text className='w-20 text-base font-medium text-foreground text-left' numberOfLines={1}>
           {predictionRefs.map((r) => r.short).join(', ')}
         </Text>
 
         {/* Result */}
-        <Text className='w-20 text-sm font-medium text-foreground text-left' numberOfLines={1}>
+        <Text className='w-20 text-base font-medium text-foreground text-left' numberOfLines={1}>
           {showNoResult ? '--' : resultRefs.map((r) => r.short).join(', ')}
         </Text>
       </View>
