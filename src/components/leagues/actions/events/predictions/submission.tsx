@@ -105,10 +105,16 @@ export default function SubmissionCard({
                     <View className='flex-row items-center gap-2'>
                       {opt.group && (
                         <ColorRow color={opt.color} className='px-1 w-min'>
-                          <Text className='text-sm text-foreground'>{opt.group}</Text>
+                          <Text
+                            allowFontScaling={false}
+                            className='text-sm text-foreground'>{opt.group}
+                          </Text>
                         </ColorRow>
                       )}
-                      <Text className='text-foreground'>{opt.label}</Text>
+                      <Text
+                        allowFontScaling={false}
+                        className='text-foreground'>{opt.label}
+                      </Text>
                     </View>
                   ),
                 }))}
@@ -125,13 +131,17 @@ export default function SubmissionCard({
       {/* Bet Input (if shauhin enabled) */}
       {prediction.shauhinEnabled && !!wallet && (
         <View className='flex-row items-center gap-2'>
+          <Pressable onPress={() => setHelpVisible(true)} className='p-2'>
+            <HelpCircle size={16} color={colors.mutedForeground} />
+          </Pressable>
           <Controller
             control={control}
             name='bet'
             render={({ field: { value, onChange } }) => (
               <TextInput
+                allowFontScaling={false}
                 className={cn(
-                  'flex-1 rounded-lg border-2 border-primary/20 bg-card px-3 py-2 text-base text-foreground',
+                  'flex-1 rounded-lg border-2 border-primary/20 bg-card px-3 py-1.5 text-base text-foreground',
                   isDirty && value !== prediction?.predictionMade?.bet && 'bg-amber-400'
                 )}
                 keyboardType='numeric'
@@ -144,9 +154,6 @@ export default function SubmissionCard({
                   updateBetTotal(prediction.eventName, num);
                 }} />
             )} />
-          <Pressable onPress={() => setHelpVisible(true)} className='p-2'>
-            <HelpCircle size={16} color={colors.mutedForeground} />
-          </Pressable>
         </View>
       )}
 
@@ -155,13 +162,15 @@ export default function SubmissionCard({
         onPress={() => void onSubmit()}
         disabled={isSubmitDisabled}
         className={cn('rounded-lg bg-primary p-3 active:opacity-80', isSubmitDisabled && 'opacity-50')}>
-        <Text className='text-center font-bold text-primary-foreground'>
+        <Text
+          allowFontScaling={false}
+          className='text-center font-bold text-primary-foreground'>
           {prediction.predictionMade ? 'Update' : 'Submit'}
         </Text>
       </Pressable>
 
       {/* Shauhin Help Modal */}
-      <Modal isVisible={helpVisible} onClose={() => setHelpVisible(false)}>
+      <Modal visible={helpVisible} onClose={() => setHelpVisible(false)}>
         <View className='rounded-xl border-2 border-primary/20 bg-card p-3 gap-2 max-w-[85%]'>
           <View className='flex-row items-center justify-between'>
             <Text className='text-lg font-bold text-foreground'>Shauhin Mode</Text>

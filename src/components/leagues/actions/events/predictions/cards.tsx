@@ -10,6 +10,8 @@ import PredictionTimingHelp from '~/components/leagues/actions/events/prediction
 import SubmissionCard from '~/components/leagues/actions/events/predictions/submission';
 import { type ScoringBaseEventName, type ReferenceType, type MakePrediction } from '~/types/events';
 import { type MakePredictionsProps } from '~/components/leagues/actions/events/predictions/view';
+import MarqueeText from '~/components/common/marquee';
+import DescriptionCell from '~/components/leagues/actions/events/predictions/description';
 
 export default function PredictionCards({
   rules,
@@ -112,7 +114,12 @@ export default function PredictionCards({
     setBetTotal(total);
   }, [formBetValues, setBetTotal]);
 
-  const { ref, props, progressProps, scrollNext } = useCarousel(allPredictions);
+  const { ref, props, progressProps, scrollNext, setCarouselData } = useCarousel(allPredictions);
+
+  useEffect(() => {
+    // Reset Carousel content when predictions change
+    setCarouselData(allPredictions);
+  }, [allPredictions, scrollNext, setCarouselData]);
 
   if (allPredictions.length === 0) return null;
 
@@ -166,35 +173,41 @@ export default function PredictionCards({
       <Carousel
         ref={ref}
         {...props}
-        height={200}
+        height={rules?.shauhinMode?.enabled && allPredictions.some((p) => p.shauhinEnabled)
+          ? 240
+          : 200}
         data={allPredictions}
         renderItem={({ item: prediction }) => (
           <View className='flex-1 ml-1.5 mr-2.5 rounded-lg border-2 border-primary/20 bg-accent/50 overflow-hidden'>
             {/* Header */}
             <View className='bg-primary/10 py-2 px-3'>
               <View className='flex-row items-center justify-center gap-2'>
-                <Text className='text-lg font-bold uppercase tracking-wider text-foreground'>
+                <Text
+                  allowFontScaling={false}
+                  className='text-lg font-bold uppercase tracking-wider text-foreground'>
                   {prediction.label}
                 </Text>
                 <View className='flex-row items-center'>
-                  <Text className='text-base font-bold text-foreground'>{prediction.points}</Text>
+                  <Text
+                    allowFontScaling={false}
+                    className='text-base font-bold text-foreground'>{prediction.points}</Text>
                   <Flame size={16} color={colors.primary} />
                 </View>
               </View>
-              <View className='flex-row items-center justify-center gap-0.5'>
-                <Text className='text-base text-muted-foreground'>
-                  {prediction.timing.join(' - ')}
-                </Text>
+              <View className='flex-row items-center justify-center gap-0.5 pr-1'>
+                <MarqueeText
+                  allowFontScaling={false}
+                  className='text-base text-muted-foreground'
+                  containerClassName='flex-row'
+                  text={prediction.timing.join(' - ')}
+                  noMarqueeContainerClassName='w-min'
+                />
                 <PredictionTimingHelp />
               </View>
             </View>
 
             {/* Description */}
-            <View className='bg-secondary py-1 px-2'>
-              <Text className='text-base font-medium text-foreground text-left leading-none'>
-                {prediction.description}
-              </Text>
-            </View>
+            <DescriptionCell label={prediction.label} description={prediction.description} />
 
             {/* Submission */}
             <SubmissionCard
