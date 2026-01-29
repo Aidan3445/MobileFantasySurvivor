@@ -33,12 +33,12 @@ export default function SysAdminScreen() {
         <View className='flex-1 justify-center items-center px-8 gap-8'>
           <Button
             className='w-full bg-primary p-4 rounded-lg items-center justify-center'
-            onPress={() => router.push(`/(modals)/customEvent?hash=${hash}`)}>
+            onPress={() => router.push(`/customEvent?hash=${hash}`)}>
             <Text className='text-white text-xl'>Create Custom Event</Text>
           </Button>
           <Button
             className='w-full bg-primary p-4 rounded-lg items-center justify-center'
-            onPress={() => router.push('/(modals)/baseEvent')}>
+            onPress={() => router.push('/baseEvent')}>
             <Text className='text-white text-xl'>Create Base Event</Text>
           </Button>
         </View>

@@ -58,7 +58,7 @@ export function SignInWithGoogle() {
               return;
             }
 
-            router.replace('/(tabs)');
+            router.replace('/');
           },
         });
       } else {

@@ -72,9 +72,9 @@ export default function EventFAB({ hash, isLeagueAdmin, isSysAdmin, isActive }: 
 
   const navigate = useCallback(() => {
     if (isSysAdmin) {
-      router.push(`/(modals)/sysAdmin?hash=${hash}`);
+      router.push(`/sysAdmin?hash=${hash}`);
     } else if (isLeagueAdmin) {
-      router.push(`/(modals)/customEvent?hash=${hash}`);
+      router.push(`/customEvent?hash=${hash}`);
     }
   }, [router, hash, isSysAdmin, isLeagueAdmin]);
 

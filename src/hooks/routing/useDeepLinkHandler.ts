@@ -1,51 +1,102 @@
 import * as Linking from 'expo-linking';
-import { useRouter, usePathname } from 'expo-router';
+import { useRouter, usePathname, useSegments, useRootNavigationState } from 'expo-router';
 import { useEffect, useRef } from 'react';
 import { useAuth } from '@clerk/clerk-expo';
+import {
+  setPendingDeepLink,
+  getPendingDeepLink,
+  clearPendingDeepLink,
+} from '~/lib/routing';
 
 export function useDeepLinkHandler() {
   const router = useRouter();
   const pathname = usePathname();
+  const segments = useSegments() as string[];
+  const navigationState = useRootNavigationState();
   const { isSignedIn, isLoaded } = useAuth();
-  const lastHandledUrl = useRef<string | null>(null);
 
+  const handledInitialUrl = useRef(false);
+
+  const isNavigationReady = !!navigationState?.key;
+  const inProtectedGroup = segments[0] === '(protected)';
+  const inTabsGroup = segments[1] === '(tabs)';
+
+  // Cold start: capture and handle initial URL
   useEffect(() => {
-    if (!isLoaded) return;
+    if (!isLoaded || !isNavigationReady) return;
+    if (handledInitialUrl.current) return;
 
-    const handleURL = (url: string | null) => {
+    const handleInitialURL = async () => {
+      const url = await Linking.getInitialURL();
       if (!url) return;
-
-      // Skip if we just handled this exact URL
-      if (url === lastHandledUrl.current) return;
 
       const parsed = Linking.parse(url);
       const { path, queryParams } = parsed;
 
       if (path === 'join' && queryParams?.hash) {
         const hash = queryParams.hash as string;
+        handledInitialUrl.current = true;
 
-        if (!isSignedIn) return;
-
-        if (pathname.includes('/join')) {
-          console.log('Already on join page, set hash param:', hash);
-          router.setParams({ hash });
-        } else {
-          console.log('Navigating to join page with hash:', hash);
-          lastHandledUrl.current = url;
-          router.replace(`/join?hash=${hash}`);
+        if (!isSignedIn) {
+          // Not signed in: store pending, let root layout redirect to auth
+          setPendingDeepLink({ path: 'join', params: { hash } });
+          return;
         }
+
+        // Signed in cold start: force tabs first, then push modal
+        router.replace('/(protected)/(tabs)');
+        // eslint-disable-next-line no-undef
+        setTimeout(() => {
+          router.push(`/(protected)/(modals)/join?hash=${hash}`);
+        }, 150);
       }
     };
 
-    Linking.getInitialURL().then((url) => handleURL(url));
+    handleInitialURL();
+  }, [isLoaded, isSignedIn, isNavigationReady, router]);
+
+  // Handle pending deep link after auth (signed-out cold start flow)
+  useEffect(() => {
+    if (!isLoaded || !isSignedIn || !isNavigationReady) return;
+    if (!inProtectedGroup || !inTabsGroup) return;
+
+    const pending = getPendingDeepLink();
+    if (!pending) return;
+
+    clearPendingDeepLink();
+
+    if (pending.path === 'join' && pending.params.hash) {
+      // eslint-disable-next-line no-undef
+      setTimeout(() => {
+        router.push(`/(protected)/(modals)/join?hash=${pending.params.hash}`);
+      }, 150);
+    }
+  }, [isLoaded, isSignedIn, isNavigationReady, inProtectedGroup, inTabsGroup, router]);
+
+  // Warm start: handle URLs while app is open
+  useEffect(() => {
+    if (!isLoaded || !isNavigationReady) return;
 
     const subscription = Linking.addEventListener('url', ({ url }) => {
-      // Reset for new incoming URLs while app is open
-      lastHandledUrl.current = null;
-      handleURL(url);
+      const parsed = Linking.parse(url);
+      const { path, queryParams } = parsed;
+
+      if (path === 'join' && queryParams?.hash) {
+        const hash = queryParams.hash as string;
+
+        if (!isSignedIn) {
+          setPendingDeepLink({ path: 'join', params: { hash } });
+          router.replace('/(auth)/sign-in');
+          return;
+        }
+
+        if (pathname.includes('/join')) {
+          router.setParams({ hash });
+        }
+        // Otherwise Expo Router handles navigation automatically
+      }
     });
 
     return () => subscription.remove();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoaded, isSignedIn, pathname]);
+  }, [isLoaded, isSignedIn, isNavigationReady, pathname, router]);
 }

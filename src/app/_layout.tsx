@@ -5,6 +5,7 @@ import { tokenCache } from '@clerk/clerk-expo/token-cache';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { useEffect } from 'react';
 import LoadingScreen from '~/components/auth/loadingScreen';
+import { useDeepLinkHandler } from '~/hooks/routing/useDeepLinkHandler';
 
 try {
   ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
@@ -22,10 +23,10 @@ console.warn = (...args) => {
 };
 
 function InitialLayout() {
-  // Now you CAN use Clerk hooks here
   const { isSignedIn, isLoaded } = useAuth();
   const segments = useSegments();
   const router = useRouter();
+  useDeepLinkHandler();
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -36,7 +37,7 @@ function InitialLayout() {
     if (!isSignedIn && !inAuthGroup) {
       router.replace('/(auth)/sign-in');
     } else if (isSignedIn && !inProtectedGroup) {
-      router.replace('/(tabs)');
+      router.replace('/');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSignedIn, isLoaded, segments]);

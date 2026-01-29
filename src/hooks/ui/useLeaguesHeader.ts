@@ -115,7 +115,7 @@ export default function useLeaguesHeader() {
 
   // Navigation handlers
   const handleBackPress = useCallback(() => {
-    router.canGoBack() ? router.back() : router.replace('/(tabs)/leagues');
+    router.canGoBack() ? router.back() : router.replace('/leagues');
   }, [router]);
 
   const handleSettingsPress = useCallback(() => {
@@ -123,7 +123,7 @@ export default function useLeaguesHeader() {
   }, [router, hashFromPath]);
 
   const handleUsersPress = useCallback(() => {
-    if (hashFromPath) router.push(`/(modals)/castaways?hash=${hashFromPath}`);
+    if (hashFromPath) router.push(`/castaways?hash=${hashFromPath}`);
   }, [router, hashFromPath]);
 
   return {

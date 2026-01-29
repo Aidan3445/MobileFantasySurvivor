@@ -3,10 +3,8 @@ import QueryClientContextProvider from '~/context/reactQueryContext';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'react-native';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
-import { useDeepLinkHandler } from '~/hooks/routing/useDeepLinkHandler';
 
 export default function ProtectedLayout() {
-  useDeepLinkHandler();
 
   return (
     <GestureHandlerRootView className='flex-1 bg-background'>

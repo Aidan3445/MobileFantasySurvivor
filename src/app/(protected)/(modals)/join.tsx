@@ -101,7 +101,7 @@ export default function JoinLeagueScreen() {
   if (getPublicLeague?.data?.isPending) {
     Alert.alert('Pending Invitation',
       'You already tried to join this league. Please wait for the league admin to approve your request.');
-    return <Redirect href='/(tabs)' />;
+    return <Redirect href='/' />;
   }
 
   return (

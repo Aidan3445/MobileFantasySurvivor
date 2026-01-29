@@ -45,7 +45,7 @@ export function useDeleteLeague() {
       await queryClient.invalidateQueries({ queryKey: ['league', hash] });
       await queryClient.invalidateQueries({ queryKey: ['leagues'] });
 
-      router.replace('/(tabs)');
+      router.replace('/');
       Alert.alert('Success', `League "${league.name}" has been deleted.`);
     } catch (error) {
       console.error('Failed to delete league', error);

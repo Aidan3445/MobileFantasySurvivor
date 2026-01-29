@@ -76,7 +76,7 @@ export default function SignUpScreen() {
         await setActive({
           session: signUpAttempt.createdSessionId,
         });
-        router.replace(redirectTo ?? '/(tabs)');
+        router.replace(redirectTo ?? '/');
       } else {
         setClerkError('Verification could not be completed.');
       }

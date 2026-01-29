@@ -19,12 +19,12 @@ export default function DraftHeader({ inCastawaysView }: DraftHeaderProps) {
       router.back();
     } else {
       // Fallback to direct navigation if no history
-      router.replace(`/(tabs)/leagues/${league?.hash}/draft`);
+      router.replace(`/leagues/${league?.hash}/draft`);
     }
   };
 
   const handleCastawaysPress = () => {
-    router.push(`/(modals)/castaways?hash=${league?.hash}`);
+    router.push(`/castaways?hash=${league?.hash}`);
   };
 
   return (
@@ -34,19 +34,13 @@ export default function DraftHeader({ inCastawaysView }: DraftHeaderProps) {
         <Button
           className='absolute bottom-0 left-4 py-2 px-4'
           onPress={handleBackPress}>
-          <ArrowLeft
-            color='white'
-            size={24}
-          />
+          <ArrowLeft color='white' size={24} />
         </Button>
       ) : (
         <Button
           className='absolute bottom-0 right-4 py-2 px-4'
           onPress={handleCastawaysPress}>
-          <Users
-            color='white'
-            size={24}
-          />
+          <Users color='white' size={24} />
         </Button>
       )}
     </View>
