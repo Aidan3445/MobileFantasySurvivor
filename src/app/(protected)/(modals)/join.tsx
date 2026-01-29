@@ -21,7 +21,6 @@ interface PageConfig {
   isLast?: boolean;
 }
 
-// app/(protected)/(modals)/join.tsx
 export default function JoinLeagueScreen() {
   const {
     reactForm,

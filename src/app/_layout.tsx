@@ -1,11 +1,11 @@
 import '~/global.css';
-import { Slot, useRouter, useSegments, SplashScreen } from 'expo-router';
+import { Slot, useRouter, useSegments } from 'expo-router';
 import { ClerkLoaded, ClerkProvider, useAuth } from '@clerk/clerk-expo';
 import { tokenCache } from '@clerk/clerk-expo/token-cache';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { useEffect } from 'react';
+import LoadingScreen from '~/components/auth/loadingScreen';
 
-SplashScreen.preventAutoHideAsync();
 try {
   ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
 } catch {
@@ -36,16 +36,14 @@ function InitialLayout() {
     if (!isSignedIn && !inAuthGroup) {
       router.replace('/(auth)/sign-in');
     } else if (isSignedIn && !inProtectedGroup) {
-      router.replace('/(protected)/(tabs)');
+      router.replace('/(tabs)');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSignedIn, isLoaded, segments]);
 
-  useEffect(() => {
-    if (isLoaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [isLoaded]);
+  if (!isLoaded) {
+    return <LoadingScreen noBounce />;
+  }
 
   return <Slot />;
 }

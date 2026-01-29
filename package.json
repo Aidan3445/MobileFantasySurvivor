@@ -4,7 +4,7 @@
   "main": "expo-router/entry",
   "type": "module",
   "scripts": {
-    "dev": "sed -i '' 's|^EXPO_PUBLIC_API_URL=.*|EXPO_PUBLIC_API_URL=http://'\"$(ipconfig getifaddr en0)\"':1234|' .env && echo 'Set EXPO_PUBLIC_API_URL to http://'\"$(ipconfig getifaddr en0)\"':1234' && expo start -c",
+    "dev": "IP=$(ipconfig getifaddr en11 || ipconfig getifaddr en0) && sed -i '' \"s|^EXPO_PUBLIC_API_URL=.*|EXPO_PUBLIC_API_URL=http://$IP:1234|\" .env && echo \"Set EXPO_PUBLIC_API_URL to http://$IP:1234\" && expo start --clear",
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
@@ -42,7 +42,6 @@
     "expo-screen-orientation": "~9.0.8",
     "expo-secure-store": "^15.0.7",
     "expo-sharing": "~14.0.7",
-    "expo-splash-screen": "~31.0.8",
     "expo-status-bar": "~3.0.7",
     "lucide-react-native": "^0.544.0",
     "nativewind": "^4.2.1",

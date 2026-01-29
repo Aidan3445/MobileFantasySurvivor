@@ -44,7 +44,7 @@ export default function LeaguesList() {
   }, [leagues]);
 
   return (
-    <View className='w-full gap-4'>
+    <View className='w-full gap-4 flex-1'>
       {/* Active Leagues Section */}
       {currentLeagues.length > 0 ? (
         <View className='rounded-xl border-2 border-primary/20 bg-card pb-2'>
@@ -58,10 +58,12 @@ export default function LeaguesList() {
 
           {/* Leagues Grid/Carousel */}
           {currentLeagues.length === 1 ? (
-            <LeagueCard
-              league={currentLeagues[0]!.league}
-              member={currentLeagues[0]!.member}
-              currentSelection={currentLeagues[0]!.currentSelection} />
+            <View className='min-h-36'>
+              <LeagueCard
+                league={currentLeagues[0]!.league}
+                member={currentLeagues[0]!.member}
+                currentSelection={currentLeagues[0]!.currentSelection} />
+            </View>
           ) : (
             <LeagueSeasonCarousel leagues={currentLeagues} />
           )}
@@ -107,10 +109,12 @@ export default function LeaguesList() {
 
               {/* Season Leagues */}
               {seasonLeagues.length === 1 ? (
-                <LeagueCard
-                  league={seasonLeagues[0]!.league}
-                  member={seasonLeagues[0]!.member}
-                  currentSelection={seasonLeagues[0]!.currentSelection} />
+                <View className='min-h-36'>
+                  <LeagueCard
+                    league={seasonLeagues[0]!.league}
+                    member={seasonLeagues[0]!.member}
+                    currentSelection={seasonLeagues[0]!.currentSelection} />
+                </View>
               ) : (
                 <LeagueSeasonCarousel leagues={seasonLeagues} />
               )}

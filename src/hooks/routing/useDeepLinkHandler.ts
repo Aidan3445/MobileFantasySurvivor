@@ -32,7 +32,7 @@ export function useDeepLinkHandler() {
         } else {
           console.log('Navigating to join page with hash:', hash);
           lastHandledUrl.current = url;
-          router.push(`/(protected)/(modals)/join?hash=${hash}`);
+          router.replace(`/join?hash=${hash}`);
         }
       }
     };

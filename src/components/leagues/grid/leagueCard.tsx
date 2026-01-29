@@ -23,7 +23,7 @@ export default function LeagueCard({
 }: LeagueCardProps) {
   const router = useRouter();
   return (
-    <View className='flex-1  px-2' style={width ? { width } : undefined}>
+    <View className='flex-1 px-2' style={width ? { width } : undefined}>
       <Link href={{ pathname: '/leagues/[hash]', params: { hash: league.hash } }} asChild>
         <Button
           className='flex-1 rounded-lg border-2 border-primary/20 bg-primary/5 p-3 active:border-primary/30 active:bg-primary/10'
