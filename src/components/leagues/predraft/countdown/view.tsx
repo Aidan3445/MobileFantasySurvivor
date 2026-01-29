@@ -53,7 +53,7 @@ export function DraftCountdown({ overrideHash, className }: DraftCountdownProps)
   };
 
   return (
-    <View className={cn('w-full flex-1 p-2 pt-1 justify-between', className)}>
+    <View className={cn('w-full flex-1 p-2 pt-1', className)}>
       {/* Header */}
       <View>
         <View className='flex-row items-center justify-between mb-1'>
@@ -70,7 +70,7 @@ export function DraftCountdown({ overrideHash, className }: DraftCountdownProps)
       </View>
 
       {/* Countdown / Action */}
-      <View className='justify-end'>
+      <View className='justify-center flex-1'>
         <View className='bg-accent border border-primary/40 rounded-md overflow-hidden'>
           <View className='px-3 pb-1 flex-row items-center gap-2'>
             {trackedDraftDate ? (trackedDraftDate.getTime() > Date.now() && (

@@ -116,15 +116,14 @@ export default function EventRow({
                 key={`${castaway.castawayId}-${index}`}
                 className='flex-row items-center gap-1'>
                 {member ? (
-                  <ColorRow className='leading-tight w-min' color={member.color}>
+                  <ColorRow className='leading-tight' color={member.color}>
                     <MarqueeText
                       text={member.displayName}
                       className={cn(
                         'text-base transition-all text-black font-medium',
                         member.loggedIn && 'text-primary'
                       )}
-                      containerClassName='flex-row'
-                      noMarqueeContainerClassName='w-min' />
+                      containerClassName='flex-row' />
                   </ColorRow>
                 ) : (
                   <ColorRow

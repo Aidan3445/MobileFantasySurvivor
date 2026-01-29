@@ -51,8 +51,10 @@ export default function MarqueeText({
   const scrollAnim = useRef(new Animated.Value(0)).current;
   const animationRef = useRef<Animated.CompositeAnimation | null>(null);
 
+  const hasChildren = !!children;
   // gap-0.5 = 2px
-  const childGap = children ? 2 : 0;
+  const childGap = hasChildren ? 2 : 0;
+  const availableWidth = containerWidth - childWidth - childGap;
 
   /* -------------------- Layout measurement -------------------- */
 
@@ -71,13 +73,12 @@ export default function MarqueeText({
 
   /* -------------------- Decide if marquee is needed -------------------- */
 
-  const availableWidth = containerWidth - childWidth - childGap;
-
   useEffect(() => {
     if (containerWidth > 0 && textWidth > 0) {
-      setNeedsMarquee(textWidth > availableWidth);
+      const compareWidth = hasChildren ? availableWidth : containerWidth;
+      setNeedsMarquee(textWidth > compareWidth);
     }
-  }, [containerWidth, textWidth, availableWidth]);
+  }, [containerWidth, textWidth, availableWidth, hasChildren]);
 
   /* -------------------- Marquee animation -------------------- */
 
@@ -115,81 +116,92 @@ export default function MarqueeText({
     return () => {
       animationRef.current?.stop();
     };
-  }, [
-    needsMarquee,
-    textWidth,
-    scrollSpeed,
-    pauseDuration,
-    scrollAnim,
-    trailingGap,
-  ]);
+  }, [needsMarquee, textWidth, scrollSpeed, pauseDuration, scrollAnim, trailingGap]);
 
-  /* -------------------- Render -------------------- */
+  /* -------------------- Shared components -------------------- */
+
+  const MarqueeContent = (
+    <Animated.View
+      key={`marquee-${textWidth}-${containerWidth}-${trailingGap}`}
+      className='flex-row items-center'
+      style={{
+        transform: [{ translateX: scrollAnim }],
+        width: textWidth * 2 + trailingGap,
+      }}>
+      <Text
+        className={cn('text-left align-middle', className)}
+        allowFontScaling={allowFontScaling}
+        numberOfLines={1}
+        style={{ flexShrink: 0 }}>
+        {text}
+      </Text>
+      <View style={{ width: trailingGap }} />
+      <Text
+        className={cn('text-left', className)}
+        allowFontScaling={allowFontScaling}
+        numberOfLines={1}
+        style={{ flexShrink: 0 }}>
+        {text}
+      </Text>
+    </Animated.View>
+  );
+
+  const StaticText = (
+    <Text
+      className={cn(center ? 'text-center' : 'text-left', className)}
+      allowFontScaling={allowFontScaling}
+      numberOfLines={1}
+      style={{ flexShrink: 0 }}>
+      {text}
+    </Text>
+  );
+
+  const HiddenMeasureText = (
+    <Text
+      className={cn('absolute opacity-0', className)}
+      allowFontScaling={allowFontScaling}
+      style={{ flexShrink: 0 }}
+      onTextLayout={onTextLayout}>
+      {text}
+    </Text>
+  );
+
+  /* -------------------- Render with children -------------------- */
+
+  if (hasChildren) {
+    return (
+      <View
+        className={cn(
+          'w-full overflow-hidden flex-row items-center',
+          containerClassName,
+          !needsMarquee && noMarqueeContainerClassName
+        )}
+        onLayout={onContainerLayout}>
+        {/* Text area */}
+        <View className='flex-1 overflow-hidden' style={{ marginRight: childGap }}>
+          {needsMarquee ? MarqueeContent : StaticText}
+        </View>
+
+        {/* Child element at end */}
+        <View onLayout={onChildLayout}>{children}</View>
+
+        {HiddenMeasureText}
+      </View>
+    );
+  }
+
+  /* -------------------- Render without children (original) -------------------- */
 
   return (
     <View
       className={cn(
-        'w-full overflow-hidden flex-row items-center',
+        'w-full overflow-hidden',
         containerClassName,
         !needsMarquee && noMarqueeContainerClassName
       )}
       onLayout={onContainerLayout}>
-      {/* Text area */}
-      <View
-        className='flex-1 overflow-hidden'
-        style={{ marginRight: children ? childGap : 0 }}>
-        {needsMarquee ? (
-          <Animated.View
-            key={`marquee-${textWidth}-${containerWidth}-${trailingGap}`}
-            className='flex-row items-center'
-            style={{
-              transform: [{ translateX: scrollAnim }],
-              width: textWidth * 2 + trailingGap,
-            }}>
-            <Text
-              className={cn('text-left align-middle', className)}
-              allowFontScaling={allowFontScaling}
-              numberOfLines={1}
-              style={{ flexShrink: 0 }}>
-              {text}
-            </Text>
-
-            <View style={{ width: trailingGap }} />
-
-            <Text
-              className={cn('text-left', className)}
-              allowFontScaling={allowFontScaling}
-              numberOfLines={1}
-              style={{ flexShrink: 0 }}>
-              {text}
-            </Text>
-          </Animated.View>
-        ) : (
-          <Text
-            className={cn(center ? 'text-center' : 'text-left', className)}
-            allowFontScaling={allowFontScaling}
-            numberOfLines={1}
-            style={{ flexShrink: 0 }}>
-            {text}
-          </Text>
-        )}
-      </View>
-
-      {/* Child element at end */}
-      {children && (
-        <View onLayout={onChildLayout}>
-          {children}
-        </View>
-      )}
-
-      {/* Hidden text used only for width measurement */}
-      <Text
-        className={cn('absolute opacity-0', className)}
-        allowFontScaling={allowFontScaling}
-        style={{ flexShrink: 0 }}
-        onTextLayout={onTextLayout}>
-        {text}
-      </Text>
+      {needsMarquee ? MarqueeContent : StaticText}
+      {HiddenMeasureText}
     </View>
   );
 }
