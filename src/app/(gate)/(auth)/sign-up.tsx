@@ -8,13 +8,14 @@ import {
   Platform,
 } from 'react-native';
 import { useSignUp } from '@clerk/clerk-expo';
-import { Link, useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import Header from '~/components/auth/header';
 import { SignUpWithGoogle } from '~/components/auth/signUpWithGoogle';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
+  const { redirectTo } = useLocalSearchParams<{ redirectTo?: string }>();
   const router = useRouter();
 
   const [username, setUsername] = React.useState('');
@@ -75,7 +76,7 @@ export default function SignUpScreen() {
         await setActive({
           session: signUpAttempt.createdSessionId,
         });
-        router.replace('/(tabs)');
+        router.replace(redirectTo ?? '/(tabs)');
       } else {
         setClerkError('Verification could not be completed.');
       }
@@ -160,10 +161,10 @@ export default function SignUpScreen() {
               Create your account
             </Text>
           </View>
+          <Text>{redirectTo}</Text>
 
           <View className='gap-y-2'>
             <TextInput
-              autoFocus
               autoCapitalize='none'
               value={username}
               placeholder='Enter username'
@@ -211,11 +212,11 @@ export default function SignUpScreen() {
             <Text className='text-base text-secondary'>
               Already have an account?{' '}
             </Text>
-            <Link href='../'>
+            <TouchableOpacity onPress={() => router.back()}>
               <Text className='text-base font-semibold text-primary'>
                 Sign in
               </Text>
-            </Link>
+            </TouchableOpacity>
           </View>
         </View>
       </KeyboardAvoidingView>

@@ -74,9 +74,7 @@ export function SignInWithGoogle() {
   }, [router, startSSOFlow]);
 
   return (
-    <View className='my-2'>
-      <GoogleSignInButton onPress={onPress} />
-    </View>
+    <GoogleSignInButton onPress={onPress} />
   );
 }
 

@@ -1,5 +1,5 @@
 import { useSignIn } from '@clerk/clerk-expo';
-import { Link, useRouter } from 'expo-router';
+import { Link, useLocalSearchParams, useRouter } from 'expo-router';
 import { KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import Header from '~/components/auth/header';
@@ -8,6 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn();
+  const { redirectTo } = useLocalSearchParams<{ redirectTo?: string }>();
   const router = useRouter();
 
   const [emailAddress, setEmailAddress] = React.useState('');
@@ -25,7 +26,7 @@ export default function Page() {
       // and redirect the user
       if (signInAttempt.status === 'complete') {
         await setActive({ session: signInAttempt.createdSessionId });
-        router.replace('/(tabs)');
+        router.replace(redirectTo ?? '/(tabs)');
 
       } else {
         // If the status isn't complete, check why. User might need to
@@ -52,6 +53,7 @@ export default function Page() {
           <View className='items-center'>
             <Text className='mb-2 text-3xl font-bold text-primary'>Welcome Back!</Text>
             <Text className='text-lg text-secondary'>Sign in to continue</Text>
+            <Text>{redirectTo}</Text>
           </View>
 
           <View className='gap-y-2'>
@@ -69,17 +71,17 @@ export default function Page() {
               className='rounded-2xl border border-accent bg-accent/20 px-4 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
               placeholderTextColor='#B58553'
               onChangeText={password => setPassword(password)} />
+            <SignInWithGoogle />
             <TouchableOpacity
               onPress={onSignInPress}
-              className='mt-6 rounded-full bg-primary h-10 justify-center'>
+              className='mb-2 rounded-full bg-primary h-12 justify-center'>
               <Text className='text-center text-lg font-semibold text-white'>Continue</Text>
             </TouchableOpacity>
-            <SignInWithGoogle />
           </View>
 
           <View className='flex-row items-center justify-center'>
             <Text className='text-base text-secondary'>Don't have an account? </Text>
-            <Link href='/sign-up'>
+            <Link href={{ pathname: '/sign-up', params: redirectTo ? { redirectTo } : undefined }}>
               <Text className='text-base font-semibold text-primary'>Sign up</Text>
             </Link>
           </View>

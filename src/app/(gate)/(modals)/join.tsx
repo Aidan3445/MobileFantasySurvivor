@@ -1,6 +1,5 @@
-import { Text, View, KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
+import { Text, View, KeyboardAvoidingView, Platform, Keyboard, Alert } from 'react-native';
 import { useLocalSearchParams, Redirect, useRouter } from 'expo-router';
-import { useAuth } from '@clerk/clerk-expo';
 import { ArrowLeft } from 'lucide-react-native';
 import { useCallback, useEffect, useState } from 'react';
 import Carousel from 'react-native-reanimated-carousel';
@@ -14,6 +13,7 @@ import { useJoinLeague } from '~/hooks/leagues/mutation/useJoinLeague';
 import { useCarousel } from '~/hooks/ui/useCarousel';
 import { cn } from '~/lib/utils';
 import { colors } from '~/lib/colors';
+import LoadingScreen from '~/components/auth/loadingScreen';
 
 interface PageConfig {
   name: 'hash' | 'member';
@@ -25,7 +25,6 @@ interface PageConfig {
 export default function JoinLeagueScreen() {
   const router = useRouter();
   const { hash } = useLocalSearchParams<{ hash?: string }>();
-  const { isSignedIn, isLoaded } = useAuth();
   const { reactForm, handleSubmit, getPublicLeague, isSubmitting } = useJoinLeague();
 
   const [joinCode, setJoinCode] = useState(hash ?? '');
@@ -97,8 +96,19 @@ export default function JoinLeagueScreen() {
     }
   };
 
+  if (getPublicLeague.isLoading) {
+    return <LoadingScreen noBounce />;
+  }
+
   if (getPublicLeague?.data?.isMember) {
+    console.log('Already a member, redirecting to league page');
     return <Redirect href={`/leagues/${getPublicLeague.data.hash}`} />;
+  }
+
+  if (getPublicLeague?.data?.isPending) {
+    Alert.alert('Pending Invitation',
+      'You already tried to join this league. Please wait for the league admin to approve your request.');
+    return <Redirect href='/(tabs)' />;
   }
 
   return (

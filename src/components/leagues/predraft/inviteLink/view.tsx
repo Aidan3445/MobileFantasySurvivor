@@ -8,7 +8,6 @@ import * as Linking from 'expo-linking';
 import { colors } from '~/lib/colors';
 import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
 import ProtectionInfo from '~/components/leagues/predraft/inviteLink/protectionInfo';
-import { useSearchParams } from 'expo-router';
 
 export default function InviteLink() {
   const { data: league } = useLeague();
@@ -17,10 +16,8 @@ export default function InviteLink() {
 
   if (!league) return null;
 
-  const link = Linking.createURL('/sign-in', {
-    queryParams: {
-      returnTo: `/(modals)/join?hash=${league.hash}`
-    }
+  const link = Linking.createURL('/(gate)/(modals)/join', {
+    queryParams: { hash: league.hash },
   });
 
   const copyLink = async () => {

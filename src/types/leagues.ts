@@ -27,6 +27,7 @@ export type PublicLeague = {
   hash: string;
   seasonId: number;
   isMember: boolean;
+  isPending: boolean;
 };
 
 export type LeagueDetails = {
