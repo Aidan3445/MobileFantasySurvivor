@@ -14,8 +14,15 @@ export function useCreateLeague(onSubmit?: () => void) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { user } = useUser();
+
   const reactForm = useForm<LeagueInsert>({
-    defaultValues: { leagueName: '', member: { displayName: user?.username || '', color: '' } },
+    defaultValues: {
+      leagueName: '',
+      member: {
+        displayName: user?.username || '',
+        color: ''
+      }
+    },
     resolver: zodResolver(LeagueInsertZod)
   });
 
@@ -24,6 +31,7 @@ export function useCreateLeague(onSubmit?: () => void) {
   }, [user, reactForm]);
 
   const handleSubmit = reactForm.handleSubmit(async data => {
+    console.log('Creating league with data:', data);
     if (!user) {
       Alert.alert('Error', 'You must be logged in to create a league');
       return;
@@ -59,7 +67,6 @@ export function useCreateLeague(onSubmit?: () => void) {
       router.prefetch({ pathname: '/leagues/[hash]', params: { hash: newHash } });
 
       Alert.alert('Success', `League created: ${data.leagueName}`);
-      console.log('Navigating to league with hash:', newHash);
       router.replace({ pathname: '/leagues/[hash]', params: { hash: newHash } });
     } catch (error) {
       console.error(error);

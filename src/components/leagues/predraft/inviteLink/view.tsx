@@ -16,9 +16,9 @@ export default function InviteLink() {
 
   if (!league) return null;
 
-  const link = Linking.createURL('/(tabs)', {
+  const link = Linking.createURL('/sign-in', {
     queryParams: {
-      returnTo: `/join/${league.hash}`
+      returnTo: `/(modals)/join?hash=${league.hash}`
     }
   });
 

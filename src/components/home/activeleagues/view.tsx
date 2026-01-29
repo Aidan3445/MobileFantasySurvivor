@@ -10,6 +10,7 @@ import { useCarousel } from '~/hooks/ui/useCarousel';
 import { useEffect, useMemo, useState } from 'react';
 import { MAX_LEAGUE_MEMBERS_HOME_DISPLAY } from '~/lib/leagues';
 import { type LeagueDetails } from '~/types/leagues';
+import { cn } from '~/lib/utils';
 
 export default function ActiveLeagues() {
   const router = useRouter();
@@ -67,7 +68,8 @@ export default function ActiveLeagues() {
   }
 
   return (
-    <View className='relative w-full overflow-hidden rounded-xl bg-card border-2 border-primary/20'>
+    <View className={cn('relative w-full overflow-hidden rounded-xl bg-card border-2 border-primary/20',
+      props.data && props.data.length === 1 && 'pb-2.5')}>
       {/* Header */}
       <View className='p-4 pb-0'>
         <View className='flex-row items-end justify-between'>
@@ -108,9 +110,11 @@ export default function ActiveLeagues() {
         loop />
 
       {/* Pagination Footer */}
-      <View className='items-center'>
-        <Pagination.Basic {...progressProps} containerStyle={{ marginVertical: 8 }} />
-      </View>
+      {props.data && props.data.length > 1 && (
+        <View className='items-center'>
+          <Pagination.Basic {...progressProps} containerStyle={{ marginVertical: 8 }} />
+        </View>
+      )}
     </View>
   );
 }

@@ -103,6 +103,10 @@ export default function JoinLeagueScreen() {
     }
   };
 
+  if (getPublicLeague?.data?.isMember) {
+    return <Redirect href={`/leagues/${getPublicLeague.data.hash}`} />;
+  }
+
   return (
     <View className='page py-16'>
       <JoinLeagueHeader leagueName={hash ? getPublicLeague?.data?.name : undefined} />

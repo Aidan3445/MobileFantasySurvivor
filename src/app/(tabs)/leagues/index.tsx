@@ -1,11 +1,17 @@
+'use client';
+
 import React from 'react';
 import { RefreshControl, ScrollView, View } from 'react-native';
 import LeaguesList from '~/components/leagues/grid/leaguesList';
 import RefreshIndicator from '~/components/common/refresh';
 import { cn } from '~/lib/utils';
 import { useRefresh } from '~/hooks/helpers/refresh/useRefresh';
+import { useLocalSearchParams } from 'expo-router';
 
 export default function LeaguesScreen() {
+  const params = useLocalSearchParams<{ returnTo?: string }>();
+  console.log('LeaguesScreen returnTo:', params.returnTo);
+
   const { refreshing, onRefresh, scrollY, handleScroll } = useRefresh([[]]);
 
   return (

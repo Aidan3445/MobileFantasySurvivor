@@ -27,6 +27,7 @@ export default function Page() {
       if (signInAttempt.status === 'complete') {
         await setActive({ session: signInAttempt.createdSessionId });
         if (returnTo) {
+          console.log('Sign-in Redirecting to returnTo:', returnTo);
           router.replace(`/(tabs)?returnTo=${returnTo}`);
         } else {
           router.replace('/(tabs)');
@@ -57,6 +58,7 @@ export default function Page() {
           <View className='items-center'>
             <Text className='mb-2 text-3xl font-bold text-primary'>Welcome Back!</Text>
             <Text className='text-lg text-secondary'>Sign in to continue</Text>
+            <Text>{returnTo}</Text>
           </View>
 
           <View className='gap-y-2'>
@@ -79,7 +81,7 @@ export default function Page() {
               className='mt-6 rounded-full bg-primary h-10 justify-center'>
               <Text className='text-center text-lg font-semibold text-white'>Continue</Text>
             </TouchableOpacity>
-            <SignInWithGoogle />
+            <SignInWithGoogle returnTo={returnTo} />
           </View>
 
           <View className='flex-row items-center justify-center'>
