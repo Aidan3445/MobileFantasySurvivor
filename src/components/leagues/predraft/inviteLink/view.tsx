@@ -8,6 +8,7 @@ import * as Linking from 'expo-linking';
 import { colors } from '~/lib/colors';
 import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
 import ProtectionInfo from '~/components/leagues/predraft/inviteLink/protectionInfo';
+import { useSearchParams } from 'expo-router';
 
 export default function InviteLink() {
   const { data: league } = useLeague();

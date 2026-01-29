@@ -1,9 +1,7 @@
 'use client';
-import { useAuth } from '@clerk/clerk-expo';
 import { useIsFetching } from '@tanstack/react-query';
-import { Tabs, useLocalSearchParams, usePathname, useRouter } from 'expo-router';
+import { Tabs, usePathname, useRouter } from 'expo-router';
 import { BookUser, Flame, Trophy, UserCircle2 } from 'lucide-react-native';
-import { useEffect } from 'react';
 import { Animated, Image, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import LoadingScreen from '~/components/auth/loadingScreen';
@@ -14,9 +12,6 @@ import { colors } from '~/lib/colors';
 const HomeImage = require('~/assets/Icon.png');
 
 export default function TabLayout() {
-  const { userId, isLoaded } = useAuth();
-  const { returnTo } = useLocalSearchParams<{ returnTo?: string }>();
-  console.log('TabLayout returnTo:', returnTo);
   const pathname = usePathname();
   const router = useRouter();
   const isFetching = useIsFetching();
@@ -29,17 +24,6 @@ export default function TabLayout() {
   const isLeaguesPath = pathname.startsWith('/leagues');
   const isOnLeaguesIndex = pathname === '/leagues';
 
-
-  useEffect(() => {
-    if (!isLoaded) return; // Wait for auth to load
-    if (!userId) {
-      router.replace(`/sign-in?returnTo=${encodeURIComponent(returnTo || '/')}`);
-      return;
-    }
-    if (returnTo) {
-      router.push(returnTo);
-    }
-  }, [isLoaded, returnTo, router, userId]);
 
   return (
     <>

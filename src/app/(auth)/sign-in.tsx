@@ -1,5 +1,5 @@
 import { useSignIn } from '@clerk/clerk-expo';
-import { Link, useLocalSearchParams, useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import Header from '~/components/auth/header';
@@ -7,7 +7,6 @@ import { SignInWithGoogle } from '~/components/auth/signInWithGoogle';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Page() {
-  const { returnTo } = useLocalSearchParams<{ returnTo?: string }>();
   const { signIn, setActive, isLoaded } = useSignIn();
   const router = useRouter();
 
@@ -26,12 +25,7 @@ export default function Page() {
       // and redirect the user
       if (signInAttempt.status === 'complete') {
         await setActive({ session: signInAttempt.createdSessionId });
-        if (returnTo) {
-          console.log('Sign-in Redirecting to returnTo:', returnTo);
-          router.replace(`/(tabs)?returnTo=${returnTo}`);
-        } else {
-          router.replace('/(tabs)');
-        }
+        router.replace('/(tabs)');
 
       } else {
         // If the status isn't complete, check why. User might need to
@@ -58,7 +52,6 @@ export default function Page() {
           <View className='items-center'>
             <Text className='mb-2 text-3xl font-bold text-primary'>Welcome Back!</Text>
             <Text className='text-lg text-secondary'>Sign in to continue</Text>
-            <Text>{returnTo}</Text>
           </View>
 
           <View className='gap-y-2'>
@@ -81,7 +74,7 @@ export default function Page() {
               className='mt-6 rounded-full bg-primary h-10 justify-center'>
               <Text className='text-center text-lg font-semibold text-white'>Continue</Text>
             </TouchableOpacity>
-            <SignInWithGoogle returnTo={returnTo} />
+            <SignInWithGoogle />
           </View>
 
           <View className='flex-row items-center justify-center'>

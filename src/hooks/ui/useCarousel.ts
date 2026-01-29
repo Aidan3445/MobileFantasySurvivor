@@ -37,7 +37,6 @@ export function useCarousel<T>(initialData: T[] = []) {
   );
 
   const scrollNext = useCallback(() => {
-    console.log('Scrolling to next item');
     ref.current?.scrollTo({
       count: 1,
       animated: true,

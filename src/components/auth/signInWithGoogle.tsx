@@ -26,11 +26,8 @@ export const useWarmUpBrowser = () => {
 // Handle any pending authentication sessions
 WebBrowser.maybeCompleteAuthSession();
 
-interface SignInWithGoogleProps {
-  returnTo?: string;
-}
 
-export function SignInWithGoogle({ returnTo }: SignInWithGoogleProps) {
+export function SignInWithGoogle() {
   const router = useRouter();
   useWarmUpBrowser();
 
@@ -61,12 +58,7 @@ export function SignInWithGoogle({ returnTo }: SignInWithGoogleProps) {
               return;
             }
 
-            if (returnTo) {
-              console.log('Sign-in-with-google Redirecting to returnTo:', returnTo);
-              router.replace(`/(tabs)?returnTo=${returnTo}`);
-            } else {
-              router.replace('/(tabs)');
-            }
+            router.replace('/(tabs)');
           },
         });
       } else {
@@ -79,7 +71,7 @@ export function SignInWithGoogle({ returnTo }: SignInWithGoogleProps) {
       // for more info on error handling
       console.error(JSON.stringify(err, null, 2));
     }
-  }, [returnTo, router, startSSOFlow]);
+  }, [router, startSSOFlow]);
 
   return (
     <View className='my-2'>

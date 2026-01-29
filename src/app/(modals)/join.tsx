@@ -78,12 +78,6 @@ export default function JoinLeagueScreen() {
     goBack();
   };
 
-  // Redirect to sign-in if not authenticated
-  if (isLoaded && !isSignedIn) {
-    const returnPath = hash ? `/join?hash=${hash}` : '/join';
-    return <Redirect href={`/sign-in?returnTo=${returnPath}`} />;
-  }
-
   const renderPageContent = (pageName: 'hash' | 'member', canGoNext?: boolean) => {
     switch (pageName) {
       case 'hash':
