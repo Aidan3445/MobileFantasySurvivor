@@ -1,5 +1,5 @@
 import { Text, View, KeyboardAvoidingView, Platform, Keyboard, Alert } from 'react-native';
-import { useLocalSearchParams, Redirect, useRouter } from 'expo-router';
+import { Redirect } from 'expo-router';
 import { ArrowLeft } from 'lucide-react-native';
 import { useCallback, useEffect, useState } from 'react';
 import Carousel from 'react-native-reanimated-carousel';
@@ -13,8 +13,6 @@ import { useJoinLeague } from '~/hooks/leagues/mutation/useJoinLeague';
 import { useCarousel } from '~/hooks/ui/useCarousel';
 import { cn } from '~/lib/utils';
 import { colors } from '~/lib/colors';
-import LoadingScreen from '~/components/auth/loadingScreen';
-import { useAuth } from '@clerk/clerk-expo';
 
 interface PageConfig {
   name: 'hash' | 'member';
@@ -23,13 +21,20 @@ interface PageConfig {
   isLast?: boolean;
 }
 
+// app/(protected)/(modals)/join.tsx
 export default function JoinLeagueScreen() {
-  const { isSignedIn } = useAuth();
-  const router = useRouter();
-  const { hash, redirectTo } = useLocalSearchParams<{ hash?: string, redirectTo?: string }>();
-  const { reactForm, handleSubmit, getPublicLeague, isSubmitting } = useJoinLeague();
+  const {
+    reactForm,
+    inputValue,
+    handleInputChange,
+    submitHash,
+    resetHash,
+    hasSubmittedHash,
+    getPublicLeague,
+    handleSubmit,
+    isSubmitting,
+  } = useJoinLeague();
 
-  const [joinCode, setJoinCode] = useState(hash ?? '');
   const [errorModalVisible, setErrorModalVisible] = useState(false);
 
   const pages: PageConfig[] = [
@@ -39,74 +44,55 @@ export default function JoinLeagueScreen() {
 
   const { props, ref, progress } = useCarousel<PageConfig>(pages);
 
-  const codeValid = joinCode.trim().length > 0;
+  const codeValid = inputValue.trim().length > 0;
 
   const goNext = useCallback(() => {
     Keyboard.dismiss();
     if (codeValid) {
-      router.setParams({ hash: joinCode.trim() });
+      submitHash();
       ref.current?.next();
     }
-  }, [ref, joinCode, codeValid, router]);
+  }, [ref, codeValid, submitHash]);
 
   const goBack = useCallback(() => {
     Keyboard.dismiss();
-    setJoinCode('');
-    router.setParams({ hash: undefined });
+    resetHash();
     ref.current?.prev();
-  }, [ref, router]);
+  }, [ref, resetHash]);
 
-  // If hash provided via URL, auto-advance to member page
+  // If hash provided via URL and query succeeded, auto-advance
   useEffect(() => {
-    if (hash) {
-      setJoinCode(hash);
-      // eslint-disable-next-line no-undef
-      setTimeout(() => {
-        ref.current?.scrollTo({ index: 1, animated: false });
-      }, 1000);
+    if (hasSubmittedHash && getPublicLeague.isSuccess && progress === 0) {
+      ref.current?.scrollTo({ index: 1, animated: false });
     }
-  }, [hash, ref, progress]);
+  }, [hasSubmittedHash, getPublicLeague.isSuccess, progress, ref]);
 
   // Show error modal when league fetch fails
   useEffect(() => {
-    if (getPublicLeague.isError) {
+    if (getPublicLeague.isError && progress === 1) {
       setErrorModalVisible(true);
     }
-  }, [getPublicLeague.isError]);
+  }, [getPublicLeague.isError, progress]);
 
   const handleErrorDismiss = () => {
     setErrorModalVisible(false);
     goBack();
   };
 
-  const renderPageContent = (pageName: 'hash' | 'member', canGoNext?: boolean) => {
+  const renderPageContent = (pageName: 'hash' | 'member') => {
     switch (pageName) {
       case 'hash':
-        return (
-          <EnterHash
-            value={joinCode}
-            onChangeText={setJoinCode}
-            onSubmitEditing={goNext}
-            canGoNext={canGoNext} />
-        );
+        return <EnterHash value={inputValue} onChangeText={handleInputChange} />;
       case 'member':
         return (
-          <LeagueMember control={reactForm.control} usedColors={getPublicLeague?.data?.usedColors} />
+          <LeagueMember
+            control={reactForm.control}
+            usedColors={getPublicLeague?.data?.usedColors} />
         );
       default:
         return null;
     }
   };
-
-  if (!isSignedIn && !redirectTo) {
-    console.log('User not sgned in, redirecting to sign-in page', hash);
-    if (router.canGoBack()) router.dismiss();
-    return null;
-  }
-
-  if (getPublicLeague.isLoading) {
-    return <LoadingScreen noBounce />;
-  }
 
   if (getPublicLeague?.data?.isMember) {
     console.log('Already a member, redirecting to league page');
@@ -121,7 +107,12 @@ export default function JoinLeagueScreen() {
 
   return (
     <View className='page py-16'>
-      <JoinLeagueHeader leagueName={hash ? getPublicLeague?.data?.name : undefined} />
+      <JoinLeagueHeader
+        leagueName={getPublicLeague.isError
+          ? undefined
+          : getPublicLeague.isLoading
+            ? 'Loading...'
+            : getPublicLeague.data?.name} />
 
       <KeyboardAvoidingView
         className='flex-1'
@@ -136,13 +127,13 @@ export default function JoinLeagueScreen() {
             renderItem={({ item }) => {
               const isHashPage = item.name === 'hash';
               const isValid = isHashPage ? codeValid : reactForm.formState.isValid;
-              const buttonDisabled = !isValid || (item.isLast && isSubmitting);
+              const buttonDisabled = !isValid || (item.isLast && (isSubmitting || getPublicLeague.isLoading));
 
               return (
                 <View className='flex-1' onTouchStart={() => Keyboard.dismiss()}>
                   {/* Content */}
                   <View className='flex-1 justify-start'>
-                    {renderPageContent(item.name, !buttonDisabled)}
+                    {renderPageContent(item.name)}
                   </View>
 
                   {/* Navigation */}

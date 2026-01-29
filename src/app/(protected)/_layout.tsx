@@ -22,7 +22,6 @@ export default function ProtectedLayout() {
                 presentation: 'modal',
                 animation: 'slide_from_bottom'
               }} />
-            <Stack.Screen name='(auth)' options={{ headerShown: false, animation: 'none' }} />
           </Stack>
         </KeyboardProvider>
       </QueryClientContextProvider>

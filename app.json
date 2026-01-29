@@ -33,7 +33,7 @@
     "android": {
       "package": "com.aidan3445.mobilefantasysurvivor",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./src/assets/Logo.png",
         "backgroundColor": "#FFFFFF"
       },
       "intentFilters": [

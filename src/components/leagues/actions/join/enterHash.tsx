@@ -6,23 +6,11 @@ import { Link } from 'lucide-react-native';
 interface EnterHashProps {
   value: string;
   onChangeText: (_text: string) => void;
-  onSubmitEditing?: () => void;
-  canGoNext?: boolean;
 }
 
-export default function EnterHash({
-  value,
-  onChangeText,
-  onSubmitEditing,
-  canGoNext,
-}: EnterHashProps) {
-  const parseCode = (input: string) => {
-    const match = input.match(/(?:\?hash=|\/i\/)([A-Za-z0-9-_]+)/);
-    return match?.[1] ?? input;
-  };
-
+export default function EnterHash({ value, onChangeText, }: EnterHashProps) {
   const handleChangeText = (text: string) => {
-    onChangeText(parseCode(text));
+    onChangeText(text);
   };
 
   return (
@@ -55,9 +43,7 @@ export default function EnterHash({
           onChangeText={handleChangeText}
           value={value}
           returnKeyType='next'
-          onSubmitEditing={canGoNext ? onSubmitEditing : undefined}
-          onTouchStart={(e) => e.stopPropagation()}
-        />
+          onTouchStart={(e) => e.stopPropagation()} />
       </View>
     </View>
   );

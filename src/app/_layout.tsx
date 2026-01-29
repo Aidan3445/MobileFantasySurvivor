@@ -6,7 +6,11 @@ import * as ScreenOrientation from 'expo-screen-orientation';
 import { useEffect } from 'react';
 
 SplashScreen.preventAutoHideAsync();
-ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+try {
+  ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+} catch {
+  console.warn('Screen Orientation lock failed');
+}
 
 // Suppress specific warning from react-native-reanimated-carousel
 const originalWarn = console.warn;

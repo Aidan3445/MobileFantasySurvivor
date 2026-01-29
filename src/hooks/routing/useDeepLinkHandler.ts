@@ -1,18 +1,22 @@
 import * as Linking from 'expo-linking';
 import { useRouter, usePathname } from 'expo-router';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useAuth } from '@clerk/clerk-expo';
 
 export function useDeepLinkHandler() {
   const router = useRouter();
   const pathname = usePathname();
   const { isSignedIn, isLoaded } = useAuth();
+  const lastHandledUrl = useRef<string | null>(null);
 
   useEffect(() => {
     if (!isLoaded) return;
 
     const handleURL = (url: string | null) => {
       if (!url) return;
+
+      // Skip if we just handled this exact URL
+      if (url === lastHandledUrl.current) return;
 
       const parsed = Linking.parse(url);
       const { path, queryParams } = parsed;
@@ -22,20 +26,22 @@ export function useDeepLinkHandler() {
 
         if (!isSignedIn) return;
 
-        // eslint-disable-next-line no-undef
-        setTimeout(() => {
-          if (pathname.includes('/join')) {
-            router.setParams({ hash });
-          } else {
-            router.push(`/(protected)/(modals)/join?hash=${hash}`);
-          }
-        }, 100);
+        if (pathname.includes('/join')) {
+          console.log('Already on join page, set hash param:', hash);
+          router.setParams({ hash });
+        } else {
+          console.log('Navigating to join page with hash:', hash);
+          lastHandledUrl.current = url;
+          router.push(`/(protected)/(modals)/join?hash=${hash}`);
+        }
       }
     };
 
-    Linking.getInitialURL().then(handleURL);
+    Linking.getInitialURL().then((url) => handleURL(url));
 
     const subscription = Linking.addEventListener('url', ({ url }) => {
+      // Reset for new incoming URLs while app is open
+      lastHandledUrl.current = null;
       handleURL(url);
     });
 
