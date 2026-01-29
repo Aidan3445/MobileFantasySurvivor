@@ -14,6 +14,7 @@ import { useCarousel } from '~/hooks/ui/useCarousel';
 import { cn } from '~/lib/utils';
 import { colors } from '~/lib/colors';
 import LoadingScreen from '~/components/auth/loadingScreen';
+import { useAuth } from '@clerk/clerk-expo';
 
 interface PageConfig {
   name: 'hash' | 'member';
@@ -23,8 +24,9 @@ interface PageConfig {
 }
 
 export default function JoinLeagueScreen() {
+  const { isSignedIn } = useAuth();
   const router = useRouter();
-  const { hash } = useLocalSearchParams<{ hash?: string }>();
+  const { hash, redirectTo } = useLocalSearchParams<{ hash?: string, redirectTo?: string }>();
   const { reactForm, handleSubmit, getPublicLeague, isSubmitting } = useJoinLeague();
 
   const [joinCode, setJoinCode] = useState(hash ?? '');
@@ -56,12 +58,12 @@ export default function JoinLeagueScreen() {
 
   // If hash provided via URL, auto-advance to member page
   useEffect(() => {
-    if (hash && progress === 0) {
+    if (hash) {
       setJoinCode(hash);
       // eslint-disable-next-line no-undef
       setTimeout(() => {
         ref.current?.scrollTo({ index: 1, animated: false });
-      }, 100);
+      }, 1000);
     }
   }, [hash, ref, progress]);
 
@@ -95,6 +97,12 @@ export default function JoinLeagueScreen() {
         return null;
     }
   };
+
+  if (!isSignedIn && !redirectTo) {
+    console.log('User not sgned in, redirecting to sign-in page', hash);
+    if (router.canGoBack()) router.dismiss();
+    return null;
+  }
 
   if (getPublicLeague.isLoading) {
     return <LoadingScreen noBounce />;

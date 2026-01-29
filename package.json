@@ -4,7 +4,7 @@
   "main": "expo-router/entry",
   "type": "module",
   "scripts": {
-    "dev": "sed -i '' 's|^EXPO_PUBLIC_API_URL=.*|EXPO_PUBLIC_API_URL=http://'\"$(ipconfig getifaddr en11)\"':1234|' .env && echo 'Set EXPO_PUBLIC_API_URL to http://'\"$(ipconfig getifaddr en11)\"':1234' && expo start -c",
+    "dev": "sed -i '' 's|^EXPO_PUBLIC_API_URL=.*|EXPO_PUBLIC_API_URL=http://'\"$(ipconfig getifaddr en0)\"':1234|' .env && echo 'Set EXPO_PUBLIC_API_URL to http://'\"$(ipconfig getifaddr en0)\"':1234' && expo start -c",
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",

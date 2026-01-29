@@ -8,6 +8,11 @@
     "version": "1.0.0",
     "owner": "aidan3445",
     "web": { "output": "static" },
+    "splash": {
+      "image": "./src/assets/Logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#E5BC8F"
+    },
     "plugins": [
       ["expo-router", { "origin": "https://yourfantasysurvivor.com" }],
       ["expo-screen-orientation", { "initialOrientation": "PORTRAIT_UP" }]

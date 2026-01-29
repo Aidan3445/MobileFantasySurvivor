@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { type League } from '~/types/leagues';
 import { useFetch } from '~/hooks/helpers/useFetch';
 
@@ -10,6 +10,7 @@ import { useFetch } from '~/hooks/helpers/useFetch';
  * @returnObj `League & { isEpisodeAiring: boolean }`
  */
 export function useLeague(overrideHash?: string) {
+  const router = useRouter();
   const fetchData = useFetch();
   const params = useLocalSearchParams();
   const hash = overrideHash ?? (params.hash as string);
@@ -21,6 +22,11 @@ export function useLeague(overrideHash?: string) {
 
       const response = await fetchData(`/api/leagues/${hash}`);
       if (!response.ok) {
+        if (response.status === 403) {
+          router.replace('/leagues');
+          return Promise.reject(new Error('Access to this league is forbidden'));
+        }
+
         throw new Error('Failed to fetch league');
       }
       return response.json();

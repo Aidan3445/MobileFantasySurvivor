@@ -16,7 +16,7 @@ export default function InviteLink() {
 
   if (!league) return null;
 
-  const link = Linking.createURL('/(gate)/(modals)/join', {
+  const link = Linking.createURL('/join', {
     queryParams: { hash: league.hash },
   });
 
