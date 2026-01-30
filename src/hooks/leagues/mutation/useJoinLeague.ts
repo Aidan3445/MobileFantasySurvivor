@@ -112,23 +112,30 @@ export function useJoinLeague(onSubmit?: () => void) {
         return;
       }
 
-      const { success } = (await response.json()) as { success: boolean };
+      const { success, admitted } = (await response.json()) as { success: boolean, admitted?: boolean };
 
       if (!success) throw new Error('Failed to join league');
 
       reactForm.reset();
       onSubmit?.();
-      await queryClient.invalidateQueries({ queryKey: ['leagues'] });
 
-      const leagueResponse = await fetchData(`/api/leagues/${submittedHash}`);
-      if (leagueResponse.status === 200) {
-        const leagueData = await leagueResponse.json();
-        await queryClient.setQueryData(['leagues', submittedHash], leagueData);
+      if (admitted) {
+        await queryClient.invalidateQueries({ queryKey: ['leagues'] });
+
+        const leagueResponse = await fetchData(`/api/leagues/${submittedHash}`);
+        if (leagueResponse.status === 200) {
+          const leagueData = await leagueResponse.json();
+          await queryClient.setQueryData(['leagues', submittedHash], leagueData);
+        }
+        router.prefetch({ pathname: '/leagues/[hash]', params: { hash: submittedHash } });
+        router.replace(`/leagues/${submittedHash}`);
+
+        Alert.alert('Success', `League Joined: ${getPublicLeague.data.name}`);
+      } else {
+        await queryClient.invalidateQueries({ queryKey: ['pendingLeagues'] });
+        Alert.alert('Pending', `Your request to join "${getPublicLeague.data.name}" is pending approval from the league admin.`);
+        router.replace('/leagues');
       }
-      router.prefetch({ pathname: '/leagues/[hash]', params: { hash: submittedHash } });
-
-      Alert.alert('Success', `League Joined: ${getPublicLeague.data.name}`);
-      router.replace(`/leagues/${submittedHash}`);
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to join league');
