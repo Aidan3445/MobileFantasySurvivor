@@ -8,7 +8,9 @@ import { cn } from '~/lib/utils';
 import { useRefresh } from '~/hooks/helpers/refresh/useRefresh';
 
 export default function LeaguesScreen() {
-  const { refreshing, onRefresh, scrollY, handleScroll } = useRefresh([[]]);
+  const { refreshing, onRefresh, scrollY, handleScroll } = useRefresh([
+    ['leagues'], ['leagueMembers'], ['pendingLeagues']
+  ]);
 
   return (
     <View className='flex-1 bg-background relative'>

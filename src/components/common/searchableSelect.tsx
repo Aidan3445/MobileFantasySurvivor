@@ -87,7 +87,7 @@ export default function SearchableSelect<T extends string | number>({
         <View className='flex-row items-center gap-2 rounded-lg border-2 border-primary/20 bg-primary/5 px-3'>
           <Search size={18} color={colors['muted-foreground']} />
           <TextInput
-            className='flex-1 py-2.5 text-foreground placeholder:text-muted-foreground'
+            className='flex-1 py-2.5 text-foreground'
             placeholder={placeholder}
             value={searchText}
             onChangeText={setSearchText}

@@ -1,12 +1,16 @@
 import { Text, View } from 'react-native';
 import { useMemo } from 'react';
 import { useLeagues } from '~/hooks/user/useLeagues';
+import { usePendingLeagues } from '~/hooks/user/usePendingLeagues';
 import LeagueCard from '~/components/leagues/grid/leagueCard';
 import QuickActions from '~/components/home/quickActions/view';
 import LeagueSeasonCarousel from '~/components/leagues/grid/seasonCarousel';
 
 export default function LeaguesList() {
   const { data: leagues } = useLeagues();
+  const { data: pendingLeagues } = usePendingLeagues();
+
+  console.log('Pending Leagues:', pendingLeagues);
 
   const { currentLeagues, inactiveLeaguesBySeason } = useMemo(() => {
     if (!leagues) {
@@ -90,7 +94,8 @@ export default function LeaguesList() {
       {/* Quick Actions */}
       <QuickActions
         className='rounded-xl border-2 border-primary/20 bg-card opacity-80 p-2'
-        showClone={inactiveLeaguesBySeason.length > 0} />
+        showClone={inactiveLeaguesBySeason.length > 0}
+        pendingLeagues={pendingLeagues} />
 
       {/* Inactive Leagues by Season */}
       {inactiveLeaguesBySeason.length > 0 && (

@@ -7,12 +7,6 @@ import { useEffect } from 'react';
 import LoadingScreen from '~/components/auth/loadingScreen';
 import { useDeepLinkHandler } from '~/hooks/routing/useDeepLinkHandler';
 
-try {
-  ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
-} catch {
-  console.warn('Screen Orientation lock failed');
-}
-
 // Suppress specific warning from react-native-reanimated-carousel
 const originalWarn = console.warn;
 console.warn = (...args) => {
@@ -50,6 +44,9 @@ function InitialLayout() {
 }
 
 export default function RootLayout() {
+  ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP)
+    .catch(() => console.warn('Screen Orientation lock failed'));
+
   return (
     <ClerkProvider tokenCache={tokenCache} telemetry={false}>
       <ClerkLoaded>
