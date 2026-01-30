@@ -21,7 +21,7 @@ export default function PendingLeagues({ pendingLeagues }: PendingLeaguesProps) 
         className='flex-1 flex-row items-center rounded-lg border-2 border-primary/30 bg-accent p-2 active:bg-primary/20'
         onPress={() => setIsOpen(true)}>
         <View className='mr-1 h-10 w-10 items-center justify-center rounded-full bg-primary/20'>
-          <Hourglass size={18} color={colors.primaryForeground} />
+          <Hourglass size={18} color={colors.primary} />
         </View>
         <View className='flex-1'>
           <Text className='font-bold text-foreground'>View Pending</Text>
