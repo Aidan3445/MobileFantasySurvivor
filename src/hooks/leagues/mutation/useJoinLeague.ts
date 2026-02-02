@@ -74,7 +74,6 @@ export function useJoinLeague(onSubmit?: () => void) {
 
       const response = await fetchData(`/api/leagues/join?hash=${submittedHash}`);
       if (!response.ok) {
-        console.log('Fetched public league data for joining:', submittedHash, response.status);
         throw new Error('Failed to fetch league');
       }
       return response.json();

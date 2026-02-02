@@ -31,7 +31,6 @@ export function useCreateLeague(onSubmit?: () => void) {
   }, [user, reactForm]);
 
   const handleSubmit = reactForm.handleSubmit(async data => {
-    console.log('Creating league with data:', data);
     if (!user) {
       Alert.alert('Error', 'You must be logged in to create a league');
       return;

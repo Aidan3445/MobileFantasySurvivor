@@ -12,7 +12,7 @@ import { useFetch } from '~/hooks/helpers/useFetch';
 export function useBaseEvents(seasonId: number | null) {
   const fetchData = useFetch();
   const isEpisodeAiring = useIsEpisodeAiringForSeason(seasonId);
-  const refreshConfig = useRefreshConfig(isEpisodeAiring);
+  const refreshConfig = useRefreshConfig(isEpisodeAiring, false);
 
   return useQuery<Events>({
     queryKey: ['baseEvents', seasonId],

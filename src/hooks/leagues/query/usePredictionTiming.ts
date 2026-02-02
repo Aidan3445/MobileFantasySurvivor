@@ -16,7 +16,7 @@ export function usePredictionTiming(overrideHash?: string) {
   const hash = overrideHash ?? (params.hash as string);
 
   const isEpisodeAiring = useIsEpisodeAiring(overrideHash);
-  const refreshConfig = useRefreshConfig(isEpisodeAiring);
+  const refreshConfig = useRefreshConfig(isEpisodeAiring, true, overrideHash);
 
   return useQuery<PredictionTiming[]>({
     queryKey: ['predictionTiming', hash],

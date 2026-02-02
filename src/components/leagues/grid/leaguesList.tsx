@@ -10,8 +10,6 @@ export default function LeaguesList() {
   const { data: leagues } = useLeagues();
   const { data: pendingLeagues } = usePendingLeagues();
 
-  console.log('Pending Leagues:', pendingLeagues);
-
   const { currentLeagues, inactiveLeaguesBySeason } = useMemo(() => {
     if (!leagues) {
       return {

@@ -1,12 +1,20 @@
+import { useIsFocused } from '@react-navigation/native';
 import { useMemo } from 'react';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 
 /**
  * Hook to get dynamic refresh configuration based on episode airing status
  * @param {boolean} isEpisodeAiring Whether an episode is currently airing
+ * @param {boolean} requireFocus Whether to require screen focus for refetching
+ * @param {string} [overrideHash] Optional hash to override URL parameter
  */
-export function useRefreshConfig(isEpisodeAiring: boolean, hash?: string) {
-  const { data: league } = useLeague(hash);
+export function useRefreshConfig(
+  isEpisodeAiring: boolean,
+  requireFocus: boolean,
+  overrideHash?: string
+) {
+  const isFocused = useIsFocused();
+  const { data: league } = useLeague(overrideHash);
 
   return useMemo(() => {
     if (league?.status === 'Predraft' || league?.status === 'Draft') {
@@ -15,7 +23,8 @@ export function useRefreshConfig(isEpisodeAiring: boolean, hash?: string) {
         refetchInterval: 30 * 1000, // 30 seconds
         refetchOnWindowFocus: true,
         refetchOnReconnect: true,
-        gcTime: Infinity
+        gcTime: Infinity,
+        ...(requireFocus && { enabled: isFocused })
       };
     }
 
@@ -25,7 +34,8 @@ export function useRefreshConfig(isEpisodeAiring: boolean, hash?: string) {
         refetchInterval: 60 * 1000, // 1 minute
         refetchOnWindowFocus: true,
         refetchOnReconnect: true,
-        gcTime: Infinity
+        gcTime: Infinity,
+        ...(requireFocus && { enabled: isFocused })
       };
     } else {
       return {
@@ -33,8 +43,9 @@ export function useRefreshConfig(isEpisodeAiring: boolean, hash?: string) {
         refetchInterval: 10 * 60 * 1000, // 10 minutes
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
-        gcTime: Infinity
+        gcTime: Infinity,
+        ...(requireFocus && { enabled: isFocused })
       };
     }
-  }, [isEpisodeAiring, league?.status]);
+  }, [isEpisodeAiring, isFocused, league?.status, requireFocus]);
 }

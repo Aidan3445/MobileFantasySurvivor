@@ -101,13 +101,13 @@ export function DraftCountdown({ overrideHash, className }: DraftCountdownProps)
             endDate={trackedDraftDate}
             replacedBy={
               <Button
-                className='rounded-md p-4 bg-primary m-2 mt-1'
+                className='flex items-center justify-center rounded-md py-4 bg-primary m-2 mt-1'
                 disabled={!league || (leagueMembers?.loggedIn?.role !== 'Owner' && league?.status !== 'Draft')}
                 onPress={onDraftJoin}>
                 <Text className='text-center text-2xl font-black uppercase tracking-wider text-primary-foreground'>
                   {league?.status === 'Draft'
                     ? 'Join Draft'
-                    : leagueMembers?.loggedIn?.role === 'Owner'
+                    : leagueMembers?.loggedIn?.role !== 'Owner'
                       ? 'Start Draft'
                       : 'Waiting for Commissioner'}
                 </Text>

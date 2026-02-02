@@ -75,6 +75,7 @@ export function useEditMember(onSubmit?: () => void) {
     usedColors,
     currentColor: leagueMembers?.loggedIn?.color,
     resetForm,
-    isDirty: reactForm.formState.isDirty
+    isDirty: reactForm.formState.isDirty,
+    loggedInMember: leagueMembers?.loggedIn
   };
 }

@@ -13,7 +13,7 @@ import { useFetch } from '~/hooks/helpers/useFetch';
 export function useSeasonsData(includeInactive: boolean, seasonId?: number) {
   const fetchData = useFetch();
   const isEpisodeAiring = useIsEpisodeAiringForSeason(seasonId ?? null);
-  const refreshConfig = useRefreshConfig(isEpisodeAiring);
+  const refreshConfig = useRefreshConfig(isEpisodeAiring, false);
 
   return useQuery<SeasonsDataQuery[]>({
     queryKey: ['seasons', seasonId, includeInactive],
@@ -43,12 +43,12 @@ export function useSeasonsData(includeInactive: boolean, seasonId?: number) {
     ...(isEpisodeAiring
       ? refreshConfig
       : {
-          staleTime: 10 * 60 * 1000, // 10 minutes
-          gcTime: 24 * 60 * 60 * 1000, // 24 hours
-          refetchOnMount: true,
-          refetchOnWindowFocus: false,
-          refetchOnReconnect: true,
-          refetchInterval: false
-        })
+        staleTime: 10 * 60 * 1000, // 10 minutes
+        gcTime: 24 * 60 * 60 * 1000, // 24 hours
+        refetchOnMount: true,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: true,
+        refetchInterval: false
+      })
   });
 }

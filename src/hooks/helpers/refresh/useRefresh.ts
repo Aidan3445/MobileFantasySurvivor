@@ -25,5 +25,5 @@ export function useRefresh(keysToInvalidate: (string | undefined)[][] = []) {
     { useNativeDriver: false }
   );
 
-  return { refreshing, onRefresh, scrollY, handleScroll };
+  return { refreshing, onRefresh, scrollY, handleScroll, keysToInvalidate };
 }

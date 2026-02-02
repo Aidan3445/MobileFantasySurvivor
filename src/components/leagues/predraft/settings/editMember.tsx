@@ -1,11 +1,12 @@
 import { useEditMember } from '~/hooks/leagues/mutation/useEditMember';
 import LeagueMember from '~/components/leagues/actions/create/leagueMember';
+import LeaveLeague from '~/components/leagues/predraft/settings/leaveLeague';
 import { Text, View } from 'react-native';
 import Button from '~/components/common/button';
 import { cn } from '~/lib/utils';
 
 export default function EditMember() {
-  const { reactForm, usedColors, currentColor, handleSubmit, resetForm, isDirty } = useEditMember();
+  const { reactForm, loggedInMember, usedColors, currentColor, handleSubmit, resetForm, isDirty } = useEditMember();
 
   if (!reactForm.control) {
     return null;
@@ -46,6 +47,7 @@ export default function EditMember() {
           <Text className='text-center font-semibold text-white'>Save</Text>
         </Button>
       </View>
+      <LeaveLeague member={loggedInMember} />
     </View>
   );
 }

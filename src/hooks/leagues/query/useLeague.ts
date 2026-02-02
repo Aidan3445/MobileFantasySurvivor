@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { type League } from '~/types/leagues';
 import { useFetch } from '~/hooks/helpers/useFetch';
+import { useIsFocused } from '@react-navigation/native';
 
 /**
  * Fetches league data based on the league hash from the URL parameters.
@@ -10,6 +11,7 @@ import { useFetch } from '~/hooks/helpers/useFetch';
  * @returnObj `League & { isEpisodeAiring: boolean }`
  */
 export function useLeague(overrideHash?: string) {
+  const isFocused = useIsFocused();
   const router = useRouter();
   const fetchData = useFetch();
   const params = useLocalSearchParams();
@@ -31,7 +33,7 @@ export function useLeague(overrideHash?: string) {
       }
       return response.json();
     },
-    enabled: !!hash,
+    enabled: !!hash && isFocused,
     staleTime: query => {
       const data = query.state.data;
       if (!data) return 0;

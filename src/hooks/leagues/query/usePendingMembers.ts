@@ -19,7 +19,7 @@ export function usePendingMembers(overrideHash?: string) {
   const params = useLocalSearchParams();
   const hash = overrideHash ?? (params?.hash as string);
   const isEpisodeAiring = useIsEpisodeAiring(overrideHash);
-  const refreshConfig = useRefreshConfig(isEpisodeAiring);
+  const refreshConfig = useRefreshConfig(isEpisodeAiring, true, overrideHash);
 
   const [isAdmitting, setIsAdmitting] = useState(false);
 

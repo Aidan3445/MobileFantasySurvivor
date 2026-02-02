@@ -94,7 +94,6 @@ export default function JoinLeagueScreen() {
   };
 
   if (getPublicLeague?.data?.isMember) {
-    console.log('Already a member, redirecting to league page');
     return <Redirect href={`/leagues/${getPublicLeague.data.hash}`} />;
   }
 

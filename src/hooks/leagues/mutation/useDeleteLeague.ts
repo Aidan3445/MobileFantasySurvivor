@@ -6,8 +6,10 @@ import { useLocalSearchParams } from 'expo-router';
 import { useFetch } from '~/hooks/helpers/useFetch';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
+import { useLeagueRefresh } from '~/hooks/helpers/refresh/useLeagueRefresh';
 
 export function useDeleteLeague() {
+  const { keysToInvalidate } = useLeagueRefresh();
   const deleteData = useFetch('DELETE');
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -42,8 +44,12 @@ export function useDeleteLeague() {
         return;
       }
 
-      await queryClient.invalidateQueries({ queryKey: ['league', hash] });
+      await Promise.all(
+        keysToInvalidate.map((key) => queryClient.cancelQueries({ queryKey: key }))
+      );
+      keysToInvalidate.map(key => queryClient.removeQueries({ queryKey: key }));
       await queryClient.invalidateQueries({ queryKey: ['leagues'] });
+      await queryClient.invalidateQueries({ queryKey: ['league', hash] });
 
       router.replace('/');
       Alert.alert('Success', `League "${league.name}" has been deleted.`);

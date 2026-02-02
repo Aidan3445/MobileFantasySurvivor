@@ -35,8 +35,7 @@ export default function DraftOrder({
             <ColorRow
               key={pick.memberId}
               className={isOnTheClock ? 'opacity-75' : ''}
-              color={pick.color}
-              loggedIn={leagueMembers.loggedIn?.displayName === pick.displayName}>
+              color={pick.color}>
               <Text className='text-lg font-bold text-white'>{index + 1}. </Text>
               <Text className='flex-1 text-xl font-semibold text-white'>{pick.displayName}</Text>
               {isOnTheClock && (

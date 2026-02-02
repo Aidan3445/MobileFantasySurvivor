@@ -16,12 +16,14 @@ export function useLeagueMembers(overrideHash?: string) {
   const hash = overrideHash ?? (params?.hash as string);
 
   const isEpisodeAiring = useIsEpisodeAiring(overrideHash);
-  const refreshConfig = useRefreshConfig(isEpisodeAiring);
+  const refreshConfig = useRefreshConfig(isEpisodeAiring, true, overrideHash);
 
   return useQuery<{ loggedIn?: LeagueMember; members: LeagueMember[] }>({
     queryKey: ['leagueMembers', hash],
     queryFn: async () => {
       if (!hash) throw new Error('League hash is required');
+
+      console.log(`Fetching leagueMembers for league hash: ${hash}${overrideHash ? ' (override)' : ''}`);
 
       const res = await fetchData(`/api/leagues/${hash}/members`);
       if (!res.ok) {

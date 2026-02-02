@@ -12,7 +12,7 @@ import { useFetch } from '~/hooks/helpers/useFetch';
 export function useEliminations(seasonId: number | null) {
   const fetchData = useFetch();
   const isEpisodeAiring = useIsEpisodeAiringForSeason(seasonId);
-  const refreshConfig = useRefreshConfig(isEpisodeAiring);
+  const refreshConfig = useRefreshConfig(isEpisodeAiring, false);
 
   return useQuery<Eliminations>({
     queryKey: ['eliminations', seasonId],

@@ -16,7 +16,7 @@ export function useBasePredictions(overrideHash?: string) {
   const hash = overrideHash ?? params.hash;
 
   const isEpisodeAiring = useIsEpisodeAiring(overrideHash);
-  const refreshConfig = useRefreshConfig(isEpisodeAiring);
+  const refreshConfig = useRefreshConfig(isEpisodeAiring, true, overrideHash);
 
   return useQuery<Predictions>({
     queryKey: ['basePredictions', hash],
