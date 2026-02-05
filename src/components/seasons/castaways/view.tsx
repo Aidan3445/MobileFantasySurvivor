@@ -6,7 +6,7 @@ import { type SelectionTimelines } from '~/types/leagues';
 import { type LeagueMember } from '~/types/leagueMembers';
 
 interface CastawaysViewProps {
-  seasonData: SeasonsDataQuery;
+  seasonData?: SeasonsDataQuery | null;
   leagueData?: {
     selectionTimeline?: SelectionTimelines;
     leagueMembers?: {
@@ -16,6 +16,10 @@ interface CastawaysViewProps {
 }
 
 export default function CastawaysView({ seasonData, leagueData }: CastawaysViewProps) {
+  if (!seasonData) {
+    return null;
+  }
+
   const { castaways, tribes, tribesTimeline } = seasonData;
 
   // Filter out non-season castaways (Jeff Probst, etc.)

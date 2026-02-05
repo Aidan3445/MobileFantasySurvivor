@@ -12,6 +12,12 @@ import { useLeagueData } from '~/hooks/leagues/enrich/useLeagueData';
 export default function LeagueTimeline() {
   const data = useLeagueData();
 
+  console.log('LeagueTimeline data:', data);
+
+  if (!data?.episodes) {
+    return null;
+  }
+
   return (
     <EventTimeline seasonData={data as SeasonsDataQuery} leagueData={data} />
   );

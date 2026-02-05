@@ -5,14 +5,16 @@ import EpisodeMarker from '~/components/seasons/tribes/episodeMarker';
 import { type EnrichedCastaway } from '~/types/castaways';
 
 interface TimelineViewProps {
-  seasonData: SeasonsDataQuery;
+  seasonData?: SeasonsDataQuery | null;
 }
 
 export default function TribesTimeline({ seasonData }: TimelineViewProps) {
-  const { episodes, castaways, tribes, tribesTimeline, keyEpisodes } = seasonData;
+  const { episodes, castaways, tribes, tribesTimeline, keyEpisodes } = seasonData || {};
 
   // Get all episode numbers from tribes timeline
   const episodeNumbers = useMemo(() => {
+    if (!tribesTimeline) return [];
+
     return Object.keys(tribesTimeline)
       .map(Number)
       .sort((a, b) => a - b);
@@ -20,6 +22,8 @@ export default function TribesTimeline({ seasonData }: TimelineViewProps) {
 
   // Group castaways by tribe for each episode
   const episodeData = useMemo(() => {
+    if (!tribesTimeline || !castaways || !tribes) return [];
+
     return episodeNumbers.map((episodeNum) => {
       const tribesInEpisode = tribesTimeline[episodeNum] ?? {};
       const castawaysByTribe: Record<number, EnrichedCastaway[]> = {};

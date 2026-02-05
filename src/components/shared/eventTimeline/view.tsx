@@ -5,7 +5,7 @@ import EpisodeEvents from '~/components/shared/eventTimeline/table/view';
 import { type SeasonsDataQuery } from '~/types/seasons';
 
 interface EventTimelineProps {
-  seasonData: SeasonsDataQuery;
+  seasonData?: SeasonsDataQuery | null;
   leagueData?: LeagueData;
   hideMemberFilter?: boolean;
 }
@@ -22,12 +22,14 @@ export default function EventTimeline({
   const [selectedEpisode, setSelectedEpisode] = useState<number>();
 
   const seasonDataWithDates = useMemo(() => {
+    if (!seasonData) return seasonData;
+
     // Convert date strings back to Date objects after crossing server/client boundary
     // if dates are already Date objects, return as is. One date check is sufficient
     if (seasonData.episodes?.[0]?.airDate instanceof Date) return seasonData;
     return {
       ...seasonData,
-      episodes: seasonData.episodes.map((ep) => ({
+      episodes: seasonData.episodes?.map((ep) => ({
         ...ep,
         airDate: new Date(ep.airDate),
       })),
@@ -40,6 +42,10 @@ export default function EventTimeline({
       },
     };
   }, [seasonData]);
+
+  if (!seasonData || !seasonDataWithDates) {
+    return null;
+  }
 
   return (
     <View className='relative w-full overflow-hidden rounded-xl bg-card border-2 border-primary/20'>

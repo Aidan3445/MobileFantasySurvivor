@@ -57,13 +57,13 @@ export default function SeasonsScreen() {
             refreshing && 'pt-10'
           )}>
             <TabsContent value='events'>
-              <EventTimeline seasonData={selectedSeasonData!} hideMemberFilter />
+              <EventTimeline seasonData={selectedSeasonData} hideMemberFilter />
             </TabsContent>
             <TabsContent value='castaways'>
-              <CastawaysView seasonData={selectedSeasonData!} />
+              <CastawaysView seasonData={selectedSeasonData} />
             </TabsContent>
             <TabsContent value='tribes'>
-              <TribesTimeline seasonData={selectedSeasonData!} />
+              <TribesTimeline seasonData={selectedSeasonData} />
             </TabsContent>
           </View>
         </ScrollView>
