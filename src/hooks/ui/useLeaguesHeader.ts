@@ -119,6 +119,7 @@ export default function useLeaguesHeader() {
   }, [router]);
 
   const handleSettingsPress = useCallback(() => {
+    console.log('Navigating to settings for league:', hashFromPath);
     if (hashFromPath) router.push(`/leagues/${hashFromPath}/settings`);
   }, [router, hashFromPath]);
 

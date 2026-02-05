@@ -51,11 +51,7 @@ export default function ManageMembers() {
             disabled={!leagueSettings?.isProtected}>
             Pending
             {leagueSettings?.isProtected && hasPendingMembers && (
-              <Circle
-                size={8}
-                fill={colors.primary}
-                color={colors.primary}
-              />
+              <Circle size={8} fill={colors.primary} color={colors.primary} />
             )}
           </TabsTrigger>
         </TabsList>
@@ -84,7 +80,7 @@ export default function ManageMembers() {
         </TabsContent>
 
         {/* Pending Members Tab */}
-        <TabsContent value='pending' className='gap-2'>
+        <TabsContent value='pending' className='gap-2 w-full'>
           {leagueSettings?.isProtected ? (
             <>
               <Text className='text-base text-muted-foreground'>
@@ -94,7 +90,7 @@ export default function ManageMembers() {
                 Pending members will be removed after 7 days if not admitted.
               </Text>
               <View className='h-px bg-primary/20' />
-              <ScrollView className='max-h-64'>
+              <ScrollView className='max-h-64 w-full'>
                 <View className='gap-1'>
                   {pendingMembers?.members.map(member => (
                     <PendingMember

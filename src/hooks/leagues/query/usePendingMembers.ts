@@ -47,7 +47,7 @@ export function usePendingMembers(overrideHash?: string) {
     setIsAdmitting(true);
     try {
       const response = await putData(`/api/leagues/${hash}/members/pending`, {
-        body: { memberId }
+        body: { pendingMemberId: memberId }
       });
 
       if (response.status !== 200) {

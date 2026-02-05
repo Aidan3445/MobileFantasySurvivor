@@ -27,7 +27,7 @@ export function useJoinLeague(onSubmit?: () => void) {
   });
 
   const parseCode = (input: string) => {
-    const match = input.match(/(?:\?hash=|\/i\/)([A-Za-z0-9-_]+)/);
+    const match = /(?:\?hash=|\/i\/)([A-Za-z0-9-_]+)/.exec(input);
     return match?.[1] ?? input;
   };
 
