@@ -10,12 +10,11 @@ import Modal from '~/components/common/modal';
 
 export default function ChangeCastaway() {
   const {
-    leagueMembers,
     keyEpisodes,
     secondaryPickSettings,
     availableCastaways,
     pickPriority,
-    castawayLockoutStatus,
+    secondaryCastawayOptions,
     form,
     selected,
     secondarySelected,
@@ -102,51 +101,6 @@ export default function ChangeCastaway() {
     };
   });
 
-  // Build select options for secondary pick
-  const secondaryPickOptions = availableCastaways
-    .filter((castaway) => !castaway.eliminatedEpisode)
-    .map((castaway) => {
-      const lockoutInfo = castawayLockoutStatus.get(castaway.castawayId);
-      const isLockedOut = lockoutInfo?.isLockedOut ?? false;
-      const isOwnSurvivor =
-        !secondaryPickSettings?.canPickOwnSurvivor &&
-        castaway.pickedBy?.memberId === leagueMembers?.loggedIn?.memberId;
-
-      const isDisabled = isOwnSurvivor || isLockedOut;
-
-      let disabledText = castaway.fullName;
-      if (isOwnSurvivor) {
-        disabledText += ' (Your Survivor)';
-      } else if (isLockedOut && lockoutInfo) {
-        const { episodePicked, episodesRemaining } = lockoutInfo;
-        if (episodesRemaining !== undefined && episodesRemaining > 0) {
-          disabledText += ` (Picked Ep ${episodePicked} - ${episodesRemaining} more)`;
-        } else {
-          disabledText += ` (Picked Ep ${episodePicked})`;
-        }
-      }
-
-      return {
-        value: castaway.castawayId,
-        label: isDisabled ? disabledText : castaway.fullName,
-        disabled: isDisabled,
-        renderLabel: () => (
-          <View className={cn('flex-1 flex-row items-center gap-2', isDisabled && 'opacity-50')}>
-            {castaway.tribe && (
-              <ColorRow className='w-min' color={castaway.tribe.color}>
-                <Text className='text-base font-medium'>
-                  {castaway.tribe.name}
-                </Text>
-              </ColorRow>
-            )}
-            <Text className='text-base text-foreground'>
-              {isDisabled ? disabledText : castaway.fullName}
-            </Text>
-          </View>
-        ),
-      };
-    });
-
   const onSubmitMain = () => {
     void handleSubmit();
   };
@@ -205,7 +159,7 @@ export default function ChangeCastaway() {
             <View className='gap-2'>
               <SearchableSelect
                 key={secondarySelected || 'no-selection'}
-                options={secondaryPickOptions}
+                options={secondaryCastawayOptions}
                 selectedValue={secondarySelected ? parseInt(secondarySelected) : undefined}
                 onSelect={(value) => handleSelectionChange('secondary', String(value))}
                 placeholder='Select secondary pick' />

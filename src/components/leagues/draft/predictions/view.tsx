@@ -1,13 +1,14 @@
-'use client';
-
-import { Text, View } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
+import { cn } from '~/lib/utils';
 import { type LeagueRules } from '~/types/leagues';
 import { type Prediction } from '~/types/events';
 import { type EnrichedCastaway } from '~/types/castaways';
 import { type Tribe } from '~/types/tribes';
-import PredictionCards from '~/components/leagues/draft/predictions/cards';
+import { useChangeCastaway } from '~/hooks/leagues/mutation/useChangeCastaway';
+import PredictionCards from '~/components/leagues/actions/events/predictions/cards';
+import SearchableSelect from '~/components/common/searchableSelect';
 
-export interface MakePredictionsProps {
+export interface WhileYouWaitProps {
   rules?: LeagueRules;
   predictionRuleCount: number;
   predictionsMade: Prediction[];
@@ -15,36 +16,80 @@ export interface MakePredictionsProps {
   tribes: Tribe[];
 }
 
-export default function PredictionsCarousel({
+export default function WhileYouWait({
   rules,
   predictionRuleCount,
   predictionsMade,
   castaways,
-  tribes
-}: MakePredictionsProps) {
-  if (!rules || predictionRuleCount === 0) {
-    return null;
-  }
+  tribes,
+}: WhileYouWaitProps) {
+  const {
+    secondaryPickSettings,
+    secondaryCastawayOptions,
+    secondarySelected,
+    canSubmitSecondary,
+    isSubmittingSecondary,
+    isEpisodeAiring,
+    handleSelectionChange,
+    handleSecondarySubmit,
+  } = useChangeCastaway();
+
+  const showSecondaryPick = secondaryPickSettings?.enabled && secondaryCastawayOptions.length > 0;
+  const showPredictions = rules && predictionRuleCount > 0;
+
+  if (!showSecondaryPick && !showPredictions) return null;
 
   return (
-    <View className='w-full rounded-lg bg-card py-4'>
-      <View className='mb-4'>
-        <Text className='text-center text-xl font-semibold text-card-foreground'>
-          While you wait...
-        </Text>
-        <Text className='text-center text-sm text-muted-foreground'>
-          Make your prediction{predictionRuleCount > 1 ? 's' : ''} and earn points if you are correct!
-        </Text>
-        <Text className='mt-2 text-center text-xs text-muted-foreground'>
-          ({predictionsMade.length}/{predictionRuleCount} submitted)
+    <View className='w-full rounded-xl border-2 border-primary/20 bg-card gap-4'>
+      {/* Header */}
+      <View className='gap-1 px-3 pt-2'>
+        <View className='flex-row items-center gap-2'>
+          <View className='h-6 w-1 rounded-full bg-primary' />
+          <Text className='text-xl font-black uppercase tracking-tight text-foreground'>
+            While You Wait
+          </Text>
+        </View>
+        <Text className='text-base text-muted-foreground'>
+          {showSecondaryPick && showPredictions
+            ? 'Make your secondary pick and predictions to earn extra points!'
+            : showSecondaryPick
+              ? 'Make your secondary pick to earn extra points!'
+              : 'Make your predictions and earn points if you are correct!'}
         </Text>
       </View>
-      <PredictionCards
-        rules={rules}
-        predictionRuleCount={predictionRuleCount}
-        predictionsMade={predictionsMade}
-        castaways={castaways}
-        tribes={tribes} />
+
+      {/* Secondary Pick */}
+      {showSecondaryPick && (
+        <View className='gap-2 rounded-lg border-2 border-primary/10 bg-primary/5 px-3 py-2'>
+          <Text className='text-base font-semibold text-foreground'>Secondary Pick</Text>
+          <SearchableSelect
+            options={secondaryCastawayOptions}
+            selectedValue={secondarySelected ? parseInt(secondarySelected) : undefined}
+            onSelect={(value) => handleSelectionChange('secondary', String(value))}
+            placeholder='Select secondary pick' />
+          <Pressable
+            onPress={() => void handleSecondarySubmit()}
+            disabled={!canSubmitSecondary}
+            className={cn(
+              'rounded-lg bg-primary p-3 active:opacity-80',
+              !canSubmitSecondary && 'opacity-50'
+            )}>
+            <Text className='text-center text-base font-bold uppercase tracking-wider text-primary-foreground'>
+              {isEpisodeAiring ? 'Episode Airing' : isSubmittingSecondary ? 'Submitting...' : 'Submit'}
+            </Text>
+          </Pressable>
+        </View>
+      )}
+
+      {/* Predictions */}
+      {showPredictions && (
+        <PredictionCards
+          rules={rules}
+          predictionRuleCount={predictionRuleCount}
+          predictionsMade={predictionsMade}
+          castaways={castaways}
+          tribes={tribes} />
+      )}
     </View>
   );
 }

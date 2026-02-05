@@ -1,11 +1,9 @@
 'use client';
 
-import { Animated, RefreshControl, View } from 'react-native';
+import { RefreshControl, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { useLocalSearchParams } from 'expo-router';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
-import LoadingScreen from '~/components/auth/loadingScreen';
-import useFadeLoading from '~/hooks/ui/useFadeLoading';
 import { useLeagueRefresh } from '~/hooks/helpers/refresh/useLeagueRefresh';
 import RefreshIndicator from '~/components/common/refresh';
 import { cn } from '~/lib/utils';
@@ -20,61 +18,45 @@ import LeagueTimeline from '~/components/leagues/hub/activity/timeline/view';
 
 export default function LeagueHubScreen() {
   const { hash } = useLocalSearchParams<{ hash: string }>();
-  const { data: league, isFetching } = useLeague(hash);
+  const { data: league } = useLeague(hash);
   const { data: leagueMembers } = useLeagueMembers(hash);
   const { refreshing, onRefresh, scrollY, handleScroll } = useLeagueRefresh();
-  const { showLoading, fadeAnim } = useFadeLoading({ isLoading: isFetching && !league });
   const { data: userId } = useSysAdmin();
 
   return (
-    <>
-      {/* Hub content renders underneath (or null while loading) */}
-      {league &&
-        <View className='flex-1 bg-background relative'>
-          <RefreshIndicator refreshing={refreshing} scrollY={scrollY} extraHeight={-45} />
-          <KeyboardAwareScrollView
-            className='w-full'
-            showsVerticalScrollIndicator={true}
-            onScroll={handleScroll}
-            scrollEventThrottle={16}
-            scrollIndicatorInsets={{ top: 16 }}
-            bottomOffset={80}
-            refreshControl={
-              <RefreshControl
-                refreshing={refreshing}
-                onRefresh={onRefresh}
-                tintColor='transparent'
-                colors={['transparent']}
-                progressBackgroundColor='transparent' />
-            }>
-            <View className={cn(
-              'page justify-start gap-y-4 px-1.5 pt-8 pb-1.5',
-              refreshing && 'pt-12'
-            )}>
-              <Scores isActive={league.status === 'Active'} />
-              <MakePredictions />
-              <ChangeCastaway />
-              <PredictionHistory />
-              <LeagueTimeline />
-            </View>
-          </KeyboardAwareScrollView>
-          <EventFAB
-            hash={hash}
-            isLeagueAdmin={leagueMembers?.loggedIn?.role !== 'Member'}
-            isSysAdmin={!!userId}
-            isActive={league?.status === 'Active'} />
+    <View className='flex-1 bg-background relative'>
+      <RefreshIndicator refreshing={refreshing} scrollY={scrollY} extraHeight={-45} />
+      <KeyboardAwareScrollView
+        className='w-full'
+        showsVerticalScrollIndicator={true}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+        scrollIndicatorInsets={{ top: 16 }}
+        bottomOffset={80}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor='transparent'
+            colors={['transparent']}
+            progressBackgroundColor='transparent' />
+        }>
+        <View className={cn(
+          'page justify-start gap-y-4 px-1.5 pt-8 pb-1.5',
+          refreshing && 'pt-12'
+        )}>
+          <Scores isActive={league?.status === 'Active'} />
+          <MakePredictions />
+          <ChangeCastaway />
+          <PredictionHistory />
+          <LeagueTimeline />
         </View>
-      }
-
-      {/* Loading overlay fades out */}
-      {showLoading && (
-        <Animated.View
-          style={{ opacity: fadeAnim }}
-          className='absolute inset-0 z-50 bg-background'
-          pointerEvents='none'>
-          <LoadingScreen />
-        </Animated.View>
-      )}
-    </>
+      </KeyboardAwareScrollView>
+      <EventFAB
+        hash={hash}
+        isLeagueAdmin={leagueMembers?.loggedIn?.role !== 'Member'}
+        isSysAdmin={!!userId}
+        isActive={league?.status === 'Active'} />
+    </View>
   );
 }

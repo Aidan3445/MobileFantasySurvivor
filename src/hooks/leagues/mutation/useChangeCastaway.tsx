@@ -2,13 +2,15 @@ import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Alert } from 'react-native';
+import { Alert, Text, View } from 'react-native';
 import { useQueryClient } from '@tanstack/react-query';
 import { useLeagueActionDetails } from '~/hooks/leagues/enrich/useActionDetails';
 import { useEliminations } from '~/hooks/seasons/useEliminations';
 import { useFetch } from '~/hooks/helpers/useFetch';
 import { type LeagueMember } from '~/types/leagueMembers';
 import { MAX_SEASON_LENGTH } from '~/lib/leagues';
+import ColorRow from '~/components/shared/colorRow';
+import { cn } from '~/lib/utils';
 
 const formSchema = z.object({
   castawayId: z.coerce.number({ required_error: 'Please select a castaway' }),
@@ -273,6 +275,51 @@ export function useChangeCastaway() {
 
   const isEpisodeAiring = keyEpisodes?.previousEpisode?.airStatus === 'Airing';
 
+  // Build select options for secondary pick
+  const secondaryCastawayOptions = availableCastaways
+    .filter((castaway) => !castaway.eliminatedEpisode)
+    .map((castaway) => {
+      const lockoutInfo = castawayLockoutStatus.get(castaway.castawayId);
+      const isLockedOut = lockoutInfo?.isLockedOut ?? false;
+      const isOwnSurvivor =
+        !secondaryPickSettings?.canPickOwnSurvivor &&
+        castaway.pickedBy?.memberId === leagueMembers?.loggedIn?.memberId;
+
+      const isDisabled = isOwnSurvivor || isLockedOut;
+
+      let disabledText = castaway.fullName;
+      if (isOwnSurvivor) {
+        disabledText += ' (Your Survivor)';
+      } else if (isLockedOut && lockoutInfo) {
+        const { episodePicked, episodesRemaining } = lockoutInfo;
+        if (episodesRemaining !== undefined && episodesRemaining > 0) {
+          disabledText += ` (Picked Ep ${episodePicked} - ${episodesRemaining} more)`;
+        } else {
+          disabledText += ` (Picked Ep ${episodePicked})`;
+        }
+      }
+
+      return {
+        value: castaway.castawayId,
+        label: isDisabled ? disabledText : castaway.fullName,
+        disabled: isDisabled,
+        renderLabel: () => (
+          <View className={cn('flex-1 flex-row items-center gap-2', isDisabled && 'opacity-50')}>
+            {castaway.tribe && (
+              <ColorRow className='w-min' color={castaway.tribe.color}>
+                <Text className='text-base font-medium'>
+                  {castaway.tribe.name}
+                </Text>
+              </ColorRow>
+            )}
+            <Text className='text-base text-foreground'>
+              {isDisabled ? disabledText : castaway.fullName}
+            </Text>
+          </View>
+        ),
+      };
+    });
+
   return {
     // Data
     league,
@@ -280,6 +327,7 @@ export function useChangeCastaway() {
     keyEpisodes,
     secondaryPickSettings,
     availableCastaways,
+    secondaryCastawayOptions,
     pickPriority,
     castawayLockoutStatus,
 
