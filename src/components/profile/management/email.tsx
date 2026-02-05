@@ -1,7 +1,11 @@
 import { View, Text } from 'react-native';
 import { useUser } from '@clerk/clerk-expo';
 
-export default function EmailField() {
+interface EmailFieldProps {
+  locked: boolean;
+}
+
+export default function EmailField({ locked }: EmailFieldProps) {
   const { user } = useUser();
 
   return (
@@ -10,9 +14,11 @@ export default function EmailField() {
       <Text className='text-base font-medium text-foreground'>
         {user?.primaryEmailAddress?.emailAddress ?? 'Not available'}
       </Text>
-      <Text className='text-sm text-muted-foreground italic'>
-        You can only update or remove your email from the website.
-      </Text>
+      {!locked && (
+        <Text className='text-sm text-muted-foreground italic'>
+          You can only update or remove your email from the website.
+        </Text>
+      )}
     </View>
   );
 }

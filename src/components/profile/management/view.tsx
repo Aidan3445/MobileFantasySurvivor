@@ -35,7 +35,7 @@ export default function AccountSettings({ locked }: AccountSettingsProps) {
         }
       </View>
 
-      <EmailField />
+      <EmailField locked={locked} />
       <UsernameField control={reactForm.control} locked={locked} />
       <PasswordField control={reactForm.control} locked={locked} />
 

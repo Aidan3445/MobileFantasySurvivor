@@ -25,7 +25,6 @@ export default function PasswordField({ control, locked }: PasswordFieldProps) {
         Leave blank to keep current password
       </Text>
 
-      {/* Current Password */}
       <Controller
         control={control}
         name='currentPassword'
@@ -33,24 +32,22 @@ export default function PasswordField({ control, locked }: PasswordFieldProps) {
           <View className='gap-1'>
             <Text className='text-sm text-muted-foreground'>Current Password</Text>
             <TextInput
-              className='rounded-lg border-2 border-primary/20 bg-card px-2 py-2 text-base text-foreground'
+              className='w-full rounded-lg border-2 border-primary/20 bg-primary/5 px-3 py-2'
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
               placeholder='Enter current password'
               placeholderTextColor={colors.mutedForeground}
-              secureTextEntry
               autoCapitalize='none'
               autoCorrect={false}
-            />
+              textContentType='none'
+              autoComplete='off' />
             {error && (
               <Text className='text-sm text-destructive'>{error.message}</Text>
             )}
           </View>
-        )}
-      />
+        )} />
 
-      {/* New Password */}
       <Controller
         control={control}
         name='newPassword'
@@ -58,7 +55,7 @@ export default function PasswordField({ control, locked }: PasswordFieldProps) {
           <View className='gap-1'>
             <Text className='text-sm text-muted-foreground'>New Password</Text>
             <TextInput
-              className='rounded-lg border-2 border-primary/20 bg-card px-2 py-2 text-base text-foreground'
+              className='w-full rounded-lg border-2 border-primary/20 bg-primary/5 px-3 py-2'
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
@@ -67,15 +64,14 @@ export default function PasswordField({ control, locked }: PasswordFieldProps) {
               secureTextEntry
               autoCapitalize='none'
               autoCorrect={false}
-            />
+              textContentType='none'
+              autoComplete='off' />
             {error && (
               <Text className='text-sm text-destructive'>{error.message}</Text>
             )}
           </View>
-        )}
-      />
+        )} />
 
-      {/* Confirm Password */}
       <Controller
         control={control}
         name='confirmPassword'
@@ -83,7 +79,7 @@ export default function PasswordField({ control, locked }: PasswordFieldProps) {
           <View className='gap-1'>
             <Text className='text-sm text-muted-foreground'>Confirm Password</Text>
             <TextInput
-              className='rounded-lg border-2 border-primary/20 bg-card px-2 py-2 text-base text-foreground'
+              className='w-full rounded-lg border-2 border-primary/20 bg-primary/5 px-3 py-2'
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
@@ -92,13 +88,13 @@ export default function PasswordField({ control, locked }: PasswordFieldProps) {
               secureTextEntry
               autoCapitalize='none'
               autoCorrect={false}
-            />
+              textContentType='none'
+              autoComplete='off' />
             {error && (
               <Text className='text-sm text-destructive'>{error.message}</Text>
             )}
           </View>
-        )}
-      />
+        )} />
     </View>
   );
 }

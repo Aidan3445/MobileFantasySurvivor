@@ -1,11 +1,12 @@
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import DeleteAccountButton from '~/components/profile/management/delete';
 import AccountSettings from '~/components/profile/management/view';
 
 export default function AccountScreen() {
   return (
     <View className='flex-1 bg-background relative'>
-      <ScrollView
+      <KeyboardAwareScrollView
         className='w-full'
         showsVerticalScrollIndicator={true}
         scrollEventThrottle={16}
@@ -14,7 +15,7 @@ export default function AccountScreen() {
           <AccountSettings locked={false} />
           <DeleteAccountButton />
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </View>
   );
 }

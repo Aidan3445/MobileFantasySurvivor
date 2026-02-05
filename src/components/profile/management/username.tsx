@@ -30,7 +30,7 @@ export default function UsernameField({ control, locked }: UsernameFieldProps) {
           render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
             <View className='gap-1'>
               <TextInput
-                className='rounded-lg border-2 border-primary/20 bg-card px-2 py-2 text-base text-foreground'
+                className='w-full flex-row items-center justify-between rounded-lg border-2 border-primary/20 bg-primary/5 px-3 py-2 not-disabled:active:bg-primary/10'
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}

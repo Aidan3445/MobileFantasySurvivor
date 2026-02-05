@@ -39,7 +39,7 @@ export default function SignOutButton() {
   };
 
   return (
-    <View className='w-full rounded-xl border-2 border-destructive/20 bg-card p-2'>
+    <View className='w-full rounded-xl border-2 border-destructive/30 bg-card p-2'>
       <Pressable
         className='flex-row items-center justify-center gap-2 rounded-lg bg-destructive p-3 active:opacity-80'
         disabled={isSigningOut}
