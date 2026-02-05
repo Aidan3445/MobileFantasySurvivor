@@ -60,6 +60,15 @@ export default function Chart() {
     return { chartData, yKeys, memberColors, maxY, minY, maxEpisode };
   }, [sortedMemberScores, startWeek]);
 
+  const sortedYKeys = useMemo(() => yKeys
+    .slice() // toSorted unavailable...
+    .sort((a, b) => {
+      // selected member on top (which means last)
+      if (a === selectedMember) return 1;
+      if (b === selectedMember) return -1;
+      return 0;
+    }), [yKeys, selectedMember]);
+
   const handleLegendPress = (memberName: string) => {
     setSelectedMember((prev) => (prev === memberName ? null : memberName));
   };
@@ -86,7 +95,7 @@ export default function Chart() {
         <CartesianChart
           data={chartData}
           xKey='episode'
-          yKeys={yKeys}
+          yKeys={sortedYKeys}
           domain={{
             y: [minY, maxY],
             x: [0, maxEpisode],
@@ -101,19 +110,19 @@ export default function Chart() {
           }}>
           {({ points }) => (
             <>
-              {yKeys.map((key) => (
+              {sortedYKeys.map((key) => (
                 <Line
                   key={key}
                   points={points[key]!}
                   color={memberColors[key]}
                   strokeWidth={selectedMember === key ? 6 : 5}
                   opacity={getOpacity(key)}
-                  curveType='natural'
+                  curveType='bumpX'
                   animate={{ type: 'timing', duration: 200 }} />
               ))}
 
               {/* End markers */}
-              {yKeys.map((key) => {
+              {sortedYKeys.map((key) => {
                 const pts = points[key];
                 const lastPoint = pts?.[pts.length - 1];
                 if (!lastPoint || lastPoint.x === 0) return null;
