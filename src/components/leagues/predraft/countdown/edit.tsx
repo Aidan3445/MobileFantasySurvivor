@@ -10,10 +10,11 @@ import { colors } from '~/lib/colors';
 import { Lock, Unlock } from 'lucide-react-native';
 
 interface SetDraftDateProps {
+  onDraftJoin?: () => void;
   overrideHash?: string;
 }
 
-export default function SetDraftDate({ overrideHash }: SetDraftDateProps) {
+export default function SetDraftDate({ onDraftJoin, overrideHash }: SetDraftDateProps) {
   const { reactForm, handleSubmit, resetForm } = useDraftDate(overrideHash, () => setModalOpen(false));
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -36,10 +37,7 @@ export default function SetDraftDate({ overrideHash }: SetDraftDateProps) {
         onClose={handleCancel}>
         <View className='w-full rounded-xl bg-card gap-2'>
           <Text className='text-card-foreground text-center text-lg font-bold'>Set Draft Date</Text>
-          <DraftDate
-            control={reactForm.control}
-            editing
-            submit={() => handleSubmit()} />
+          <DraftDate control={reactForm.control} editing onDraftJoin={onDraftJoin} />
           <View className='flex-row justify-between gap-3'>
             <Button
               onPress={() => handleCancel()}

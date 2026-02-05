@@ -8,10 +8,10 @@ import { Calendar, Clock, Zap } from 'lucide-react-native';
 interface DraftDateProps {
   control: Control<any>;
   editing?: boolean;
-  submit?: () => void;
+  onDraftJoin?: () => void;
 }
 
-export default function DraftDate({ control, editing, submit }: DraftDateProps) {
+export default function DraftDate({ control, editing, onDraftJoin }: DraftDateProps) {
   return (
     <View className='items-center justify-center'>
       {/* Title Section */}
@@ -35,12 +35,11 @@ export default function DraftDate({ control, editing, submit }: DraftDateProps) 
             {/* Manual Start Button (editing mode only) */}
             {editing && (
               <Button
-                className='w-full flex-row items-center justify-center gap-2 rounded-lg border-2 border-primary/30 bg-transparent py-3 active:bg-primary/10'
-                disabled={!value}
+                className='w-full flex-row items-center justify-center gap-2 rounded-lg border-2 border-primary/30 bg-accent py-3 active:bg-primary/10'
                 onPress={() => {
-                  onChange(null);
+                  onChange(new Date());
                   onBlur();
-                  submit?.();
+                  onDraftJoin?.();
                 }}>
                 <Zap size={18} color={colors.primary} />
                 <Text className='font-semibold text-primary'>Start Draft Now</Text>

@@ -65,7 +65,7 @@ export function DraftCountdown({ overrideHash, className }: DraftCountdownProps)
           </View>
 
           {/* Action Buttons */}
-          {editable && <SetDraftDate overrideHash={overrideHash} />}
+          {editable && <SetDraftDate overrideHash={overrideHash} onDraftJoin={onDraftJoin} />}
         </View>
       </View>
 
