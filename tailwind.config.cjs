@@ -8,8 +8,10 @@ module.exports = {
         'foreground': '#000000',
         'primary': '#674528',
         'primary-foreground': '#FFFFFF',
+        'primaryForeground': '#FFFFFF',
         'secondary': '#B58553',
         'secondary-foreground': '#FFFFFF',
+        'secondaryForeground': '#FFFFFF',
         'accent': '#DCC0A2',
         'navigation': '#CBFFC2',
         'background': '#E5BC8F',
@@ -20,6 +22,7 @@ module.exports = {
         'positive': '#28A53F',
         'destructive': '#FF3B30',
         'destructive-foreground': '#FFFFFF',
+        'destructiveForeground': '#FFFFFF',
         'neutral': '#4b5563',
       },
       animation: {
