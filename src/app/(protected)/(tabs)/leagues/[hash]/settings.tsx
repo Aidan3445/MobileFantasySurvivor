@@ -10,6 +10,7 @@ import { useLeague } from '~/hooks/leagues/query/useLeague';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
 import LeagueSettings from '~/components/leagues/customization/settings/league/view';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
+import SecondaryPickSettings from '~/components/leagues/customization/settings/secondary/view';
 
 export default function LeagueSettingsScreen() {
   const { refreshing, onRefresh, scrollY, handleScroll } = useLeagueRefresh();
@@ -53,6 +54,7 @@ export default function LeagueSettingsScreen() {
                 <View className='h-5 w-0.5 bg-primary rounded-full' />
               </View>
               <SurvivalStreaks />
+              <SecondaryPickSettings />
               <BaseEventRules />
               <ShauhinMode />
               <CustomEventRules />

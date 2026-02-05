@@ -11,6 +11,7 @@ import DraftOrder from '~/components/leagues/customization/order/view';
 import { useLeagueRefresh } from '~/hooks/helpers/refresh/useLeagueRefresh';
 import RefreshIndicator from '~/components/common/refresh';
 import { cn } from '~/lib/utils';
+import SecondaryPickSettings from '~/components/leagues/customization/settings/secondary/view';
 
 export default function PredraftScreen() {
   const { refreshing, onRefresh, scrollY, handleScroll } = useLeagueRefresh();
@@ -47,6 +48,7 @@ export default function PredraftScreen() {
             <View className='h-5 w-0.5 bg-primary rounded-full' />
           </View>
           <SurvivalStreaks />
+          <SecondaryPickSettings />
           <BaseEventRules />
           <ShauhinMode />
           <CustomEventRules />

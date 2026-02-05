@@ -156,8 +156,7 @@ export default function SurvivalStreaks() {
                   {displaySurvivalCap(field.value)}
                 </Text>
               </View>
-            )}
-          />
+            )} />
         )}
         <Text className='text-base text-muted-foreground'>
           Set a cap on the maximum points a player can earn from their streak.
