@@ -23,8 +23,6 @@ export function useLeagueMembers(overrideHash?: string) {
     queryFn: async () => {
       if (!hash) throw new Error('League hash is required');
 
-      console.log(`Fetching leagueMembers for league hash: ${hash}${overrideHash ? ' (override)' : ''}`);
-
       const res = await fetchData(`/api/leagues/${hash}/members`);
       if (!res.ok) {
         throw new Error('Failed to fetch leagueMembers data');

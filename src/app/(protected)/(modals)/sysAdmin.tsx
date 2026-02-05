@@ -5,11 +5,11 @@ import Button from '~/components/common/button';
 import { useSysAdmin } from '~/hooks/user/useSysAdmin';
 
 export default function SysAdminScreen() {
-  const { data: userId, isFetching, isError } = useSysAdmin();
+  const { data: userId, isLoading, isError } = useSysAdmin();
   const { hash } = useLocalSearchParams<{ hash: string }>();
   const router = useRouter();
 
-  if (isFetching) {
+  if (isLoading) {
     return (
       <View className='page py-16 justify-center items-center'>
         <SysAdminHeader />

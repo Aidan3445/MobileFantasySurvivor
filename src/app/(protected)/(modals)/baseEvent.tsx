@@ -7,7 +7,7 @@ import { useSeasonsData } from '~/hooks/seasons/useSeasonsData';
 import CreateBaseEvent from '~/components/leagues/actions/events/base/create';
 
 export default function BaseEventScreen() {
-  const { data: userId, isFetching, isError } = useSysAdmin();
+  const { data: userId, isLoading, isError } = useSysAdmin();
   const router = useRouter();
 
   const [selectedSeason, setSelectedSeason] = useState<string>('');
@@ -24,7 +24,7 @@ export default function BaseEventScreen() {
     return null;
   }, [scoreData, selectedSeason]);
 
-  if (isFetching) {
+  if (isLoading) {
     return (
       <View className='page py-16 justify-center items-center'>
         <PlaygroundHeader

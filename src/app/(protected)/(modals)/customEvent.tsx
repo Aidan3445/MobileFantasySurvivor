@@ -8,10 +8,10 @@ import { useLeagueRules } from '~/hooks/leagues/query/useLeagueRules';
 
 export default function CustomEventScreen() {
   const { hash } = useLocalSearchParams<{ hash: string }>();
-  const { data: leagueRules, isFetching, isError } = useLeagueRules(hash);
+  const { data: leagueRules, isLoading, isError } = useLeagueRules(hash);
   const router = useRouter();
 
-  if (isFetching) {
+  if (isLoading) {
     return (
       <View className='page py-16 justify-center items-center'>
         <CustomEventHeader />

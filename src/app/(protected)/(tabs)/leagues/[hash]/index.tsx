@@ -2,7 +2,7 @@
 
 import { Animated, RefreshControl, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
-import { Redirect, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 import LoadingScreen from '~/components/auth/loadingScreen';
 import useFadeLoading from '~/hooks/ui/useFadeLoading';
@@ -25,19 +25,6 @@ export default function LeagueHubScreen() {
   const { refreshing, onRefresh, scrollY, handleScroll } = useLeagueRefresh();
   const { showLoading, fadeAnim } = useFadeLoading({ isLoading: isFetching && !league });
   const { data: userId } = useSysAdmin();
-
-  // Redirect to other screens based on status
-  if (league?.status === 'Predraft') {
-    return <Redirect href={`/leagues/${hash}/predraft`} />;
-  }
-  if (league?.status === 'Draft') {
-    return <Redirect href={`/leagues/${hash}/draft`} />;
-  }
-
-  // No league found after loading
-  if (!isFetching && !league) {
-    return <Redirect href='/leagues' />;
-  }
 
   return (
     <>
