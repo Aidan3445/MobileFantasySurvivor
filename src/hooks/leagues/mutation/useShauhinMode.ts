@@ -6,7 +6,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useFetch } from '~/hooks/helpers/useFetch';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
-import { useLeagueRules } from '~/hooks/leagues/query/useRules';
+import { useLeagueRules } from '~/hooks/leagues/query/useLeagueRules';
 import { type ShauhinModeSettings, ShauhinModeSettingsZod } from '~/types/leagues';
 import { defaultShauhinModeSettings } from '~/lib/leagues';
 

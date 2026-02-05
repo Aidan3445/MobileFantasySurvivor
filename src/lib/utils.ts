@@ -8,6 +8,8 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { defaultBasePredictionRules } from '~/lib/leagues';
 import { ScoringBaseEventNames } from '~/lib/events';
+import 'react-native-get-random-values';
+import { v4 as uuid } from 'uuid';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -139,3 +141,8 @@ export function reviveDates(obj: any): any {
 
   return result;
 }
+
+/**
+  * A unique ID for this app launch instance
+  */
+export const APP_LAUNCH_ID = uuid();

@@ -1,12 +1,14 @@
 import { useSignIn } from '@clerk/clerk-expo';
-import { Link, useRouter } from 'expo-router';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Link, useLocalSearchParams, useRouter } from 'expo-router';
+import { KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import Header from '~/components/auth/header';
 import { SignInWithGoogle } from '~/components/auth/signInWithGoogle';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn();
+  const { redirectTo } = useLocalSearchParams<{ redirectTo?: string }>();
   const router = useRouter();
 
   const [emailAddress, setEmailAddress] = React.useState('');
@@ -24,7 +26,8 @@ export default function Page() {
       // and redirect the user
       if (signInAttempt.status === 'complete') {
         await setActive({ session: signInAttempt.createdSessionId });
-        router.replace('/');
+        router.replace(redirectTo ?? '/');
+
       } else {
         // If the status isn't complete, check why. User might need to
         // complete further steps.
@@ -38,44 +41,52 @@ export default function Page() {
   };
 
   return (
-    <View className='flex-1 justify-around bg-background p-6'>
+    <SafeAreaView className='flex-1 justify-center start bg-background px-6'>
       <Header />
-      <View className='transition-keyboard rounded-3xl bg-white p-8 shadow-lg focus:-translate-y-96'>
-        <View className='mb-8 items-center'>
-          <Text className='mb-2 text-3xl font-bold text-primary'>Welcome Back!</Text>
-          <Text className='text-lg text-secondary'>Sign in to continue</Text>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={{
+          flex: 1,
+          justifyContent: 'flex-end'
+        }}>
+        <View className='rounded-3xl bg-white p-8 shadow-lg mb-2'>
+          <View className='items-center'>
+            <Text className='mb-2 text-3xl font-bold text-primary'>Welcome Back!</Text>
+            <Text className='text-lg text-secondary'>Sign in to continue</Text>
+            <Text>{redirectTo}</Text>
+          </View>
+
+          <View className='gap-y-2'>
+            <TextInput
+              autoCapitalize='none'
+              value={emailAddress}
+              placeholder='Enter email'
+              className='rounded-2xl border border-accent bg-accent/20 px-4 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
+              placeholderTextColor='#B58553'
+              onChangeText={emailAddress => setEmailAddress(emailAddress)} />
+            <TextInput
+              value={password}
+              placeholder='Enter password'
+              secureTextEntry={true}
+              className='rounded-2xl border border-accent bg-accent/20 px-4 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
+              placeholderTextColor='#B58553'
+              onChangeText={password => setPassword(password)} />
+            <SignInWithGoogle />
+            <TouchableOpacity
+              onPress={onSignInPress}
+              className='mb-2 rounded-full bg-primary h-12 justify-center'>
+              <Text className='text-center text-lg font-semibold text-white'>Continue</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View className='flex-row items-center justify-center'>
+            <Text className='text-base text-secondary'>Don't have an account? </Text>
+            <Link href={{ pathname: '/sign-up', params: redirectTo ? { redirectTo } : undefined }}>
+              <Text className='text-base font-semibold text-primary'>Sign up</Text>
+            </Link>
+          </View>
         </View>
-        <View className='gap-y-2'>
-          <TextInput
-            autoCapitalize='none'
-            value={emailAddress}
-            placeholder='Enter email'
-            className='rounded-2xl border border-accent bg-accent/20 px-4 py-4 text-lg leading-5'
-            placeholderTextColor='#B58553'
-            onChangeText={emailAddress => setEmailAddress(emailAddress)}
-          />
-          <TextInput
-            value={password}
-            placeholder='Enter password'
-            secureTextEntry={true}
-            className='rounded-2xl border border-accent bg-accent/20 px-4 py-4 text-lg leading-5'
-            placeholderTextColor='#B58553'
-            onChangeText={password => setPassword(password)}
-          />
-          <TouchableOpacity
-            onPress={onSignInPress}
-            className='mt-6 rounded-2xl bg-primary py-4 shadow-sm'>
-            <Text className='text-center text-lg font-semibold text-white'>Continue</Text>
-          </TouchableOpacity>
-          <SignInWithGoogle />
-        </View>
-        <View className='flex-row items-center justify-center'>
-          <Text className='text-base text-secondary'>Don't have an account? </Text>
-          <Link href='/sign-up'>
-            <Text className='text-base font-semibold text-primary'>Sign up</Text>
-          </Link>
-        </View>
-      </View>
-    </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }

@@ -1,84 +1,89 @@
-'use client';
-
-import { Link as LinkIcon, Share } from 'lucide-react-native';
-import { TextInput, Text, View, Pressable, Alert, Share as RNShare } from 'react-native';
-import Button from '~/components/common/button';
-import { useMemo, useState } from 'react';
+import { Copy, Share, Check } from 'lucide-react-native';
+import { Text, View, Alert, Share as RNShare, Pressable } from 'react-native';
+import { useState } from 'react';
 import { cn } from '~/lib/utils';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 import * as Clipboard from 'expo-clipboard';
+import * as Linking from 'expo-linking';
+import { colors } from '~/lib/colors';
+import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
+import ProtectionInfo from '~/components/leagues/predraft/inviteLink/protectionInfo';
 
 export default function InviteLink() {
   const { data: league } = useLeague();
+  const { data: leagueSettings } = useLeagueSettings();
   const [hasCopied, setHasCopied] = useState(false);
-
-  const origin = useMemo(() => {
-    return 'https://yourfantasysurvivor.com';
-  }, []);
 
   if (!league) return null;
 
-  const link = `${origin}/i/${league.hash}`;
+  const link = Linking.createURL('/join', {
+    queryParams: { hash: league.hash },
+  });
 
   const copyLink = async () => {
     await Clipboard.setStringAsync(link);
     setHasCopied(true);
     Alert.alert('Success', 'Link copied to clipboard');
     // eslint-disable-next-line no-undef
-    setTimeout(() => setHasCopied(false), 1000);
+    setTimeout(() => setHasCopied(false), 2000);
   };
 
   const shareLink = async () => {
     try {
       await RNShare.share({
         message: `Join ${league.name} on Fantasy Survivor! ${link}`,
-        url: link, // iOS will use this
+        url: link,
         title: `Join ${league.name}!`
       });
     } catch (error) {
       console.error('Error sharing:', error);
-      // Fallback to copying
       await copyLink();
     }
   };
 
   return (
-    <View className='w-full rounded-xl bg-card p-2'>
-      <Text className='text-card-foreground mb-1 text-lg font-bold'>Invite friends to play</Text>
-      <Text className='mb-3 text-sm text-muted-foreground'>
-        Copy the link and share with your friends
+    <View className='w-full rounded-xl bg-card p-2 border-2 border-primary/20 gap-2'>
+      <View className='flex-row items-center gap-1 h-8'>
+        <View className='h-6 w-1 bg-primary rounded-full' />
+        <Text className='text-xl font-black uppercase tracking-tight'>
+          Invite Friends
+        </Text>
+      </View>
+
+      <Text className='text-base text-muted-foreground leading-none'>
+        Grow your league by inviting friends to join
       </Text>
 
-      <View className='flex-row items-center gap-2'>
+      <View className='flex-row gap-2'>
         <Pressable
-          className='relative flex-1 flex-row items-center'
+          className={cn(
+            'flex-1 flex-row items-center justify-center gap-2 rounded-lg p-2 active:opacity-80',
+            hasCopied ? 'bg-green-500/20' : 'bg-secondary'
+          )}
           onPress={copyLink}>
-          <TextInput
-            className={cn(
-              'flex-1 rounded-lg border border-muted bg-white p-3 pr-12',
-              hasCopied && 'bg-muted/40'
-            )}
-            editable={false}
-            value={link}
-            multiline={false}
-          />
-          <View className='absolute right-3'>
-            <LinkIcon
-              size={20}
-              color={hasCopied ? 'gray' : 'black'}
-            />
-          </View>
+          {hasCopied ? (
+            <Check size={20} color={colors.positive} />
+          ) : (
+            <Copy size={20} color='white' />
+          )}
+          <Text className={cn(
+            'font-semibold',
+            hasCopied ? 'text-positive' : 'text-white'
+          )}>
+            {hasCopied ? 'Copied!' : 'Copy Link'}
+          </Text>
         </Pressable>
 
-        <Button
-          className='!active:bg-primary/80 rounded-lg bg-primary p-3'
+        <Pressable
+          className='flex-1 flex-row items-center justify-center gap-2 rounded-lg bg-primary p-2 active:opacity-80'
           onPress={shareLink}>
-          <Share
-            size={20}
-            color='white'
-          />
-        </Button>
+          <Share size={20} color='white' />
+          <Text className='font-semibold text-white'>
+            Share
+          </Text>
+        </Pressable>
       </View>
+      <ProtectionInfo isProtected={leagueSettings?.isProtected} />
     </View>
   );
 }

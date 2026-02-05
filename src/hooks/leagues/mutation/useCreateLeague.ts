@@ -10,16 +10,24 @@ import { useFetch } from '~/hooks/helpers/useFetch';
 
 export function useCreateLeague(onSubmit?: () => void) {
   const postData = useFetch('POST');
+  const fetchData = useFetch('GET');
   const router = useRouter();
   const queryClient = useQueryClient();
   const { user } = useUser();
+
   const reactForm = useForm<LeagueInsert>({
-    defaultValues: { leagueName: '', newMember: { displayName: user?.username || '', color: '' } },
+    defaultValues: {
+      leagueName: '',
+      member: {
+        displayName: user?.username || '',
+        color: ''
+      }
+    },
     resolver: zodResolver(LeagueInsertZod)
   });
 
   useEffect(() => {
-    reactForm.setValue('newMember.displayName', user?.username ?? '');
+    reactForm.setValue('member.displayName', user?.username ?? '');
   }, [user, reactForm]);
 
   const handleSubmit = reactForm.handleSubmit(async data => {
@@ -28,7 +36,12 @@ export function useCreateLeague(onSubmit?: () => void) {
       return;
     }
     try {
-      const response = await postData('/api/leagues/create', { body: data });
+      const response = await postData('/api/leagues/create', {
+        body: {
+          ...data,
+          newMember: data.member,
+        }
+      });
       if (response.status !== 201) {
         const errorData = await response.json();
         console.error('Error creating league:', errorData);
@@ -43,8 +56,17 @@ export function useCreateLeague(onSubmit?: () => void) {
       reactForm.reset();
       onSubmit?.();
       await queryClient.invalidateQueries({ queryKey: ['leagues'] });
+
+      // now fetch the league to load details into cache
+      const leagueResponse = await fetchData(`/api/leagues/${newHash}`);
+      if (leagueResponse.status === 200) {
+        const leagueData = await leagueResponse.json();
+        await queryClient.setQueryData(['leagues', newHash], leagueData);
+      }
+      router.prefetch({ pathname: '/leagues/[hash]', params: { hash: newHash } });
+
       Alert.alert('Success', `League created: ${data.leagueName}`);
-      router.push(`/leagues/${newHash}`);
+      router.replace({ pathname: '/leagues/[hash]', params: { hash: newHash } });
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to create league');

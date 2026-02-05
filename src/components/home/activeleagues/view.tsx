@@ -10,11 +10,12 @@ import { useCarousel } from '~/hooks/ui/useCarousel';
 import { useEffect, useMemo, useState } from 'react';
 import { MAX_LEAGUE_MEMBERS_HOME_DISPLAY } from '~/lib/leagues';
 import { type LeagueDetails } from '~/types/leagues';
+import { cn } from '~/lib/utils';
 
 export default function ActiveLeagues() {
   const router = useRouter();
   const { data: leagues } = useLeagues();
-  const { props, progressProps, setCarouselData } = useCarousel(leagues);
+  const { ref, props, progressProps, setCarouselData } = useCarousel(leagues);
   const [inactive, setInactive] = useState<LeagueDetails[]>([]);
 
   useEffect(() => {
@@ -26,65 +27,94 @@ export default function ActiveLeagues() {
     );
 
     currentLeagues.sort((a, b) => {
-      // sort order: Drafting, Active, Predraft. (inactive for typing but those are filtered out)
-      // break ties by member count descending
-      const statusOrder = { Draft: 0, Active: 1, Predraft: 2, Inactive: 3 };
+      const statusOrder = { Draft: 0, Predraft: 1, Active: 2, Inactive: 3 };
       if (statusOrder[a.league.status] !== statusOrder[b.league.status]) {
         return statusOrder[a.league.status] - statusOrder[b.league.status];
       }
-      return b.memberCount - a.memberCount;
+      return b.league.season.localeCompare(a.league.season);
     });
     setCarouselData(currentLeagues ?? []);
   }, [leagues, setCarouselData]);
 
-  const carouselHeight = useMemo(() => {
+  const { carouselHeight, maxLeagueMembers } = useMemo(() => {
     const maxLeagueMembers =
-      leagues?.reduce((max, league) => Math.max(max, league.memberCount), 0) ?? 0;
+      leagues?.reduce((max, league) =>
+        league?.league.status === 'Active'
+          ? Math.max(max, league.memberCount)
+          : max, 0) ?? 0;
     if (maxLeagueMembers < MAX_LEAGUE_MEMBERS_HOME_DISPLAY) {
-      return Math.max(150, 28 * maxLeagueMembers + 55);
+      return { carouselHeight: 35 * maxLeagueMembers + 130, maxLeagueMembers };
     }
-    return 28 * MAX_LEAGUE_MEMBERS_HOME_DISPLAY + 55;
+    return { carouselHeight: 35 * MAX_LEAGUE_MEMBERS_HOME_DISPLAY + 130, maxLeagueMembers };
   }, [leagues]);
 
   if ((!props.data || props.data.length === 0) && inactive.length === 0) {
     return (
-      <View className='overflow-hidden rounded-lg bg-card pb-1 mx-2'>
-        <View className='relative items-center'>
-          <Text className='m-4 text-center text-sm font-medium text-muted-foreground'>
-            You are not a member of any active leagues. Join or create a league to get started!
+      <View className='relative w-full overflow-hidden rounded-xl bg-card border-2 border-primary/20 p-4'>
+        <Text className='text-center text-sm font-medium text-muted-foreground leading-relaxed'>
+          You are not a member of any active leagues.
+          {'\n'}
+          Join or create a league to get started!
+        </Text>
+        <Button
+          className='mt-4 rounded-lg bg-primary/10 border border-primary/30 px-4 py-3'
+          onPress={() => router.replace('/leagues')}>
+          <Text className='text-sm text-center font-bold text-primary uppercase tracking-wider' allowFontScaling={false}>
+            View All Leagues
           </Text>
-          <Button
-            className='absolute bottom-0 right-1 rounded-md bg-white px-2'
-            onPress={() => router.push('/leagues')}>
-            <Text className='text-sm font-semibold text-primary' allowFontScaling={false}>
-              View All
-            </Text>
-          </Button>
-        </View>
+        </Button>
       </View>
     );
   }
 
   return (
-    <View className='overflow-hidden rounded-lg bg-card pb-1'>
-      <Carousel
-        height={carouselHeight}
-        renderItem={({ item }) => <ActiveLeague league={item.league} />}
-        {...props}
-      />
-      <View className='relative items-center'>
-        <Pagination.Basic
-          {...progressProps}
-          containerStyle={{ ...progressProps.containerStyle, marginBottom: 3 }}
-        />
-        <Button
-          className='absolute bottom-0 right-1 rounded-md bg-white px-2'
-          onPress={() => router.push('/leagues')}>
-          <Text className='text-sm font-semibold text-primary' allowFontScaling={false}>
-            View All
-          </Text>
-        </Button>
+    <View className={cn('relative w-full overflow-hidden rounded-xl bg-card border-2 border-primary/20',
+      props.data && props.data.length === 1 && 'pb-2.5')}>
+      {/* Header */}
+      <View className='p-4 pb-0'>
+        <View className='flex-row items-end justify-between'>
+          <View className='flex-row items-center gap-1'>
+            <View className='h-8 w-1 bg-primary rounded-full' />
+            <Text className='text-2xl font-black tracking-tight uppercase text-foreground'>
+              Your Leagues
+            </Text>
+          </View>
+          <Button
+            className='rounded-md border border-primary/30 bg-primary/5 px-3 py-1.5 active:bg-primary/10'
+            onPress={() => router.replace('/leagues')}>
+            <Text className='text-xs font-bold text-primary uppercase tracking-wider' allowFontScaling={false}>
+              View All
+            </Text>
+          </Button>
+        </View>
+
+        {/* Separator */}
+        <View className='h-[2px] bg-primary/20 rounded-full my-2' />
       </View>
+
+      {/* Carousel */}
+      <Carousel
+        ref={ref}
+        height={carouselHeight}
+        renderItem={({ item }) => (
+          <View
+            className='flex mr-1'
+            style={{ height: carouselHeight }}>
+            <ActiveLeague
+              league={item.league}
+              memberCount={item.memberCount}
+              maxMembers={maxLeagueMembers} />
+          </View>
+        )}
+        {...props}
+        loop />
+
+      {/* Pagination Footer */}
+      {props.data && props.data.length > 1 && (
+        <View className='items-center'>
+          <Pagination.Basic {...progressProps} containerStyle={{ marginVertical: 8 }} />
+        </View>
+      )}
     </View>
   );
 }

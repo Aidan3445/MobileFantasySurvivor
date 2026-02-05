@@ -6,7 +6,13 @@ import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
 import { useEffect, useMemo, useState } from 'react';
 import { Alert } from 'react-native';
 
-export type MemberWithId = { memberId: number; displayName: string; color: string; id: number };
+export type MemberWithId = {
+  memberId: number;
+  displayName: string;
+  color: string;
+  loggedIn: boolean;
+  id: number
+};
 
 export function useUpdateDraftOrder() {
   const putData = useFetch('PUT');

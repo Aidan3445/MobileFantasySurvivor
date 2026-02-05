@@ -14,10 +14,11 @@ const DraftDateUpdateSchema = z.object({ draftDate: z.date().nullable() });
 
 type DraftDateUpdate = z.infer<typeof DraftDateUpdateSchema>;
 
-export function useDraftDate(onSubmit?: () => void) {
+export function useDraftDate(overrideHash?: string, onSubmit?: () => void) {
   const putData = useFetch('PUT');
   const queryClient = useQueryClient();
-  const { hash } = useLocalSearchParams<{ hash: string }>();
+  const params = useLocalSearchParams<{ hash: string }>();
+  const hash = overrideHash ?? params.hash;
   const { data: league } = useLeague();
   const { data: leagueSettings } = useLeagueSettings();
   const { data: leagueMembers } = useLeagueMembers();

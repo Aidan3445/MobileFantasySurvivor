@@ -1,9 +1,9 @@
 import { Flame, Lock, LockOpen } from 'lucide-react-native';
-import { Text, View, Pressable, Switch } from 'react-native';
+import { Text, View, Switch } from 'react-native';
 import Button from '~/components/common/button';
 import Slider from '@react-native-community/slider';
 import { useSurvivalStreak } from '~/hooks/leagues/mutation/useSurvivalStreak';
-import { MAX_SURVIVAL_CAP } from '~/lib/leagues';
+import { MAX_SEASON_LENGTH } from '~/lib/leagues';
 import { cn } from '~/lib/utils';
 import { colors } from '~/lib/colors';
 import { Controller } from 'react-hook-form';
@@ -16,24 +16,31 @@ export default function SurvivalStreaks() {
     settingsChanged,
     handleSubmit,
     resetSettings,
-    leagueMembers
+    disabled
   } = useSurvivalStreak();
 
   const displaySurvivalCap = (value: number) => {
     if (value === 0) return 'Off';
-    if (value === MAX_SURVIVAL_CAP) return 'Unlimited';
+    if (value === MAX_SEASON_LENGTH) return 'Unlimited';
     return value.toString();
   };
 
   const survivalCapValue = reactForm.watch('survivalCap');
   const preserveStreakValue = reactForm.watch('preserveStreak');
+  const shotInTheDarkValue = reactForm.watch('shotInTheDarkEnabled');
 
   return (
-    <View className='w-full rounded-xl bg-card p-2'>
+    <View className='w-full rounded-xl bg-card p-2 border-2 border-primary/20 gap-3'>
+      {/* Header */}
       <View className='flex-row items-center justify-between'>
-        <Text className='text-card-foreground text-lg font-bold'>Survival Streaks</Text>
-        {leagueMembers?.loggedIn?.role === 'Owner' && (
-          <Pressable
+        <View className='flex-row items-center gap-1 h-8'>
+          <View className='h-6 w-1 bg-primary rounded-full' />
+          <Text className='text-xl font-black uppercase tracking-tight'>
+            Survival Streak
+          </Text>
+        </View>
+        {!disabled && (
+          <Button
             onPress={() => {
               if (locked) {
                 setLocked(false);
@@ -42,137 +49,215 @@ export default function SurvivalStreaks() {
               }
             }}>
             {locked ? (
-              <Lock
-                size={24}
-                color={colors.primary}
-              />
+              <Lock size={24} color={colors.primary} />
             ) : (
-              <LockOpen
-                size={24}
-                color={colors.secondary}
-              />
+              <LockOpen size={24} color={colors.primary} />
             )}
-          </Pressable>
+          </Button>
         )}
       </View>
-      <Text className='mb-2 text-sm text-muted-foreground'>
-        The Survival Streak rewards players for picking a castaway that survives each episode.
+
+      {/* Description */}
+      <Text className='text-base text-muted-foreground'>
+        The <Text className='italic'>Survival Streak</Text> rewards players for picking a castaway
+        that survives each episode.
       </Text>
-      <View className='gap-2'>
-        <View>
-          <Text className='text-card-foreground font-bold leading-none'>How it works</Text>
-          <Text className='text-card-foreground text-sm'>
-            Each episode your pick survives, their streak grows:
+
+      {/* How it works */}
+      <View className=''>
+        <Text className='text-base text-muted-foreground'>
+          Each episode your pick survives, their streak grows:
+        </Text>
+        <View className='ml-4'>
+          <Text className='text-base text-muted-foreground'>
+            • <Text className='font-bold'>Episode 1:</Text> Earn 1
+            <View className='translate-y-0.5'>
+              <Flame size={14} color={colors['muted-foreground']} />
+            </View> point
           </Text>
-          <Text className='text-card-foreground ml-4 text-sm'>
-            •<Text className='font-semibold'> Episode 1: </Text>
-            Earn 1 point
+          <Text className='text-base text-muted-foreground'>
+            • <Text className='font-bold'>Episode 2:</Text> Earn 2
+            <View className='translate-y-0.5'>
+              <Flame size={14} color={colors['muted-foreground']} />
+            </View> point
           </Text>
-          <Text className='text-card-foreground ml-4 text-sm'>
-            •<Text className='font-semibold'> Episode 2: </Text>
-            Earn 2 points
-          </Text>
-          <Text className='text-card-foreground ml-4 text-sm'>
-            •<Text className='font-semibold'> Episode 3: </Text>
-            Earn 3 points, and so on...
-          </Text>
-          <Text className='text-card-foreground text-sm'>
-            If your pick is eliminated, you must choose a new unclaimed castaway, and your streak
-            resets.
+          <Text className='text-base text-muted-foreground'>
+            • <Text className='font-bold'>Episode 3:</Text> Earn 3
+            <View className='translate-y-0.5'>
+              <Flame size={14} color={colors['muted-foreground']} />
+            </View> point
           </Text>
         </View>
+        <Text className='text-base text-muted-foreground'>
+          If your pick is eliminated, you must choose a new unclaimed castaway, and your streak
+          resets.
+        </Text>
+      </View>
+
+      {/* Action Buttons */}
+      {!locked && (
+        <View className='flex-row gap-2'>
+          <Button
+            className='flex-1 rounded-lg bg-destructive p-3 active:opacity-80'
+            onPress={resetSettings}>
+            <Text className='text-center font-semibold text-white'>Cancel</Text>
+          </Button>
+          <Button
+            className={cn(
+              'flex-1 rounded-lg bg-primary p-3 active:opacity-80',
+              !settingsChanged && 'opacity-50'
+            )}
+            disabled={!settingsChanged}
+            onPress={() => handleSubmit()}>
+            <Text className='text-center font-semibold text-white'>Save</Text>
+          </Button>
+        </View>
+      )}
+      {/* Streak Cap */}
+      <View className='rounded-lg border-2 border-primary/10 bg-primary/5 px-3 py-2'>
+        <View className='flex-row items-center'>
+          <Text className='font-bold text-foreground mr-2'>Streak Cap</Text>
+          {locked && (
+            <>
+              <Text
+                className={cn(
+                  'text-lg font-bold',
+                  survivalCapValue > 0 ? 'text-green-600' : 'text-destructive'
+                )}>
+                {displaySurvivalCap(survivalCapValue)}
+              </Text>
+              {survivalCapValue > 0 && survivalCapValue < MAX_SEASON_LENGTH && (
+                <Flame size={18} color={colors.positive} />
+              )}
+            </>
+          )}
+        </View>
         {!locked && (
-          <View className='flex-row gap-2'>
-            <Button
-              className={'flex-1 rounded-lg bg-destructive p-3'}
-              onPress={resetSettings}>
-              <Text className='text-center font-semibold text-white'>Cancel</Text>
-            </Button>
-            <Button
-              className={'flex-1 rounded-lg bg-primary p-3'}
-              disabled={!settingsChanged}
-              onPress={() => handleSubmit()}>
-              <Text className='text-center font-semibold text-white'>Save</Text>
-            </Button>
-          </View>
+          <Controller
+            control={reactForm.control}
+            name='survivalCap'
+            render={({ field }) => (
+              <View className='flex-row items-center gap-2 my-2'>
+                <Slider
+                  style={{ flex: 1 }}
+                  minimumValue={0}
+                  maximumValue={MAX_SEASON_LENGTH}
+                  step={1}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  minimumTrackTintColor={colors.secondary}
+                  maximumTrackTintColor={colors.accent}
+                  thumbTintColor={colors.primary} />
+                <Text
+                  className={cn(
+                    'text-lg font-bold w-24 text-left',
+                    field.value > 0 ? 'text-green-600' : 'text-destructive'
+                  )}>
+                  {displaySurvivalCap(field.value)}
+                </Text>
+              </View>
+            )} />
         )}
-        <View className='rounded-lg bg-accent p-2'>
+        <Text className='text-base text-muted-foreground'>
+          Set a cap on the maximum points a player can earn from their streak.
+        </Text>
+        <Text className='text-base text-muted-foreground mt-1'>
+          <Text className='font-medium text-muted-foreground'>Note: </Text>
+          A cap of <Text className='italic'>0</Text> will disable survival points entirely, while an{' '}
+          <Text className='italic'>unlimited</Text> cap will heavily favor the player who drafts the
+          winner.
+        </Text>
+      </View>
+
+      {/* Preserve Streak */}
+      <View
+        className={cn(
+          'rounded-lg border-2 border-primary/10 bg-primary/5 px-3 py-2',
+          survivalCapValue === 0 && 'opacity-50'
+        )}>
+        <View className='flex-row items-center justify-between'>
           <View className='flex-row items-center'>
-            <Text className='mr-4 font-bold text-black'>Streak Cap</Text>
-            <Text
-              className={cn(
-                'text-lg font-semibold',
-                survivalCapValue > 0 ? 'text-positive' : 'text-destructive'
-              )}>
-              {displaySurvivalCap(survivalCapValue)}
-            </Text>
-            {survivalCapValue > 0 && survivalCapValue < MAX_SURVIVAL_CAP && (
-              <Flame
-                size={16}
-                color={survivalCapValue > 0 ? colors.positive : colors.neutral}
-                className='ml-1'
-              />
+            <Text className='font-bold text-foreground mr-2'>Preserve Streak</Text>
+            {locked && (
+              <Text
+                className={cn(
+                  'text-lg font-bold',
+                  preserveStreakValue ? 'text-green-600' : 'text-destructive'
+                )}>
+                {preserveStreakValue ? 'On' : 'Off'}
+              </Text>
             )}
           </View>
           {!locked && (
             <Controller
               control={reactForm.control}
-              name='survivalCap'
+              name='preserveStreak'
               render={({ field }) => (
-                <Slider
-                  minimumValue={0}
-                  maximumValue={MAX_SURVIVAL_CAP}
-                  step={1}
+                <Switch
                   value={field.value}
                   onValueChange={field.onChange}
-                  minimumTrackTintColor={colors.primary}
-                  maximumTrackTintColor={colors.secondary}
-                  thumbTintColor={colors.muted}
-                />
+                  disabled={survivalCapValue === 0}
+                  trackColor={{ false: colors.muted, true: colors.positive }}
+                  thumbColor='white'
+                  ios_backgroundColor={colors.destructive} />
               )}
             />
           )}
-          <Text className='text-sm text-black'>
-            Set a cap on the maximum points a player can earn from their streak.
-          </Text>
-          <Text className='text-sm text-black'>
-            <Text className='font-semibold'> Note: </Text>A cap of 0 will disable survival points
-            entirely, while an unlimited cap will heavily favor the player who drafts the winner.
-          </Text>
         </View>
-        <View className='rounded-lg bg-accent p-2'>
-          <View className='flex-row items-center justify-between'>
-            <View className='flex-1 flex-row items-center'>
-              <Text className='mr-4 font-bold text-black'>Preserve Streak</Text>
+        <Text className='text-base text-muted-foreground mt-1'>
+          Should streaks be <Text className='italic'>preserved</Text> if a player switches their
+          pick voluntarily, or reset to zero?
+        </Text>
+        {survivalCapValue === 0 && (
+          <Text className='text-sm text-primary italic'>
+            This feature requires survival streaks to be enabled.
+          </Text>
+        )}
+      </View>
+
+      {/* Shot in the Dark */}
+      <View
+        className={cn(
+          'rounded-lg border-2 border-primary/10 bg-primary/5 px-3 py-2',
+          survivalCapValue === 0 && 'opacity-50'
+        )}>
+        <View className='flex-row items-center justify-between'>
+          <View className='flex-row items-center'>
+            <Text className='font-bold text-foreground mr-2'>Shot in the Dark</Text>
+            {locked && (
               <Text
                 className={cn(
-                  'text-lg font-semibold',
-                  preserveStreakValue ? 'text-positive' : 'text-destructive'
+                  'text-lg font-bold',
+                  shotInTheDarkValue ? 'text-green-600' : 'text-destructive'
                 )}>
-                {preserveStreakValue ? 'On' : 'Off'}
+                {shotInTheDarkValue ? 'On' : 'Off'}
               </Text>
-            </View>
-            {!locked && (
-              <Controller
-                control={reactForm.control}
-                name='preserveStreak'
-                render={({ field }) => (
-                  <Switch
-                    value={field.value}
-                    onValueChange={field.onChange}
-                    trackColor={{ false: colors.destructive, true: colors.positive }}
-                    ios_backgroundColor={colors.destructive}
-                    thumbColor={colors.muted}
-                  />
-                )}
-              />
             )}
           </View>
-          <Text className='mt-1 text-sm text-black'>
-            Should streaks be preserved if a player switches their pick voluntarily, or reset to
-            zero?
-          </Text>
+          {!locked && (
+            <Controller
+              control={reactForm.control}
+              name='shotInTheDarkEnabled'
+              render={({ field }) => (
+                <Switch
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  disabled={survivalCapValue === 0}
+                  trackColor={{ false: colors.muted, true: colors.positive }}
+                  ios_backgroundColor={colors.destructive}
+                  thumbColor='white' />
+              )} />
+          )}
         </View>
+        <Text className='text-base text-muted-foreground'>
+          Members get one chance per season to protect their streak when their castaway is
+          eliminated. Must be activated before the episode airs.
+        </Text>
+        {survivalCapValue === 0 && (
+          <Text className='text-sm text-primary italic'>
+            This feature requires survival streaks to be enabled.
+          </Text>
+        )}
       </View>
     </View>
   );

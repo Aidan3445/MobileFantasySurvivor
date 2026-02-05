@@ -3,19 +3,23 @@ import Button from '~/components/common/button';
 import { Ellipsis } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import SearchableSelect from '~/components/common/searchableSelect';
-import { type SearchableOption, useSearchableSelect } from '~/hooks/ui/useSearchableSelect';
+import { type SearchableOption } from '~/hooks/ui/useSearchableSelect';
+import { cn } from '~/lib/utils';
+import { colors } from '~/lib/colors';
+import { useState } from 'react';
 
 interface SelectSeasonProps {
   seasons: SearchableOption<string>[];
   value: string;
   setValue: (_: string) => void;
   someHidden?: boolean;
+  className?: string;
 }
 
-export default function SelectSeason({ seasons, value, setValue, someHidden }: SelectSeasonProps) {
+export default function SelectSeason({ seasons, value, setValue, someHidden, className }: SelectSeasonProps) {
   const router = useRouter();
-  const { isVisible, searchText, setSearchText, openModal, closeModal, filterOptions } =
-    useSearchableSelect<string>();
+  const modalState = useState(false);
+  const [, openModal] = modalState;
 
   const footerComponent =
     someHidden !== undefined ? (
@@ -23,7 +27,7 @@ export default function SelectSeason({ seasons, value, setValue, someHidden }: S
         className='mb-4 mt-2 rounded bg-muted px-2 py-3'
         onPress={() => {
           router.push('/playground');
-          closeModal();
+          openModal(false);
         }}>
         <Text className='text-center text-xs'>
           {someHidden ? 'See all seasons' : 'Try scoring playground'}
@@ -32,24 +36,20 @@ export default function SelectSeason({ seasons, value, setValue, someHidden }: S
     ) : undefined;
 
   return (
-    <>
+    <SearchableSelect<string>
+      overrideState={modalState}
+      options={seasons}
+      selectedValue={value}
+      onSelect={setValue}
+      placeholder='Search seasons...'
+      emptyMessage='No seasons found.'
+      footerComponent={footerComponent}
+      asChild>
       <Button
-        className='absolute right-2'
-        onPress={openModal}>
-        <Ellipsis size={20} />
+        className={cn('absolute right-3 top-1', className)}
+        onPress={() => openModal(true)}>
+        <Ellipsis size={32} color={colors.primary} />
       </Button>
-      <SearchableSelect<string>
-        isVisible={isVisible}
-        onClose={closeModal}
-        options={filterOptions(seasons)}
-        selectedValue={value}
-        onSelect={setValue}
-        searchText={searchText}
-        onSearchChange={setSearchText}
-        placeholder='Search seasons...'
-        emptyMessage='No seasons found.'
-        footerComponent={footerComponent}
-      />
-    </>
+    </SearchableSelect>
   );
 }

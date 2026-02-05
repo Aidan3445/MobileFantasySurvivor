@@ -1,37 +1,60 @@
 {
-  "scheme": "acme",
-  "userInterfaceStyle": "automatic",
-  "orientation": "default",
-  "web": { "output": "static" },
-  "plugins": [["expo-router", { "origin": "https://n" }]],
-  "name": "mobile-fantasy-survivor",
-  "slug": "mobile-fantasy-survivor",
-  "extra": {
-    "router": { "origin": "https://n" },
-    "eas": { "projectId": "86931bb6-a035-48fe-8856-ff9c5684bc8e" }
-  },
-  "owner": "aidan3445",
   "expo": {
+    "scheme": "yourfantasysurvivor",
+    "userInterfaceStyle": "automatic",
+    "orientation": "default",
+    "name": "Your Fantasy Survivor",
+    "slug": "mobile-fantasy-survivor",
+    "version": "1.0.0",
+    "owner": "aidan3445",
+    "web": { "output": "static" },
+    "splash": {
+      "image": "./src/assets/Logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#E5BC8F"
+    },
+    "plugins": [
+      ["expo-router", { "origin": "https://yourfantasysurvivor.com" }],
+      ["expo-screen-orientation", { "initialOrientation": "PORTRAIT_UP" }]
+    ],
+    "extra": {
+      "router": { "origin": "https://yourfantasysurvivor.com" },
+      "eas": { "projectId": "86931bb6-a035-48fe-8856-ff9c5684bc8e" }
+    },
     "ios": {
       "bundleIdentifier": "com.aidan3445.mobilefantasysurvivor",
       "infoPlist": { "ITSAppUsesNonExemptEncryption": false },
-      "requiresFullScreen": true
+      "requiresFullScreen": true,
+      "associatedDomains": [
+        "applinks:yourfantasysurvivor.com",
+        "applinks:www.yourfantasysurvivor.com"
+      ]
     },
     "android": {
       "package": "com.aidan3445.mobilefantasysurvivor",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./src/assets/Logo.png",
         "backgroundColor": "#FFFFFF"
       },
-    },
-    "plugins": [
-      [
-        "expo-screen-orientation",
+      "intentFilters": [
         {
-          "initialOrientation": "PORTRAIT_UP"
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "yourfantasysurvivor.com",
+              "pathPrefix": "/i/"
+            },
+            {
+              "scheme": "https",
+              "host": "yourfantasysurvivor.com",
+              "pathPrefix": "/join/"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ]
-    ],
-    "version": "1.0.0",
+    }
   }
 }

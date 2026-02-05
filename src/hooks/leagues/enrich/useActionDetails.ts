@@ -1,24 +1,24 @@
 import { useEnrichedTribeMembers } from '~/hooks/seasons/enrich/useEnrichedTribeMembers';
-import { useLeagueRules } from '~/hooks/leagues/query/useRules';
+import { useLeagueRules } from '~/hooks/leagues/query/useLeagueRules';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 import { useKeyEpisodes } from '~/hooks/seasons/useKeyEpisodes';
 import { useEffect, useMemo, useState } from 'react';
 import { usePredictionTiming } from '~/hooks/leagues/query/usePredictionTiming';
 import { useSelectionTimeline } from '~/hooks/leagues/query/useSelectionTimeline';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
-import { type EnrichedCastaway } from '~/types/castaways';
+import { type Castaway, type EnrichedCastaway } from '~/types/castaways';
 import { type LeagueMember } from '~/types/leagueMembers';
 import { useEliminations } from '~/hooks/seasons/useEliminations';
 import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
 import { type DraftDetails } from '~/types/leagues';
 import { usePredictionsMade } from '~/hooks/leagues/enrich/usePredictionsMade';
 import { type ScoringBaseEventName } from '~/types/events';
-import { useRouter } from 'expo-router';
+import { useCastaways } from '~/hooks/seasons/useCastaways';
 
 /**
- * Custom hook to get league action details
- * @param {string} overrideHash Optional hash to override the URL parameter.
- */
+  * Custom hook to get league action details
+  * @param {string} overrideHash Optional hash to override the URL parameter.
+  */
 export function useLeagueActionDetails(overrideHash?: string) {
   const { data: league } = useLeague(overrideHash);
   const { data: rules } = useLeagueRules(overrideHash);
@@ -30,12 +30,14 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
   const { data: keyEpisodes } = useKeyEpisodes(league?.seasonId ?? null);
 
-  const nextEpisode = useMemo(
-    () => keyEpisodes?.nextEpisode?.episodeNumber ?? null,
+  const nextEpisode = useMemo(() =>
+    keyEpisodes?.nextEpisode?.episodeNumber ?? null,
     [keyEpisodes?.nextEpisode?.episodeNumber]
   );
 
   const tribeMembers = useEnrichedTribeMembers(league?.seasonId ?? null, nextEpisode);
+  const { data: castaways } = useCastaways(league?.seasonId ?? null);
+
   const { data: eliminations } = useEliminations(league?.seasonId ?? null);
 
   const eliminationLookup = useMemo(() => {
@@ -57,33 +59,68 @@ export function useLeagueActionDetails(overrideHash?: string) {
       return [];
     }
 
-    const picks: { member: LeagueMember; castawayFullName: string }[] = [];
+    const picks: {
+      member: LeagueMember;
+      castawayFullName: string;
+      castawayId: number;
+      secondary?: {
+        castawayFullName: string;
+        castawayId: number;
+      };
+      out: boolean
+    }[] = [];
 
-    Object.values(tribeMembers).forEach(({ castaways }) => {
-      castaways.forEach(castaway => {
-        const selection = selectionTimeline.castawayMembers[castaway.castawayId]?.[nextEpisode];
-        if (selection) {
-          const member = leagueMembers.members.find(m => m.memberId === selection);
-          if (member) {
-            picks.push({ member, castawayFullName: castaway.fullName });
-          }
-        }
+    leagueMembers.members.forEach(member => {
+      const selections = selectionTimeline.memberCastaways[member.memberId] ?? [];
+      const selectionId = selections[nextEpisode];
+
+      if (!selectionId) {
+        const lastSelectionId = selections.findLast(id => id !== null);
+        const lastCastaway = castaways?.find(c => c.castawayId === lastSelectionId);
+        picks.push({
+          member,
+          castawayFullName: lastCastaway ? lastCastaway.fullName : 'No Pick',
+          castawayId: lastCastaway ? lastCastaway.castawayId : -1,
+          out: true
+        });
+      }
+
+      const castaway = castaways?.find(c => c.castawayId === selectionId);
+
+      let secondaryCastaway: Castaway | undefined = undefined;
+
+      if (settings?.secondaryPickEnabled) {
+        const secondarySelections = selectionTimeline.secondaryPicks?.[member.memberId] ?? [];
+        const secondarySelectionId = secondarySelections[nextEpisode];
+
+        secondaryCastaway = castaways?.find(c => c.castawayId === secondarySelectionId);
+      }
+
+      picks.push({
+        member,
+        castawayFullName: castaway ? castaway.fullName : 'No Pick',
+        castawayId: castaway ? castaway.castawayId : -1,
+        secondary: secondaryCastaway ? {
+          castawayFullName: secondaryCastaway.fullName,
+          castawayId: secondaryCastaway.castawayId
+        } : undefined,
+        out: false
       });
     });
 
     return picks;
-  }, [nextEpisode, tribeMembers, leagueMembers, selectionTimeline]);
+  }, [
+    nextEpisode,
+    tribeMembers,
+    leagueMembers,
+    selectionTimeline,
+    castaways,
+    settings?.secondaryPickEnabled
+  ]);
 
   const actionDetails = useMemo(() => {
-    if (
-      !league
-      || !rules
-      || !selectionTimeline
-      || !nextEpisode
-      || !tribeMembers
-      || !leagueMembers
-      || !eliminationLookup
-    ) {
+    if (!league || !rules || !selectionTimeline || !nextEpisode ||
+      !tribeMembers || !leagueMembers || !eliminationLookup) {
       return undefined;
     }
 
@@ -91,7 +128,9 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
     Object.entries(tribeMembers).forEach(([tribeId, { tribe, castaways }]) => {
       const selections = castaways.map(castaway => {
-        const selection = selectionTimeline.castawayMembers[castaway.castawayId]?.[nextEpisode];
+        const castawaySelections = selectionTimeline.castawayMembers[castaway.castawayId] ?? [null];
+        const latestSelection = Math.min(nextEpisode, castawaySelections.length - 1);
+        const selection = selectionTimeline.castawayMembers[castaway.castawayId]?.[latestSelection];
         const eliminatedEpisode = eliminationLookup.get(castaway.castawayId) ?? null;
 
         const castawayWithTribe: EnrichedCastaway = {
@@ -100,37 +139,32 @@ export function useLeagueActionDetails(overrideHash?: string) {
           eliminatedEpisode
         };
 
-        const member = selection
-          ? (leagueMembers.members.find(m => m.memberId === selection) ?? null)
-          : null;
+        const member = selection ? leagueMembers.members.find(m => m.memberId === selection) ?? null : null;
 
-        return { castaway: castawayWithTribe, member };
+        return {
+          castaway: castawayWithTribe,
+          member
+        };
       });
 
-      details[Number(tribeId)] = { tribe, castaways: selections };
+      details[Number(tribeId)] = {
+        tribe,
+        castaways: selections,
+      };
     });
 
     return details;
-  }, [
-    league,
-    rules,
-    selectionTimeline,
-    nextEpisode,
-    tribeMembers,
-    leagueMembers,
-    eliminationLookup
-  ]);
+  }, [league, rules, selectionTimeline, nextEpisode, tribeMembers, leagueMembers, eliminationLookup]);
 
-  const router = useRouter();
   const [dialogOpen, setDialogOpen] = useState<boolean>();
 
   const { onTheClock, onDeck, onTheClockIndex } = useMemo(() => {
     if (!leagueMembers?.members || !selectionTimeline?.memberCastaways || !nextEpisode) {
-      return { onTheClock: null, onDeck: null, onTheClockIndex: -1 };
+      return { onTheClock: null, onDeck: null, onTheClockIndex: null };
     }
 
-    const onTheClockIndex = leagueMembers.members.findIndex(
-      member => selectionTimeline.memberCastaways[member.memberId]?.[nextEpisode] === undefined
+    const onTheClockIndex = leagueMembers.members.findIndex(member =>
+      selectionTimeline.memberCastaways[member.memberId]?.[nextEpisode] === undefined
     );
 
     const onTheClock = leagueMembers.members[onTheClockIndex];
@@ -138,11 +172,15 @@ export function useLeagueActionDetails(overrideHash?: string) {
     const loggedInId = leagueMembers.loggedIn?.memberId;
 
     return {
-      onTheClock: onTheClock
-        ? { ...onTheClock, loggedIn: onTheClock.memberId === loggedInId }
-        : null,
-      onDeck: onDeck ? { ...onDeck, loggedIn: onDeck.memberId === loggedInId } : null,
-      onTheClockIndex: onTheClockIndex >= 0 ? onTheClockIndex : -1
+      onTheClock: onTheClock ? {
+        ...onTheClock,
+        loggedIn: onTheClock.memberId === loggedInId,
+      } : null,
+      onDeck: onDeck ? {
+        ...onDeck,
+        loggedIn: onDeck.memberId === loggedInId,
+      } : null,
+      onTheClockIndex: onTheClockIndex
     };
   }, [
     leagueMembers?.members,
@@ -161,24 +199,14 @@ export function useLeagueActionDetails(overrideHash?: string) {
     setDialogOpen(undefined);
   }, [leagueMembers?.loggedIn?.draftOrder]);
 
-  useEffect(() => {
-    if (league && (onTheClockIndex === -1 || league.status !== 'Draft')) {
-      router.push(`/leagues/${league.hash}`);
-    }
-  }, [onTheClockIndex, league?.status, league?.hash, router, league]);
-
   const predictionRuleCount = useMemo(() => {
     if (!rules) return 0;
 
     const enabledBasePredictions = rules.basePrediction
-      ? Object.values(rules.basePrediction).reduce(
-        (count, event) => count + Number(event.enabled),
-        0
-      )
+      ? Object.values(rules.basePrediction).reduce((count, event) => count + Number(event.enabled), 0)
       : 0;
 
-    return enabledBasePredictions + (rules.custom?.filter(rule =>
-      rule.eventType === 'Prediction').length ?? 0);
+    return enabledBasePredictions + (rules.custom?.length ?? 0);
   }, [rules]);
 
   const predictionsMade = useMemo(() => {
@@ -194,39 +222,51 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
     const timingSet = new Set(predictionTiming);
 
-    const filteredCustom =
-      rules.custom?.filter(
-        rule => rule.eventType === 'Direct' || rule.timing.some(t => timingSet.has(t))
-      ) ?? [];
+    const filteredCustom = rules.custom?.filter(rule =>
+      rule.eventType === 'Direct' || rule.timing.some(t => timingSet.has(t))
+    ) ?? [];
 
     if (rules.basePrediction) {
       const filteredBase = { ...rules.basePrediction };
 
       Object.entries(filteredBase).forEach(([eventName, rule]) => {
         if (rule.enabled && !rule.timing.some(t => timingSet.has(t))) {
-          filteredBase[eventName as ScoringBaseEventName] = { ...rule, enabled: false };
+          filteredBase[eventName as ScoringBaseEventName] = {
+            ...rule,
+            enabled: false
+          };
         }
       });
 
-      return { ...rules, custom: filteredCustom, basePrediction: filteredBase };
+      return {
+        ...rules,
+        custom: filteredCustom,
+        basePrediction: filteredBase
+      };
     }
 
-    return { ...rules, custom: filteredCustom };
+    return {
+      ...rules,
+      custom: filteredCustom,
+    };
   }, [rules, predictionTiming]);
 
   return {
+    league,
     actionDetails,
     membersWithPicks,
     onTheClock,
+    onTheClockIndex,
     onDeck,
     leagueMembers,
     rules: rulesBasedOnTiming,
     predictionRuleCount,
     settings,
     predictionsMade,
+    basePredictionsMade,
     selectionTimeline,
     keyEpisodes,
     dialogOpen,
-    setDialogOpen
+    setDialogOpen,
   };
 }

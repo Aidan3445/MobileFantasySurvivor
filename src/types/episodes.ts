@@ -1,4 +1,5 @@
 import { type AirStatuses } from '~/lib/episodes';
+import { type LeagueStatus } from '~/types/leagues';
 
 export type AirStatus = (typeof AirStatuses)[number];
 
@@ -21,7 +22,7 @@ export type EpisodeInsert = {
   runtime?: number;
   isMerge?: boolean;
   isFinale?: boolean;
-};
+}
 
 export type EpisodeUpdate = {
   episodeId: number;
@@ -31,10 +32,21 @@ export type EpisodeUpdate = {
   runtime?: number;
   isMerge?: boolean;
   isFinale?: boolean;
-};
+}
 
 export type KeyEpisodes = {
   previousEpisode: Episode | null;
   nextEpisode: Episode | null;
   mergeEpisode: Episode | null;
+};
+
+export type EpisodeOverrideConfig = {
+  seasonId: number;
+  previousEpisodeId: number | null;
+  nextEpisodeId: number | null;
+  mergeEpisodeId: number | null;
+  previousAirStatus: 'Aired' | 'Airing';
+  leagueStatus: LeagueStatus;
+  startWeek: number;
+  enabled: boolean;
 };

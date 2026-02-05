@@ -1,6 +1,5 @@
-'use client';
 import { Lock, LockOpen } from 'lucide-react-native';
-import { Text, View, Pressable, Switch, TextInput, Linking } from 'react-native';
+import { Text, View, Switch, TextInput } from 'react-native';
 import Button from '~/components/common/button';
 import { Controller } from 'react-hook-form';
 import { useShauhinMode } from '~/hooks/leagues/mutation/useShauhinMode';
@@ -12,10 +11,11 @@ import {
   ShauhinModeTimings
 } from '~/lib/leagues';
 import { BaseEventFullName } from '~/lib/events';
+import * as WebBrowser from 'expo-web-browser';
 import { type ScoringBaseEventName } from '~/types/events';
-import { useSearchableSelect } from '~/hooks/ui/useSearchableSelect';
 import SearchableMultiSelect from '~/components/common/searchableMultiSelect';
 import SearchableSelect from '~/components/common/searchableSelect';
+import ColorRow from '~/components/shared/colorRow';
 
 export default function ShauhinMode() {
   const {
@@ -28,8 +28,6 @@ export default function ShauhinMode() {
     disabled,
     rules
   } = useShauhinMode();
-  const timingModal = useSearchableSelect();
-  const betsModal = useSearchableSelect();
 
   const shauhinEnabled = reactForm.watch('enabled');
   const startWeek = reactForm.watch('startWeek');
@@ -48,15 +46,21 @@ export default function ShauhinMode() {
     }));
 
   const openTikTokLink = () => {
-    Linking.openURL('https://www.tiktok.com/t/ZT62XJL2V/');
+    WebBrowser.openBrowserAsync('https://www.tiktok.com/t/ZT62XJL2V/');
   };
 
   return (
-    <View className='w-full rounded-xl bg-card p-2'>
-      <View className='flex-row items-center justify-between'>
-        <Text className='text-card-foreground text-lg font-bold'>Shauhin Mode</Text>
+    <View className='w-full rounded-xl bg-card p-2 border-2 border-primary/20 gap-2'>
+      {/* Header */}
+      <View className='flex-row items-center justify-between mb-2'>
+        <View className='flex-row items-center gap-1 h-8'>
+          <View className='h-6 w-1 bg-primary rounded-full' />
+          <Text className='text-xl font-black uppercase tracking-tight'>
+            Shauhin Mode
+          </Text>
+        </View>
         {!disabled && (
-          <Pressable
+          <Button
             onPress={() => {
               if (locked) {
                 setLocked(false);
@@ -65,97 +69,111 @@ export default function ShauhinMode() {
               }
             }}>
             {locked ? (
-              <Lock
-                size={24}
-                color={colors.primary}
-              />
+              <Lock size={24} color={colors.primary} />
             ) : (
-              <LockOpen
-                size={24}
-                color={colors.secondary}
-              />
+              <LockOpen size={24} color={colors.primary} />
             )}
-          </Pressable>
+          </Button>
         )}
       </View>
-      <Text className='mb-2 text-sm text-muted-foreground'>
+
+      {/* Description */}
+      <Text className='text-base text-muted-foreground'>
         Inspired by a{' '}
-        <View className='translate-y-[0.05rem] border-b border-b-primary'>
-          <Text
-            className='-mb-1 text-sm leading-none text-primary'
-            onPress={openTikTokLink}>
-            video
-          </Text>
-        </View>{' '}
+        <Text className='text-primary underline' onPress={openTikTokLink}>
+          video
+        </Text>{' '}
         that{' '}
-        <View className='translate-y-[0.5rem] rounded bg-[#d05dbd] px-1'>
-          <Text className='font-medium text-white'>Shauhin Davari</Text>
+        <View className='translate-y-4'>
+          <ColorRow color='#d05dbd' className='py-0'>
+            <Text className='font-medium text-base text-primary'>Shauhin Davari</Text>
+          </ColorRow>
         </View>
         , from Survivor 48, posted, this twist allows you to bet points you've earned throughout the
         season on predictions. If you win, you gain those points in addition to the base points for
         the event. If you miss the prediction, you get nothing.
       </Text>
-      <View className='gap-2'>
-        {!locked && (
-          <View className='flex-row gap-2'>
-            <Button
-              className={'flex-1 rounded-lg bg-destructive p-3'}
-              onPress={resetSettings}>
-              <Text className='text-center font-semibold text-white'>Cancel</Text>
-            </Button>
-            <Button
-              className={'flex-1 rounded-lg bg-primary p-3'}
-              disabled={!rulesChanged}
-              onPress={() => handleSubmit()}>
-              <Text className='text-center font-semibold text-white'>Save</Text>
-            </Button>
-          </View>
-        )}
-        <View className='rounded-lg bg-accent p-2'>
-          <View className='flex-row items-center justify-between'>
-            <View className='flex-1 flex-row items-center'>
-              <Text className='mr-4 font-bold text-black'>Shauhin Mode</Text>
+
+      {/* Save / Cancel Buttons */}
+      {!locked && (
+        <View className='flex-row gap-2'>
+          <Button
+            className='flex-1 rounded-lg bg-destructive p-3 active:opacity-80'
+            onPress={resetSettings}>
+            <Text className='text-center font-semibold text-white'>Cancel</Text>
+          </Button>
+          <Button
+            className={cn(
+              'flex-1 rounded-lg bg-primary p-3 active:opacity-80',
+              !rulesChanged && 'opacity-50'
+            )}
+            disabled={!rulesChanged || (startWeek === 'Custom' && (!customStartWeek || customStartWeek < 1))}
+            onPress={() => handleSubmit()}>
+            <Text className='text-center font-semibold text-white'>Save</Text>
+          </Button>
+        </View>
+      )}
+      {/* Shauhin Mode Toggle */}
+      <View className='rounded-lg border-2 border-primary/10 bg-primary/5 px-3 py-2'>
+        <View className='flex-row items-center justify-between'>
+          <View className='flex-row items-center'>
+            <Text className='font-bold text-foreground mr-2 w-max'>Shauhin Mode</Text>
+            {locked && (
               <Text
                 className={cn(
-                  'text-lg font-semibold',
+                  'text-lg font-bold',
                   shauhinEnabled ? 'text-positive' : 'text-destructive'
                 )}>
                 {shauhinEnabled ? 'On' : 'Off'}
               </Text>
-            </View>
-            {!disabled && !locked && (
-              <Controller
-                control={reactForm.control}
-                name='enabled'
-                render={({ field }) => (
-                  <Switch
-                    value={field.value}
-                    onValueChange={field.onChange}
-                    trackColor={{ false: colors.destructive, true: colors.positive }}
-                    ios_backgroundColor={colors.destructive}
-                    thumbColor={colors.muted}
-                  />
-                )}
-              />
             )}
           </View>
+          {!locked && (
+            <Controller
+              control={reactForm.control}
+              name='enabled'
+              render={({ field }) => (
+                <Switch
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  trackColor={{ false: colors.muted, true: colors.positive }}
+                  ios_backgroundColor={colors.destructive}
+                  thumbColor='white' />
+              )} />
+          )}
         </View>
-        {shauhinEnabled && (
-          <View className='rounded-lg bg-accent p-2'>
-            <Text className='mb-2 font-bold text-black'>Start Timing</Text>
-            {locked ? (
-              <Text className='text-sm text-black'>
-                {startWeek === 'Custom' ? `Custom (after ${customStartWeek} episodes)` : startWeek}
-              </Text>
-            ) : (
-              <View>
-                <Button
-                  className={cn(
-                    'rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
-                  )}
-                  onPress={timingModal.openModal}>
-                  <Text className='text-gray-700'>{startWeek || 'Select Betting Start Week'}</Text>
-                </Button>
+      </View>
+
+      {shauhinEnabled && (
+        <>
+          {/* Start Timing */}
+          <View className='rounded-lg border-2 border-primary/10 bg-primary/5 px-3 py-2'>
+            <View className='flex-row items-center mb-1'>
+              <Text className='font-bold text-foreground mr-2'>Start Timing</Text>
+              {locked && (
+                <Text className='text-lg font-bold text-positive'>
+                  {startWeek === 'Custom'
+                    ? `Custom (after ${customStartWeek} episodes)`
+                    : startWeek}
+                </Text>
+              )}
+            </View>
+            {!locked && (
+              <View className='gap-2'>
+                <Controller
+                  control={reactForm.control}
+                  name='startWeek'
+                  render={({ field }) => (
+                    <SearchableSelect
+                      options={timingOptions}
+                      selectedValue={field.value ?? ''}
+                      onSelect={field.onChange}
+                      placeholder='Search timing options...'>
+                      <Text className='text-foreground'>
+                        {startWeek || 'Select Betting Start Week'}
+                      </Text>
+                    </SearchableSelect>
+                  )} />
                 {startWeek === 'Custom' && (
                   <Controller
                     control={reactForm.control}
@@ -163,86 +181,82 @@ export default function ShauhinMode() {
                     render={({ field }) => (
                       <View>
                         <TextInput
-                          className={cn(
-                            'rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
-                          )}
+                          className='w-1/2 rounded-lg border-2 border-primary/20 bg-card px-2 py-1 text-left text-base font-bold leading-5'
                           placeholder='Enable after episode...'
-                          value={Math.max(2, field.value || 2).toString()}
-                          onChangeText={text => field.onChange(parseInt(text) || 2)}
-                          keyboardType='numeric'
-                        />
+                          placeholderTextColor={colors.primary}
+                          value={field.value?.toString() ?? ''}
+                          onChangeText={text => field.onChange(text)}
+                          keyboardType='numeric' />
                         {field?.value && field.value > 14 && (
-                          <Text className='mt-1 text-xs text-red-500'>
+                          <Text className='mt-1 text-sm text-destructive'>
                             Warning: Most seasons do not have this many weeks!
                           </Text>
                         )}
-                        <SearchableSelect
-                          isVisible={timingModal.isVisible}
-                          onClose={timingModal.closeModal}
-                          options={timingModal.filterOptions(timingOptions)}
-                          selectedValue={field.value ?? ''}
-                          onSelect={field.onChange}
-                          searchText={timingModal.searchText}
-                          onSearchChange={timingModal.setSearchText}
-                          placeholder='Search timing options...'
-                        />
                       </View>
-                    )}
-                  />
+                    )} />
                 )}
               </View>
             )}
-            <Text className='mt-1 text-sm text-black'>
+            <Text className='text-base text-muted-foreground'>
               Choose when Shauhin Mode activates. You can choose from predefined timings or set a
               custom week for betting to start.
             </Text>
           </View>
-        )}
-        {shauhinEnabled && (
-          <View className='rounded-lg bg-accent p-2'>
-            <View className='mb-2 flex-row gap-4'>
-              <View className='flex-1'>
-                <Text className='mb-2 font-bold text-black'>Max Points Per Bet</Text>
-                {locked ? (
-                  <Text className='text-sm text-black'>{maxBet}</Text>
-                ) : (
+
+          {/* Max Bets Settings */}
+          <View className='rounded-lg border-2 border-primary/10 bg-primary/5 px-3 py-2'>
+            <View className='flex-col gap-4'>
+              {/* Max Points Per Bet */}
+              <View className='w-full'>
+                <View className='flex-row items-center'>
+                  <Text className='font-bold text-foreground mr-2'>Max Per Bet</Text>
+                  {locked && (
+                    <Text className='text-lg font-bold text-positive'>
+                      {maxBet === 0 ? 'Unlimited' : maxBet}
+                    </Text>
+                  )}
+                </View>
+                {!locked && (
                   <Controller
                     control={reactForm.control}
                     name='maxBet'
                     render={({ field }) => (
                       <TextInput
-                        className={cn(
-                          'rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
-                        )}
-                        placeholder='Max Bet (0 for Unlimited)'
-                        value={field.value?.toString() ?? '0'}
+                        className='rounded-lg border-2 border-primary/20 bg-card px-2 py-1 text-left text-base font-bold leading-5' placeholder='0 = Unlimited'
+                        placeholderTextColor={colors.primary}
+                        value={field.value?.toString() === '0' ? '' : field.value?.toString() ?? '0'}
                         onChangeText={text => {
                           const value = Math.min(parseInt(text) || 0, ABS_MAX_EVENT_POINTS);
                           field.onChange(value);
                         }}
-                        keyboardType='numeric'
-                      />
-                    )}
-                  />
+                        keyboardType='numeric' />
+                    )} />
                 )}
+                <Text className='text-base text-muted-foreground'>
+                  <Text className='italic'>Max Per Bet</Text>: max points you can bet on a prediction
+                </Text>
               </View>
-              <View className='flex-1'>
-                <Text className='mb-2 font-bold text-black'>Max Bets Per Week</Text>
-                {locked ? (
-                  <Text className='text-sm text-black'>
-                    {maxBetsPerWeek === 0 ? 'Unlimited' : maxBetsPerWeek}
-                  </Text>
-                ) : (
+
+              {/* Max Bets Per Week */}
+              <View className=''>
+                <View className='flex-row items-center'>
+                  <Text className='font-bold text-foreground mr-2'>Max Per Week</Text>
+                  {locked && (
+                    <Text className='text-lg font-bold text-positive'>
+                      {maxBetsPerWeek === 0 ? 'Unlimited' : maxBetsPerWeek}
+                    </Text>
+                  )}
+                </View>
+                {!locked && (
                   <Controller
                     control={reactForm.control}
                     name='maxBetsPerWeek'
                     render={({ field }) => (
                       <TextInput
-                        className={cn(
-                          'rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
-                        )}
-                        placeholder='Max Bets (0 for Unlimited)'
-                        value={field.value?.toString() ?? '0'}
+                        className='rounded-lg border-2 border-primary/20 bg-card px-2 py-1 text-left text-base font-bold leading-5'
+                        placeholder='0 = Unlimited'
+                        placeholderTextColor={colors.primary}
+                        value={field.value?.toString() === '0' ? '' : field.value?.toString() ?? '0'}
                         onChangeText={text => {
                           const value = Math.min(
                             parseInt(text) || 0,
@@ -250,30 +264,27 @@ export default function ShauhinMode() {
                           );
                           field.onChange(value);
                         }}
-                        keyboardType='numeric'
-                      />
-                    )}
-                  />
+                        keyboardType='numeric' />
+                    )} />
                 )}
+                <Text className='text-base text-muted-foreground'>
+                  <Text className='italic'>Max Per Week</Text>: max number of bets per week
+                </Text>
               </View>
             </View>
-            <Text className='text-sm text-black'>
-              <Text className='font-semibold'>Max Points Per Bet</Text>: max points you can bet on a
-              prediction{'\n'}
-              <Text className='font-semibold'>Max Bets Per Week</Text>: max number of bets you can
-              place in a single week
-            </Text>
           </View>
-        )}
-        {shauhinEnabled && (
-          <View className='rounded-lg bg-accent p-2'>
-            <Text className='mb-2 font-bold text-black'>Enabled Bets</Text>
+
+          {/* Enabled Bets */}
+          <View className='rounded-lg border-2 border-primary/10 bg-primary/5 px-3 py-2'>
+            <View className='flex-row items-center'>
+              <Text className='font-bold text-foreground mr-2 w-full'>Enabled Bets</Text>
+            </View>
             {locked ? (
-              <Text className='text-sm text-black'>
+              <Text className='text-base text-foreground'>
                 {enabledBets && enabledBets.length > 0
                   ? enabledBets
-                      .map((name: ScoringBaseEventName) => BaseEventFullName[name])
-                      .join(', ')
+                    .map((name: ScoringBaseEventName) => BaseEventFullName[name])
+                    .join(', ')
                   : 'None'}
               </Text>
             ) : (
@@ -281,40 +292,27 @@ export default function ShauhinMode() {
                 control={reactForm.control}
                 name='enabledBets'
                 render={({ field }) => (
-                  <View>
-                    <Button
-                      className={cn(
-                        'rounded-lg border border-primary bg-muted/50 p-1 text-lg leading-5 placeholder:text-muted-foreground'
-                      )}
-                      onPress={betsModal.openModal}>
-                      <Text className='text-gray-700'>
-                        {enabledBets && enabledBets.length > 0
-                          ? enabledBets
-                              .map((name: ScoringBaseEventName) => BaseEventFullName[name])
-                              .join(', ')
-                          : 'Select enabled bets'}
-                      </Text>
-                    </Button>
-                    <SearchableMultiSelect
-                      isVisible={betsModal.isVisible}
-                      onClose={betsModal.closeModal}
-                      options={betsModal.filterOptions(betsOptions)}
-                      selectedValues={field.value || []}
-                      onToggleSelect={field.onChange}
-                      searchText={betsModal.searchText}
-                      onSearchChange={betsModal.setSearchText}
-                      placeholder='Search bet options...'
-                    />
-                  </View>
-                )}
-              />
+                  <SearchableMultiSelect
+                    options={betsOptions}
+                    selectedValues={field.value || []}
+                    onToggleSelect={field.onChange}
+                    placeholder='Search bet options...'>
+                    <Text className='text-base flex-shrink'>
+                      {enabledBets && enabledBets.length > 0
+                        ? enabledBets
+                          .map((name: ScoringBaseEventName) => BaseEventFullName[name])
+                          .join(', ')
+                        : 'Select enabled bets'}
+                    </Text>
+                  </SearchableMultiSelect>
+                )} />
             )}
-            <Text className='mt-1 text-sm text-black'>
+            <Text className='text-base text-muted-foreground'>
               Select what you can bet on from your enabled official and custom prediction events.
             </Text>
           </View>
-        )}
-      </View>
+        </>
+      )}
     </View>
   );
 }

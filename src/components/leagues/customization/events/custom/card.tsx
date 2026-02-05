@@ -1,5 +1,6 @@
 import { Flame, Settings2, Trash2 } from 'lucide-react-native';
-import { Text, View, Pressable, Alert } from 'react-native';
+import { Text, View, Alert } from 'react-native';
+import Button from '~/components/common/button';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,8 +16,8 @@ import CustomEventModal from '~/components/leagues/customization/events/custom/m
 interface CustomEventCardProps {
   rule: CustomEventRule;
   locked?: boolean;
-  onUpdate: (_: CustomEventRuleInsert, __: number) => Promise<void>;
-  onDelete: (_: number, __: string) => Promise<void>;
+  onUpdate: (_rule: CustomEventRuleInsert, _id: number) => Promise<void>;
+  onDelete: (_id: number, _eventName: string) => Promise<void>;
   leagueMembers: any;
 }
 
@@ -54,47 +55,66 @@ export default function CustomEventCard({
   const canEdit = leagueMembers?.loggedIn?.role === 'Owner' && !locked;
 
   return (
-    <View className='relative rounded-xl bg-accent p-3'>
-      <View className='flex-row items-center justify-between'>
-        <View className='flex-1 flex-row items-center gap-1'>
-          <Text className='text-card-foreground flex-shrink text-lg font-semibold'>
+    <View
+      className={cn(
+        'rounded-lg p-3 border-2',
+        locked
+          ? 'bg-primary/5 border-primary/10'
+          : 'bg-primary/10 border-primary/20'
+      )}>
+      {/* Header Row */}
+      <View className='flex-row items-center justify-between gap-2'>
+        <View className='flex-1 flex-row items-center gap-2'>
+          <Text className='text-base font-bold uppercase tracking-wider flex-shrink'>
             {rule.eventName}
           </Text>
-          <Text className='text-card-foreground'>-</Text>
+          <Text className='text-muted-foreground'>•</Text>
           <View className='flex-row items-center'>
             <Text
               className={cn(
-                'text-md font-medium',
+                'text-base font-bold',
                 rule.points <= 0 ? 'text-destructive' : 'text-positive'
               )}>
               {rule.points}
             </Text>
-            <Flame size={16} color={rule.points <= 0 ? colors.destructive : colors.positive} />
+            <Flame
+              size={16}
+              color={rule.points <= 0 ? colors.destructive : colors.positive}
+            />
           </View>
         </View>
         {canEdit && (
           <View className='flex-row gap-2'>
-            <Pressable onPress={() => setIsEditing(true)}>
-              <Settings2 size={18} color={colors.primary} />
-            </Pressable>
-            <Pressable onPress={handleDelete}>
-              <Trash2 size={18} color={colors.destructive} />
-            </Pressable>
+            <Button onPress={() => setIsEditing(true)}>
+              <Settings2 size={24} color={colors.primary} />
+            </Button>
+            <Button onPress={handleDelete}>
+              <Trash2 size={24} color={colors.destructive} />
+            </Button>
           </View>
         )}
       </View>
+
+      {/* Prediction Timing */}
       {rule.eventType === 'Prediction' && (
-        <Text className='text-xs italic text-muted-foreground'>
+        <Text className='text-sm italic text-muted-foreground'>
           Predictions: {rule.timing.join(', ')}
         </Text>
       )}
-      <Text className='text-sm text-muted-foreground line-clamp-2'>{rule.description}</Text>
+
+      {/* Description */}
+      <Text className='text-sm text-muted-foreground' numberOfLines={2}>
+        {rule.description}
+      </Text>
+
+      {/* Edit Modal */}
       <CustomEventModal
         type='Edit'
         isVisible={isEditing}
         onClose={() => setIsEditing(false)}
         onSubmit={handleSubmit}
-        reactForm={reactForm} />
+        reactForm={reactForm}
+      />
     </View>
   );
 }

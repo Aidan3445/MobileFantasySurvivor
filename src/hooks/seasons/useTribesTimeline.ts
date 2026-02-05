@@ -12,7 +12,7 @@ import { useFetch } from '~/hooks/helpers/useFetch';
 export function useTribesTimeline(seasonId: number | null) {
   const fetchData = useFetch();
   const isEpisodeAiring = useIsEpisodeAiringForSeason(seasonId ?? null);
-  const refreshConfig = useRefreshConfig(isEpisodeAiring);
+  const refreshConfig = useRefreshConfig(isEpisodeAiring, false);
 
   return useQuery<TribesTimeline>({
     queryKey: ['tribesTimeline', seasonId],

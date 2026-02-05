@@ -11,7 +11,7 @@ import { useRefreshConfig } from '~/hooks/helpers/useRefreshConfig';
  */
 export function useTribes(seasonId: number | null) {
   const isEpisodeAiring = useIsEpisodeAiringForSeason(seasonId);
-  const refreshConfig = useRefreshConfig(isEpisodeAiring);
+  const refreshConfig = useRefreshConfig(isEpisodeAiring, false);
   const fetchData = useFetch();
 
   return useQuery<Tribe[]>({

@@ -4,7 +4,7 @@ import { useLeague } from '~/hooks/leagues/query/useLeague';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
 import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
 import { DEFAULT_SURVIVAL_CAP } from '~/lib/leagues';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Alert } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -62,6 +62,11 @@ export function useSurvivalStreak() {
     }
   });
 
+  const disabled = useMemo(() => (!!leagueMembers && leagueMembers.loggedIn?.role !== 'Owner')
+    || league?.status === 'Inactive',
+    [leagueMembers, league]);
+
+
   const resetSettings = () => {
     reactForm.reset();
     setLocked(true);
@@ -74,6 +79,7 @@ export function useSurvivalStreak() {
     settingsChanged,
     handleSubmit,
     resetSettings,
-    leagueMembers
+    leagueMembers,
+    disabled
   };
 }

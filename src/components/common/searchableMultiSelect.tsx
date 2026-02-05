@@ -1,83 +1,218 @@
 import { View, Text, TextInput, FlatList } from 'react-native';
-import Button from '~/components/common/button';
-import { type SearchableOption } from '~/hooks/ui/useSearchableSelect';
-import { type ReactElement } from 'react';
-import { Check } from 'lucide-react-native';
+import { useSearchableSelect, type SearchableOption } from '~/hooks/ui/useSearchableSelect';
+import { type ReactElement, type ReactNode } from 'react';
+import { Check, ChevronDown, Search, X } from 'lucide-react-native';
 import Modal from '~/components/common/modal';
+import Button from '~/components/common/button';
+import { colors } from '~/lib/colors';
+import { cn } from '~/lib/utils';
 
 interface SearchableMultiSelectProps<T extends string | number> {
-  isVisible: boolean;
-  onClose: () => void;
   options: SearchableOption<T>[];
-  selectedValues: T[];
+  selectedValues?: T[];
   onToggleSelect: (_: T[]) => void;
-  searchText: string;
-  onSearchChange: (_: string) => void;
+  overrideState?: [boolean, (_open: boolean) => void];
   placeholder?: string;
   emptyMessage?: string;
-  footerComponent?: ReactElement;
+  footerComponent?: ReactNode;
+  children?: ReactNode;
+  asChild?: boolean;
+  disabled?: boolean;
+  className?: string;
 }
 
 export default function SearchableMultiSelect<T extends string | number>({
-  isVisible,
-  onClose,
   options,
   selectedValues,
   onToggleSelect,
-  searchText,
-  onSearchChange,
+  overrideState,
   placeholder = 'Search...',
   emptyMessage = 'No options found.',
-  footerComponent
+  footerComponent,
+  children,
+  asChild,
+  disabled,
+  className
 }: SearchableMultiSelectProps<T>) {
-  const isSelected = (value: T) => selectedValues.includes(value);
+  const { isVisible, searchText, setSearchText, openModal, closeModal, filterOptions } =
+    useSearchableSelect<T>(overrideState);
+
+  const isSelected = (value: T) => selectedValues?.includes(value);
 
   const handleToggleSelect = (value: T) => {
     if (isSelected(value)) {
-      onToggleSelect(selectedValues.filter(v => v !== value));
+      onToggleSelect(selectedValues?.filter((v) => v !== value) ?? []);
     } else {
-      onToggleSelect([...selectedValues, value]);
+      onToggleSelect([...selectedValues ?? [], value]);
     }
   };
 
-  return (
-    <Modal
-      isVisible={isVisible}
-      onClose={onClose}>
-      <View className='flex-row justify-between gap-2'>
-        <TextInput
-          className='flex-1 rounded border border-primary px-3 py-2 placeholder:text-muted-foreground'
-          placeholder={placeholder}
-          value={searchText}
-          onChangeText={onSearchChange}
-        />
+  const renderTrigger = () => {
+    if (asChild && !children)
+      throw new Error(
+        'SearchableMultiSelect: asChild is true but no children were provided.'
+      );
+    if (asChild && children) return children;
+
+    if (children) {
+      return (
         <Button
-          className='items-center justify-center rounded bg-primary p-1'
-          onPress={onClose}>
-          <Text className='text-white'>Done</Text>
+          className={cn(
+            'w-full flex-row items-center justify-between rounded-lg border-2 border-primary/20 bg-primary/5 px-3 h-10 active:bg-primary/10',
+            className
+          )}
+          disabled={disabled}
+          onPress={openModal}>
+          {children}
+          <View className='w-max flex-row items-center gap-1'>
+            {selectedValues && selectedValues.length > 0 && (
+              <Button
+                className='rounded-full p-0.5 active:bg-primary/20'
+                disabled={disabled}
+                onPress={(e) => {
+                  e.stopPropagation();
+                  onToggleSelect([]);
+                }}>
+                <X size={16} color={colors['muted-foreground']} />
+              </Button>
+            )}
+            <ChevronDown size={18} color={colors['muted-foreground']} />
+          </View>
         </Button>
-      </View>
-      <FlatList
-        className='py-4'
-        showsVerticalScrollIndicator={false}
-        data={options}
-        keyExtractor={item => String(item.value)}
-        renderItem={({ item }) => (
-          <Button
-            className='!active:bg-accent my-0.5 flex-row items-center rounded-md bg-background px-2 py-3'
-            onPress={() => handleToggleSelect(item.value)}>
-            <Check
-              size={16}
-              color={isSelected(item.value) ? 'black' : 'transparent'}
-            />
-            <Text className='ml-2 flex-1'>{item.label}</Text>
-          </Button>
+      );
+    }
+
+    // Default trigger showing selection count
+    const selectedCount = selectedValues?.length ?? 0;
+    const selectedLabels = options
+      .filter((opt) => opt.value && selectedValues?.includes(opt.value))
+      .map((opt) => opt.label);
+
+    return (
+      <Button
+        className={cn(
+          'w-full flex-row items-center justify-between rounded-lg border-2 border-primary/20 bg-primary/5 px-3 h-10 active:bg-primary/10',
+          className
         )}
-        ListEmptyComponent={
-          <Text className='py-4 text-center text-muted-foreground'>{emptyMessage}</Text>
-        }
-        ListFooterComponent={footerComponent}
-      />
-    </Modal>
+        disabled={disabled}
+        onPress={openModal}>
+        <Text
+          className={selectedCount === 0 ? 'text-muted-foreground' : 'font-medium text-foreground'}>
+          {selectedCount === 0
+            ? 'Select...'
+            : selectedCount === 1
+              ? selectedLabels[0]
+              : `${selectedCount} selected`}
+        </Text>
+        <View className='flex-row items-center gap-1'>
+          {selectedCount > 0 && (
+            <Button
+              className='rounded-full p-0.5 active:bg-primary/20'
+              disabled={disabled}
+              onPress={(e) => {
+                e.stopPropagation();
+                onToggleSelect([]);
+              }}>
+              <X size={16} color={colors['muted-foreground']} />
+            </Button>
+          )}
+          <ChevronDown size={18} color={colors['muted-foreground']} />
+        </View>
+      </Button>
+    );
+  };
+
+  return (
+    <>
+      <Modal visible={isVisible} onClose={closeModal}>
+        {/* Header with Search and Done */}
+        <View className='flex-row items-center gap-2'>
+          <View className='flex-1 flex-row items-center gap-2 rounded-lg border-2 border-primary/20 bg-primary/5 px-3'>
+            <Search size={18} color={colors['muted-foreground']} />
+            <TextInput
+              className='flex-1 py-2.5 text-foreground'
+              placeholder={placeholder}
+              value={searchText}
+              onChangeText={setSearchText}
+              placeholderTextColor={colors['muted-foreground']} />
+          </View>
+          <Button
+            className='rounded-lg bg-primary px-4 py-2.5 active:opacity-80'
+            onPress={closeModal}>
+            <Text className='font-semibold text-white'>Done</Text>
+          </Button>
+        </View>
+
+        {/* Selected Count */}
+        {selectedValues && selectedValues.length > 0 ? (
+          <View className='flex-row items-center justify-between'>
+            <Text className='text-sm text-muted-foreground'>
+              {selectedValues.length} selected
+            </Text>
+            <Button onPress={() => onToggleSelect([])}>
+              <Text key={'clear-all'} className='text-sm font-medium text-primary'>Clear all</Text>
+            </Button>
+          </View>
+        ) : (
+          <View>
+            <Text className='text-sm text-muted-foreground'>No options selected</Text>
+          </View>
+        )}
+
+        {/* Options List */}
+        <FlatList
+          className='max-h-64'
+          showsVerticalScrollIndicator={false}
+          data={filterOptions(options)}
+          keyExtractor={(item) => String(item.value)}
+          ItemSeparatorComponent={() => <View className='h-1' />}
+          renderItem={({ item }) => {
+            if (!item.value || (typeof item.value === 'string'
+              ? item.value.includes('__null_option_')
+              : item.value as number < 0)) {
+              return (
+                <View key={item.label} className='px-3 py-2'>
+                  <Text className='text-center font-bold tracking-widest text-primary'>
+                    {item.label}
+                  </Text>
+                </View>
+              );
+            }
+
+            const selected = isSelected(item.value);
+            return (
+              <Button
+                className={`flex-row items-center rounded-lg px-3 py-2.5 active:bg-primary/10 ${selected ? 'bg-primary/10' : 'bg-primary/5'
+                  } ${item.disabled ? 'opacity-50' : ''}`}
+                disabled={item.disabled}
+                onPress={() => {
+                  if (item.disabled) return;
+                  handleToggleSelect(item.value!);
+                }}>
+                <View
+                  className={`mr-3 h-5 w-5 items-center justify-center rounded border-2 ${selected ? 'border-primary bg-primary' : 'border-primary/30 bg-transparent'
+                    }`}>
+                  {selected && <Check size={14} color='white' />}
+                </View>
+                {item.renderLabel ? (
+                  item.renderLabel()
+                ) : (
+                  <Text
+                    className={`text-base flex-1 ${selected ? 'font-semibold text-foreground' : 'text-foreground'}`}>
+                    {item.label}
+                  </Text>
+                )}
+              </Button>
+            );
+          }}
+          ListEmptyComponent={
+            <View className='items-center py-8'>
+              <Text className='text-muted-foreground'>{emptyMessage}</Text>
+            </View>
+          }
+          ListFooterComponent={footerComponent as ReactElement} />
+      </Modal>
+      {renderTrigger()}
+    </>
   );
 }

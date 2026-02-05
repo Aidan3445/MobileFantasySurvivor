@@ -1,40 +1,54 @@
 import { useMemo } from 'react';
-import { useCastaways } from '~/hooks/seasons/useCastaways';
-import { useTribes } from '~/hooks/seasons/useTribes';
 import { type EnrichedEvent, type EventWithReferences } from '~/types/events';
-import { useTribesTimeline } from '~/hooks/seasons/useTribesTimeline';
-import { useSelectionTimeline } from '~/hooks/leagues/query/useSelectionTimeline';
-import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
-import { useLeagueRules } from '~/hooks/leagues/query/useRules';
 import { defaultBaseRules } from '~/lib/leagues';
 import { type Tribe } from '~/types/tribes';
 import { type EnrichedCastaway } from '~/types/castaways';
-import { useEliminations } from '~/hooks/seasons/useEliminations';
 import { findTribeCastaways } from '~/lib/utils';
+import { type SeasonsDataQuery } from '~/types/seasons';
+import { type LeagueRules, type SelectionTimelines } from '~/types/leagues';
+import { type LeagueMember } from '~/types/leagueMembers';
 
 /**
- * Custom hook to get enriched data for a list of events.
- * Combines events with their respective rules and references.
- * @param {number} seasonId The season ID to get events for.
- * @param {EventWithReferences[]} events The list of events to enrich.
- */
-export function useEnrichEvents(seasonId: number | null, events: EventWithReferences[] | null) {
-  const { data: selectionTimeline } = useSelectionTimeline();
-  const { data: rules } = useLeagueRules();
-  const { data: tribesTimeline } = useTribesTimeline(seasonId);
-  const { data: tribes } = useTribes(seasonId);
-  const { data: castaways } = useCastaways(seasonId);
-  const { data: leagueMembers } = useLeagueMembers();
-  const { data: eliminations } = useEliminations(seasonId);
+  * Custom hook to get enriched data for a list of events.
+  * Combines events with their respective rules and references.
+  * @param {SeasonsDataQuery} seasonData The season data containing tribes, castaways, eliminations, and tribes timeline.
+  * @param {EventWithReferences[]} events The list of events to enrich.
+  * @param {LeagueData} leagueData Optional league data containing members, selection timeline, and rules.
+  */
+export function useEnrichEvents(
+  seasonData: SeasonsDataQuery,
+  events: EventWithReferences[] | null,
+  leagueData?: {
+    leagueMembers?: {
+      loggedIn?: LeagueMember;
+      members: LeagueMember[];
+    },
+    selectionTimeline?: SelectionTimelines,
+    leagueRules?: LeagueRules
+  },
+) {
+  const {
+    tribes,
+    castaways,
+    eliminations,
+    tribesTimeline
+  } = seasonData;
+
+  const {
+    selectionTimeline,
+    leagueRules: rules,
+    leagueMembers
+  } = leagueData ?? {};
+
 
   const lookupMaps = useMemo(() => {
-    if (!tribes || !castaways || !leagueMembers || !eliminations) {
+    if (!tribes || !castaways || !eliminations) {
       return null;
     }
 
     const tribesById = new Map(tribes.map(tribe => [tribe.tribeId, tribe]));
     const castawaysById = new Map(castaways.map(castaway => [castaway.castawayId, castaway]));
-    const membersById = new Map(leagueMembers.members.map(member => [member.memberId, member]));
+    const membersById = new Map((leagueMembers ?? { members: [] }).members.map(member => [member.memberId, member]));
     const eliminationEpisodes = new Map<number, number>();
     eliminations.forEach((episodeElims, index) => {
       episodeElims.forEach(elim => {
@@ -44,7 +58,12 @@ export function useEnrichEvents(seasonId: number | null, events: EventWithRefere
       });
     });
 
-    return { tribesById, castawaysById, membersById, eliminationEpisodes };
+    return {
+      tribesById,
+      castawaysById,
+      membersById,
+      eliminationEpisodes
+    };
   }, [tribes, castaways, leagueMembers, eliminations]);
 
   const pointsLookup = useMemo(() => {
@@ -76,7 +95,10 @@ export function useEnrichEvents(seasonId: number | null, events: EventWithRefere
         for (const [tribeIdStr, tribeMembers] of Object.entries(tribesInEpisode)) {
           if (tribeMembers.includes(castawayId)) {
             const tribe = lookupMaps.tribesById.get(parseInt(tribeIdStr));
-            return tribe ? { name: tribe.tribeName, color: tribe.tribeColor } : null;
+            return tribe ? {
+              name: tribe.tribeName,
+              color: tribe.tribeColor
+            } : null;
           }
         }
       }
@@ -85,15 +107,11 @@ export function useEnrichEvents(seasonId: number | null, events: EventWithRefere
   }, [tribesTimeline, lookupMaps]);
 
   return useMemo(() => {
-    if (!events || !tribesTimeline || !selectionTimeline || !lookupMaps || !createTribeFinder) {
+    if (!events || !tribesTimeline || !lookupMaps || !createTribeFinder) {
       return [];
     }
 
-    const createCastawayMemberPairs = (
-      castawayIds: number[],
-      tribe: Tribe | null,
-      episodeNumber: number
-    ) => {
+    const createCastawayMemberPairs = (castawayIds: number[], tribe: Tribe | null, episodeNumber: number) => {
       return castawayIds
         .map(castawayId => {
           const castaway = lookupMaps.castawaysById.get(castawayId);
@@ -101,14 +119,25 @@ export function useEnrichEvents(seasonId: number | null, events: EventWithRefere
             return null;
           }
 
-          const castawaySelections = selectionTimeline.castawayMembers[castawayId];
+          // Handle the case where there's no league/selectionTimeline
+          const castawaySelections = selectionTimeline?.castawayMembers?.[castawayId];
           const selectionLength = castawaySelections?.length ?? 0;
-          const memberId =
-            castawaySelections?.[Math.min(selectionLength - 1, episodeNumber)] ?? null;
+          const memberId = castawaySelections?.[Math.min(selectionLength - 1, episodeNumber)] ?? null;
 
-          const member = memberId ? (lookupMaps.membersById.get(memberId) ?? null) : null;
+          const member = memberId ? lookupMaps.membersById.get(memberId) ?? null : null;
 
           const eliminatedEpisode = lookupMaps.eliminationEpisodes.get(castawayId) ?? null;
+
+          const secondaries = Object.entries(selectionTimeline?.secondaryPicks ?? {})
+            .filter(([, picks]) => {
+              const pick = picks[episodeNumber];
+              return pick === castawayId;
+            })
+            .map(([memberIdStr]) => {
+              const member = lookupMaps.membersById.get(parseInt(memberIdStr));
+              return member;
+            })
+            .filter((m): m is LeagueMember => m !== undefined);
 
           const castawayWithTribe: EnrichedCastaway = {
             ...castaway,
@@ -118,15 +147,16 @@ export function useEnrichEvents(seasonId: number | null, events: EventWithRefere
             eliminatedEpisode
           };
 
-          return { castaway: castawayWithTribe, member };
+          return { castaway: castawayWithTribe, member, secondaries };
         })
-        .filter((pair): pair is NonNullable<typeof pair> => pair !== null);
+        .filter(pair => pair !== null);
     };
 
     return events
-      .map(event => {
-        const pointsKey =
-          event.eventSource === 'Base' ? `base-${event.eventName}` : `custom-${event.eventName}`;
+      .map((event) => {
+        const pointsKey = event.eventSource === 'Base'
+          ? `base-${event.eventName}`
+          : `custom-${event.eventName}`;
         const points = pointsLookup.get(pointsKey) ?? null;
 
         const { eventTribes, eventCastaways } = event.references.reduce(
@@ -138,29 +168,22 @@ export function useEnrichEvents(seasonId: number | null, events: EventWithRefere
           { eventTribes: [] as number[], eventCastaways: [] as number[] }
         );
 
-        const referenceMap = eventTribes
-          .map(tribeId => {
-            const tribe = lookupMaps.tribesById.get(tribeId);
-            if (!tribe) return null;
+        const referenceMap = eventTribes.map(tribeId => {
+          const tribe = lookupMaps.tribesById.get(tribeId);
+          if (!tribe) return null;
 
-            const tribeMembers = findTribeCastaways(
-              tribesTimeline,
-              eliminations ?? [],
-              tribeId,
-              event.episodeNumber
-            );
-            const pairs = createCastawayMemberPairs(tribeMembers, tribe, event.episodeNumber);
+          const tribeMembers = findTribeCastaways(tribesTimeline, eliminations ?? [], tribeId, event.episodeNumber);
+          const pairs = createCastawayMemberPairs(tribeMembers, tribe, event.episodeNumber);
 
-            return { tribe, pairs } as EnrichedEvent['referenceMap'][number];
-          })
-          .filter((ref): ref is NonNullable<typeof ref> => ref !== null);
+          return { tribe, pairs } as EnrichedEvent['referenceMap'][number];
+        }).filter((ref): ref is NonNullable<typeof ref> => ref !== null);
 
         const referencedCastawayIds = new Set(
           referenceMap.flatMap(tm => tm.pairs.map(p => p.castaway.castawayId))
         );
 
-        const looseCastaways = eventCastaways.filter(
-          castawayId => !referencedCastawayIds.has(castawayId)
+        const looseCastaways = eventCastaways.filter(castawayId =>
+          !referencedCastawayIds.has(castawayId)
         );
 
         if (looseCastaways.length > 0) {
@@ -170,16 +193,12 @@ export function useEnrichEvents(seasonId: number | null, events: EventWithRefere
           }
         }
 
-        return { ...event, points, referenceMap } as EnrichedEvent;
+        return {
+          ...event,
+          points,
+          referenceMap,
+        } as EnrichedEvent;
       })
-      .filter((event): event is EnrichedEvent => event !== null);
-  }, [
-    events,
-    tribesTimeline,
-    selectionTimeline,
-    lookupMaps,
-    createTribeFinder,
-    pointsLookup,
-    eliminations
-  ]);
+      .filter(event => event !== null);
+  }, [events, tribesTimeline, selectionTimeline, lookupMaps, createTribeFinder, pointsLookup, eliminations]);
 }

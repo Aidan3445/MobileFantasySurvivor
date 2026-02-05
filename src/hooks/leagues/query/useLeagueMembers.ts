@@ -16,7 +16,7 @@ export function useLeagueMembers(overrideHash?: string) {
   const hash = overrideHash ?? (params?.hash as string);
 
   const isEpisodeAiring = useIsEpisodeAiring(overrideHash);
-  const refreshConfig = useRefreshConfig(isEpisodeAiring);
+  const refreshConfig = useRefreshConfig(isEpisodeAiring, true, overrideHash);
 
   return useQuery<{ loggedIn?: LeagueMember; members: LeagueMember[] }>({
     queryKey: ['leagueMembers', hash],

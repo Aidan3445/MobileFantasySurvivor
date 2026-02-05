@@ -1,6 +1,6 @@
 'use client';
 import { Lock, LockOpen } from 'lucide-react-native';
-import { Text, View, Pressable } from 'react-native';
+import { Text, View } from 'react-native';
 import Button from '~/components/common/button';
 import { useBaseEventRules } from '~/hooks/leagues/mutation/useBaseEventRules';
 import { colors } from '~/lib/colors';
@@ -9,15 +9,27 @@ import AdvantageScoreSettings from '~/components/leagues/customization/events/ba
 import OtherScoreSettings from '~/components/leagues/customization/events/base/other';
 
 export default function BaseEventRules() {
-  const { reactForm, locked, setLocked, rulesChanged, handleSubmit, resetSettings, disabled } =
-    useBaseEventRules();
+  const {
+    reactForm,
+    locked,
+    setLocked,
+    rulesChanged,
+    handleSubmit,
+    resetSettings,
+    disabled
+  } = useBaseEventRules();
 
   return (
-    <View className='w-full rounded-xl bg-card p-2'>
+    <View className='w-full rounded-xl bg-card p-2 border-2 border-primary/20 gap-2'>
       <View className='flex-row items-center justify-between'>
-        <Text className='text-card-foreground text-lg font-bold'>Official Events</Text>
+        <View className='flex-row items-center gap-1 h-8'>
+          <View className='h-6 w-1 bg-primary rounded-full' />
+          <Text className='text-xl font-black uppercase tracking-tight'>
+            Official Events
+          </Text>
+        </View>
         {!disabled && (
-          <Pressable
+          <Button
             onPress={() => {
               if (locked) {
                 setLocked(false);
@@ -26,20 +38,14 @@ export default function BaseEventRules() {
               }
             }}>
             {locked ? (
-              <Lock
-                size={24}
-                color={colors.primary}
-              />
+              <Lock size={24} color={colors.primary} />
             ) : (
-              <LockOpen
-                size={24}
-                color={colors.secondary}
-              />
+              <LockOpen size={24} color={colors.secondary} />
             )}
-          </Pressable>
+          </Button>
         )}
       </View>
-      <Text className='mb-2 text-sm text-muted-foreground'>
+      <Text className='text-base text-muted-foreground'>
         These Official Events are automatically scored for your league based on what drafted
         castaways do in the show. Set the point values for each event.
       </Text>
@@ -60,18 +66,9 @@ export default function BaseEventRules() {
           </View>
         )}
         <View className='gap-2'>
-          <ChallengeScoreSettings
-            reactForm={reactForm}
-            disabled={locked || disabled}
-          />
-          <AdvantageScoreSettings
-            reactForm={reactForm}
-            disabled={locked || disabled}
-          />
-          <OtherScoreSettings
-            reactForm={reactForm}
-            disabled={locked || disabled}
-          />
+          <ChallengeScoreSettings reactForm={reactForm} disabled={locked || disabled} />
+          <AdvantageScoreSettings reactForm={reactForm} disabled={locked || disabled} />
+          <OtherScoreSettings reactForm={reactForm} disabled={locked || disabled} />
         </View>
       </View>
     </View>

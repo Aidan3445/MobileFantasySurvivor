@@ -8,10 +8,14 @@ export type Castaway = {
   occupation: string;
   imageUrl: string;
   seasonId: number | null;
+  previouslyOn: string[] | null;
 };
 
 export type EnrichedCastaway = Castaway & {
-  tribe: { name: string; color: string } | null;
+  tribe: {
+    name: string;
+    color: string;
+  } | null;
   eliminatedEpisode: number | null;
 };
 
@@ -23,4 +27,5 @@ export type CastawayInsert = {
   occupation: string;
   imageUrl: string;
   tribe: string;
-};
+  previouslyOn?: string[];
+}
