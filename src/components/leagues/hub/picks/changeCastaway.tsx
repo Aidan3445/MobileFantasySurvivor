@@ -176,10 +176,8 @@ export default function ChangeCastaway() {
                   options={mainPickOptions}
                   selectedValue={selected ? parseInt(selected) : undefined}
                   onSelect={(value) => handleSelectionChange('survivor', String(value))}
-                  placeholder='Select new survivor'
-                />
-              )}
-            />
+                  placeholder='Select new survivor' />
+              )} />
             <Pressable
               onPress={onSubmitMain}
               disabled={!canSubmitMain}
@@ -210,8 +208,7 @@ export default function ChangeCastaway() {
                 options={secondaryPickOptions}
                 selectedValue={secondarySelected ? parseInt(secondarySelected) : undefined}
                 onSelect={(value) => handleSelectionChange('secondary', String(value))}
-                placeholder='Select secondary pick'
-              />
+                placeholder='Select secondary pick' />
               <Pressable
                 onPress={onSubmitSecondary}
                 disabled={!canSubmitSecondary}

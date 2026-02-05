@@ -1,121 +1,91 @@
-'use client';
-
-import { Text, View } from 'react-native';
-import { type DraftDetails } from '~/types/leagues';
-import { useSearchableSelect } from '~/hooks/ui/useSearchableSelect';
-import SearchableSelect from '~/components/common/searchableSelect';
-import Button from '~/components/common/button';
-import ColorRow from '~/components/shared/colorRow';
-import { useChooseCastaway } from '~/hooks/leagues/mutation/useChooseCastaway';
+import { View, Text, Pressable } from 'react-native';
 import { Controller } from 'react-hook-form';
-import { getContrastingColor } from '@uiw/color-convert';
+import { cn } from '~/lib/utils';
+import { colors } from '~/lib/colors';
+import { type DraftDetails } from '~/types/leagues';
+import { useChooseCastaway } from '~/hooks/leagues/mutation/useChooseCastaway';
+import SearchableSelect from '~/components/common/searchableSelect';
+import ColorRow from '~/components/shared/colorRow';
 
 interface ChooseCastawayProps {
-  draftDetails: DraftDetails;
-  onDeck: boolean;
   hash: string;
+  draftDetails?: DraftDetails;
+  onDeck: boolean;
 }
 
-export default function ChooseCastaway({ draftDetails, onDeck, hash }: ChooseCastawayProps) {
+export default function ChooseCastaway({ hash, draftDetails, onDeck }: ChooseCastawayProps) {
   const { reactForm, handleSubmit } = useChooseCastaway(hash);
-  const castawaySelectHook = useSearchableSelect<number>();
 
-  const castawayOptions = Object.values(draftDetails).flatMap(({ tribe, castaways }) =>
-    castaways.map(({ castaway, member }) => ({
-      value: castaway.castawayId,
-      label: castaway.fullName,
-      tribe: tribe,
-      member: member,
-      disabled: !!member
-    }))
+  const selectedCastawayId = reactForm.watch('castawayId');
+  const isValid = !!selectedCastawayId;
+  const canSubmit = !onDeck && isValid;
+
+  // Build castaway options from draft details
+  const selectOptions = Object.values(draftDetails ?? {}).flatMap(({ tribe, castaways }) =>
+    castaways.map(({ castaway, member }) => {
+      const isDisabled = !!member;
+
+      return {
+        value: castaway.castawayId,
+        label: castaway.fullName,
+        disabled: isDisabled,
+        renderLabel: () => (
+          <View
+            className='flex-1 flex-row items-center gap-2 rounded-md p-1'
+            style={isDisabled ? { backgroundColor: member?.color ?? colors.neutral } : undefined}>
+            <ColorRow className='w-min' color={tribe.tribeColor}>
+              <Text className='text-base font-medium leading-tight'>{tribe.tribeName}</Text>
+            </ColorRow>
+            <Text className='text-base'>
+              {castaway.fullName}
+              {member && ` (${member.displayName})`}
+            </Text>
+          </View>
+        ),
+      };
+    })
   );
 
   return (
-    <View className='w-full rounded-lg bg-card p-4'>
+    <View className='rounded-xl border-2 border-primary/20 bg-card p-2 gap-3'>
+      {/* Header */}
+      <View className='flex-row items-center gap-2 px-1'>
+        <View className='h-6 w-1 rounded-full bg-primary' />
+        <Text className='text-xl font-black uppercase tracking-tight text-foreground'>
+          {onDeck ? 'You\'re On Deck' : 'You\'re On The Clock!'}
+        </Text>
+      </View>
+
+      {onDeck && (
+        <Text className='text-base text-muted-foreground px-1'>
+          Get ready — you're picking next!
+        </Text>
+      )}
+
+      {/* Castaway Select */}
       <Controller
         control={reactForm.control}
         name='castawayId'
-        render={({ field: { onChange, value } }) => {
-          const selectedCastaway = castawayOptions.find(opt => opt.value === value);
+        render={({ field }) => (
+          <SearchableSelect
+            options={selectOptions}
+            selectedValue={field.value}
+            onSelect={(value) => field.onChange(value)}
+            placeholder='Select castaway' />
+        )} />
 
-          return (
-            <>
-              <Text className='text-center text-2xl font-semibold text-card-foreground mb-4'>
-                {onDeck ? 'You\'re on deck' : 'You\'re on the clock!'}
-              </Text>
-
-              <View className='flex-row items-center gap-4'>
-                <Button
-                  className='border-border flex-1 rounded-lg border bg-background p-3'
-                  onPress={castawaySelectHook.openModal}>
-                  <Text className={selectedCastaway ? 'text-foreground' : 'text-muted-foreground'}>
-                    {selectedCastaway ? selectedCastaway.label : 'Select castaway'}
-                  </Text>
-                </Button>
-                <Button
-                  className='w-40 rounded-lg bg-primary p-3'
-                  disabled={!reactForm.formState.isValid || onDeck}
-                  onPress={handleSubmit}>
-                  <Text className='text-center font-bold text-white'>
-                    {onDeck ? 'Almost time!' : 'Submit Pick'}
-                  </Text>
-                </Button>
-              </View>
-              <SearchableSelect
-                isVisible={castawaySelectHook.isVisible}
-                onClose={castawaySelectHook.closeModal}
-                options={castawaySelectHook.filterOptions(
-                  castawayOptions.map(opt => ({
-                    value: opt.value,
-                    label: opt.label,
-                    disabled: opt.disabled,
-                    renderLabel: () => (
-                      <View
-                        className='flex-row items-center gap-1 rounded p-2 w-[90%]'
-                        style={
-                          opt.disabled && opt.member
-                            ? {
-                              backgroundColor: opt.member.color,
-                            }
-                            : undefined
-                        }>
-                        <ColorRow
-                          className='min-w-12 justify-center px-1 py-1 leading-tight'
-                          color={opt.tribe.tribeColor}>
-                          <Text
-                            className='text-center text-xs font-normal'
-                            style={{ color: getContrastingColor(opt.tribe.tribeColor) }}>
-                            {opt.tribe.tribeName}
-                          </Text>
-                        </ColorRow>
-                        <Text
-                          className='ml-1'
-                          style={
-                            opt.disabled && opt.member
-                              ? { color: getContrastingColor(opt.member.color) }
-                              : { color: 'white' }
-                          }>
-                          {opt.label}
-                          {opt.disabled && opt.member && ` (${opt.member.displayName})`}
-                        </Text>
-                      </View>
-                    )
-                  }))
-                )}
-                selectedValue={value ?? 0}
-                onSelect={selectedValue => {
-                  onChange(selectedValue);
-                  castawaySelectHook.closeModal();
-                }}
-                searchText={castawaySelectHook.searchText}
-                onSearchChange={castawaySelectHook.setSearchText}
-                placeholder='Search castaways...'
-                emptyMessage='No castaways available.'
-              />
-            </>
-          );
-        }}
-      />
+      {/* Submit Button */}
+      <Pressable
+        onPress={() => void handleSubmit()}
+        disabled={!canSubmit}
+        className={cn(
+          'rounded-lg bg-primary p-3 active:opacity-80',
+          !canSubmit && 'opacity-50'
+        )}>
+        <Text className='text-center text-base font-bold uppercase tracking-wider text-primary-foreground'>
+          {onDeck ? 'Almost Time!' : 'Submit Pick'}
+        </Text>
+      </Pressable>
     </View>
   );
 }
