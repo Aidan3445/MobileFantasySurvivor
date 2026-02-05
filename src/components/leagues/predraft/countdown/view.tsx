@@ -1,6 +1,5 @@
 import { View, Text } from 'react-native';
 import Button from '~/components/common/button';
-import { useRouter } from 'expo-router';
 import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
@@ -24,7 +23,6 @@ export function DraftCountdown({ overrideHash, className }: DraftCountdownProps)
   const { data: league } = useLeague(overrideHash);
   const { data: leagueSettings } = useLeagueSettings(overrideHash);
   const { data: leagueMembers } = useLeagueMembers(overrideHash);
-  const router = useRouter();
 
   const editable = useMemo(
     () =>
@@ -49,7 +47,6 @@ export function DraftCountdown({ overrideHash, className }: DraftCountdownProps)
       await queryClient.invalidateQueries({ queryKey: ['league', league.hash] });
       await queryClient.invalidateQueries({ queryKey: ['settings', league.hash] });
     }
-    router.push(`/leagues/${league.hash}/draft`);
   };
 
   return (
