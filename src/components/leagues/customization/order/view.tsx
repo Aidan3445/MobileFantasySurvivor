@@ -80,15 +80,9 @@ export default function DraftOrder({ className }: DraftOrderProps) {
                 }
               }}>
               {orderLocked ? (
-                <Lock
-                  size={24}
-                  color={colors.primary}
-                />
+                <Lock size={24} color={colors.primary} />
               ) : (
-                <LockOpen
-                  size={24}
-                  color={colors.secondary}
-                />
+                <LockOpen size={24} color={colors.secondary} />
               )}
             </Button>
           )}

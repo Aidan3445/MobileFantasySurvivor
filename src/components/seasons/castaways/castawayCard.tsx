@@ -1,12 +1,13 @@
 import { View, Text, Pressable } from 'react-native';
 import { Image } from 'expo-image';
+import { Grayscale } from 'react-native-color-matrix-image-filters';
 import * as WebBrowser from 'expo-web-browser';
 import { ExternalLink, FlameKindling } from 'lucide-react-native';
 import { useMemo } from 'react';
 import { type EnrichedCastaway } from '~/types/castaways';
 import { type Tribe, type TribesTimeline } from '~/types/tribes';
 import { type LeagueMember } from '~/types/leagueMembers';
-import { cn, getTribeTimeline } from '~/lib/utils';
+import { getTribeTimeline } from '~/lib/utils';
 import ColorRow from '~/components/shared/colorRow';
 import TribeHistoryCircles from '~/components/shared/castaways/tribeHistoryCircles';
 import { colors } from '~/lib/colors';
@@ -41,23 +42,31 @@ export default function CastawayCard({
         className='relative h-16 justify-start gap-2 px-2 py-2'
         color={castaway.eliminatedEpisode ? '#AAAAAA' : castaway.tribe!.color}>
         <View className='flex-row items-center gap-2'>
-          <Image
-            source={{ uri: castaway.imageUrl }}
-            style={{ width: 50, height: 50, borderRadius: 25, borderWidth: 2, borderColor: '#00000020' }}
-            className={cn((!!member || !!castaway.eliminatedEpisode) && 'grayscale')} />
+          <Grayscale amount={0}>
+            <Image
+              source={{ uri: castaway.imageUrl }}
+              style={{
+                width: 50,
+                height: 50,
+                borderRadius: 25,
+                borderWidth: 2,
+                borderColor: colors.primary,
+              }} />
+          </Grayscale>
           <Text className='font-bold text-foreground'>{castaway.fullName}</Text>
 
-          {/* Member Badge */}
-          {member && (
-            <View className='absolute -right-1 top-1 z-50' style={{ transform: [{ rotate: '30deg' }] }}>
-              <ColorRow color={member.color}>
-                <Text className='text-base font-bold leading-tight'>
-                  {member.displayName}
-                </Text>
-              </ColorRow>
-            </View>
-          )}
         </View>
+
+        {/* Member Badge */}
+        {member && (
+          <View className='absolute -right-1 top-1 z-50' style={{ transform: [{ rotate: '30deg' }] }}>
+            <ColorRow color={member.color} opaque>
+              <Text className='text-base font-bold leading-tight'>
+                {member.displayName}
+              </Text>
+            </ColorRow>
+          </View>
+        )}
 
         {/* Tribe History or Spacer */}
         {(tribeTimeline.length > 1 || castaway.eliminatedEpisode) && (

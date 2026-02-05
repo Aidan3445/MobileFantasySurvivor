@@ -10,7 +10,7 @@ export default function LeagueLayout() {
   const segments = useSegments();
   const { data: league, isLoading } = useLeague(hash);
 
-  // e.g. ['leagues', '[hash]', 'draft']
+  const isModalRoute = segments.includes('(modals)');
   const currentLeaf = segments[segments.length - 1];
 
   if (isLoading) {
@@ -25,21 +25,21 @@ export default function LeagueLayout() {
     return <Redirect href='/leagues' />;
   }
 
-  // Guarded redirects
-  if (league.status === 'Predraft' && currentLeaf !== 'predraft') {
-    return <Redirect href={`/leagues/${hash}/predraft`} />;
-  }
+  if (!isModalRoute) {
+    if (league.status === 'Predraft' && currentLeaf !== 'predraft') {
+      return <Redirect href={`/leagues/${hash}/predraft`} />;
+    }
 
-  if (league.status === 'Draft' && currentLeaf !== 'draft') {
-    return <Redirect href={`/leagues/${hash}/draft`} />;
-  }
+    if (league.status === 'Draft' && currentLeaf !== 'draft') {
+      return <Redirect href={`/leagues/${hash}/draft`} />;
+    }
 
-  // Active leagues should *not* live on draft/predraft routes
-  if (
-    league.status === 'Active' &&
-    (currentLeaf === 'draft' || currentLeaf === 'predraft')
-  ) {
-    return <Redirect href={`/leagues/${hash}`} />;
+    if (
+      league.status === 'Active' &&
+      (currentLeaf === 'draft' || currentLeaf === 'predraft')
+    ) {
+      return <Redirect href={`/leagues/${hash}`} />;
+    }
   }
 
   return <Slot />;

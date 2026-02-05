@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "IP=$(ipconfig getifaddr en11 || ipconfig getifaddr en0) && sed -i '' \"s|^EXPO_PUBLIC_API_URL=.*|EXPO_PUBLIC_API_URL=http://$IP:1234|\" .env && echo \"Set EXPO_PUBLIC_API_URL to http://$IP:1234\" && expo start --clear",
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "deploy": "npx expo export -p web && npx eas-cli@latest deploy",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
@@ -51,6 +51,7 @@
     "react-hook-form": "^7.62.0",
     "react-native": "0.81.4",
     "react-native-collapsible": "^1.6.2",
+    "react-native-color-matrix-image-filters": "^8.0.2",
     "react-native-draggable-flatlist": "^4.0.3",
     "react-native-gesture-handler": "~2.28.0",
     "react-native-get-random-values": "^2.0.0",

@@ -93,9 +93,10 @@ export default function DraftScreen() {
           refreshing && 'pt-12'
         )}>
           <DraftOrder
+            hash={hash}
             leagueMembers={leagueMembers}
-            membersWithPicks={membersWithPicks}
-            onTheClock={onTheClock} />
+            onTheClockMemberId={onTheClock?.memberId}
+            membersWithPicks={membersWithPicks} />
           {(onTheClock?.loggedIn || onDeck?.loggedIn) && actionDetails && (
             <ChooseCastaway
               draftDetails={actionDetails}
