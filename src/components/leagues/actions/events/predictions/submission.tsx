@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { type ReactNode, useEffect, useMemo, useState } from 'react';
 import { View, Text, TextInput, Pressable } from 'react-native';
 import { Controller } from 'react-hook-form';
 import { RotateCcw, HelpCircle, X } from 'lucide-react-native';
@@ -45,27 +45,73 @@ export default function SubmissionCard({
     updateBetTotal(prediction.eventName, prediction.predictionMade?.bet ?? 0);
   }, [prediction?.predictionMade, reset, prediction.eventName, updateBetTotal]);
 
-  // Build select options from the options prop
+  // Build select options based on prediction.referenceTypes
   const selectOptions = useMemo(() => {
-    const result: { value: number; label: string; color: string; group?: string }[] = [];
+    const result: {
+      value: number;
+      label: string;
+      disabled?: boolean;
+      renderLabel: () => ReactNode;
+    }[] = [];
 
-    Object.entries(options).forEach(([referenceType, references]) => {
-      Object.entries(references)
+    const referenceTypes = prediction.referenceTypes ?? ['Castaway'];
+    const includeTribes = referenceTypes.includes('Tribe');
+    const includeCastaways = referenceTypes.includes('Castaway');
+
+    // Add tribe options
+    if (includeTribes && options.Tribe) {
+      Object.entries(options.Tribe)
+        .sort(([nameA], [nameB]) => nameA.localeCompare(nameB))
+        .forEach(([name, vals]) => {
+          result.push({
+            value: vals.id,
+            label: name,
+            renderLabel: () => (
+              <View className='flex-1 flex-row items-center gap-2 rounded-md p-1'>
+                <ColorRow className='w-min px-2' color={vals.color}>
+                  <Text className='text-base font-medium'>{name}</Text>
+                </ColorRow>
+              </View>
+            ),
+          });
+        });
+    }
+
+    // Add castaway options (from both Castaway and Direct Castaway)
+    if (includeCastaways) {
+      const castawayEntries: [string, { id: number; color: string; tribeName?: string }][] = [];
+
+      if (options.Castaway) {
+        castawayEntries.push(...Object.entries(options.Castaway));
+      }
+      if (options['Direct Castaway']) {
+        castawayEntries.push(...Object.entries(options['Direct Castaway']));
+      }
+
+      castawayEntries
         .sort(([nameA, valsA], [nameB, valsB]) =>
           (valsA.tribeName?.localeCompare(valsB.tribeName ?? '') ?? 0) || nameA.localeCompare(nameB)
         )
         .forEach(([name, vals]) => {
           result.push({
             value: vals.id,
-            label: referenceType === 'Tribe' ? name : `${name}`,
-            color: vals.color,
-            group: referenceType === 'Tribe' ? undefined : vals.tribeName,
+            label: name,
+            renderLabel: () => (
+              <View className='flex-1 flex-row items-center gap-2 rounded-md p-1'>
+                {vals.tribeName && (
+                  <ColorRow className='w-min px-2' color={vals.color}>
+                    <Text className='text-base font-medium'>{vals.tribeName}</Text>
+                  </ColorRow>
+                )}
+                <Text className='text-base text-foreground'>{name}</Text>
+              </View>
+            ),
           });
         });
-    });
+    }
 
     return result;
-  }, [options]);
+  }, [options, prediction.referenceTypes]);
 
   const handleReset = () => {
     reset();
@@ -98,33 +144,16 @@ export default function SubmissionCard({
             name='referenceId'
             render={({ field: { value, onChange } }) => (
               <SearchableSelect
-                options={selectOptions.map((opt) => ({
-                  value: opt.value,
-                  label: opt.label,
-                  renderLabel: () => (
-                    <View className='flex-row items-center gap-2'>
-                      {opt.group && (
-                        <ColorRow color={opt.color} className='px-1 w-min'>
-                          <Text
-                            allowFontScaling={false}
-                            className='text-sm text-foreground'>{opt.group}
-                          </Text>
-                        </ColorRow>
-                      )}
-                      <Text
-                        allowFontScaling={false}
-                        className='text-foreground'>{opt.label}
-                      </Text>
-                    </View>
-                  ),
-                }))}
+                options={selectOptions}
                 selectedValue={value}
                 onSelect={onChange}
                 placeholder='Select prediction'
                 className={cn(
                   isDirty && value !== prediction?.predictionMade?.referenceId && 'bg-amber-400'
-                )} />
-            )} />
+                )}
+              />
+            )}
+          />
         </View>
       </View>
 
@@ -152,8 +181,10 @@ export default function SubmissionCard({
                   const num = text === '' ? 0 : Math.max(0, Math.min(Number(text), maxBet || 1000)) || 0;
                   onChange(num);
                   updateBetTotal(prediction.eventName, num);
-                }} />
-            )} />
+                }}
+              />
+            )}
+          />
         </View>
       )}
 
@@ -162,26 +193,24 @@ export default function SubmissionCard({
         onPress={() => void onSubmit()}
         disabled={isSubmitDisabled}
         className={cn('rounded-lg bg-primary p-3 active:opacity-80', isSubmitDisabled && 'opacity-50')}>
-        <Text
-          allowFontScaling={false}
-          className='text-center font-bold text-primary-foreground'>
+        <Text allowFontScaling={false} className='text-center font-bold text-primary-foreground'>
           {prediction.predictionMade ? 'Update' : 'Submit'}
         </Text>
       </Pressable>
 
       {/* Shauhin Help Modal */}
       <Modal visible={helpVisible} onClose={() => setHelpVisible(false)}>
-        <View className='rounded-xl border-2 border-primary/20 bg-card p-3 gap-2 max-w-[85%]'>
+        <View className='gap-3'>
           <View className='flex-row items-center justify-between'>
             <Text className='text-lg font-bold text-foreground'>Shauhin Mode</Text>
             <Pressable onPress={() => setHelpVisible(false)}>
               <X size={20} color={colors.mutedForeground} />
             </Pressable>
           </View>
-          <Text className='text-sm text-foreground'>
+          <Text className='text-base text-foreground'>
             If your prediction is correct, you will earn the bet amount in points. Miss it, and you lose the bet amount.
           </Text>
-          <Text className='text-sm text-foreground'>
+          <Text className='text-base text-foreground'>
             Bets are limited to a maximum of {maxBet ?? 1000} points.
           </Text>
           <Text className='text-sm text-muted-foreground'>

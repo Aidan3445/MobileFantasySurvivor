@@ -10,6 +10,7 @@ import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
 import { useSeasonsData } from '~/hooks/seasons/useSeasonsData';
 import RefreshIndicator from '~/components/common/refresh';
 import DraftCastawaysHeader from '~/components/leagues/draft/header/castawaysHeader';
+import { cn } from '~/lib/utils';
 
 export default function DraftCastawaysScreen() {
   const { hash } = useLocalSearchParams<{ hash: string }>();
@@ -30,9 +31,9 @@ export default function DraftCastawaysScreen() {
   return (
     <View className='flex-1 items-center justify-center bg-background'>
       <DraftCastawaysHeader />
-      <RefreshIndicator refreshing={refreshing} scrollY={scrollY} extraHeight={-5} />
+      <RefreshIndicator refreshing={refreshing} scrollY={scrollY} extraHeight={0} />
       <ScrollView
-        className='w-full pt-20'
+        className={cn('w-full transition-transform pt-20', refreshing && 'pt-24')}
         showsVerticalScrollIndicator={true}
         onScroll={handleScroll}
         scrollEventThrottle={16}
@@ -45,7 +46,7 @@ export default function DraftCastawaysScreen() {
             colors={['transparent']}
             progressBackgroundColor='transparent' />
         }>
-        <View className='gap-y-4 px-1.5 pb-4'>
+        <View className='gap-y-4 px-1.5 pb-12'>
           {seasonData?.[0] && (
             <CastawaysView seasonData={seasonData[0]} leagueData={leagueData} />
           )}

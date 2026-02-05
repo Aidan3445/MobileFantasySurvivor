@@ -150,10 +150,8 @@ export default function CreateBaseEvent({ seasonId }: CreateBaseEventProps) {
                   form.setValue('references', handleCombinedReferenceSelection(values))
                 }
                 placeholder='Select References'
-                disabled={eventSubtype === ''}
-              />
-            )}
-          />
+                disabled={eventSubtype === ''} />
+            )} />
         </View>
 
         {/* Notes Input */}

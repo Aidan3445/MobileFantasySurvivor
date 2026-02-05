@@ -14,56 +14,53 @@ export function useEventOptions(seasonId: number | null, selectedEpisode: number
 
   const tribeMembersArray = useMemo(() => Object.values(tribeMembers ?? {}), [tribeMembers]);
 
-  const tribeOptions = useMemo(
-    () =>
-      tribeMembersArray.map(({ tribe }) => ({
-        value: tribe.tribeId,
-        label: tribe.tribeName,
+  const tribeOptions = useMemo(() =>
+    tribeMembersArray.map(({ tribe }) => ({
+      value: tribe.tribeId,
+      label: tribe.tribeName,
+      renderLabel: () => (
+        <View className='flex-row items-center gap-2'>
+          <ColorRow color={tribe.tribeColor} className='w-min px-1 py-0'>
+            <Text className='text-base font-medium'>{tribe.tribeName}</Text>
+          </ColorRow>
+        </View>
+      ),
+    })),
+    [tribeMembersArray]
+  );
+
+  const castawayOptions = useMemo(() =>
+    tribeMembersArray.flatMap(({ tribe, castaways }) =>
+      castaways.map(castaway => ({
+        value: castaway.castawayId,
+        label: castaway.fullName,
         renderLabel: () => (
           <View className='flex-row items-center gap-2'>
             <ColorRow color={tribe.tribeColor} className='w-min px-1 py-0'>
               <Text className='text-base font-medium'>{tribe.tribeName}</Text>
             </ColorRow>
+            <Text className='text-base font-medium'>{castaway.fullName}</Text>
           </View>
-        ),
-      })),
-    [tribeMembersArray]
-  );
-
-  const castawayOptions = useMemo(
-    () =>
-      tribeMembersArray.flatMap(({ tribe, castaways }) =>
-        castaways.map(castaway => ({
-          value: castaway.castawayId,
-          label: castaway.fullName,
-          renderLabel: () => (
-            <View className='flex-row items-center gap-2'>
-              <ColorRow color={tribe.tribeColor} className='w-min px-1 py-0'>
-                <Text className='text-base font-medium'>{tribe.tribeName}</Text>
-              </ColorRow>
-              <Text className='text-base font-medium'>{castaway.fullName}</Text>
-            </View>
-          )
-        }))
-      ),
-    [tribeMembersArray]
-  );
-
-  const combinedReferenceOptions = useMemo(
-    () => [
-      { label: 'Tribes', value: null },
-      ...tribeOptions.map(tribe => ({
-        label: tribe.label,
-        value: `Tribe_${tribe.value}`,
-        renderLabel: tribe.renderLabel
-      })),
-      { label: 'Castaways', value: null },
-      ...castawayOptions.map(castaway => ({
-        label: castaway.label,
-        value: `Castaway_${castaway.value}`,
-        renderLabel: castaway.renderLabel
+        )
       }))
-    ],
+    ),
+    [tribeMembersArray]
+  );
+
+  const combinedReferenceOptions = useMemo(() => [
+    { label: 'Tribes', value: null },
+    ...tribeOptions.map(tribe => ({
+      label: tribe.label,
+      value: `Tribe_${tribe.value}`,
+      renderLabel: tribe.renderLabel
+    })),
+    { label: 'Castaways', value: null },
+    ...castawayOptions.map(castaway => ({
+      label: castaway.label,
+      value: `Castaway_${castaway.value}`,
+      renderLabel: castaway.renderLabel
+    }))
+  ],
     [tribeOptions, castawayOptions]
   );
 
@@ -77,9 +74,7 @@ export function useEventOptions(seasonId: number | null, selectedEpisode: number
   const getDefaultStringValues = useCallback(
     (references: { type: ReferenceType; id: number }[]) => {
       return references.map(ref => `${ref.type}_${ref.id}`);
-    },
-    []
-  );
+    }, []);
 
   return {
     tribeOptions,

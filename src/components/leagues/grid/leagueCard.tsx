@@ -50,6 +50,8 @@ export default function LeagueCard({
                   <FlameKindling size={16} color={colors['muted-foreground']} />
                 )}
               </View>
+            ) : league?.status === 'Draft' ? (
+              <Text className='font-bold text-muted-foreground'>Draft in progress</Text>
             ) : (
               <View className='flex-row items-center gap-1'>
                 <Text className='font-bold text-muted-foreground'>Draft:</Text>

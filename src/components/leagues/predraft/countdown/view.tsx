@@ -11,6 +11,7 @@ import { Calendar, CalendarX2 } from 'lucide-react-native';
 import { colors } from '~/lib/colors';
 import { cn } from '~/lib/utils';
 import SetDraftDate from '~/components/leagues/predraft/countdown/edit';
+import { useRouter, useSegments } from 'expo-router';
 
 interface DraftCountdownProps {
   overrideHash?: string;
@@ -23,6 +24,8 @@ export function DraftCountdown({ overrideHash, className }: DraftCountdownProps)
   const { data: league } = useLeague(overrideHash);
   const { data: leagueSettings } = useLeagueSettings(overrideHash);
   const { data: leagueMembers } = useLeagueMembers(overrideHash);
+  const segments = useSegments();
+  const router = useRouter();
 
   const editable = useMemo(
     () =>
@@ -46,6 +49,10 @@ export function DraftCountdown({ overrideHash, className }: DraftCountdownProps)
       }
       await queryClient.invalidateQueries({ queryKey: ['league', league.hash] });
       await queryClient.invalidateQueries({ queryKey: ['settings', league.hash] });
+    }
+
+    if (!segments.includes('draft')) {
+      router.push(`/leagues/${league.hash}`);
     }
   };
 

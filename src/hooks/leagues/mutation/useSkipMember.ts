@@ -14,7 +14,8 @@ export function useSkipMember({ hash, member, leagueMembers }: UseSkipMemberProp
   const putData = useFetch('PUT');
 
   const updateDraftOrder = async (draftOrder: number[]) => {
-    const response = await putData(`/api/leagues/${hash}/draftOrder/`, {
+    console.log('Updating draft order to:', draftOrder);
+    const response = await putData(`/api/leagues/${hash}/draftOrder`, {
       body: { draftOrder },
     });
     if (!response.ok) {
@@ -27,6 +28,7 @@ export function useSkipMember({ hash, member, leagueMembers }: UseSkipMemberProp
   const handleSkip = () => {
     void (async () => {
       try {
+        console.log('Attempting to skip member:', member);
         const memberToSwap = leagueMembers.find((m) => m.draftOrder === member.draftOrder + 1);
         if (!memberToSwap) {
           Alert.alert('Error', 'Cannot skip, already at the end of the draft order');
@@ -45,6 +47,8 @@ export function useSkipMember({ hash, member, leagueMembers }: UseSkipMemberProp
           })
           .sort((a, b) => a.draftOrder - b.draftOrder)
           .map((m) => m.memberId);
+
+        console.log('New draft order after skip:', draftOrder);
 
         await updateDraftOrder(draftOrder);
         Alert.alert('Success', 'Successfully skipped member');

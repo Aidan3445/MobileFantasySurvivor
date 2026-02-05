@@ -40,7 +40,7 @@ export default function WhileYouWait({
   if (!showSecondaryPick && !showPredictions) return null;
 
   return (
-    <View className='w-full rounded-xl border-2 border-primary/20 bg-card gap-4'>
+    <View className='w-full rounded-xl border-2 border-primary/20 bg-card'>
       {/* Header */}
       <View className='gap-1 px-3 pt-2'>
         <View className='flex-row items-center gap-2'>
@@ -60,7 +60,7 @@ export default function WhileYouWait({
 
       {/* Secondary Pick */}
       {showSecondaryPick && (
-        <View className='gap-2 rounded-lg border-2 border-primary/10 bg-primary/5 px-3 py-2'>
+        <View className='gap-2 rounded-lg border-2 border-primary/20 bg-primary/5 p-2 mx-2 mb-2'>
           <Text className='text-base font-semibold text-foreground'>Secondary Pick</Text>
           <SearchableSelect
             options={secondaryCastawayOptions}
