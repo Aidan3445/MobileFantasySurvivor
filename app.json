@@ -3,7 +3,7 @@
     "scheme": "yourfantasysurvivor",
     "userInterfaceStyle": "automatic",
     "orientation": "default",
-    "name": "Your Fantasy Survivor",
+    "name": "Trial by Fire",
     "slug": "mobile-fantasy-survivor",
     "version": "1.0.0",
     "owner": "aidan3445",
@@ -15,7 +15,14 @@
     },
     "plugins": [
       ["expo-router", { "origin": "https://yourfantasysurvivor.com" }],
-      ["expo-screen-orientation", { "initialOrientation": "PORTRAIT_UP" }]
+      ["expo-screen-orientation", { "initialOrientation": "PORTRAIT_UP" }],
+      [
+        "expo-notifications",
+        {
+          "icon": "./src/assets/Logo.png",
+          "color": "#E5BC8F"
+        }
+      ]
     ],
     "extra": {
       "router": { "origin": "https://yourfantasysurvivor.com" },
@@ -36,6 +43,7 @@
         "foregroundImage": "./src/assets/Logo.png",
         "backgroundColor": "#FFFFFF"
       },
+      "googleServicesFile": "./google-services.json",
       "intentFilters": [
         {
           "action": "VIEW",
