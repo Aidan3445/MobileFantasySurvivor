@@ -43,6 +43,7 @@
         "foregroundImage": "./src/assets/Logo.png",
         "backgroundColor": "#FFFFFF"
       },
+      "softwareKeyboardLayoutMode": "adjustResize",
       "googleServicesFile": "./google-services.json",
       "intentFilters": [
         {

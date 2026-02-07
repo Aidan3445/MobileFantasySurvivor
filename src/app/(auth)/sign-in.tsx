@@ -5,8 +5,10 @@ import React from 'react';
 import Header from '~/components/auth/header';
 import { SignInWithGoogle } from '~/components/auth/signInWithGoogle';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import useHeaderHeight from '~/hooks/ui/useHeaderHeight';
 
 export default function Page() {
+  const height = useHeaderHeight();
   const { signIn, setActive, isLoaded } = useSignIn();
   const { redirectTo } = useLocalSearchParams<{ redirectTo?: string }>();
   const router = useRouter();
@@ -41,14 +43,15 @@ export default function Page() {
   };
 
   return (
-    <SafeAreaView className='flex-1 justify-center start bg-background px-6'>
-      <Header />
+    <SafeAreaView className='relative flex-1 justify-center start bg-background px-6'>
+      <View
+        className='absolute justify-start items-center w-[100vw]'
+        style={{ top: height }}>
+        <Header />
+      </View>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        style={{
-          flex: 1,
-          justifyContent: 'flex-end'
-        }}>
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1, justifyContent: 'flex-end' }}>
         <View className='rounded-3xl bg-white p-8 shadow-lg mb-2'>
           <View className='items-center'>
             <Text className='mb-2 text-3xl font-bold text-primary'>Welcome Back!</Text>
@@ -61,15 +64,19 @@ export default function Page() {
               autoCapitalize='none'
               value={emailAddress}
               placeholder='Enter email'
-              className='rounded-2xl border border-accent bg-accent/20 px-4 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
+              className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
               placeholderTextColor='#B58553'
+              autoComplete='email'
+              importantForAutofill='yes'
               onChangeText={emailAddress => setEmailAddress(emailAddress)} />
             <TextInput
               value={password}
               placeholder='Enter password'
               secureTextEntry={true}
-              className='rounded-2xl border border-accent bg-accent/20 px-4 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
+              className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
               placeholderTextColor='#B58553'
+              autoComplete='password'
+              importantForAutofill='yes'
               onChangeText={password => setPassword(password)} />
             <SignInWithGoogle />
             <TouchableOpacity
