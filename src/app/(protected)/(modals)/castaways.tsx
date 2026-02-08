@@ -1,6 +1,6 @@
 'use client';
 
-import { RefreshControl, ScrollView, View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 import { useLeagueRefresh } from '~/hooks/helpers/refresh/useLeagueRefresh';
@@ -8,8 +8,8 @@ import CastawaysView from '~/components/seasons/castaways/view';
 import { useSelectionTimeline } from '~/hooks/leagues/query/useSelectionTimeline';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
 import { useSeasonsData } from '~/hooks/seasons/useSeasonsData';
-import RefreshIndicator from '~/components/common/refresh';
 import DraftCastawaysHeader from '~/components/leagues/draft/header/castawaysHeader';
+import SafeAreaRefreshView from '~/components/common/refresh/safeAreaRefreshView';
 import { cn } from '~/lib/utils';
 
 export default function DraftCastawaysScreen() {
@@ -29,29 +29,23 @@ export default function DraftCastawaysScreen() {
   };
 
   return (
-    <View className='flex-1 items-center justify-center bg-background'>
-      <DraftCastawaysHeader />
-      <RefreshIndicator refreshing={refreshing} scrollY={scrollY} extraHeight={0} />
-      <ScrollView
-        className={cn('w-full transition-transform pt-20', refreshing && 'pt-24')}
-        showsVerticalScrollIndicator={true}
-        onScroll={handleScroll}
-        scrollEventThrottle={16}
-        scrollIndicatorInsets={{ top: 70 }}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            tintColor='transparent'
-            colors={['transparent']}
-            progressBackgroundColor='transparent' />
-        }>
-        <View className='gap-y-4 px-1.5 pb-12'>
-          {seasonData?.[0] && (
-            <CastawaysView seasonData={seasonData[0]} leagueData={leagueData} />
-          )}
-        </View>
-      </ScrollView>
-    </View>
+    <SafeAreaRefreshView
+      header={<DraftCastawaysHeader />}
+      alreadySafe={Platform.OS === 'ios'}
+      extraHeight={Platform.OS === 'ios' ? 0 : undefined}
+      refreshing={refreshing}
+      onRefresh={onRefresh}
+      scrollY={scrollY}
+      handleScroll={handleScroll}>
+      <View className={cn(
+        'gap-y-4 px-1.5 pb-12',
+        Platform.OS === 'ios' ? 'pt-20' : 'pt-14',
+        refreshing && Platform.OS === 'ios' && 'pt-24'
+      )}>
+        {seasonData?.[0] && (
+          <CastawaysView seasonData={seasonData[0]} leagueData={leagueData} />
+        )}
+      </View>
+    </SafeAreaRefreshView>
   );
 }
