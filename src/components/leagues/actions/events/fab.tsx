@@ -6,16 +6,16 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
-import { Text, useWindowDimensions, View } from 'react-native';
+import { Platform, Text, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useCallback } from 'react';
+import { Fragment, useCallback } from 'react';
 import { colors } from '~/lib/colors';
 
 const FAB_SIZE = 56;
 const MARGINS = {
   x: 8,
-  top: -35,
-  bottom: 110
+  top: Platform.OS === 'ios' ? -35 : 8,
+  bottom: Platform.OS === 'ios' ? 110 : 85,
 };
 
 interface EventFABProps {
@@ -94,15 +94,16 @@ export default function EventFAB({ hash, isLeagueAdmin, isSysAdmin, isActive }: 
   }));
 
   const animatedSectionStyle = useAnimatedStyle(() => ({
-    opacity: withSpring(isDragging.value ? 0.5 : 0),
+    opacity: withSpring(isDragging.value ? 1 : 0),
   }));
 
   if (!isActive || (!isLeagueAdmin && !isSysAdmin)) return null;
 
 
   return (
-    <>
+    <Fragment>
       <Animated.View
+        pointerEvents='none'
         className='absolute bottom-0 left-0 right-0 top-0'
         style={[animatedSectionStyle]}>
         <View className='w-full h-0 border-t border-primary border-dashed absolute top-1/2' />
@@ -118,6 +119,6 @@ export default function EventFAB({ hash, isLeagueAdmin, isSysAdmin, isActive }: 
           <Pencil size={28} color={colors.card} />
         </Animated.View>
       </GestureDetector>
-    </>
+    </Fragment>
   );
 }
