@@ -1,5 +1,7 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { View, Text, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, Platform } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import SysAdminHeader from '~/components/auth/sys/header';
 import Button from '~/components/common/button';
 import { useSysAdmin } from '~/hooks/user/useSysAdmin';
@@ -11,10 +13,10 @@ export default function SysAdminScreen() {
 
   if (isLoading) {
     return (
-      <View className='page py-16 justify-center items-center'>
+      <SafeAreaView className='flex-1 bg-background py-16 justify-center items-center'>
         <SysAdminHeader />
         <Text className='text-lg text-center'>Checking Sys Admin Status...</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 
@@ -24,7 +26,7 @@ export default function SysAdminScreen() {
   }
 
   return (
-    <View className='page py-16'>
+    <SafeAreaView className='flex-1 bg-background py-16'>
       <SysAdminHeader />
       <KeyboardAvoidingView
         className='flex-1'
@@ -43,6 +45,6 @@ export default function SysAdminScreen() {
           </Button>
         </View>
       </KeyboardAvoidingView>
-    </View>
+    </SafeAreaView>
   );
 }
