@@ -29,7 +29,7 @@ export default function SeasonsScreen() {
   return (
     <Tabs defaultValue='events' className='flex-1 relative bg-red-500'>
       <SafeAreaRefreshView
-        className='pt-12'
+        className={cn(Platform.OS === 'android' && 'pt-10')}
         extraHeight={51}
         header={
           <SeasonsHeader
@@ -42,8 +42,9 @@ export default function SeasonsScreen() {
         scrollY={scrollY}
         handleScroll={handleScroll}>
         <View className={cn(
-          'page justify-start gap-y-4 px-1.5 pb-1.5 pt-6',
-          refreshing && Platform.OS === 'ios' && 'pt-10'
+          'page justify-start gap-y-4 px-1.5 pb-1.5',
+          Platform.OS === 'ios' ? 'pt-18' : 'pt-8',
+          refreshing && Platform.OS === 'ios' && 'pt-22'
         )}>
           <TabsContent value='events'>
             <EventTimeline seasonData={selectedSeasonData} hideMemberFilter />

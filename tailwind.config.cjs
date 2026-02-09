@@ -20,10 +20,16 @@ module.exports = {
         'muted-foreground': '#5E5955',
         'mutedForeground': '#5E5955',
         'positive': '#28A53F',
-        'destructive': '#FF3B30',
+        'destructive': '#E03B30',
         'destructive-foreground': '#FFFFFF',
         'destructiveForeground': '#FFFFFF',
         'neutral': '#4b5563',
+      },
+      padding: {
+        '18': '4.5rem',
+        '22': '5.5rem',
+        '26': '6.5rem',
+        '30': '7.5rem',
       },
       animation: {
         "fade-in": 'fade-in 0.25s ease-in forwards',

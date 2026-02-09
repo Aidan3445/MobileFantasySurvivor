@@ -30,6 +30,7 @@ export default function DraftCastawaysScreen() {
 
   return (
     <SafeAreaRefreshView
+      className={cn('pt-8', refreshing && Platform.OS === 'ios' && 'pt-12')}
       header={<DraftCastawaysHeader />}
       alreadySafe={Platform.OS === 'ios'}
       extraHeight={Platform.OS === 'ios' ? 0 : undefined}
@@ -37,11 +38,8 @@ export default function DraftCastawaysScreen() {
       onRefresh={onRefresh}
       scrollY={scrollY}
       handleScroll={handleScroll}>
-      <View className={cn(
-        'gap-y-4 px-1.5 pb-12',
-        Platform.OS === 'ios' ? 'pt-20' : 'pt-14',
-        refreshing && Platform.OS === 'ios' && 'pt-24'
-      )}>
+      <View className={cn('page justify-start gap-y-4 px-1.5 pb-1.5',
+        Platform.OS === 'ios' && 'pt-12')}>
         {seasonData?.[0] && (
           <CastawaysView seasonData={seasonData[0]} leagueData={leagueData} />
         )}

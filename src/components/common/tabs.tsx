@@ -95,6 +95,7 @@ const TabsTrigger = React.forwardRef<View, TabsTriggerProps>(
         )}
         {...props}>
         <Text
+          allowFontScaling={false}
           className={cn(
             'text-xs font-bold uppercase tracking-wider',
             isActive ? 'text-white' : 'text-black'
