@@ -1,6 +1,7 @@
 import { useSignIn } from '@clerk/clerk-expo';
 import { Link, useLocalSearchParams, useRouter } from 'expo-router';
-import { KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import React from 'react';
 import Header from '~/components/auth/header';
 import { SignInWithGoogle } from '~/components/auth/signInWithGoogle';
@@ -50,6 +51,7 @@ export default function Page() {
         <Header />
       </View>
       <KeyboardAvoidingView
+        keyboardVerticalOffset={Platform.OS === 'android' ? 350 : 0}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1, justifyContent: 'flex-end' }}>
         <View className='rounded-3xl bg-white p-8 shadow-lg mb-2'>

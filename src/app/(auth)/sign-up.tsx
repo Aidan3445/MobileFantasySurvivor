@@ -4,7 +4,6 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  KeyboardAvoidingView,
   Platform,
 } from 'react-native';
 import { useSignUp } from '@clerk/clerk-expo';
@@ -13,6 +12,7 @@ import Header from '~/components/auth/header';
 import { SignUpWithGoogle } from '~/components/auth/signUpWithGoogle';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useHeaderHeight from '~/hooks/ui/useHeaderHeight';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 
 export default function SignUpScreen() {
   const height = useHeaderHeight();
@@ -101,6 +101,7 @@ export default function SignUpScreen() {
           <Header />
         </View>
         <KeyboardAvoidingView
+          keyboardVerticalOffset={Platform.OS === 'android' ? 350 : 0}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={{ flex: 1, justifyContent: 'flex-end' }}>
           <View className='rounded-3xl bg-white p-8 shadow-lg mb-2'>
@@ -156,9 +157,10 @@ export default function SignUpScreen() {
         <Header />
       </View>
       <KeyboardAvoidingView
+        keyboardVerticalOffset={Platform.OS === 'android' ? 350 : 0}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1, justifyContent: 'flex-end' }}>
-        <View className='mb-2 rounded-3xl bg-white p-8 shadow-lg'>
+        <View className='rounded-3xl bg-white p-8 shadow-lg mb-2'>
           <View className='items-center'>
             <Text className='mb-2 text-3xl font-bold text-primary'>
               Join Us!
