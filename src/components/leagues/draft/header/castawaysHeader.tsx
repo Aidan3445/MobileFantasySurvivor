@@ -20,13 +20,11 @@ export default function DraftCastawaysHeader() {
       style={{ height }}>
       <View className='items-center justify-center w-full'>
         <View className='relative flex-row items-center justify-center gap-0.5 w-full'>
-          {Platform.OS === 'android' && (
-            <Button
-              onPress={() => router.back()}
-              className='absolute left-4 p-1 px-4'>
-              <ArrowLeft size={24} color={colors.primary} />
-            </Button>
-          )}
+          <Button
+            onPress={() => router.back()}
+            className='absolute left-4 p-1 px-4'>
+            <ArrowLeft size={24} color={colors.primary} />
+          </Button>
           <View className='h-6 w-1 bg-primary rounded-full' />
           <Text
             allowFontScaling={false}
