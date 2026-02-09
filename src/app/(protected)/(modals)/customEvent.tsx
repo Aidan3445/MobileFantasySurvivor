@@ -1,9 +1,12 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { View, Text, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { View, Text, Platform, ScrollView } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Button from '~/components/common/button';
 import CreateCustomEvents from '~/components/leagues/actions/events/custom/create';
 import CustomEventHeader from '~/components/leagues/actions/events/header/view';
 import { useLeagueRules } from '~/hooks/leagues/query/useLeagueRules';
+import { cn } from '~/lib/utils';
 
 
 export default function CustomEventScreen() {
@@ -13,31 +16,36 @@ export default function CustomEventScreen() {
 
   if (isLoading) {
     return (
-      <View className='page py-16 justify-center items-center'>
+      <SafeAreaView className='flex-1 bg-background py-16 justify-center items-center'>
         <CustomEventHeader />
         <Text className='text-lg text-center'>Loading League Rules...</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 
   if (isError || !leagueRules) {
     return (
-      <View className='page py-16 justify-center items-center'>
+      <SafeAreaView className='flex-1 bg-background py-16 justify-center items-center'>
         <Text className='text-lg text-center'>Something went wrong.</Text>
         <Button className='mt-4' onPress={() => router.dismiss()}>
           <Text className='text-white'>
             Go Back to League
           </Text>
         </Button>
-      </View>
+      </SafeAreaView>
     );
   }
 
 
   return (
-    <View className='flex-1 items-center justify-center bg-background'>
+    <SafeAreaView className='flex-1 bg-background justify-center items-center'>
       <CustomEventHeader />
-      <ScrollView className='w-full pt-20' showsVerticalScrollIndicator={false}>
+      <ScrollView
+        className={cn(
+          'w-full',
+          Platform.OS === 'ios' ? 'pt-20' : 'pt-8'
+        )}
+        showsVerticalScrollIndicator={false}>
         <View className='gap-y-4 px-1.5 pb-16'>
           <KeyboardAvoidingView
             className='flex-1'
@@ -47,6 +55,6 @@ export default function CustomEventScreen() {
           </KeyboardAvoidingView>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
