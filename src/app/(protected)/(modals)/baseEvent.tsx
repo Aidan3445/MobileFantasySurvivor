@@ -1,10 +1,12 @@
 import { useRouter } from 'expo-router';
-import { View, Text, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { View, Text, Platform, ScrollView } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { useSysAdmin } from '~/hooks/user/useSysAdmin';
 import { useMemo, useState } from 'react';
-import PlaygroundHeader from '~/components/playground/header/view';
+import BaseEventHeader from '~/components/leagues/actions/events/base/header/view';
 import { useSeasonsData } from '~/hooks/seasons/useSeasonsData';
 import CreateBaseEvent from '~/components/leagues/actions/events/base/create';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function BaseEventScreen() {
   const { data: userId, isLoading, isError } = useSysAdmin();
@@ -26,15 +28,13 @@ export default function BaseEventScreen() {
 
   if (isLoading) {
     return (
-      <View className='page py-16 justify-center items-center'>
-        <PlaygroundHeader
+      <SafeAreaView className='flex-1 bg-background py-16 justify-center items-center'>
+        <BaseEventHeader
           seasons={scoreData ?? []}
           value={selectedSeason}
-          setValue={setSelectedSeason}
-          extraHeight={0}
-          className='justify-center' />
+          setValue={setSelectedSeason} />
         <Text className='text-lg text-center'>Checking Sys Admin Status...</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 
@@ -44,13 +44,11 @@ export default function BaseEventScreen() {
   }
 
   return (
-    <View className='flex-1 items-center justify-center bg-background'>
-      <PlaygroundHeader
+    <SafeAreaView className='flex-1 bg-background justify-center items-center'>
+      <BaseEventHeader
         seasons={scoreData ?? []}
         value={selectedSeason}
-        setValue={setSelectedSeason}
-        extraHeight={0}
-        className='justify-center' />
+        setValue={setSelectedSeason} />
       <ScrollView className='w-full pt-20' showsVerticalScrollIndicator={false}>
         <View className='gap-y-4 px-1.5 pb-16'>
           <KeyboardAvoidingView
@@ -61,6 +59,6 @@ export default function BaseEventScreen() {
           </KeyboardAvoidingView>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
