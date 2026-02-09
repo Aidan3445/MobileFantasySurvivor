@@ -1,4 +1,5 @@
-import { Text, View, KeyboardAvoidingView, Platform, Keyboard, Alert } from 'react-native';
+import { Text, View, Platform, Keyboard, Alert } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { Redirect } from 'expo-router';
 import { ArrowLeft } from 'lucide-react-native';
 import { useCallback, useEffect, useState } from 'react';
@@ -13,6 +14,7 @@ import { useJoinLeague } from '~/hooks/leagues/mutation/useJoinLeague';
 import { useCarousel } from '~/hooks/ui/useCarousel';
 import { cn } from '~/lib/utils';
 import { colors } from '~/lib/colors';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface PageConfig {
   name: 'hash' | 'member';
@@ -104,7 +106,7 @@ export default function JoinLeagueScreen() {
   }
 
   return (
-    <View className='page py-16'>
+    <SafeAreaView className='flex-1 bg-background py-16'>
       <JoinLeagueHeader
         leagueName={getPublicLeague.isError
           ? undefined
@@ -176,6 +178,6 @@ export default function JoinLeagueScreen() {
       <Modal visible={errorModalVisible} onClose={handleErrorDismiss}>
         <ErrorHash onBack={handleErrorDismiss} />
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 }

@@ -13,6 +13,7 @@ import DraftDate from '~/components/leagues/actions/create/draftDate';
 import LeagueMember from '~/components/leagues/actions/create/leagueMember';
 import { colors } from '~/lib/colors';
 import CreateLeagueHeader from '~/components/leagues/actions/create/header/view';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface CreateLeagueFormProps {
   onSubmit?: () => void;
@@ -92,7 +93,7 @@ export default function CreateLeagueScreen({ onSubmit }: CreateLeagueFormProps) 
 
 
   return (
-    <View className='page py-16'>
+    <SafeAreaView className='flex-1 bg-background py-16'>
       <CreateLeagueHeader />
 
       <KeyboardAvoidingView
@@ -167,6 +168,6 @@ export default function CreateLeagueScreen({ onSubmit }: CreateLeagueFormProps) 
       </KeyboardAvoidingView>
       {/* Pagination */}
       <Pagination.Basic {...progressProps} />
-    </View>
+    </SafeAreaView>
   );
 }
