@@ -101,8 +101,7 @@ export default function SignUpScreen() {
           <Header />
         </View>
         <KeyboardAvoidingView
-          keyboardVerticalOffset={Platform.OS === 'android' ? 350 : 0}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          behavior='padding'
           style={{ flex: 1, justifyContent: 'flex-end' }}>
           <View className='rounded-3xl bg-white p-8 shadow-lg mb-2'>
             <View className='mb-8 items-center'>
@@ -157,8 +156,8 @@ export default function SignUpScreen() {
         <Header />
       </View>
       <KeyboardAvoidingView
-        keyboardVerticalOffset={Platform.OS === 'android' ? 350 : 0}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'android' ? 0 : 0}
+        behavior='padding'
         style={{ flex: 1, justifyContent: 'flex-end' }}>
         <View className='rounded-3xl bg-white p-8 shadow-lg mb-2'>
           <View className='items-center'>
