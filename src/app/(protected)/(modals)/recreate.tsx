@@ -1,4 +1,5 @@
-import { Text, View, KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
+import { Text, View, Platform, Keyboard } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { ArrowLeft } from 'lucide-react-native';
 import { useCallback, useState, useMemo } from 'react';
 import Carousel from 'react-native-reanimated-carousel';
@@ -11,6 +12,7 @@ import { cn } from '~/lib/utils';
 import { colors } from '~/lib/colors';
 import ChooseLeague from '~/components/leagues/actions/create/recreate/chooseLeague';
 import ChooseMembers from '~/components/leagues/actions/create/recreate/chooseMembers';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface PageConfig {
   name: 'selectLeague' | 'selectMembers';
@@ -76,7 +78,7 @@ export default function RecreateLeagueScreen() {
   };
 
   return (
-    <View className='page py-10'>
+    <SafeAreaView className='flex-1 bg-background pt-16'>
       <RecreateLeagueHeader leagueName={selectedLeague?.league.name} />
 
       <KeyboardAvoidingView
@@ -137,6 +139,6 @@ export default function RecreateLeagueScreen() {
             }} />
         </View>
       </KeyboardAvoidingView>
-    </View>
+    </SafeAreaView>
   );
 }
