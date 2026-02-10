@@ -118,7 +118,7 @@ export default function SignUpScreen() {
                 value={code}
                 autoFocus
                 placeholder='Enter verification code'
-                className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
+                className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
                 onChangeText={setCode} />
 
               {clerkError && (
@@ -175,25 +175,25 @@ export default function SignUpScreen() {
               autoCapitalize='none'
               value={username}
               placeholder='Enter username'
-              className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
+              className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
               onChangeText={setUsername} />
             <TextInput
               autoCapitalize='none'
               value={emailAddress}
               placeholder='Enter email'
-              className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
+              className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
               onChangeText={setEmailAddress} />
             <TextInput
               value={password}
               placeholder='Enter password'
               secureTextEntry
-              className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
+              className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
               onChangeText={setPassword} />
             <TextInput
               value={confirmPassword}
               placeholder='Confirm password'
               secureTextEntry
-              className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
+              className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
               onChangeText={setConfirmPassword} />
 
             {formError && (

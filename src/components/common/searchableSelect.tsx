@@ -84,10 +84,10 @@ export default function SearchableSelect<T extends string | number>({
     <>
       <Modal visible={isVisible} onClose={closeModal}>
         {/* Search Input */}
-        <View className='flex-row items-center gap-2 rounded-lg border-2 border-primary/20 bg-primary/5 px-3'>
+        <View className='w-full flex-row items-center rounded-lg border-2 border-primary/20 bg-primary/5 px-2 py-0 h-12 text-lg leading-tight overflow-hidden gap-2'>
           <Search size={18} color={colors['muted-foreground']} />
           <TextInput
-            className='flex-1 py-2.5 text-foreground'
+            className='text-lg leading-tight overflow-hidden py-0'
             placeholder={placeholder}
             value={searchText}
             onChangeText={setSearchText}
@@ -143,7 +143,7 @@ export default function SearchableSelect<T extends string | number>({
             </View>
           }
           ListFooterComponent={footerComponent as ReactElement} />
-      </Modal>
+      </Modal >
       {renderTrigger()}
     </>
   );

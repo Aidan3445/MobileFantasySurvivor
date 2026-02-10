@@ -21,8 +21,7 @@ export default function UsernameField({ control, locked }: UsernameFieldProps) {
             <Text className='text-base font-medium text-foreground'>
               {field.value || 'Not set'}
             </Text>
-          )}
-        />
+          )} />
       ) : (
         <Controller
           control={control}
@@ -30,21 +29,19 @@ export default function UsernameField({ control, locked }: UsernameFieldProps) {
           render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
             <View className='gap-1'>
               <TextInput
-                className='w-full flex-row items-center justify-between rounded-lg border-2 border-primary/20 bg-primary/5 px-3 py-2 not-disabled:active:bg-primary/10'
+                className='w-full rounded-lg border-2 border-primary/20 bg-primary/5 px-2 py-0 h-10 text-lg leading-tight overflow-hidden'
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
                 placeholder='Enter username'
                 placeholderTextColor={colors.mutedForeground}
                 autoCapitalize='none'
-                autoCorrect={false}
-              />
+                autoCorrect={false} />
               {error && (
                 <Text className='text-sm text-destructive'>{error.message}</Text>
               )}
             </View>
-          )}
-        />
+          )} />
       )}
     </View>
   );

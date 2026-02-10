@@ -1,7 +1,8 @@
-import { RefreshControl, ScrollView } from 'react-native';
+import { RefreshControl } from 'react-native';
 import { type SafeAreaRefreshViewProps } from '~/components/common/refresh/safeAreaRefreshView';
 import IOSRefreshIndicator from '~/components/common/refresh/iosIndicator';
 import { Fragment } from 'react';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 export default function IOSRefreshView({
   refreshing,
@@ -21,9 +22,10 @@ export default function IOSRefreshView({
           scrollY={scrollY}
           extraHeight={extraHeight} />
       )}
-      <ScrollView
+      <KeyboardAwareScrollView
         className='w-full'
         showsVerticalScrollIndicator={false}
+        bottomOffset={80}
         onScroll={handleScroll}
         scrollEventThrottle={16}
         scrollIndicatorInsets={{ top: 10 }}
@@ -37,7 +39,7 @@ export default function IOSRefreshView({
             progressViewOffset={-1000} />
         }>
         {children}
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </Fragment>
   );
 }

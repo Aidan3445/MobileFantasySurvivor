@@ -1,5 +1,5 @@
 import { Lock, LockOpen } from 'lucide-react-native';
-import { Text, View, Switch, TextInput } from 'react-native';
+import { Text, View, Switch, TextInput, Platform } from 'react-native';
 import Button from '~/components/common/button';
 import { Controller } from 'react-hook-form';
 import { useShauhinMode } from '~/hooks/leagues/mutation/useShauhinMode';
@@ -84,7 +84,7 @@ export default function ShauhinMode() {
           video
         </Text>{' '}
         that{' '}
-        <View className='translate-y-4'>
+        <View className={cn(Platform.OS === 'ios' ? 'translate-y-4' : 'translate-y-2')}>
           <ColorRow color='#d05dbd' className='py-0'>
             <Text className='font-medium text-base text-primary'>Shauhin Davari</Text>
           </ColorRow>

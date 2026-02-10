@@ -48,7 +48,11 @@ export default function TabLayout() {
           options={{
             title: 'Home',
             tabBarIcon: ({ color }) => (
-              <Image className='max-h-8 max-w-8' source={HomeImage} style={{ tintColor: color }} />
+              <Image
+                className='h-8 w-8'
+                resizeMode='contain'
+                source={HomeImage}
+                style={{ tintColor: color }} />
             ),
           }} />
         <Tabs.Screen

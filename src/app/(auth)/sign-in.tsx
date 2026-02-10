@@ -65,7 +65,7 @@ export default function Page() {
               autoCapitalize='none'
               value={emailAddress}
               placeholder='Enter email'
-              className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
+              className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
               placeholderTextColor='#B58553'
               autoComplete='email'
               importantForAutofill='yes'
@@ -74,7 +74,7 @@ export default function Page() {
               value={password}
               placeholder='Enter password'
               secureTextEntry={true}
-              className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
+              className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
               placeholderTextColor='#B58553'
               autoComplete='password'
               importantForAutofill='yes'
