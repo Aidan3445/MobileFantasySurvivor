@@ -8,6 +8,7 @@ import { usePendingMembers } from '~/hooks/leagues/query/usePendingMembers';
 import { colors } from '~/lib/colors';
 import CurrentMember from '~/components/leagues/customization/settings/league/manageMembers/current';
 import PendingMember from '~/components/leagues/customization/settings/league/manageMembers/pending';
+import { cn } from '~/lib/utils';
 
 export default function ManageMembers() {
   const { data: leagueMembers } = useLeagueMembers();
@@ -47,12 +48,20 @@ export default function ManageMembers() {
 
           <TabsTrigger
             value='pending'
-            className='flex-1 flex-row items-center gap-1'
+            className='flex-1'
             disabled={!leagueSettings?.isProtected}>
-            Pending
-            {leagueSettings?.isProtected && hasPendingMembers && (
-              <Circle size={8} fill={colors.primary} color={colors.primary} />
-            )}
+            <View className='flex-row items-center gap-1'>
+              <Text
+                className={cn(
+                  'text-xs font-bold uppercase tracking-wider',
+                  tab === 'pending' ? 'text-white' : 'text-black'
+                )}>
+                Pending
+              </Text>
+              {leagueSettings?.isProtected && hasPendingMembers && (
+                <Circle size={8} fill={colors.primary} color={colors.primary} />
+              )}
+            </View>
           </TabsTrigger>
         </TabsList>
 
@@ -67,14 +76,18 @@ export default function ManageMembers() {
             </Text>
           </View>
           <View className='h-px bg-primary/20' />
-          <ScrollView className='max-h-64 w-full'>
-            <View className='gap-1 px-4'>
-              {leagueMembers?.members.map(member => (
-                <CurrentMember
-                  key={member.memberId}
-                  member={member}
-                  loggedInMember={leagueMembers.loggedIn} />
-              ))}
+          <ScrollView
+            className='max-h-40 w-full'
+            nestedScrollEnabled>
+            <View className='gap-1'>
+              {leagueMembers?.members
+                .filter(member => !member.loggedIn || member.memberId !== leagueMembers.loggedIn?.memberId)
+                .map(member => (
+                  <CurrentMember
+                    key={member.memberId}
+                    member={member}
+                    loggedInMember={leagueMembers.loggedIn} />
+                ))}
             </View>
           </ScrollView>
         </TabsContent>
@@ -90,7 +103,9 @@ export default function ManageMembers() {
                 Pending members will be removed after 7 days if not admitted.
               </Text>
               <View className='h-px bg-primary/20' />
-              <ScrollView className='max-h-64 w-full'>
+              <ScrollView
+                className='max-h-40 w-full'
+                nestedScrollEnabled>
                 <View className='gap-1'>
                   {pendingMembers?.members.map(member => (
                     <PendingMember

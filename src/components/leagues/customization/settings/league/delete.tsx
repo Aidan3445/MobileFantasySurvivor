@@ -47,7 +47,8 @@ export default function DeleteLeague() {
           Type the league name to confirm deletion
         </Text>
         <TextInput
-          className='rounded-lg border-2 border-primary/20 bg-card px-2 py-1 text-left text-base leading-5'
+          className='text-nowrap rounded-lg border-2 border-primary/20 bg-card px-2 py-1 text-left text-base leading-5'
+          numberOfLines={1}
           placeholder={`Enter "${league?.name ?? 'League Name'}" to confirm`}
           placeholderTextColor={colors.primary}
           value={confirmName}

@@ -1,41 +1,80 @@
 {
   "expo": {
-    "scheme": "yourfantasysurvivor",
+    "scheme": "trialbyfire",
     "userInterfaceStyle": "automatic",
-    "orientation": "default",
-    "name": "Your Fantasy Survivor",
+    "orientation": "portrait",
+    "name": "Trial by Fire",
     "slug": "mobile-fantasy-survivor",
     "version": "1.0.0",
     "owner": "aidan3445",
-    "web": { "output": "static" },
+
+    "web": {
+      "output": "static"
+    },
+
     "splash": {
-      "image": "./src/assets/Logo.png",
+      "image": "./src/assets/Icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#E5BC8F"
     },
+
+    "cli": {
+      "appVersionSource": "remote"
+    },
+
+    "build": {
+      "development": {
+        "autoIncrement": true
+      },
+      "preview": {
+        "autoIncrement": true
+      },
+      "production": {
+        "autoIncrement": true
+      }
+    },
+
     "plugins": [
       ["expo-router", { "origin": "https://yourfantasysurvivor.com" }],
-      ["expo-screen-orientation", { "initialOrientation": "PORTRAIT_UP" }]
+      ["expo-screen-orientation", { "initialOrientation": "PORTRAIT_UP" }],
+      [
+        "expo-notifications",
+        {
+          "icon": "./src/assets/Icon.png",
+          "color": "#E5BC8F"
+        }
+      ]
     ],
+
     "extra": {
-      "router": { "origin": "https://yourfantasysurvivor.com" },
-      "eas": { "projectId": "86931bb6-a035-48fe-8856-ff9c5684bc8e" }
+      "router": {
+        "origin": "https://yourfantasysurvivor.com"
+      },
+      "eas": {
+        "projectId": "86931bb6-a035-48fe-8856-ff9c5684bc8e"
+      }
     },
+
     "ios": {
       "bundleIdentifier": "com.aidan3445.mobilefantasysurvivor",
-      "infoPlist": { "ITSAppUsesNonExemptEncryption": false },
       "requiresFullScreen": true,
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      },
       "associatedDomains": [
         "applinks:yourfantasysurvivor.com",
         "applinks:www.yourfantasysurvivor.com"
       ]
     },
+
     "android": {
       "package": "com.aidan3445.mobilefantasysurvivor",
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/Logo.png",
+        "foregroundImage": "./src/assets/Icon.png",
         "backgroundColor": "#FFFFFF"
       },
+      "softwareKeyboardLayoutMode": "adjustPan",
+      "googleServicesFile": "./google-services.json",
       "intentFilters": [
         {
           "action": "VIEW",
@@ -49,7 +88,7 @@
             {
               "scheme": "https",
               "host": "yourfantasysurvivor.com",
-              "pathPrefix": "/join/"
+              "pathPrefix": "/leagues/"
             }
           ],
           "category": ["BROWSABLE", "DEFAULT"]

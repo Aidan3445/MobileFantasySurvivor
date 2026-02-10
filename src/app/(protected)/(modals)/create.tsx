@@ -1,4 +1,5 @@
-import { View, Text, KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
+import { View, Text, Platform, Keyboard } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import Button from '~/components/common/button';
 import Carousel, { Pagination } from 'react-native-reanimated-carousel';
 import { LeagueInsertZod } from '~/types/leagues';
@@ -12,6 +13,7 @@ import DraftDate from '~/components/leagues/actions/create/draftDate';
 import LeagueMember from '~/components/leagues/actions/create/leagueMember';
 import { colors } from '~/lib/colors';
 import CreateLeagueHeader from '~/components/leagues/actions/create/header/view';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface CreateLeagueFormProps {
   onSubmit?: () => void;
@@ -48,7 +50,7 @@ export default function CreateLeagueScreen({ onSubmit }: CreateLeagueFormProps) 
     },
   ];
 
-  const { props, progressProps, ref, progress } = useCarousel<PageConfig>(pages);
+  const { props, progressProps, ref } = useCarousel<PageConfig>(pages);
 
   const goNext = useCallback(() => {
     Keyboard.dismiss();
@@ -91,14 +93,13 @@ export default function CreateLeagueScreen({ onSubmit }: CreateLeagueFormProps) 
 
 
   return (
-    <View className='page py-16'>
+    <SafeAreaView className='flex-1 bg-background py-16'>
       <CreateLeagueHeader />
 
       <KeyboardAvoidingView
-        className='flex-1'
-        behavior={progress === 2 ? undefined : // No auto submit or adjustment on last page
-          Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}>
+        behavior='padding'
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}
+        style={{ flex: 1, justifyContent: 'flex-end' }}>
         <View className='flex-1 px-1.5 pt-8'>
           {/* Carousel */}
           <Carousel
@@ -121,12 +122,12 @@ export default function CreateLeagueScreen({ onSubmit }: CreateLeagueFormProps) 
                   </View>
 
                   {/* Navigation */}
-                  <View className='flex-row items-center justify-center gap-4 px-6 pb-24'>
+                  <View className='flex-row items-center justify-center gap-4 px-6 pb-4'>
                     {/* Back Button */}
                     {!item.isFirst && (
                       <Button
                         onPress={() => goBack(item.name)}
-                        className='h-12 w-12 items-center justify-center rounded-full border-2 border-primary/30 bg-transparent active:bg-primary/10'>
+                        className='h-12 w-12 items-center justify-center rounded-full border-2 border-primary/30 bg-card active:bg-primary/10'>
                         <ArrowLeft size={20} color={colors.primary} />
                       </Button>
                     )}
@@ -167,6 +168,6 @@ export default function CreateLeagueScreen({ onSubmit }: CreateLeagueFormProps) 
       </KeyboardAvoidingView>
       {/* Pagination */}
       <Pagination.Basic {...progressProps} />
-    </View>
+    </SafeAreaView>
   );
 }

@@ -53,7 +53,7 @@ export default function LeagueMember({
         name={formPrefix ? `${formPrefix}.displayName` : 'displayName'}
         render={({ field: { onChange, onBlur, value } }) => (
           <View className='w-full'>
-            <Text className='mb-2 text-sm font-medium text-muted-foreground'>Display Name</Text>
+            <Text className='mb-2 text-base font-medium text-muted-foreground'>Display Name</Text>
             <TextInput
               className={cn(
                 'text-2xl rounded-lg border-2 border-primary/20 bg-card leading-tight p-4',
@@ -73,7 +73,7 @@ export default function LeagueMember({
             <View className='mt-1 flex-row items-center justify-end px-1'>
               <Text
                 className={cn(
-                  'text-xs text-muted-foreground',
+                  'text-sm text-muted-foreground',
                   value?.length >= DISPLAY_NAME_MAX_LENGTH && 'font-bold text-destructive'
                 )}>
                 {value?.length ?? 0}/{DISPLAY_NAME_MAX_LENGTH}
@@ -90,7 +90,7 @@ export default function LeagueMember({
           <View className='w-full'>
             <View className='mb-2 flex-row items-center gap-2'>
               <Palette size={16} color={colors['muted-foreground']} />
-              <Text className='text-sm font-medium text-muted-foreground'>Choose Your Color</Text>
+              <Text className='text-base font-medium text-muted-foreground'>Choose Your Color</Text>
             </View>
             <View className='flex-row flex-wrap justify-center gap-2 rounded-lg border-2 border-primary/20 bg-primary/5 p-3'>
               {twentyColors.map((originalColor) => {

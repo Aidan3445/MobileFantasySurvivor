@@ -6,6 +6,7 @@ import * as ScreenOrientation from 'expo-screen-orientation';
 import { useEffect } from 'react';
 import LoadingScreen from '~/components/auth/loadingScreen';
 import { useDeepLinkHandler } from '~/hooks/routing/useDeepLinkHandler';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 // Suppress specific warning from react-native-reanimated-carousel
 const originalWarn = console.warn;
@@ -50,7 +51,9 @@ export default function RootLayout() {
   return (
     <ClerkProvider tokenCache={tokenCache} telemetry={false}>
       <ClerkLoaded>
-        <InitialLayout />
+        <KeyboardProvider>
+          <InitialLayout />
+        </KeyboardProvider>
       </ClerkLoaded>
     </ClerkProvider>
   );

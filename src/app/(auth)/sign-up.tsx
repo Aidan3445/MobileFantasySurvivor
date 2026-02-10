@@ -4,7 +4,6 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  KeyboardAvoidingView,
   Platform,
 } from 'react-native';
 import { useSignUp } from '@clerk/clerk-expo';
@@ -12,8 +11,11 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import Header from '~/components/auth/header';
 import { SignUpWithGoogle } from '~/components/auth/signUpWithGoogle';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import useHeaderHeight from '~/hooks/ui/useHeaderHeight';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 
 export default function SignUpScreen() {
+  const height = useHeaderHeight();
   const { isLoaded, signUp, setActive } = useSignUp();
   const { redirectTo } = useLocalSearchParams<{ redirectTo?: string }>();
   const router = useRouter();
@@ -92,14 +94,15 @@ export default function SignUpScreen() {
 
   if (pendingVerification) {
     return (
-      <SafeAreaView className='flex-1 justify-center start bg-background px-6'>
-        <Header />
+      <SafeAreaView className='relative flex-1 justify-center start bg-background px-6'>
+        <View
+          className='absolute justify-start items-center w-[100vw]'
+          style={{ top: height }}>
+          <Header />
+        </View>
         <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-          style={{
-            flex: 1,
-            justifyContent: 'flex-end'
-          }}>
+          behavior='padding'
+          style={{ flex: 1, justifyContent: 'flex-end' }}>
           <View className='rounded-3xl bg-white p-8 shadow-lg mb-2'>
             <View className='mb-8 items-center'>
               <Text className='mb-2 text-3xl font-bold text-primary'>
@@ -115,7 +118,7 @@ export default function SignUpScreen() {
                 value={code}
                 autoFocus
                 placeholder='Enter verification code'
-                className='rounded-2xl border border-accent bg-accent/20 px-4 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
+                className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
                 onChangeText={setCode} />
 
               {clerkError && (
@@ -146,13 +149,17 @@ export default function SignUpScreen() {
   }
 
   return (
-    <SafeAreaView className='flex-1 justify-center bg-background px-6'>
-      <Header />
-
+    <SafeAreaView className='relative flex-1 justify-center start bg-background px-6'>
+      <View
+        className='absolute justify-start items-center w-[100vw]'
+        style={{ top: height }}>
+        <Header />
+      </View>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        keyboardVerticalOffset={Platform.OS === 'android' ? 0 : 0}
+        behavior='padding'
         style={{ flex: 1, justifyContent: 'flex-end' }}>
-        <View className='mb-2 rounded-3xl bg-white p-8 shadow-lg'>
+        <View className='rounded-3xl bg-white p-8 shadow-lg mb-2'>
           <View className='items-center'>
             <Text className='mb-2 text-3xl font-bold text-primary'>
               Join Us!
@@ -168,25 +175,25 @@ export default function SignUpScreen() {
               autoCapitalize='none'
               value={username}
               placeholder='Enter username'
-              className='rounded-2xl border border-accent bg-accent/20 px-4 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
+              className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
               onChangeText={setUsername} />
             <TextInput
               autoCapitalize='none'
               value={emailAddress}
               placeholder='Enter email'
-              className='rounded-2xl border border-accent bg-accent/20 px-4 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
+              className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
               onChangeText={setEmailAddress} />
             <TextInput
               value={password}
               placeholder='Enter password'
               secureTextEntry
-              className='rounded-2xl border border-accent bg-accent/20 px-4 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
+              className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
               onChangeText={setPassword} />
             <TextInput
               value={confirmPassword}
               placeholder='Confirm password'
               secureTextEntry
-              className='rounded-2xl border border-accent bg-accent/20 px-4 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
+              className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-snug overflow-hidden'
               onChangeText={setConfirmPassword} />
 
             {formError && (

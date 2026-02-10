@@ -1,6 +1,6 @@
 'use client';
 
-import { RefreshControl, ScrollView, View, Alert } from 'react-native';
+import { View, Alert, Platform } from 'react-native';
 import { Redirect, useLocalSearchParams, useRouter } from 'expo-router';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 import { useLeagueActionDetails } from '~/hooks/leagues/enrich/useActionDetails';
@@ -8,9 +8,9 @@ import { useEffect, useMemo } from 'react';
 import DraftOrder from '~/components/leagues/draft/order/view';
 import ChooseCastaway from '~/components/leagues/draft/chooseCastaway/view';
 import PredictionsCarousel from '~/components/leagues/draft/predictions/view';
-import RefreshIndicator from '~/components/common/refresh';
 import { useLeagueRefresh } from '~/hooks/helpers/refresh/useLeagueRefresh';
 import { cn } from '~/lib/utils';
+import SafeAreaRefreshView from '~/components/common/refresh/safeAreaRefreshView';
 
 export default function DraftScreen() {
   const { hash } = useLocalSearchParams<{ hash: string }>();
@@ -72,45 +72,36 @@ export default function DraftScreen() {
   if (league.status !== 'Draft') return <Redirect href={`/leagues/${hash}`} />;
 
   return (
-    <View className='flex-1 bg-background relative'>
-      <RefreshIndicator refreshing={refreshing} scrollY={scrollY} extraHeight={-45} />
-      <ScrollView
-        className='w-full'
-        showsVerticalScrollIndicator={true}
-        onScroll={handleScroll}
-        scrollEventThrottle={16}
-        scrollIndicatorInsets={{ top: 16 }}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            tintColor='transparent'
-            colors={['transparent']}
-            progressBackgroundColor='transparent' />
-        }>
-        <View className={cn(
+    <SafeAreaRefreshView
+      extraHeight={Platform.OS === 'ios' ? -45 : 0}
+      alreadySafe
+      refreshing={refreshing}
+      onRefresh={onRefresh}
+      scrollY={scrollY}
+      handleScroll={handleScroll}>
+      <View
+        className={cn(
           'page justify-start gap-y-4 px-1.5 pt-8 pb-1.5',
-          refreshing && 'pt-12'
+          refreshing && Platform.OS === 'ios' && 'pt-12'
         )}>
-          <DraftOrder
-            hash={hash}
-            leagueMembers={leagueMembers}
-            onTheClockMemberId={onTheClock?.memberId}
-            membersWithPicks={membersWithPicks} />
-          {(onTheClock?.loggedIn || onDeck?.loggedIn) && actionDetails && (
-            <ChooseCastaway
-              draftDetails={actionDetails}
-              onDeck={!!onDeck?.loggedIn}
-              hash={hash} />
-          )}
-          <PredictionsCarousel
-            rules={rules}
-            predictionRuleCount={predictionRuleCount}
-            predictionsMade={predictionsMade}
-            castaways={castaways}
-            tribes={tribes} />
-        </View>
-      </ScrollView>
-    </View>
+        <DraftOrder
+          hash={hash}
+          leagueMembers={leagueMembers}
+          onTheClockMemberId={onTheClock?.memberId}
+          membersWithPicks={membersWithPicks} />
+        {(onTheClock?.loggedIn || onDeck?.loggedIn) && actionDetails && (
+          <ChooseCastaway
+            draftDetails={actionDetails}
+            onDeck={!!onDeck?.loggedIn}
+            hash={hash} />
+        )}
+        <PredictionsCarousel
+          rules={rules}
+          predictionRuleCount={predictionRuleCount}
+          predictionsMade={predictionsMade}
+          castaways={castaways}
+          tribes={tribes} />
+      </View>
+    </SafeAreaRefreshView>
   );
 }

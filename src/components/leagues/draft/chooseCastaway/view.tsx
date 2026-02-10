@@ -47,7 +47,7 @@ export default function ChooseCastaway({ hash, draftDetails, onDeck }: ChooseCas
   );
 
   return (
-    <View className='rounded-xl border-2 border-primary/20 bg-card p-2 gap-3'>
+    <View className='rounded-xl border-2 border-primary/20 bg-card p-2 gap-2'>
       {/* Header */}
       <View className='flex-row items-center gap-2 px-1'>
         <View className='h-6 w-1 rounded-full bg-primary' />

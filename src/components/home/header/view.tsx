@@ -1,4 +1,4 @@
-import { View, Animated } from 'react-native';
+import { View, Animated, Platform } from 'react-native';
 import React, { useRef, useEffect } from 'react';
 import { cn } from '~/lib/utils';
 const LogoImage = require('~/assets/Logo.png');
@@ -19,6 +19,7 @@ export default function Header({ className, refreshing = false }: HeaderProps) {
   }, [refreshing]);
 
   useEffect(() => {
+    if (Platform.OS === 'android') return;
     const spinOnce = () => {
       isAnimatingRef.current = true;
       Animated.timing(logoRotation, {

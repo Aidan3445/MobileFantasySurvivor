@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, Switch, Alert } from 'react-native';
+import { View, Text, Switch, Alert, Platform } from 'react-native';
 import { Crown } from 'lucide-react-native';
 import Button from '~/components/common/button';
 import Modal from '~/components/common/modal';
@@ -45,8 +45,7 @@ export default function OwnerToggle({ member, loggedInMember }: CurrentMemberPro
           size={20}
           color={enabled ? colors.foreground : colors.mutedForeground}
           fill={isOwner ? colors.foreground : 'none'}
-          className={cn(!enabled && 'opacity-50')}
-        />
+          className={cn(!enabled && 'opacity-50')} />
       </Button>
 
       <Modal visible={isOpen} onClose={handleClose}>
@@ -59,7 +58,7 @@ export default function OwnerToggle({ member, loggedInMember }: CurrentMemberPro
 
         <Text className='text-base text-foreground mb-4'>
           Are you sure you want to make{' '}
-          <View className='translate-y-4'>
+          <View className={cn(Platform.OS === 'ios' ? 'translate-y-4' : 'translate-y-2')}>
             <ColorRow color={member.color} className='px-1'>
               <Text className='font-medium'>{member.displayName}</Text>
             </ColorRow>
