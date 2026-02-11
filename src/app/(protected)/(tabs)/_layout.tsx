@@ -5,13 +5,14 @@ import { BookUser, Flame, Trophy, UserCircle2 } from 'lucide-react-native';
 import { Animated, Image, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import LoadingScreen from '~/components/auth/loadingScreen';
+import { useNotificationRouting } from '~/hooks/routing/useNotificationRouting';
 import useFadeLoading from '~/hooks/ui/useFadeLoading';
 import { colors } from '~/lib/colors';
-
 
 const HomeImage = require('~/assets/Icon.png');
 
 export default function TabLayout() {
+  useNotificationRouting();
   const pathname = usePathname();
   const router = useRouter();
   const isFetching = useIsFetching();

@@ -26,8 +26,8 @@ export default function SignOutButton() {
             setIsSigningOut(true);
             try {
               await unregisterToken();
-              await signOut();
               queryClient.clear();
+              await signOut();
               router.replace('/(auth)/sign-in');
             } catch (err) {
               console.error(JSON.stringify(err, null, 2));

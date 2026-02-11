@@ -4,21 +4,28 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'react-native';
 import { useNotifications } from '~/hooks/user/useNotifications';
 import { useEffect } from 'react';
+import { useAuth } from '@clerk/clerk-expo';
 
-export default function ProtectedLayout() {
+/** Runs inside QueryClientContextProvider so hooks can use React Query */
+function NotificationManager() {
+  const { isSignedIn } = useAuth();
   const { permissionStatus, requestPermissions } = useNotifications();
 
   useEffect(() => {
-    if (permissionStatus === 'granted') {
-      console.log('Notification permissions already granted');
+    if (isSignedIn && permissionStatus === 'granted') {
       void requestPermissions();
     }
-  }, [permissionStatus, requestPermissions]);
+  }, [isSignedIn, permissionStatus, requestPermissions]);
 
+  return null;
+}
+
+export default function ProtectedLayout() {
   return (
     <GestureHandlerRootView className='flex-1 bg-background'>
       <StatusBar barStyle='dark-content' />
       <QueryClientContextProvider>
+        <NotificationManager />
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
           <Stack.Screen
@@ -26,7 +33,7 @@ export default function ProtectedLayout() {
             options={{
               headerShown: false,
               presentation: 'modal',
-              animation: 'slide_from_bottom'
+              animation: 'slide_from_bottom',
             }} />
         </Stack>
       </QueryClientContextProvider>

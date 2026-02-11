@@ -16,15 +16,12 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
     shouldShowBanner: true,
     shouldShowList: true,
-
   }),
 });
 
 export function useNotifications() {
   const [expoPushToken, setExpoPushToken] = useState<string | null>(null);
   const [permissionStatus, setPermissionStatus] = useState<Notifications.PermissionStatus | null>(null);
-  const notificationListener = useRef<Notifications.EventSubscription | null>(null);
-  const responseListener = useRef<Notifications.EventSubscription | null>(null);
   const hasRegistered = useRef(false);
 
   const postData = useFetch('POST');
@@ -54,7 +51,7 @@ export function useNotifications() {
         console.error('Failed to register token with server:', error);
       }
     },
-    [postData]
+    [postData],
   );
 
   // Check and register on mount (if permission already granted)
@@ -83,27 +80,6 @@ export function useNotifications() {
     })();
   }, [registerTokenWithServer]);
 
-  // Set up notification listeners
-  useEffect(() => {
-    notificationListener.current = Notifications.addNotificationReceivedListener((notification) => {
-      console.log('Notification received:', notification);
-    });
-
-    responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
-      console.log('Notification tapped:', response);
-      // TODO: Handle navigation based on notification data
-    });
-
-    return () => {
-      if (notificationListener.current) {
-        notificationListener.current.remove();
-      }
-      if (responseListener.current) {
-        responseListener.current.remove();
-      }
-    };
-  }, []);
-
   const requestPermissions = useCallback(async (): Promise<boolean> => {
     if (!Device.isDevice) {
       Alert.alert('Error', 'Push notifications require a physical device');
@@ -123,7 +99,7 @@ export function useNotifications() {
     if (finalStatus !== 'granted') {
       Alert.alert(
         'Notifications Disabled',
-        'Enable notifications in your device settings to receive updates about your leagues.'
+        'Enable notifications in your device settings to receive updates about your leagues.',
       );
       return false;
     }
@@ -146,7 +122,6 @@ export function useNotifications() {
       await deleteData('/api/notifications', { body: { token: expoPushToken } });
       await AsyncStorage.removeItem(TOKEN_STORAGE_KEY);
       setExpoPushToken(null);
-      hasRegistered.current = false;
     } catch (error) {
       console.error('Failed to unregister token:', error);
     }
@@ -163,11 +138,11 @@ export function useNotifications() {
         content: { title, body, sound: true },
         trigger: {
           type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
-          seconds: Math.max(delaySeconds, 0.1)
+          seconds: Math.max(delaySeconds, 0.1),
         },
       });
     },
-    [permissionStatus, requestPermissions]
+    [permissionStatus, requestPermissions],
   );
 
   return {
@@ -206,4 +181,3 @@ async function getExpoPushToken(): Promise<string | null> {
     return null;
   }
 }
-
