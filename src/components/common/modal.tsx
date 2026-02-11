@@ -100,23 +100,27 @@ export default function Modal({
         </Pressable>
 
         <KeyboardAwareScrollView
-          contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+          contentContainerStyle={{ flexGrow: 1 }}
           keyboardShouldPersistTaps='handled'
           showsVerticalScrollIndicator={false}
           scrollEnabled={false}
           automaticallyAdjustKeyboardInsets>
-          <GestureDetector gesture={panGesture}>
-            <Animated.View style={modalStyle}>
-              <Pressable
-                className={cn(
-                  'w-full rounded-xl border-2 border-primary/20 bg-card p-4',
-                  className
-                )}
-                onPress={(e) => e.stopPropagation()}>
-                {children}
-              </Pressable>
-            </Animated.View>
-          </GestureDetector>
+          <Pressable
+            style={{ flex: 1, justifyContent: 'center' }}
+            onPress={dismiss}>
+            <GestureDetector gesture={panGesture}>
+              <Animated.View style={modalStyle}>
+                <Pressable
+                  className={cn(
+                    'w-full rounded-xl border-2 border-primary/20 bg-card p-4',
+                    className
+                  )}
+                  onPress={(e) => e.stopPropagation()}>
+                  {children}
+                </Pressable>
+              </Animated.View>
+            </GestureDetector>
+          </Pressable>
         </KeyboardAwareScrollView>
       </SafeAreaView>
     </RNModal>
