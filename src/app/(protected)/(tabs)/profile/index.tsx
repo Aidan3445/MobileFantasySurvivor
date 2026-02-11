@@ -1,6 +1,7 @@
 import { ScrollView, View } from 'react-native';
 import SignOutButton from '~/components/auth/SignOutButton';
 import AccountSettings from '~/components/profile/management/view';
+import NotificationSettings from '~/components/profile/notifications';
 
 export default function ProfileScreen() {
   return (
@@ -12,6 +13,7 @@ export default function ProfileScreen() {
         scrollIndicatorInsets={{ top: 10 }}>
         <View className='page justify-start gap-y-4 px-1.5 pt-8 pb-1.5'>
           <AccountSettings locked />
+          <NotificationSettings />
           <SignOutButton />
         </View>
       </ScrollView>

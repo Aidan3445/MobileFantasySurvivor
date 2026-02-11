@@ -1,18 +1,12 @@
 import * as React from 'react';
-import {
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-  Platform,
-} from 'react-native';
+import { Platform, Text, TextInput, TouchableOpacity, View, type TextInputEndEditingEvent, } from 'react-native';
 import { useSignUp } from '@clerk/clerk-expo';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import Header from '~/components/auth/header';
 import { SignUpWithGoogle } from '~/components/auth/signUpWithGoogle';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useHeaderHeight from '~/hooks/ui/useHeaderHeight';
-import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 export default function SignUpScreen() {
   const height = useHeaderHeight();
@@ -30,6 +24,26 @@ export default function SignUpScreen() {
 
   const [formError, setFormError] = React.useState<string | null>(null);
   const [clerkError, setClerkError] = React.useState<string | null>(null);
+
+  const emailRef = React.useRef<TextInput>(null);
+  const passwordRef = React.useRef<TextInput>(null);
+  const confirmRef = React.useRef<TextInput>(null);
+
+  const [fieldFocused, setFieldFocused] = React.useState(false);
+
+  // iOS autofill bypasses onChangeText — onEndEditing fires with the correct native value
+  const makeEndEditingHandler = React.useCallback(
+    (currentValue: string, setter: (_v: string) => void) =>
+      (e: TextInputEndEditingEvent) => {
+        if (Platform.OS === 'ios') {
+          const nativeText = e.nativeEvent.text;
+          if (nativeText !== currentValue) {
+            setter(nativeText);
+          }
+        }
+      },
+    [],
+  );
 
   const onSignUpPress = async () => {
     if (!isLoaded) return;
@@ -94,15 +108,18 @@ export default function SignUpScreen() {
 
   if (pendingVerification) {
     return (
-      <SafeAreaView className='relative flex-1 justify-center start bg-background px-6'>
+      <SafeAreaView className='relative flex-1 bg-background'>
         <View
-          className='absolute justify-start items-center w-[100vw]'
+          className='absolute w-full items-center'
           style={{ top: height }}>
           <Header />
         </View>
-        <KeyboardAvoidingView
-          behavior='padding'
-          style={{ flex: 1, justifyContent: 'flex-end' }}>
+
+        <KeyboardAwareScrollView
+          contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-end', paddingHorizontal: 24 }}
+          keyboardShouldPersistTaps='handled'
+          scrollEnabled={false}
+          automaticallyAdjustKeyboardInsets>
           <View className='rounded-3xl bg-white p-8 shadow-lg mb-2'>
             <View className='mb-8 items-center'>
               <Text className='mb-2 text-3xl font-bold text-primary'>
@@ -119,7 +136,11 @@ export default function SignUpScreen() {
                 autoFocus
                 placeholder='Enter verification code'
                 className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
-                onChangeText={setCode} />
+                autoComplete='one-time-code'
+                textContentType='oneTimeCode'
+                onChangeText={setCode}
+                returnKeyType='done'
+                onSubmitEditing={onVerifyPress} />
 
               {clerkError && (
                 <Text className='text-center text-sm text-red-600'>
@@ -143,22 +164,23 @@ export default function SignUpScreen() {
               </TouchableOpacity>
             </View>
           </View>
-        </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView className='relative flex-1 justify-center start bg-background px-6'>
+    <SafeAreaView className='relative flex-1 bg-background'>
       <View
-        className='absolute justify-start items-center w-[100vw]'
+        className='absolute w-full items-center'
         style={{ top: height }}>
         <Header />
       </View>
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={Platform.OS === 'android' ? 0 : 0}
-        behavior='padding'
-        style={{ flex: 1, justifyContent: 'flex-end' }}>
+      <KeyboardAwareScrollView
+        contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-end', paddingHorizontal: 24 }}
+        keyboardShouldPersistTaps='handled'
+        scrollEnabled={fieldFocused}
+        automaticallyAdjustKeyboardInsets>
         <View className='rounded-3xl bg-white p-8 shadow-lg mb-2'>
           <View className='items-center'>
             <Text className='mb-2 text-3xl font-bold text-primary'>
@@ -168,7 +190,6 @@ export default function SignUpScreen() {
               Create your account
             </Text>
           </View>
-          <Text>{redirectTo}</Text>
 
           <View className='gap-y-2'>
             <TextInput
@@ -176,25 +197,60 @@ export default function SignUpScreen() {
               value={username}
               placeholder='Enter username'
               className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
-              onChangeText={setUsername} />
+              autoComplete='username-new'
+              textContentType='username'
+              onChangeText={setUsername}
+              onEndEditing={makeEndEditingHandler(username, setUsername)}
+              returnKeyType='next'
+              onFocus={() => setFieldFocused(true)}
+              onBlur={() => setFieldFocused(false)}
+              onSubmitEditing={() => emailRef.current?.focus()} />
             <TextInput
+              ref={emailRef}
               autoCapitalize='none'
               value={emailAddress}
               placeholder='Enter email'
               className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
-              onChangeText={setEmailAddress} />
+              autoComplete='email'
+              textContentType='emailAddress'
+              importantForAutofill='yes'
+              onChangeText={setEmailAddress}
+              onEndEditing={makeEndEditingHandler(emailAddress, setEmailAddress)}
+              returnKeyType='next'
+              onFocus={() => setFieldFocused(true)}
+              onBlur={() => setFieldFocused(false)}
+              onSubmitEditing={() => passwordRef.current?.focus()} />
             <TextInput
+              ref={passwordRef}
               value={password}
               placeholder='Enter password'
               secureTextEntry
               className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
-              onChangeText={setPassword} />
+              autoComplete='new-password'
+              textContentType='newPassword'
+              importantForAutofill='yes'
+              passwordRules='minlength: 8;'
+              onChangeText={setPassword}
+              onEndEditing={makeEndEditingHandler(password, setPassword)}
+              returnKeyType='next'
+              onFocus={() => setFieldFocused(true)}
+              onBlur={() => setFieldFocused(false)}
+              onSubmitEditing={() => confirmRef.current?.focus()} />
             <TextInput
+              ref={confirmRef}
               value={confirmPassword}
               placeholder='Confirm password'
               secureTextEntry
               className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
-              onChangeText={setConfirmPassword} />
+              autoComplete='new-password'
+              textContentType='newPassword'
+              importantForAutofill='yes'
+              onChangeText={setConfirmPassword}
+              onEndEditing={makeEndEditingHandler(confirmPassword, setConfirmPassword)}
+              returnKeyType='done'
+              onFocus={() => setFieldFocused(true)}
+              onBlur={() => setFieldFocused(false)}
+              onSubmitEditing={onSignUpPress} />
 
             {formError && (
               <Text className='text-sm text-red-600'>{formError}</Text>
@@ -226,7 +282,7 @@ export default function SignUpScreen() {
             </TouchableOpacity>
           </View>
         </View>
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 }

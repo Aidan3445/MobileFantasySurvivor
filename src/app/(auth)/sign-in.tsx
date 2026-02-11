@@ -1,12 +1,12 @@
 import { useSignIn } from '@clerk/clerk-expo';
 import { Link, useLocalSearchParams, useRouter } from 'expo-router';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
-import React from 'react';
+import { Platform, Text, TextInput, TouchableOpacity, View, type TextInputEndEditingEvent, } from 'react-native';
+import React, { useCallback, useRef } from 'react';
 import Header from '~/components/auth/header';
 import { SignInWithGoogle } from '~/components/auth/signInWithGoogle';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useHeaderHeight from '~/hooks/ui/useHeaderHeight';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 export default function Page() {
   const height = useHeaderHeight();
@@ -17,47 +17,68 @@ export default function Page() {
   const [emailAddress, setEmailAddress] = React.useState('');
   const [password, setPassword] = React.useState('');
 
-  // Handle the submission of the sign-in form
+  const passwordRef = useRef<TextInput>(null);
+
+  // iOS autofill bypasses onChangeText — onEndEditing fires with the correct native value
+  const handlePasswordEndEditing = useCallback(
+    (e: TextInputEndEditingEvent) => {
+      if (Platform.OS === 'ios') {
+        const nativeText = e.nativeEvent.text;
+        if (nativeText !== password) {
+          setPassword(nativeText);
+        }
+      }
+    },
+    [password],
+  );
+
+  const handleEmailEndEditing = useCallback(
+    (e: TextInputEndEditingEvent) => {
+      if (Platform.OS === 'ios') {
+        const nativeText = e.nativeEvent.text;
+        if (nativeText !== emailAddress) {
+          setEmailAddress(nativeText);
+        }
+      }
+    },
+    [emailAddress],
+  );
+
   const onSignInPress = async () => {
     if (!isLoaded) return;
 
-    // Start the sign-in process using the email and password provided
     try {
       const signInAttempt = await signIn.create({ identifier: emailAddress, password });
 
-      // If sign-in process is complete, set the created session as active
-      // and redirect the user
       if (signInAttempt.status === 'complete') {
         await setActive({ session: signInAttempt.createdSessionId });
         router.replace(redirectTo ?? '/');
-
       } else {
-        // If the status isn't complete, check why. User might need to
-        // complete further steps.
         console.error(JSON.stringify(signInAttempt, null, 2));
       }
     } catch (err) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
       console.error(JSON.stringify(err, null, 2));
     }
   };
 
   return (
-    <SafeAreaView className='relative flex-1 justify-center start bg-background px-6'>
+    <SafeAreaView className='relative flex-1 bg-background'>
+      {/* Fixed header/logo stays outside the ScrollView */}
       <View
-        className='absolute justify-start items-center w-[100vw]'
+        className='absolute w-full items-center'
         style={{ top: height }}>
         <Header />
       </View>
-      <KeyboardAvoidingView
-        behavior='padding'
-        style={{ flex: 1, justifyContent: 'flex-end' }}>
+
+      <KeyboardAwareScrollView
+        contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-end', paddingHorizontal: 24 }}
+        keyboardShouldPersistTaps='handled'
+        scrollEnabled={false}
+        automaticallyAdjustKeyboardInsets>
         <View className='rounded-3xl bg-white p-8 shadow-lg mb-2'>
           <View className='items-center'>
             <Text className='mb-2 text-3xl font-bold text-primary'>Welcome Back!</Text>
             <Text className='text-lg text-secondary'>Sign in to continue</Text>
-            <Text>{redirectTo}</Text>
           </View>
 
           <View className='gap-y-2'>
@@ -68,17 +89,26 @@ export default function Page() {
               className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
               placeholderTextColor='#B58553'
               autoComplete='email'
+              textContentType='emailAddress'
               importantForAutofill='yes'
-              onChangeText={emailAddress => setEmailAddress(emailAddress)} />
+              onChangeText={setEmailAddress}
+              onEndEditing={handleEmailEndEditing}
+              returnKeyType='next'
+              onSubmitEditing={() => passwordRef.current?.focus()} />
             <TextInput
+              ref={passwordRef}
               value={password}
               placeholder='Enter password'
-              secureTextEntry={true}
+              secureTextEntry
               className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
               placeholderTextColor='#B58553'
               autoComplete='password'
+              textContentType='password'
               importantForAutofill='yes'
-              onChangeText={password => setPassword(password)} />
+              onChangeText={setPassword}
+              onEndEditing={handlePasswordEndEditing}
+              returnKeyType='done'
+              onSubmitEditing={onSignInPress} />
             <SignInWithGoogle />
             <TouchableOpacity
               onPress={onSignInPress}
@@ -94,7 +124,7 @@ export default function Page() {
             </Link>
           </View>
         </View>
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 }
