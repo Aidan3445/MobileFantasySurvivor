@@ -11,7 +11,7 @@ import { type CustomEventRuleInsert, CustomEventRuleInsertZod } from '~/types/le
 import { defaultNewCustomRule } from '~/lib/leagues';
 
 export function useCustomEventRules() {
-  const fetchData = useFetch('GET', true);
+  const fetchData = useFetch('GET');
   const queryClient = useQueryClient();
   const { data: league } = useLeague();
   const { data: leagueMembers } = useLeagueMembers();
