@@ -1,6 +1,6 @@
-import { View, Text, TextInput, FlatList } from 'react-native';
+import { View, Text, TextInput, ScrollView } from 'react-native';
 import { useSearchableSelect, type SearchableOption } from '~/hooks/ui/useSearchableSelect';
-import { type ReactElement, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { Check, ChevronDown, Search, X } from 'lucide-react-native';
 import Modal from '~/components/common/modal';
 import Button from '~/components/common/button';
@@ -32,7 +32,7 @@ export default function SearchableMultiSelect<T extends string | number>({
   children,
   asChild,
   disabled,
-  className
+  className,
 }: SearchableMultiSelectProps<T>) {
   const { isVisible, searchText, setSearchText, openModal, closeModal, filterOptions } =
     useSearchableSelect<T>(overrideState);
@@ -43,15 +43,15 @@ export default function SearchableMultiSelect<T extends string | number>({
     if (isSelected(value)) {
       onToggleSelect(selectedValues?.filter((v) => v !== value) ?? []);
     } else {
-      onToggleSelect([...selectedValues ?? [], value]);
+      onToggleSelect([...(selectedValues ?? []), value]);
     }
   };
 
+  const filtered = filterOptions(options);
+
   const renderTrigger = () => {
     if (asChild && !children)
-      throw new Error(
-        'SearchableMultiSelect: asChild is true but no children were provided.'
-      );
+      throw new Error('SearchableMultiSelect: asChild is true but no children were provided.');
     if (asChild && children) return children;
 
     if (children) {
@@ -82,7 +82,6 @@ export default function SearchableMultiSelect<T extends string | number>({
       );
     }
 
-    // Default trigger showing selection count
     const selectedCount = selectedValues?.length ?? 0;
     const selectedLabels = options
       .filter((opt) => opt.value && selectedValues?.includes(opt.value))
@@ -97,7 +96,9 @@ export default function SearchableMultiSelect<T extends string | number>({
         disabled={disabled}
         onPress={openModal}>
         <Text
-          className={selectedCount === 0 ? 'text-muted-foreground' : 'font-medium text-foreground'}>
+          className={
+            selectedCount === 0 ? 'text-muted-foreground' : 'font-medium text-foreground'
+          }>
           {selectedCount === 0
             ? 'Select...'
             : selectedCount === 1
@@ -130,11 +131,12 @@ export default function SearchableMultiSelect<T extends string | number>({
           <View className='flex-1 flex-row items-center rounded-lg border-2 border-primary/20 bg-primary/5 px-2 py-0 h-12 text-lg leading-tight overflow-hidden gap-2'>
             <Search size={18} color={colors['muted-foreground']} />
             <TextInput
-              className='text-lg leading-tight overflow-hidden py-0'
+              className='flex-1 text-lg leading-tight overflow-hidden py-0'
               placeholder={placeholder}
               value={searchText}
               onChangeText={setSearchText}
-              placeholderTextColor={colors['muted-foreground']} />
+              placeholderTextColor={colors['muted-foreground']}
+            />
           </View>
           <Button
             className='rounded-lg bg-primary px-4 py-2.5 active:opacity-80'
@@ -150,7 +152,7 @@ export default function SearchableMultiSelect<T extends string | number>({
               {selectedValues.length} selected
             </Text>
             <Button onPress={() => onToggleSelect([])}>
-              <Text key={'clear-all'} className='text-sm font-medium text-primary'>Clear all</Text>
+              <Text className='text-sm font-medium text-primary'>Clear all</Text>
             </Button>
           </View>
         ) : (
@@ -160,57 +162,69 @@ export default function SearchableMultiSelect<T extends string | number>({
         )}
 
         {/* Options List */}
-        <FlatList
-          className='max-h-64'
-          showsVerticalScrollIndicator={false}
-          data={filterOptions(options)}
-          keyExtractor={(item) => String(item.value)}
-          ItemSeparatorComponent={() => <View className='h-1' />}
-          renderItem={({ item }) => {
-            if (!item.value || (typeof item.value === 'string'
-              ? item.value.includes('__null_option_')
-              : item.value as number < 0)) {
-              return (
-                <View key={item.label} className='px-3 py-2'>
-                  <Text className='text-center font-bold tracking-widest text-primary'>
-                    {item.label}
-                  </Text>
-                </View>
-              );
-            }
-
-            const selected = isSelected(item.value);
-            return (
-              <Button
-                className={`flex-row items-center rounded-lg px-3 py-2.5 active:bg-primary/10 ${selected ? 'bg-primary/10' : 'bg-primary/5'
-                  } ${item.disabled ? 'opacity-50' : ''}`}
-                disabled={item.disabled}
-                onPress={() => {
-                  if (item.disabled) return;
-                  handleToggleSelect(item.value!);
-                }}>
-                <View
-                  className={`mr-3 h-5 w-5 items-center justify-center rounded border-2 ${selected ? 'border-primary bg-primary' : 'border-primary/30 bg-transparent'
-                    }`}>
-                  {selected && <Check size={14} color='white' />}
-                </View>
-                {item.renderLabel ? (
-                  item.renderLabel()
-                ) : (
-                  <Text
-                    className={`text-base flex-1 ${selected ? 'font-semibold text-foreground' : 'text-foreground'}`}>
-                    {item.label}
-                  </Text>
-                )}
-              </Button>
-            );
-          }}
-          ListEmptyComponent={
+        <ScrollView className='max-h-64' nestedScrollEnabled showsVerticalScrollIndicator={false}>
+          {filtered.length === 0 ? (
             <View className='items-center py-8'>
               <Text className='text-muted-foreground'>{emptyMessage}</Text>
             </View>
-          }
-          ListFooterComponent={footerComponent as ReactElement} />
+          ) : (
+            filtered.map((item, index) => {
+              const key = item.value != null ? String(item.value) : `header-${index}`;
+
+              if (
+                !item.value ||
+                (typeof item.value === 'string'
+                  ? item.value.includes('__null_option_')
+                  : (item.value as number) < 0)
+              ) {
+                return (
+                  <View key={key} className='px-3 py-2'>
+                    <Text className='text-center font-bold tracking-widest text-primary'>
+                      {item.label}
+                    </Text>
+                  </View>
+                );
+              }
+
+              const selected = isSelected(item.value);
+              return (
+                <Button
+                  key={key}
+                  className={cn(
+                    'flex-row items-center rounded-lg px-3 py-2.5 active:bg-primary/10',
+                    selected ? 'bg-primary/10' : 'bg-primary/5',
+                    item.disabled && 'opacity-50',
+                    index > 0 && 'mt-1'
+                  )}
+                  disabled={item.disabled}
+                  onPress={() => {
+                    if (item.disabled) return;
+                    handleToggleSelect(item.value!);
+                  }}>
+                  <View
+                    className={cn(
+                      'mr-3 h-5 w-5 items-center justify-center rounded border-2',
+                      selected ? 'border-primary bg-primary' : 'border-primary/30 bg-transparent'
+                    )}>
+                    {selected && <Check size={14} color='white' />}
+                  </View>
+                  {item.renderLabel ? (
+                    item.renderLabel()
+                  ) : (
+                    <Text
+                      className={cn(
+                        'text-base flex-1 text-foreground',
+                        selected && 'font-semibold'
+                      )}>
+                      {item.label}
+                    </Text>
+                  )}
+                </Button>
+              );
+            })
+          )}
+          {footerComponent}
+        </ScrollView>
       </Modal>
       {renderTrigger()}
     </>

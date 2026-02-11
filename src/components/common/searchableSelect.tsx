@@ -1,6 +1,6 @@
-import { View, Text, TextInput, FlatList } from 'react-native';
+import { View, Text, TextInput, ScrollView } from 'react-native';
 import { useSearchableSelect, type SearchableOption } from '~/hooks/ui/useSearchableSelect';
-import { type ReactElement, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { Check, ChevronDown, Search } from 'lucide-react-native';
 import Modal from '~/components/common/modal';
 import Button from '~/components/common/button';
@@ -32,10 +32,12 @@ export default function SearchableSelect<T extends string | number>({
   children,
   asChild,
   disabled,
-  className
+  className,
 }: SearchableSelectProps<T>) {
   const { isVisible, searchText, setSearchText, openModal, closeModal, filterOptions } =
     useSearchableSelect<T>(overrideState);
+
+  const filtered = filterOptions(options);
 
   const renderTrigger = () => {
     if (asChild && !children)
@@ -87,63 +89,74 @@ export default function SearchableSelect<T extends string | number>({
         <View className='w-full flex-row items-center rounded-lg border-2 border-primary/20 bg-primary/5 px-2 py-0 h-12 text-lg leading-tight overflow-hidden gap-2'>
           <Search size={18} color={colors['muted-foreground']} />
           <TextInput
-            className='text-lg leading-tight overflow-hidden py-0'
+            className='flex-1 text-lg leading-tight overflow-hidden py-0'
             placeholder={placeholder}
             value={searchText}
             onChangeText={setSearchText}
-            placeholderTextColor={colors['muted-foreground']} />
+            placeholderTextColor={colors['muted-foreground']}
+          />
         </View>
 
         {/* Options List */}
-        <FlatList
+        <ScrollView
           className='mt-2 max-h-64'
-          showsVerticalScrollIndicator={false}
-          data={filterOptions(options)}
-          keyExtractor={(item) => String(item.value)}
-          ItemSeparatorComponent={() => <View className='h-1' />}
-          renderItem={({ item }) => {
-            if (!item.value) {
-              return (
-                <View className='px-3 py-2'>
-                  <Text className='text-center font-bold tracking-widest text-primary'>
-                    {item.label}
-                  </Text>
-                </View>
-              );
-            }
-
-            const isSelected = selectedValue === item.value;
-            return (
-              <Button
-                className={`flex-row items-center rounded-lg px-3 py-2.5 active:bg-primary/10 ${isSelected ? 'bg-primary/10' : 'bg-primary/5'
-                  } ${item.disabled ? 'opacity-50' : ''}`}
-                disabled={item.disabled}
-                onPress={() => {
-                  if (item.disabled) return;
-                  onSelect(item.value!);
-                  closeModal();
-                }}>
-                <View className='w-6'>
-                  {isSelected && <Check size={18} color={colors.primary} />}
-                </View>
-                {item.renderLabel ? (
-                  item.renderLabel()
-                ) : (
-                  <Text
-                    className={`text-base flex-1 ${isSelected ? 'font-semibold text-primary' : 'text-foreground'}`}>
-                    {item.label}
-                  </Text>
-                )}
-              </Button>
-            );
-          }}
-          ListEmptyComponent={
+          nestedScrollEnabled
+          showsVerticalScrollIndicator={false}>
+          {filtered.length === 0 ? (
             <View className='items-center py-8'>
               <Text className='text-muted-foreground'>{emptyMessage}</Text>
             </View>
-          }
-          ListFooterComponent={footerComponent as ReactElement} />
-      </Modal >
+          ) : (
+            filtered.map((item, index) => {
+              const key = item.value != null ? String(item.value) : `header-${index}`;
+
+              if (!item.value) {
+                return (
+                  <View key={key} className='px-3 py-2'>
+                    <Text className='text-center font-bold tracking-widest text-primary'>
+                      {item.label}
+                    </Text>
+                  </View>
+                );
+              }
+
+              const isSelected = selectedValue === item.value;
+              return (
+                <Button
+                  key={key}
+                  className={cn(
+                    'flex-row items-center rounded-lg px-3 py-2.5 active:bg-primary/10',
+                    isSelected ? 'bg-primary/10' : 'bg-primary/5',
+                    item.disabled && 'opacity-50',
+                    index > 0 && 'mt-1'
+                  )}
+                  disabled={item.disabled}
+                  onPress={() => {
+                    if (item.disabled) return;
+                    onSelect(item.value!);
+                    closeModal();
+                  }}>
+                  <View className='w-6'>
+                    {isSelected && <Check size={18} color={colors.primary} />}
+                  </View>
+                  {item.renderLabel ? (
+                    item.renderLabel()
+                  ) : (
+                    <Text
+                      className={cn(
+                        'text-base flex-1',
+                        isSelected ? 'font-semibold text-primary' : 'text-foreground'
+                      )}>
+                      {item.label}
+                    </Text>
+                  )}
+                </Button>
+              );
+            })
+          )}
+          {footerComponent}
+        </ScrollView>
+      </Modal>
       {renderTrigger()}
     </>
   );

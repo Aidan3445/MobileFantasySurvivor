@@ -1,12 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, type ReactNode } from 'react';
-import {
-  Platform,
-  Pressable,
-  Modal as RNModal,
-  useWindowDimensions,
-} from 'react-native';
-import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import { Pressable, Modal as RNModal, useWindowDimensions, } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
@@ -97,16 +92,19 @@ export default function Modal({
     <RNModal visible={isVisible} transparent animationType='none' onRequestClose={onClose}>
       <SafeAreaView
         edges={{ top: 'maximum', bottom: 'maximum' }}
-        className='flex-1 px-2 py-32 items-center justify-center'>
+        className='flex-1 px-2 py-32 justify-center'>
         {/* Backdrop */}
         <Pressable className='absolute inset-0' onPress={dismiss}>
           <Animated.View
             style={[{ position: 'absolute', inset: 0, backgroundColor: 'black' }, backdropStyle]} />
         </Pressable>
 
-        <KeyboardAvoidingView
-          className='w-full'
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+          keyboardShouldPersistTaps='handled'
+          showsVerticalScrollIndicator={false}
+          scrollEnabled={false}
+          automaticallyAdjustKeyboardInsets>
           <GestureDetector gesture={panGesture}>
             <Animated.View style={modalStyle}>
               <Pressable
@@ -119,7 +117,7 @@ export default function Modal({
               </Pressable>
             </Animated.View>
           </GestureDetector>
-        </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
       </SafeAreaView>
     </RNModal>
   );

@@ -73,6 +73,7 @@ export default function Page() {
       <KeyboardAwareScrollView
         contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-end', paddingHorizontal: 24 }}
         keyboardShouldPersistTaps='handled'
+        showsVerticalScrollIndicator={false}
         scrollEnabled={false}
         automaticallyAdjustKeyboardInsets>
         <View className='rounded-3xl bg-white p-8 shadow-lg mb-2'>
