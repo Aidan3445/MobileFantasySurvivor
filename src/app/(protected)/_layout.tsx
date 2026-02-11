@@ -22,7 +22,7 @@ function NotificationManager() {
 
 export default function ProtectedLayout() {
   return (
-    <GestureHandlerRootView className='flex-1 bg-background'>
+    <GestureHandlerRootView>
       <StatusBar barStyle='dark-content' />
       <QueryClientContextProvider>
         <NotificationManager />
