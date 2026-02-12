@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { useRouter, usePathname } from 'expo-router';
 import useHeaderHeight from '~/hooks/ui/useHeaderHeight';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
@@ -66,53 +66,6 @@ export default function useLeaguesHeader() {
     return newTitle;
   }, [isModal, isIndex, isSettings, league?.name]);
 
-  // Typewriter animation
-  const [displayedText, setDisplayedText] = useState(title);
-  const animationRef = useRef({ cancelled: false });
-
-  useEffect(() => {
-    const { current: state } = animationRef;
-    state.cancelled = true;
-
-    const newState = { cancelled: false };
-    animationRef.current = newState;
-
-    let currentText = displayedText;
-
-    const animate = async () => {
-      // Crush
-      while (currentText.length > 0 && !newState.cancelled) {
-        if (currentText.length > 30) {
-          currentText = currentText.slice(0, 30);
-        } else {
-          currentText = currentText.slice(0, -1);
-        }
-        setDisplayedText(currentText);
-        // eslint-disable-next-line no-undef
-        await new Promise(r => setTimeout(r, 0));
-      }
-      // Reveal
-      for (let i = 0; i < title.length && !newState.cancelled; i++) {
-        currentText = title.slice(0, i + 1);
-        setDisplayedText(currentText);
-        // eslint-disable-next-line no-undef
-        await new Promise(r => setTimeout(r, 0));
-
-        // We only display a max of ~30 characters before marquee kicks in
-        // so if we exceed that, jump to the full title
-        if (currentText.length >= 30) {
-          setDisplayedText(title);
-          break;
-        }
-      }
-    };
-
-    animate();
-
-    return () => { newState.cancelled = true; };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [title]);
-
   // Navigation handlers
   const handleBackPress = useCallback(() => {
     router.canGoBack() ? router.back() : router.replace('/leagues');
@@ -128,7 +81,7 @@ export default function useLeaguesHeader() {
 
   return {
     height,
-    displayedText,
+    title,
     buttons: {
       back: { opacity: backOpacity, enabled: showBack, onPress: handleBackPress },
       settings: { opacity: settingsOpacity, enabled: showSettings, onPress: handleSettingsPress },

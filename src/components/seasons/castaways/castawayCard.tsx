@@ -40,9 +40,9 @@ export default function CastawayCard({
       {/* Header with Image and Name */}
       <ColorRow
         className='relative h-16 justify-start gap-2 px-2 py-2'
-        color={castaway.eliminatedEpisode ? '#AAAAAA' : castaway.tribe!.color}>
+        color={castaway.tribe!.color}>
         <View className='flex-row items-center gap-2'>
-          <Grayscale amount={0}>
+          <Grayscale amount={+(castaway.eliminatedEpisode || !!member)}>
             <Image
               source={{ uri: castaway.imageUrl }}
               style={{

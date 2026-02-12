@@ -16,13 +16,12 @@ export default function Page() {
 
   return (
     <SafeAreaRefreshView
-      extraHeight={0}
       header={<HomeHeader />}
       refreshing={refreshing}
       onRefresh={onRefresh}
-      handleScroll={handleScroll} >
+      handleScroll={handleScroll}>
       <View
-        className={cn('page justify-start gap-y-4 px-1.5 pt-8 pb-1.5')}>
+        className={cn('justify-start gap-y-4 px-1.5 pt-8 pb-1.5')}>
         <Logo refreshing={refreshing} />
         <ActiveLeagues />
         <QuickActions className='rounded-xl border-2 border-primary/20 bg-card opacity-80 p-2' />

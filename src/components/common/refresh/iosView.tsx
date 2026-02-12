@@ -1,4 +1,4 @@
-import { RefreshControl } from 'react-native';
+import { Platform, RefreshControl, View } from 'react-native';
 import { type SafeAreaRefreshViewProps } from '~/components/common/refresh/safeAreaRefreshView';
 import IOSRefreshIndicator from '~/components/common/refresh/iosIndicator';
 import { Fragment } from 'react';
@@ -33,11 +33,14 @@ export default function IOSRefreshView({
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor='transparent'
-            colors={['transparent']}
-            progressBackgroundColor='transparent'
+            tintColor='#FFFFFF00'
+            colors={['#FFFFFF00']}
+            progressBackgroundColor='#FFFFFF00'
             progressViewOffset={-1000} />
         }>
+        {Platform.OS === 'ios' && (
+          <View className='absolute left-1/2 translate-x-[-40%] w-20 h-96 -top-96 bg-background' />
+        )}
         {children}
       </KeyboardAwareScrollView>
     </Fragment>
