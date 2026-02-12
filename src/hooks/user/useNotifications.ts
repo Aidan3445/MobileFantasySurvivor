@@ -22,7 +22,7 @@ Notifications.setNotificationHandler({
 export function useNotifications() {
   const [expoPushToken, setExpoPushToken] = useState<string | null>(null);
   const [permissionStatus, setPermissionStatus] = useState<Notifications.PermissionStatus | null>(null);
-  const hasRegistered = useRef(false);
+  const registeringRef = useRef<Promise<void> | null>(null);
 
   const postData = useFetch('POST');
   const deleteData = useFetch('DELETE');
@@ -54,31 +54,41 @@ export function useNotifications() {
     [postData],
   );
 
-  // Check and register on mount (if permission already granted)
-  useEffect(() => {
-    if (hasRegistered.current) return;
+  const ensureTokenRegistered = useCallback(async () => {
+    if (registeringRef.current) {
+      return registeringRef.current;
+    }
 
-    void (async () => {
+    registeringRef.current = (async () => {
       const { status } = await Notifications.getPermissionsAsync();
       setPermissionStatus(status);
-
       if (status !== 'granted') return;
 
-      const currentToken = await getExpoPushToken();
-      if (!currentToken) return;
+      const token = await getExpoPushToken();
+      if (!token) return;
 
       const cachedToken = await AsyncStorage.getItem(TOKEN_STORAGE_KEY);
-
-      // Only register if token is new or changed
-      if (currentToken !== cachedToken) {
-        await AsyncStorage.setItem(TOKEN_STORAGE_KEY, currentToken);
-        await registerTokenWithServer(currentToken);
+      if (cachedToken === token) {
+        setExpoPushToken(token);
+        return;
       }
 
-      setExpoPushToken(currentToken);
-      hasRegistered.current = true;
+      await AsyncStorage.setItem(TOKEN_STORAGE_KEY, token);
+      await registerTokenWithServer(token);
+      setExpoPushToken(token);
     })();
+
+    try {
+      await registeringRef.current;
+    } finally {
+      registeringRef.current = null;
+    }
   }, [registerTokenWithServer]);
+
+  // Check and register on mount (if permission already granted)
+  useEffect(() => {
+    void ensureTokenRegistered();
+  }, [ensureTokenRegistered]);
 
   const requestPermissions = useCallback(async (): Promise<boolean> => {
     if (!Device.isDevice) {
@@ -104,16 +114,9 @@ export function useNotifications() {
       return false;
     }
 
-    // Get and register push token
-    const token = await getExpoPushToken();
-    if (token) {
-      setExpoPushToken(token);
-      await AsyncStorage.setItem(TOKEN_STORAGE_KEY, token);
-      await registerTokenWithServer(token);
-    }
-
+    await ensureTokenRegistered();
     return true;
-  }, [registerTokenWithServer]);
+  }, [ensureTokenRegistered]);
 
   const unregisterToken = useCallback(async () => {
     if (!expoPushToken) return;
@@ -142,7 +145,8 @@ export function useNotifications() {
         },
       });
     },
-    [permissionStatus, requestPermissions],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [permissionStatus],
   );
 
   return {

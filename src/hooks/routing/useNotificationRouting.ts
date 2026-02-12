@@ -19,8 +19,11 @@ interface NotificationData {
 
 /**
  * Handles notification tap routing
- * Place in the protected layout alongside useDeepLinkHandler
+ * Place in the tabs layout alongside useDeepLinkHandler
  */
+// Module-level so it persists across remounts from navigation
+let lastHandledId: string | null = null;
+
 export function useNotificationRouting() {
   const router = useRouter();
   const pathname = usePathname();
@@ -30,7 +33,6 @@ export function useNotificationRouting() {
   const { isSignedIn, isLoaded } = useAuth();
 
   const pathnameRef = useRef(pathname);
-  const handledInitial = useRef(false);
 
   const isNavigationReady = !!navigationState?.key;
   const inProtectedGroup = segments[0] === '(protected)';
@@ -44,16 +46,18 @@ export function useNotificationRouting() {
   // Cold start: handle notification that launched the app
   useEffect(() => {
     if (!isLoaded || !isNavigationReady) return;
-    if (handledInitial.current) return;
 
-    const handleInitial = async () => {
+    const handleInitial = () => {
       const response = Notifications.getLastNotificationResponse();
       if (!response) return;
+
+      const notifId = response.notification.request.identifier;
+      if (notifId === lastHandledId) return;
 
       const data = response.notification.request.content.data as unknown as NotificationData;
       if (!data?.type) return;
 
-      handledInitial.current = true;
+      lastHandledId = notifId;
 
       if (!isSignedIn) {
         setPendingDeepLink({
@@ -63,7 +67,6 @@ export function useNotificationRouting() {
         return;
       }
 
-      // Force tabs first, then route
       router.replace('/(protected)/(tabs)');
       // eslint-disable-next-line no-undef
       setTimeout(() => {
@@ -71,7 +74,7 @@ export function useNotificationRouting() {
       }, 150);
     };
 
-    void handleInitial();
+    handleInitial();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, isSignedIn, isNavigationReady, router]);
 
@@ -103,8 +106,13 @@ export function useNotificationRouting() {
     if (!isLoaded || !isNavigationReady) return;
 
     const subscription = Notifications.addNotificationResponseReceivedListener((response) => {
+      const notifId = response.notification.request.identifier;
+      if (notifId === lastHandledId) return;
+
       const data = response.notification.request.content.data as unknown as NotificationData;
       if (!isSignedIn || !data?.type) return;
+
+      lastHandledId = notifId;
       void routeNotification(data);
     });
 
@@ -112,26 +120,49 @@ export function useNotificationRouting() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, isSignedIn, isNavigationReady]);
 
+  function navigateToLeague(leagueHash: string, subPath?: string) {
+    // Don't push if already on this league page
+    if (pathnameRef.current.includes(`/leagues/${leagueHash}${subPath ? `/${subPath}` : ''}`)) return;
+    router.push(`/(protected)/(tabs)/leagues/${leagueHash}${subPath ? `/${subPath}` : ''}`);
+  }
+
+  function navigateToLeagues() {
+    if (pathnameRef.current.endsWith('/leagues')) return;
+    router.push('/(protected)/(tabs)/leagues');
+  }
+
   async function routeNotification(data: NotificationData) {
     if (!data?.type) return;
 
     switch (data.type) {
       case 'league_admission':
       case 'member_joined':
-      case 'member_pending':
       case 'draft_date_changed':
       case 'draft_reminder_1hr':
-      case 'draft_start':
       case 'league_recreated':
+        if (data.leagueHash) {
+          navigateToLeague(data.leagueHash, 'predraft');
+        }
+        break;
+      case 'draft_start':
+        if (data.leagueHash) {
+          navigateToLeague(data.leagueHash, 'draft');
+        }
+        break;
+      case 'member_pending':
+        if (data.leagueHash) {
+          navigateToLeague(data.leagueHash, 'settings');
+        }
+        break;
       case 'selection_changed':
         if (data.leagueHash) {
-          router.push(`/(protected)/(tabs)/leagues/${data.leagueHash}`);
+          navigateToLeague(data.leagueHash);
         }
         break;
 
       case 'reminder':
       case 'episode_finished':
-        router.push('/(protected)/(tabs)/leagues');
+        navigateToLeagues();
         break;
 
       case 'live_scoring':
@@ -154,13 +185,13 @@ export function useNotificationRouting() {
 
     // League-specific notification (custom events), go directly
     if (data.leagueHash) {
-      router.push(`/(protected)/(tabs)/leagues/${data.leagueHash}`);
+      navigateToLeague(data.leagueHash);
       return;
     }
 
     // Global live scoring — check how many active leagues
     if (!data.seasonId) {
-      router.push('/(protected)/(tabs)/leagues');
+      navigateToLeagues();
       return;
     }
 
@@ -168,16 +199,16 @@ export function useNotificationRouting() {
       const activeSeasonLeagues = leagues?.filter(league =>
         league.league.seasonId === data.seasonId &&
         league.league.status === 'Active' &&
-        league.memberCount > 0
+        league.memberCount > 0,
       );
       if (activeSeasonLeagues?.length === 1) {
-        router.push(`/(protected)/(tabs)/leagues/${activeSeasonLeagues[0]!.league.hash}`);
+        navigateToLeague(activeSeasonLeagues[0]!.league.hash);
       } else {
-        router.push('/(protected)/(tabs)/leagues');
+        navigateToLeagues();
       }
     } catch (error) {
       console.error('Failed to fetch active leagues for notification routing:', error);
-      router.push('/(protected)/(tabs)/leagues');
+      navigateToLeagues();
     }
   }
 }
