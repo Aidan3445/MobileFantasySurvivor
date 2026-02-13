@@ -35,6 +35,7 @@ export type NotificationType =
   | 'episode_starting'
   | 'episode_finished'
   | 'draft_date_changed'
+  | 'draft_date_changed_soon'
   | 'draft_reminder_1hr'
   | 'selection_changed'
 
@@ -64,4 +65,12 @@ export type ScheduledSelectionData = {
   castawayId: number;
   castawayName: string;
   episodeId: number;
+}
+
+export interface NotificationData {
+  type: string;
+  leagueHash?: string;
+  seasonId?: number;
+  leagueId?: number;
+  episodeId?: number;
 }

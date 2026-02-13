@@ -8,14 +8,7 @@ import {
   clearPendingDeepLink,
 } from '~/lib/routing';
 import { useLeagues } from '~/hooks/user/useLeagues';
-
-interface NotificationData {
-  type: string;
-  leagueHash?: string;
-  seasonId?: number;
-  leagueId?: number;
-  episodeId?: number;
-}
+import { type NotificationData } from '~/types/notifications';
 
 /**
  * Handles notification tap routing
@@ -138,6 +131,7 @@ export function useNotificationRouting() {
       case 'league_admission':
       case 'member_joined':
       case 'draft_date_changed':
+      case 'draft_date_changed_soon':
       case 'draft_reminder_1hr':
       case 'league_recreated':
         if (data.leagueHash) {

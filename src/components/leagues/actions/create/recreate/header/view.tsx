@@ -24,7 +24,7 @@ export default function RecreateLeagueHeader({ leagueName }: RecreateLeagueHeade
       style={{ height }}>
       <View className='items-center justify-center w-full'>
         <Text className='text-2xl font-black uppercase tracking-tight text-foreground -mb-2'>
-          Join
+          Clone
         </Text>
         <View className='relative flex-row items-center justify-center gap-0.5 w-full'>
           <Button

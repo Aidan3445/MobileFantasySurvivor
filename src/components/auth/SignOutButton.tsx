@@ -4,16 +4,16 @@ import { useClerk } from '@clerk/clerk-expo';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import { LogOut } from 'lucide-react-native';
-
-import { useNotifications } from '~/hooks/user/useNotifications';
 import { colors } from '~/lib/colors';
+import { useFetch } from '~/hooks/helpers/useFetch';
+import { unregisterPushToken } from '~/lib/notifications';
 
 export default function SignOutButton() {
   const { signOut } = useClerk();
   const queryClient = useQueryClient();
   const router = useRouter();
-  const { unregisterToken } = useNotifications();
   const [isSigningOut, setIsSigningOut] = useState(false);
+  const deleteData = useFetch('DELETE');
 
   const handleSignOut = () => {
     Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
@@ -25,7 +25,7 @@ export default function SignOutButton() {
           void (async () => {
             setIsSigningOut(true);
             try {
-              await unregisterToken();
+              await unregisterPushToken(deleteData);
               queryClient.clear();
               await signOut();
               router.replace('/(auth)/sign-in');

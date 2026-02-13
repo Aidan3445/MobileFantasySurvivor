@@ -4,10 +4,14 @@ import { useState } from 'react';
 import { cn } from '~/lib/utils';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 import * as Clipboard from 'expo-clipboard';
-import * as Linking from 'expo-linking';
 import { colors } from '~/lib/colors';
 import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
 import ProtectionInfo from '~/components/leagues/predraft/inviteLink/protectionInfo';
+
+const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
+if (!BASE_URL) {
+  throw new Error('EXPO_PUBLIC_API_URL is not set');
+}
 
 export default function InviteLink() {
   const { data: league } = useLeague();
@@ -16,9 +20,7 @@ export default function InviteLink() {
 
   if (!league) return null;
 
-  const link = Linking.createURL('/join', {
-    queryParams: { hash: league.hash },
-  });
+  const link = `${BASE_URL}/i/${league.hash}`;
 
   const copyLink = async () => {
     await Clipboard.setStringAsync(link);

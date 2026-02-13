@@ -1,18 +1,23 @@
 import { useRouter } from 'expo-router';
-import { View, Text, Platform, ScrollView } from 'react-native';
-import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import { View, Text, Platform } from 'react-native';
 import { useSysAdmin } from '~/hooks/user/useSysAdmin';
 import { useMemo, useState } from 'react';
 import BaseEventHeader from '~/components/leagues/actions/events/base/header/view';
 import { useSeasonsData } from '~/hooks/seasons/useSeasonsData';
 import CreateBaseEvent from '~/components/leagues/actions/events/base/create';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { cn } from '~/lib/utils';
+import SafeAreaRefreshView from '~/components/common/refresh/safeAreaRefreshView';
+import { useRefresh } from '~/hooks/helpers/refresh/useRefresh';
 
 export default function BaseEventScreen() {
   const { data: userId, isLoading, isError } = useSysAdmin();
   const router = useRouter();
 
   const [selectedSeason, setSelectedSeason] = useState<string>('');
+  const { refreshing, onRefresh, scrollY, handleScroll } = useRefresh(
+    [['seasons', undefined, true]]
+  );
   const { data: scoreData } = useSeasonsData(true);
 
   const selectedSeasonData = useMemo(() => {
@@ -28,7 +33,7 @@ export default function BaseEventScreen() {
 
   if (isLoading) {
     return (
-      <SafeAreaView className='flex-1 bg-background py-16 justify-center items-center'>
+      <SafeAreaView className='flex-1 bg-background pt-16 justify-center items-center'>
         <BaseEventHeader
           seasons={scoreData ?? []}
           value={selectedSeason}
@@ -44,21 +49,24 @@ export default function BaseEventScreen() {
   }
 
   return (
-    <SafeAreaView className='flex-1 bg-background justify-center items-center'>
-      <BaseEventHeader
-        seasons={scoreData ?? []}
-        value={selectedSeason}
-        setValue={setSelectedSeason} />
-      <ScrollView className='w-full pt-20' showsVerticalScrollIndicator={false}>
-        <View className='gap-y-4 px-1.5 pb-16'>
-          <KeyboardAvoidingView
-            className='flex-1'
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}>
-            <CreateBaseEvent seasonId={selectedSeasonData?.season.seasonId ?? null} />
-          </KeyboardAvoidingView>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <SafeAreaRefreshView
+      className={cn('pt-8', refreshing && Platform.OS === 'ios' && 'pt-12')}
+      header={
+        <BaseEventHeader
+          seasons={scoreData ?? []}
+          value={selectedSeason}
+          setValue={setSelectedSeason} />
+      }
+      alreadySafe={Platform.OS === 'ios'}
+      extraHeight={Platform.OS === 'ios' ? 0 : undefined}
+      refreshing={refreshing}
+      onRefresh={onRefresh}
+      scrollY={scrollY}
+      handleScroll={handleScroll}>
+      <View className={cn('page justify-start gap-y-4 px-1.5 pb-12',
+        Platform.OS === 'ios' && 'pt-12')}>
+        <CreateBaseEvent seasonId={selectedSeasonData?.season.seasonId ?? null} />
+      </View>
+    </SafeAreaRefreshView>
   );
 }

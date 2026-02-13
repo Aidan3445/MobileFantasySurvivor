@@ -4,6 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { colors } from '~/lib/colors';
 
 interface AndroidRefreshViewProps {
+  disableScroll?: boolean;
   refreshing: boolean;
   onRefresh: () => Promise<void>;
   handleScroll?: (_event: NativeSyntheticEvent<NativeScrollEvent>) => void;
@@ -12,6 +13,7 @@ interface AndroidRefreshViewProps {
 }
 
 export function AndroidRefreshView({
+  disableScroll,
   refreshing,
   onRefresh,
   handleScroll,
@@ -22,6 +24,7 @@ export function AndroidRefreshView({
     <Fragment>
       {header}
       <KeyboardAwareScrollView
+        scrollEnabled={!disableScroll}
         className='w-full'
         showsVerticalScrollIndicator={false}
         bottomOffset={80}

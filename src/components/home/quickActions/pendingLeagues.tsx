@@ -9,16 +9,17 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 interface PendingLeaguesProps {
   pendingLeagues: PublicLeague[];
+  className?: string;
 }
 
-export default function PendingLeagues({ pendingLeagues }: PendingLeaguesProps) {
+export default function PendingLeagues({ pendingLeagues, className }: PendingLeaguesProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
       {/* Trigger Button */}
       <Button
-        className='flex-1 flex-row items-center rounded-lg border-2 border-primary/30 bg-accent p-2 active:bg-primary/20'
+        className={className}
         onPress={() => setIsOpen(true)}>
         <View className='mr-1 h-10 w-10 items-center justify-center rounded-full bg-primary/20'>
           <Hourglass size={18} color={colors.primary} />

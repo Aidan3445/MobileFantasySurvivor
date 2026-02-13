@@ -29,25 +29,19 @@ export function useDeepLinkHandler() {
     const handleInitialURL = async () => {
       const url = await Linking.getInitialURL();
       if (!url) return;
+      const link = parseDeepLink(url);
+      if (!link) return;
 
-      const parsed = Linking.parse(url);
-      const { path, queryParams } = parsed;
-
-      if (path === 'join' && queryParams?.hash) {
-        const hash = queryParams.hash as string;
-        handledInitialUrl.current = true;
-
+      handledInitialUrl.current = true;
+      if (link.path === 'join') {
         if (!isSignedIn) {
-          // Not signed in: store pending, let root layout redirect to auth
-          setPendingDeepLink({ path: 'join', params: { hash } });
+          setPendingDeepLink({ path: 'join', params: { hash: link.hash } });
           return;
         }
-
-        // Signed in cold start: force tabs first, then push modal
         router.replace('/(protected)/(tabs)');
         // eslint-disable-next-line no-undef
         setTimeout(() => {
-          router.push(`/(protected)/(modals)/join?hash=${hash}`);
+          router.push(`/(protected)/(modals)/join?hash=${link.hash}`);
         }, 150);
       }
     };
@@ -78,25 +72,41 @@ export function useDeepLinkHandler() {
     if (!isLoaded || !isNavigationReady) return;
 
     const subscription = Linking.addEventListener('url', ({ url }) => {
-      const parsed = Linking.parse(url);
-      const { path, queryParams } = parsed;
+      const link = parseDeepLink(url);
+      if (!link) return;
 
-      if (path === 'join' && queryParams?.hash) {
-        const hash = queryParams.hash as string;
-
+      if (link.path === 'join') {
         if (!isSignedIn) {
-          setPendingDeepLink({ path: 'join', params: { hash } });
+          setPendingDeepLink({ path: 'join', params: { hash: link.hash } });
           router.replace('/(auth)/sign-in');
           return;
         }
-
         if (pathname.includes('/join')) {
-          router.setParams({ hash });
+          router.setParams({ hash: link.hash });
+        } else {
+          router.push(`/(protected)/(modals)/join?hash=${link.hash}`);
         }
-        // Otherwise Expo Router handles navigation automatically
       }
     });
 
     return () => subscription.remove();
   }, [isLoaded, isSignedIn, isNavigationReady, pathname, router]);
+}
+
+function parseDeepLink(url: string): { path: string; hash: string } | null {
+  const parsed = Linking.parse(url);
+  const { path, queryParams } = parsed;
+
+  // /i/:hash → join modal
+  const inviteMatch = path?.match(/^i\/(.+)$/);
+  if (inviteMatch) {
+    return { path: 'join', hash: inviteMatch[1]! };
+  }
+
+  // Direct join link (fallback)
+  if (path === 'join' && queryParams?.hash) {
+    return { path: 'join', hash: queryParams.hash as string };
+  }
+
+  return null;
 }

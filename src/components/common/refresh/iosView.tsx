@@ -5,6 +5,7 @@ import { Fragment } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 export default function IOSRefreshView({
+  disableScroll,
   refreshing,
   onRefresh,
   handleScroll,
@@ -23,6 +24,7 @@ export default function IOSRefreshView({
           extraHeight={extraHeight} />
       )}
       <KeyboardAwareScrollView
+        scrollEnabled={!disableScroll}
         className='w-full'
         showsVerticalScrollIndicator={false}
         bottomOffset={80}

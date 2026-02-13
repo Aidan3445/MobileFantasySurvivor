@@ -78,7 +78,7 @@ export default function RecreateLeagueScreen() {
   };
 
   return (
-    <SafeAreaView className='flex-1 bg-background pt-16'>
+    <SafeAreaView className='flex-1 bg-background pt-10'>
       <RecreateLeagueHeader leagueName={selectedLeague?.league.name} />
 
       <KeyboardAvoidingView

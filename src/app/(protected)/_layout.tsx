@@ -2,20 +2,20 @@ import { Stack } from 'expo-router';
 import QueryClientContextProvider from '~/context/reactQueryContext';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'react-native';
-import { useNotifications } from '~/hooks/user/useNotifications';
-import { useEffect } from 'react';
-import { useAuth } from '@clerk/clerk-expo';
+import { useEffect, useRef } from 'react';
+import { registerPushToken } from '~/lib/notifications';
+import { useFetch } from '~/hooks/helpers/useFetch';
 
-/** Runs inside QueryClientContextProvider so hooks can use React Query */
 function NotificationManager() {
-  const { isSignedIn } = useAuth();
-  const { permissionStatus, requestPermissions } = useNotifications();
+  const postData = useFetch('POST');
+  const postRef = useRef(postData);
+  postRef.current = postData;
 
   useEffect(() => {
-    if (isSignedIn && permissionStatus === 'granted') {
-      void requestPermissions();
-    }
-  }, [isSignedIn, permissionStatus, requestPermissions]);
+    registerPushToken(postRef.current).catch((err) =>
+      console.error('Failed to register push token:', err),
+    );
+  }, []);
 
   return null;
 }

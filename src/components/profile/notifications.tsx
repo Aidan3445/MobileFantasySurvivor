@@ -1,14 +1,32 @@
 import { View, Text, Switch, Pressable } from 'react-native';
 import { Bell, BellOff } from 'lucide-react-native';
-
+import * as Notifications from 'expo-notifications';
 import { useNotificationSettings } from '~/hooks/user/useNotificationSettings';
-import { useNotifications } from '~/hooks/user/useNotifications';
 import { colors } from '~/lib/colors';
 import { cn } from '~/lib/utils';
+import { useEffect, useState } from 'react';
+import { registerPushToken } from '~/lib/notifications';
+import { useFetch } from '~/hooks/helpers/useFetch';
 
 export default function NotificationSettings() {
+  const postData = useFetch('POST');
   const { settings, isLoading, updateSetting, toggleEnabled } = useNotificationSettings();
-  const { permissionStatus, requestPermissions } = useNotifications();
+  const [permissionStatus, setPermissionStatus] =
+    useState<Notifications.PermissionStatus | null>(null);
+
+  useEffect(() => {
+    Notifications.getPermissionsAsync().then(({ status }) =>
+      setPermissionStatus(status),
+    );
+  }, []);
+
+  const requestPermissions = async () => {
+    const { status } = await Notifications.requestPermissionsAsync();
+    setPermissionStatus(status);
+    if (status === 'granted') {
+      await registerPushToken(postData);
+    }
+  };
 
   if (isLoading) {
     return (
