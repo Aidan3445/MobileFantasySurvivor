@@ -53,7 +53,7 @@ export default function ChangeCastaway() {
   // Wait for priority picks
   if (uiState === 'wait-for-priority') {
     return (
-      <View className='rounded-xl border-2 border-primary/20 bg-card p-2 gap-2'>
+      <View className='w-full rounded-xl border-2 border-primary/20 bg-card p-2 gap-2'>
         <View className='flex-row items-center gap-2 px-1'>
           <View className='h-6 w-1 rounded-full bg-primary' />
           <Text className='text-xl font-black uppercase tracking-tight text-foreground'>

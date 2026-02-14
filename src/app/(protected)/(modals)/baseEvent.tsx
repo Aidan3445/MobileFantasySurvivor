@@ -15,9 +15,6 @@ export default function BaseEventScreen() {
   const router = useRouter();
 
   const [selectedSeason, setSelectedSeason] = useState<string>('');
-  const { refreshing, onRefresh, scrollY, handleScroll } = useRefresh(
-    [['seasons', undefined, true]]
-  );
   const { data: scoreData } = useSeasonsData(true);
 
   const selectedSeasonData = useMemo(() => {
@@ -30,6 +27,10 @@ export default function BaseEventScreen() {
     }
     return null;
   }, [scoreData, selectedSeason]);
+
+  const { refreshing, onRefresh, scrollY, handleScroll } = useRefresh(
+    [['seasons', undefined, true], ['episodes', selectedSeasonData?.season.seasonId]]
+  );
 
   if (isLoading) {
     return (
