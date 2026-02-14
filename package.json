@@ -4,7 +4,7 @@
   "main": "expo-router/entry",
   "type": "module",
   "scripts": {
-    "dev": "IP=$(ipconfig getifaddr en11 || ipconfig getifaddr en0) && sed -i '' \"s|^EXPO_PUBLIC_API_URL=.*|EXPO_PUBLIC_API_URL=http://$IP:1234|\" .env && echo \"Set EXPO_PUBLIC_API_URL to http://$IP:1234\" && expo start --clear",
+    "dev": "bash -c 'if [[ \"$1\" != \"-f\" ]]; then IP=$(ipconfig getifaddr en11 || ipconfig getifaddr en0) && sed -i \"\" \"s|^EXPO_PUBLIC_API_URL=.*|EXPO_PUBLIC_API_URL=http://$IP:1234|\" .env && echo \"Set EXPO_PUBLIC_API_URL to http://$IP:1234\"; else echo \"Using existing EXPO_PUBLIC_API_URL from .env\"; fi && expo start --clear --tunnel' --",
     "start": "expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
