@@ -39,7 +39,7 @@ export default function ChangeCastaway() {
   // No castaways available
   if (uiState === 'no-castaways') {
     return (
-      <View className='rounded-xl border-2 border-primary/20 bg-card p-4 gap-2 items-center'>
+      <View className='w-full rounded-xl border-2 border-primary/20 bg-card p-4 gap-2 items-center'>
         <Text className='text-xl font-bold uppercase tracking-wider text-muted-foreground'>
           No Castaways Available
         </Text>
