@@ -95,13 +95,21 @@ export default function JoinLeagueScreen() {
     }
   };
 
+  useEffect(() => {
+    if (getPublicLeague?.data?.isPending) {
+      Alert.alert(
+        'Pending Invitation',
+        'You already tried to join this league. Please wait for the league admin to approve your request.',
+      );
+    }
+  }, [getPublicLeague?.data?.isPending]);
+
   if (getPublicLeague?.data?.isMember) {
     return <Redirect href={`/leagues/${getPublicLeague.data.hash}`} />;
   }
 
+  // Then just the redirect in render:
   if (getPublicLeague?.data?.isPending) {
-    Alert.alert('Pending Invitation',
-      'You already tried to join this league. Please wait for the league admin to approve your request.');
     return <Redirect href='/' />;
   }
 

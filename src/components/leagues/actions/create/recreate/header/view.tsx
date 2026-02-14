@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from 'react';
 import MarqueeText from '~/components/common/marquee';
 import useHeaderHeight from '~/hooks/ui/useHeaderHeight';
 import { useRouter } from 'expo-router';
@@ -15,38 +14,6 @@ interface RecreateLeagueHeaderProps {
 export default function RecreateLeagueHeader({ leagueName }: RecreateLeagueHeaderProps) {
   const router = useRouter();
   const height = useHeaderHeight(Platform.OS === 'ios' ? 0 : undefined);
-  const [displayedName, setDisplayedName] = useState(leagueName ?? 'League');
-  const currentRef = useRef(displayedName);
-
-  useEffect(() => {
-    if (!leagueName) return;
-    let cancelled = false;
-
-    // eslint-disable-next-line no-undef
-    const iterate = () => new Promise(resolve => setTimeout(resolve, 0));
-
-    const animate = async () => {
-      // DELETE
-      while (currentRef.current.length > 0 && !cancelled) {
-        currentRef.current = currentRef.current.slice(0, -1);
-        setDisplayedName(currentRef.current);
-        await iterate();
-      }
-
-      // TYPE
-      for (let i = 0; i < leagueName.length && !cancelled; i++) {
-        currentRef.current += leagueName[i];
-        setDisplayedName(currentRef.current);
-        await iterate();
-      }
-    };
-
-    animate();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [leagueName]);
 
   return (
     <View
@@ -57,7 +24,7 @@ export default function RecreateLeagueHeader({ leagueName }: RecreateLeagueHeade
       style={{ height }}>
       <View className='items-center justify-center w-full'>
         <Text className='text-2xl font-black uppercase tracking-tight text-foreground -mb-2'>
-          Join
+          Clone
         </Text>
         <View className='relative flex-row items-center justify-center gap-0.5 w-full'>
           <Button
@@ -68,7 +35,7 @@ export default function RecreateLeagueHeader({ leagueName }: RecreateLeagueHeade
           <View className='relative flex-row items-center justify-center max-w-[60vw]'>
             <View className='h-6 w-1 bg-primary rounded-full' />
             <MarqueeText
-              text={displayedName}
+              text={leagueName ?? 'League'}
               center
               allowFontScaling={false}
               className='text-2xl font-black uppercase tracking-tight text-foreground transition-all'

@@ -127,7 +127,7 @@ export default function SubmissionCard({
     !isDirty || isSubmitting || (prediction.shauhinEnabled && (wallet ?? 0) - (totalBet ?? 0) < 0);
 
   return (
-    <View className='gap-2 p-2 bg-card/50'>
+    <View className='gap-2 p-2 bg-card/50 justify-end'>
       <View className='flex-row items-center gap-2'>
         {/* Reset Button */}
         <Pressable
@@ -181,10 +181,8 @@ export default function SubmissionCard({
                   const num = text === '' ? 0 : Math.max(0, Math.min(Number(text), maxBet || 1000)) || 0;
                   onChange(num);
                   updateBetTotal(prediction.eventName, num);
-                }}
-              />
-            )}
-          />
+                }} />
+            )} />
         </View>
       )}
 

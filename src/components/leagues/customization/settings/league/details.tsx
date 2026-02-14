@@ -56,22 +56,20 @@ export default function LeagueDetails() {
             render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
               <View>
                 <TextInput
-                  className='rounded-lg border-2 border-primary/20 bg-card px-2 py-1 text-left text-base leading-5'
+                  className='w-full rounded-lg border-2 border-primary/20 bg-primary/5 px-2 py-0 h-10 text-lg leading-tight overflow-hidden'
                   placeholder='League Name'
                   placeholderTextColor={colors.mutedForeground}
                   autoCapitalize='words'
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
-                  maxLength={LEAGUE_NAME_MAX_LENGTH}
-                />
+                  maxLength={LEAGUE_NAME_MAX_LENGTH} />
                 <Text className='mt-1 text-right text-sm text-muted-foreground'>
                   {value?.length || 0}/{LEAGUE_NAME_MAX_LENGTH}
                 </Text>
                 {error && <Text className='text-sm text-destructive'>{error.message}</Text>}
               </View>
-            )}
-          />
+            )} />
         </View>
 
         {/* Is Protected Toggle */}
@@ -94,10 +92,8 @@ export default function LeagueDetails() {
                   onValueChange={field.onChange}
                   trackColor={{ false: colors.muted, true: colors.positive }}
                   thumbColor='white'
-                  ios_backgroundColor={colors.destructive}
-                />
-              )}
-            />
+                  ios_backgroundColor={colors.destructive} />
+              )} />
           </View>
         </View>
 

@@ -22,7 +22,7 @@ export default function AccountSettings({ locked }: AccountSettingsProps) {
     <View className='w-full gap-2 rounded-xl border-2 border-primary/20 bg-card p-2'>
       {/* Header */}
       <View className='flex-row items-center justify-between'>
-        <View className='flex-row items-center gap-1'>
+        <View className='flex-row items-center gap-2'>
           <View className='h-6 w-1 rounded-full bg-primary' />
           <Text className='text-xl font-black uppercase tracking-tight text-foreground'>
             Account

@@ -6,6 +6,7 @@ import { AndroidRefreshView } from '~/components/common/refresh/androidView';
 import IOSRefreshView from '~/components/common/refresh/iosView';
 
 export interface SafeAreaRefreshViewProps {
+  disableScroll?: boolean;
   refreshing: boolean;
   onRefresh: () => Promise<void>;
   handleScroll?: (_event: NativeSyntheticEvent<NativeScrollEvent>) => void;
@@ -14,10 +15,12 @@ export interface SafeAreaRefreshViewProps {
   extraHeight?: number;
   alreadySafe?: boolean;
   children: ReactNode;
+  footer?: ReactNode;
   className?: string;
 }
 
 export default function SafeAreaRefreshView({
+  disableScroll = false,
   refreshing,
   onRefresh,
   handleScroll,
@@ -26,13 +29,19 @@ export default function SafeAreaRefreshView({
   extraHeight,
   alreadySafe,
   children,
+  footer,
   className
 }: SafeAreaRefreshViewProps) {
-  const edges: Edges = alreadySafe ? [] : ['top'];
+  const edges: Edges = alreadySafe
+    ? []
+    : footer
+      ? ['top', 'bottom']
+      : ['top'];
   return (
     <SafeAreaView edges={edges} className={cn('flex-1 bg-background', className)}>
       {Platform.OS === 'ios' ? (
         <IOSRefreshView
+          disableScroll={disableScroll}
           refreshing={refreshing}
           onRefresh={onRefresh}
           handleScroll={handleScroll}
@@ -43,6 +52,7 @@ export default function SafeAreaRefreshView({
         </IOSRefreshView>
       ) : (
         <AndroidRefreshView
+          disableScroll={disableScroll}
           refreshing={refreshing}
           onRefresh={onRefresh}
           handleScroll={handleScroll}
@@ -50,6 +60,7 @@ export default function SafeAreaRefreshView({
           {children}
         </AndroidRefreshView>
       )}
+      {footer}
     </SafeAreaView>
   );
 }

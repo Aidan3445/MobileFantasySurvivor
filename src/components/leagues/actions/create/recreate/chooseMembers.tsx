@@ -26,7 +26,7 @@ export default function ChooseMembers({
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View className='items-center justify-center py-4'>
+      <View className='items-center justify-center py-2'>
         {/* Title Section */}
         <View className='mb-6 items-center'>
           <View className='mb-3 h-12 w-12 items-center justify-center rounded-full bg-primary/20'>
@@ -41,29 +41,31 @@ export default function ChooseMembers({
         </View>
 
         {/* Member List */}
-        <View className='w-full gap-1.5'>
+        <View className='gap-2 rounded-lg bg-card px-4 pt-4 pb-3 shadow-lg shadow-primary/10 border-2 border-primary/20'>
           <Text className='mb-1 text-sm text-muted-foreground'>
             Draft order will default to reverse of previous season standings.
           </Text>
-          {sortedMemberScores?.toReversed().map(({ member }) => (
-            <Pressable
-              key={member.memberId}
-              onPress={() => toggleMember(member.memberId, member.loggedIn)}
-              disabled={member.loggedIn}>
-              <ColorRow
-                className='flex-row items-center justify-between rounded-lg border-2 px-2'
-                color={member.color}>
-                <Text className='text-xl font-bold'>{member.displayName}</Text>
-                <Switch
-                  value={selectedMembers.has(member.memberId)}
-                  onValueChange={() => toggleMember(member.memberId, member.loggedIn)}
-                  disabled={member.loggedIn}
-                  trackColor={{ false: '#00000030', true: colors.primary }}
-                  thumbColor='white'
-                  ios_backgroundColor={colors.destructive} />
-              </ColorRow>
-            </Pressable>
-          ))}
+          {sortedMemberScores?.toReversed()
+            .filter(({ member }) => member.role !== 'Owner')
+            .map(({ member }) => (
+              <Pressable
+                key={member.memberId}
+                onPress={() => toggleMember(member.memberId, member.loggedIn)}
+                disabled={member.loggedIn}>
+                <ColorRow
+                  className='flex-row items-center justify-between rounded-lg border-2 px-2'
+                  color={member.color}>
+                  <Text className='text-xl font-bold'>{member.displayName}</Text>
+                  <Switch
+                    value={selectedMembers.has(member.memberId)}
+                    onValueChange={() => toggleMember(member.memberId, member.loggedIn)}
+                    disabled={member.loggedIn}
+                    trackColor={{ false: colors.destructive, true: colors.positive }}
+                    thumbColor='white'
+                    ios_backgroundColor={colors.destructive} />
+                </ColorRow>
+              </Pressable>
+            ))}
         </View>
       </View>
     </ScrollView>

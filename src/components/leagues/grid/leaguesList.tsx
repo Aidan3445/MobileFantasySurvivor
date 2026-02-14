@@ -91,8 +91,8 @@ export default function LeaguesList() {
 
       {/* Quick Actions */}
       <QuickActions
-        className='rounded-xl border-2 border-primary/20 bg-card opacity-80 p-2'
-        showClone={inactiveLeaguesBySeason.length > 0}
+        className='rounded-xl border-2 border-primary/20 bg-card opacity-80'
+        showClone={inactiveLeaguesBySeason.some(season => season.leagues.some(league => league.member.role === 'Owner'))}
         pendingLeagues={pendingLeagues} />
 
       {/* Inactive Leagues by Season */}

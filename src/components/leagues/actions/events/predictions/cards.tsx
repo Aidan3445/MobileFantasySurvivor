@@ -200,8 +200,7 @@ export default function PredictionCards({
                   className='text-base text-muted-foreground'
                   containerClassName='flex-row'
                   text={prediction.timing.join(' - ')}
-                  noMarqueeContainerClassName='w-min'
-                />
+                  noMarqueeContainerClassName='w-min' />
                 <PredictionTimingHelp />
               </View>
             </View>

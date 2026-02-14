@@ -1,8 +1,10 @@
 import { Fragment, type ReactNode } from 'react';
-import { type NativeScrollEvent, type NativeSyntheticEvent, RefreshControl, ScrollView } from 'react-native';
+import { type NativeScrollEvent, type NativeSyntheticEvent, RefreshControl } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { colors } from '~/lib/colors';
 
 interface AndroidRefreshViewProps {
+  disableScroll?: boolean;
   refreshing: boolean;
   onRefresh: () => Promise<void>;
   handleScroll?: (_event: NativeSyntheticEvent<NativeScrollEvent>) => void;
@@ -11,6 +13,7 @@ interface AndroidRefreshViewProps {
 }
 
 export function AndroidRefreshView({
+  disableScroll,
   refreshing,
   onRefresh,
   handleScroll,
@@ -20,9 +23,11 @@ export function AndroidRefreshView({
   return (
     <Fragment>
       {header}
-      <ScrollView
+      <KeyboardAwareScrollView
+        scrollEnabled={!disableScroll}
         className='w-full'
         showsVerticalScrollIndicator={false}
+        bottomOffset={80}
         onScroll={handleScroll}
         scrollEventThrottle={16}
         refreshControl={
@@ -33,7 +38,7 @@ export function AndroidRefreshView({
             progressBackgroundColor={colors.background} />
         }>
         {children}
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </Fragment>
   );
 }

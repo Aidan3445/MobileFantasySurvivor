@@ -13,8 +13,10 @@ export function useLeagueRefresh(overrideHash?: string) {
     ['customEvents', league?.hash],
     ['basePredictions', league?.hash],
     ['predictionTiming', league?.hash],
-    ['selectionTimeline', league?.hash]
-  ], [league?.hash]);
+    ['selectionTimeline', league?.hash],
+    ['episodes', league?.seasonId],
+    ['seasons', league?.seasonId],
+  ], [league?.hash, league?.seasonId]);
 
   return useRefresh(keysToInvalidate);
 }

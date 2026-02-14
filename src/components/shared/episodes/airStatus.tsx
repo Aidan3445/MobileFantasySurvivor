@@ -19,7 +19,9 @@ export default function AirStatus({
     <View className='flex-row items-center gap-1'>
       {showDate && (
         <Text className='text-sm text-muted-foreground'>
-          {showTime ? airDate.toLocaleString() : airDate.toLocaleDateString()}
+          {showTime
+            ? airDate.toLocaleString(undefined, { dateStyle: 'short', timeStyle: 'short' })
+            : airDate.toLocaleDateString()}
         </Text>
       )}
       <View

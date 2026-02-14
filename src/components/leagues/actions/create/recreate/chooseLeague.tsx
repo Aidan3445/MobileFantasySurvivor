@@ -38,7 +38,7 @@ export default function ChooseLeague({ selectedHash, onSelect }: ChooseLeaguePro
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View className='items-center justify-center py-4'>
+      <View className='items-center justify-center py-2'>
         {/* Title Section */}
         <View className='mb-6 items-center'>
           <View className='mb-3 h-12 w-12 items-center justify-center rounded-full bg-primary/20'>

@@ -7,7 +7,7 @@ import useLeaguesHeader from '~/hooks/ui/useLeaguesHeader';
 import { HeaderButton } from '~/components/leagues/shared/header/button';
 
 export default function UnifiedLeagueHeader() {
-  const { height, displayedText, buttons } = useLeaguesHeader();
+  const { height, title, buttons } = useLeaguesHeader();
 
   return (
     <View
@@ -17,7 +17,7 @@ export default function UnifiedLeagueHeader() {
         <View className='relative flex-row items-center justify-center w-full max-w-72'>
           <View className='h-6 w-1 bg-primary rounded-full' />
           <MarqueeText
-            text={displayedText}
+            text={title}
             center
             allowFontScaling={false}
             className='text-2xl font-black uppercase tracking-tight text-foreground'

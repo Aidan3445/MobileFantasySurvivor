@@ -3,10 +3,11 @@
     "scheme": "trialbyfire",
     "userInterfaceStyle": "automatic",
     "orientation": "portrait",
-    "name": "Trial by Fire",
+    "name": "Your Fantasy Survivor",
     "slug": "mobile-fantasy-survivor",
     "version": "1.0.0",
     "owner": "aidan3445",
+    "icon": "./src/assets/AppIcon.png",
 
     "web": {
       "output": "static"
@@ -40,7 +41,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./src/assets/Icon.png",
+          "icon": "./src/assets/AppIcon.png",
           "color": "#E5BC8F"
         }
       ]
@@ -70,7 +71,7 @@
     "android": {
       "package": "com.aidan3445.mobilefantasysurvivor",
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/Icon.png",
+        "foregroundImage": "./src/assets/AppIcon.png",
         "backgroundColor": "#FFFFFF"
       },
       "softwareKeyboardLayoutMode": "adjustPan",

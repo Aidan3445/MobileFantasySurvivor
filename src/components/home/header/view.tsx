@@ -1,64 +1,25 @@
-import { View, Animated, Platform } from 'react-native';
-import React, { useRef, useEffect } from 'react';
-import { cn } from '~/lib/utils';
-const LogoImage = require('~/assets/Logo.png');
+'use client';
 
-interface HeaderProps {
-  className?: string;
-  refreshing?: boolean;
-}
+import { Text, View } from 'react-native';
+import useHeaderHeight from '~/hooks/ui/useHeaderHeight';
 
-export default function Header({ className, refreshing = false }: HeaderProps) {
-  const logoRotation = useRef(new Animated.Value(0)).current;
-  const isRefreshingRef = useRef(refreshing);
-  const isAnimatingRef = useRef(false);
-
-  // Update the ref when refreshing changes
-  useEffect(() => {
-    isRefreshingRef.current = refreshing;
-  }, [refreshing]);
-
-  useEffect(() => {
-    if (Platform.OS === 'android') return;
-    const spinOnce = () => {
-      isAnimatingRef.current = true;
-      Animated.timing(logoRotation, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true
-      }).start(({ finished }) => {
-        if (finished) {
-          logoRotation.setValue(0);
-          isAnimatingRef.current = false;
-
-          // Check if we should continue spinning
-          if (isRefreshingRef.current) {
-            spinOnce();
-          }
-        }
-      });
-    };
-
-    if (refreshing && !isAnimatingRef.current) {
-      spinOnce();
-    }
-  }, [refreshing, logoRotation]);
-
-  const spin = logoRotation.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '360deg']
-  });
-
+export default function HomeHeader() {
+  const height = useHeaderHeight();
   return (
-    <View className={cn('items-center', className)}>
-      <Animated.Image
-        source={LogoImage}
-        className={cn('h-40 w-40')}
-        style={{
-          transform: [{ rotate: spin }]
-        }}
-        resizeMode='contain' />
+    <View
+      className='absolute top-0 z-10 w-full items-center justify-end bg-card shadow-lg'
+      style={{ height }}>
+      <View className='items-center justify-center w-full'>
+        <View className='relative flex-row items-center justify-center gap-0.5 w-full'>
+          <View className='h-6 w-1 bg-primary rounded-full' />
+          <Text
+            allowFontScaling={false}
+            className='text-2xl font-black uppercase tracking-tight text-foreground'>
+            Your Fantasy Survivor
+          </Text>
+          <View className='h-6 w-1 bg-primary rounded-full' />
+        </View>
+      </View>
     </View>
   );
 }
-
