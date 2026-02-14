@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Animated } from 'react-native';
 
-export function useRefresh(keysToInvalidate: (string | boolean | undefined)[][] = []) {
+export function useRefresh(keysToInvalidate: (string | number | boolean | undefined)[][] = []) {
   const [refreshing, setRefreshing] = useState(false);
   const scrollY = useRef(new Animated.Value(0)).current;
   const queryClient = useQueryClient();
