@@ -181,8 +181,6 @@ export default function Chart() {
           const isSelected = selectedMember === member.displayName;
           const isOther = selectedMember && !isSelected;
 
-          if (member.displayName === 'Sarahgliu') return null;
-
           return (
             <Pressable
               key={member.memberId}
