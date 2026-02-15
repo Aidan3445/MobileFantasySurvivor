@@ -27,6 +27,8 @@ interface MarqueeTextProps {
   scrollSpeed?: number;
   /** Gap between the end of text and restart in pixels (default: 50) */
   trailingGap?: number;
+  /** Extra pixels of leeway before marquee kicks in (default: 8) */
+  marqueeThreshold?: number;
   /** Element to render at the end of the container */
   children?: ReactNode;
 }
@@ -41,6 +43,7 @@ export default function MarqueeText({
   pauseDuration = 2000,
   scrollSpeed = 30,
   trailingGap = 12,
+  marqueeThreshold = 8,
   children,
 }: MarqueeTextProps) {
   const [containerWidth, setContainerWidth] = useState(0);
@@ -72,13 +75,12 @@ export default function MarqueeText({
   }, []);
 
   /* -------------------- Decide if marquee is needed -------------------- */
-
   useEffect(() => {
     if (containerWidth > 0 && textWidth > 0) {
       const compareWidth = hasChildren ? availableWidth : containerWidth;
-      setNeedsMarquee(textWidth > compareWidth);
+      setNeedsMarquee(textWidth > compareWidth + marqueeThreshold);
     }
-  }, [containerWidth, textWidth, availableWidth, hasChildren]);
+  }, [containerWidth, textWidth, availableWidth, hasChildren, marqueeThreshold]);
 
   /* -------------------- Marquee animation -------------------- */
 
@@ -151,6 +153,7 @@ export default function MarqueeText({
       className={cn(center ? 'text-center' : 'text-left', className)}
       allowFontScaling={allowFontScaling}
       numberOfLines={1}
+      ellipsizeMode='clip'
       style={{ flexShrink: 0 }}>
       {text}
     </Text>

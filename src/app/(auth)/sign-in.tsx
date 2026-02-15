@@ -19,7 +19,6 @@ export default function Page() {
 
   const passwordRef = useRef<TextInput>(null);
 
-  // iOS autofill bypasses onChangeText — onEndEditing fires with the correct native value
   const handlePasswordEndEditing = useCallback(
     (e: TextInputEndEditingEvent) => {
       if (Platform.OS === 'ios') {

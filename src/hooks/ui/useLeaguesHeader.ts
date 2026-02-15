@@ -51,6 +51,7 @@ export default function useLeaguesHeader() {
   const backOpacity = useAnimatedVisibility(showBack);
   const settingsOpacity = useAnimatedVisibility(showSettings);
   const usersOpacity = useAnimatedVisibility(showUsers);
+  const tutorialOpacity = useAnimatedVisibility(true);
 
   // Title logic
   const lastNonModalTitle = useRef('My Leagues');
@@ -79,6 +80,10 @@ export default function useLeaguesHeader() {
     if (hashFromPath) router.push(`/castaways?hash=${hashFromPath}`);
   }, [router, hashFromPath]);
 
+  const handleTutorialPress = useCallback(() => {
+    router.push('/tutorial');
+  }, [router]);
+
   return {
     height,
     title,
@@ -86,6 +91,7 @@ export default function useLeaguesHeader() {
       back: { opacity: backOpacity, enabled: showBack, onPress: handleBackPress },
       settings: { opacity: settingsOpacity, enabled: showSettings, onPress: handleSettingsPress },
       users: { opacity: usersOpacity, enabled: showUsers, onPress: handleUsersPress },
+      tutorial: { opacity: tutorialOpacity, enabled: true, onPress: handleTutorialPress },
     },
   };
 }

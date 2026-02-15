@@ -1,10 +1,18 @@
 'use client';
 
+import { useRouter } from 'expo-router';
+import { HelpCircle } from 'lucide-react-native';
 import { Text, View } from 'react-native';
+import { HeaderButton } from '~/components/leagues/shared/header/button';
+import { useAnimatedVisibility } from '~/hooks/ui/useAnimatedVisibility';
 import useHeaderHeight from '~/hooks/ui/useHeaderHeight';
 
 export default function HomeHeader() {
   const height = useHeaderHeight();
+  const router = useRouter();
+
+  const helpOpacity = useAnimatedVisibility(true);
+
   return (
     <View
       className='absolute top-0 z-10 w-full items-center justify-end bg-card shadow-lg'
@@ -18,6 +26,12 @@ export default function HomeHeader() {
             Trial by Fire
           </Text>
           <View className='h-6 w-1 bg-primary rounded-full' />
+          <HeaderButton
+            icon={HelpCircle}
+            position='right'
+            onPress={() => router.push('/tutorial')}
+            opacity={helpOpacity}
+            enabled={true} />
         </View>
       </View>
     </View>

@@ -12,9 +12,18 @@ import { useLeagueRefresh } from '~/hooks/helpers/refresh/useLeagueRefresh';
 import { cn } from '~/lib/utils';
 import SecondaryPickSettings from '~/components/leagues/customization/settings/secondary/view';
 import SafeAreaRefreshView from '~/components/common/refresh/safeAreaRefreshView';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 
 export default function PredraftScreen() {
+  const { join, create } = useLocalSearchParams<{ join?: string, create?: string }>();
+  const router = useRouter();
   const { refreshing, onRefresh, scrollY, handleScroll } = useLeagueRefresh();
+
+  if (join) {
+    router.push('/tutorial?showCustomization=false');
+  } else if (create) {
+    router.push('/tutorial');
+  }
 
   return (
     <SafeAreaRefreshView
