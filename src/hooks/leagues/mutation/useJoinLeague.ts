@@ -126,8 +126,10 @@ export function useJoinLeague(onSubmit?: () => void) {
           const leagueData = await leagueResponse.json();
           await queryClient.setQueryData(['leagues', submittedHash], leagueData);
         }
-        router.prefetch({ pathname: '/leagues/[hash]', params: { hash: submittedHash } });
-        router.replace(`/leagues/${submittedHash}`);
+        router.prefetch({ pathname: '/leagues/[hash]/predraft', params: { hash: submittedHash } });
+        router.replace(`/leagues/${submittedHash}/predraft`);
+        // eslint-disable-next-line no-undef
+        setTimeout(() => router.push('/tutorial?showCustomization=false'), 1000);
 
         Alert.alert('Success', `League Joined: ${getPublicLeague.data.name}`);
       } else {

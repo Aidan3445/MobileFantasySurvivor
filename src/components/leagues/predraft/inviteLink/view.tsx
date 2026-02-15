@@ -8,7 +8,8 @@ import { colors } from '~/lib/colors';
 import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
 import ProtectionInfo from '~/components/leagues/predraft/inviteLink/protectionInfo';
 
-const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
+const BASE_URL = 'https://trialbyfiresurvivor.com';
+//process.env.EXPO_PUBLIC_API_URL;
 if (!BASE_URL) {
   throw new Error('EXPO_PUBLIC_API_URL is not set');
 }
