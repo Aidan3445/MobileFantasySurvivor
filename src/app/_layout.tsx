@@ -49,7 +49,10 @@ export default function RootLayout() {
     .catch(() => console.warn('Screen Orientation lock failed'));
 
   return (
-    <ClerkProvider tokenCache={tokenCache} telemetry={false}>
+    <ClerkProvider
+      publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!}
+      tokenCache={tokenCache}
+      telemetry={false}>
       <ClerkLoaded>
         <KeyboardProvider>
           <InitialLayout />

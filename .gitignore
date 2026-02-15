@@ -18,6 +18,10 @@ yarn-error.log
 # Env
 .envrc.local
 
+# Credentials
+credentials/
+credentials.json
+
 # Emacs
 *~
 

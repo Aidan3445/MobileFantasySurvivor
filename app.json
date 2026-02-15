@@ -8,45 +8,37 @@
     "version": "1.0.0",
     "owner": "aidan3445",
     "icon": "./src/assets/AppIcon.png",
-
     "web": {
       "output": "static"
     },
-
     "splash": {
       "image": "./src/assets/LogoDisc.png",
       "resizeMode": "contain",
       "backgroundColor": "#E5BC8F"
     },
-
-    "cli": {
-      "appVersionSource": "remote"
-    },
-
-    "build": {
-      "development": {
-        "autoIncrement": true
-      },
-      "preview": {
-        "autoIncrement": true
-      },
-      "production": {
-        "autoIncrement": true
-      }
-    },
-
     "plugins": [
-      ["expo-router", { "origin": "https://trialbyfiresurvivor.com" }],
-      ["expo-screen-orientation", { "initialOrientation": "PORTRAIT_UP" }],
+      [
+        "expo-router",
+        {
+          "origin": "https://trialbyfiresurvivor.com"
+        }
+      ],
+      [
+        "expo-screen-orientation",
+        {
+          "initialOrientation": "PORTRAIT_UP"
+        }
+      ],
       [
         "expo-notifications",
         {
           "icon": "./src/assets/AppIcon.png",
           "color": "#E5BC8F"
         }
-      ]
+      ],
+      "expo-secure-store",
+      "expo-web-browser"
     ],
-
     "extra": {
       "router": {
         "origin": "https://trialbyfiresurvivor.com"
@@ -55,10 +47,8 @@
         "projectId": "86931bb6-a035-48fe-8856-ff9c5684bc8e"
       }
     },
-
     "ios": {
       "bundleIdentifier": "com.aidan3445.mobilefantasysurvivor",
-      "requiresFullScreen": true,
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       },
@@ -67,14 +57,13 @@
         "applinks:www.trialbyfiresurvivor.com"
       ]
     },
-
     "android": {
       "package": "com.aidan3445.mobilefantasysurvivor",
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/AppIcon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "softwareKeyboardLayoutMode": "adjustPan",
+      "softwareKeyboardLayoutMode": "pan",
       "googleServicesFile": "./google-services.json",
       "intentFilters": [
         {
@@ -92,7 +81,10 @@
               "pathPrefix": "/leagues/"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
     }
