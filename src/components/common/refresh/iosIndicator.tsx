@@ -2,12 +2,12 @@ import React, { useRef, useEffect } from 'react';
 import { Animated } from 'react-native';
 import useHeaderHeight from '~/hooks/ui/useHeaderHeight';
 
-const LogoImage = require('~/assets/Logo.png');
+const LogoImage = require('~/assets/LogoDisc.png');
 
 export default function IOSRefreshIndicator({
   refreshing,
   scrollY,
-  logoSize = 80,
+  logoSize = 60,
   extraHeight
 }: {
   refreshing: boolean;

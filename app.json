@@ -3,7 +3,7 @@
     "scheme": "trialbyfire",
     "userInterfaceStyle": "automatic",
     "orientation": "portrait",
-    "name": "Your Fantasy Survivor",
+    "name": "Trial by Fire",
     "slug": "mobile-fantasy-survivor",
     "version": "1.0.0",
     "owner": "aidan3445",
@@ -14,7 +14,7 @@
     },
 
     "splash": {
-      "image": "./src/assets/Icon.png",
+      "image": "./src/assets/LogoDisc.png",
       "resizeMode": "contain",
       "backgroundColor": "#E5BC8F"
     },
@@ -36,7 +36,7 @@
     },
 
     "plugins": [
-      ["expo-router", { "origin": "https://yourfantasysurvivor.com" }],
+      ["expo-router", { "origin": "https://trialbyfiresurvivor.com" }],
       ["expo-screen-orientation", { "initialOrientation": "PORTRAIT_UP" }],
       [
         "expo-notifications",
@@ -49,7 +49,7 @@
 
     "extra": {
       "router": {
-        "origin": "https://yourfantasysurvivor.com"
+        "origin": "https://trialbyfiresurvivor.com"
       },
       "eas": {
         "projectId": "86931bb6-a035-48fe-8856-ff9c5684bc8e"
@@ -63,8 +63,8 @@
         "ITSAppUsesNonExemptEncryption": false
       },
       "associatedDomains": [
-        "applinks:yourfantasysurvivor.com",
-        "applinks:www.yourfantasysurvivor.com"
+        "applinks:trialbyfiresurvivor.com",
+        "applinks:www.trialbyfiresurvivor.com"
       ]
     },
 
@@ -83,12 +83,12 @@
           "data": [
             {
               "scheme": "https",
-              "host": "yourfantasysurvivor.com",
+              "host": "trialbyfiresurvivor.com",
               "pathPrefix": "/i/"
             },
             {
               "scheme": "https",
-              "host": "yourfantasysurvivor.com",
+              "host": "trialbyfiresurvivor.com",
               "pathPrefix": "/leagues/"
             }
           ],

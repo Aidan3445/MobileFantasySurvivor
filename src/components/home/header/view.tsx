@@ -15,7 +15,7 @@ export default function HomeHeader() {
           <Text
             allowFontScaling={false}
             className='text-2xl font-black uppercase tracking-tight text-foreground'>
-            Your Fantasy Survivor
+            Trial by Fire
           </Text>
           <View className='h-6 w-1 bg-primary rounded-full' />
         </View>

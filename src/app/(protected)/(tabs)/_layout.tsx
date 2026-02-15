@@ -9,7 +9,7 @@ import { useNotificationRouting } from '~/hooks/routing/useNotificationRouting';
 import useFadeLoading from '~/hooks/ui/useFadeLoading';
 import { colors } from '~/lib/colors';
 
-const HomeImage = require('~/assets/Icon.png');
+const HomeImage = require('~/assets/LogoTorch.png');
 
 export default function TabLayout() {
   useNotificationRouting();

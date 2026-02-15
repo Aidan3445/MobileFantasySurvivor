@@ -4,25 +4,26 @@ import React from 'react';
 import { View } from 'react-native';
 import SafeAreaRefreshView from '~/components/common/refresh/safeAreaRefreshView';
 import ActiveLeagues from '~/components/home/activeleagues/view';
-import Logo from '~/components/home/header/logo';
 import HomeHeader from '~/components/home/header/view';
 import QuickActions from '~/components/home/quickActions/view';
 import { CastawayScoreboard } from '~/components/home/scoreboard/view';
+import Logo from '~/components/shared/logo';
 import { useRefresh } from '~/hooks/helpers/refresh/useRefresh';
 import { cn } from '~/lib/utils';
 
 export default function Page() {
-  const { refreshing, onRefresh, handleScroll } = useRefresh([[]]);
+  const { refreshing, onRefresh, handleScroll, scrollY } = useRefresh([[]]);
 
   return (
     <SafeAreaRefreshView
       header={<HomeHeader />}
       refreshing={refreshing}
       onRefresh={onRefresh}
+      scrollY={scrollY}
       handleScroll={handleScroll}>
       <View
         className={cn('justify-start gap-y-4 px-1.5 pt-8 pb-1.5')}>
-        <Logo refreshing={refreshing} />
+        <Logo />
         <ActiveLeagues />
         <QuickActions className='rounded-xl border-2 border-primary/20 bg-card opacity-80' />
         <CastawayScoreboard />
