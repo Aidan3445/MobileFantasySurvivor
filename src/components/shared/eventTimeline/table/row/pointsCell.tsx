@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native';
-import { Flame } from 'lucide-react-native';
 import { cn } from '~/lib/utils';
+import { PointsIcon } from '~/components/icons/generated';
 
 interface PointsCellProps {
   points: number | null;
@@ -34,7 +34,7 @@ export function ColoredPoints({ points, neutral }: PointsCellProps) {
         {points < 0 || neutral ? points : `+${points}`}
       </Text>
       <View style={{ marginTop: -2 }}>
-        <Flame size={16} color={color} />
+        <PointsIcon size={12} color={color} />
       </View>
     </View>
   );

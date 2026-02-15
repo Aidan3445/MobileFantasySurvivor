@@ -14,7 +14,8 @@
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "fixall": "npm run format && npm run lint:fix"
+    "fixall": "npm run format && npm run lint:fix",
+    "icons": "node scripts/generateIcons.ts"
   },
   "dependencies": {
     "@clerk/clerk-expo": "^2.15.0",

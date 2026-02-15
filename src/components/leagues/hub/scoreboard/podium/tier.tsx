@@ -1,9 +1,9 @@
 // components/leagues/hub/scoreboard/podium/Tier.tsx
 import { View, Text } from 'react-native';
-import { Flame } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { cn } from '~/lib/utils';
 import type { LeagueMember } from '~/types/leagueMembers';
+import { PointsIcon } from '~/components/icons/generated';
 
 interface TierProps {
   member?: LeagueMember;
@@ -59,9 +59,9 @@ export default function Tier({ member, points, place, className }: TierProps) {
         className='flex-1 items-center justify-end pb-4'
         style={{ borderColor: colors.border, borderWidth: 2, borderRadius: 4 }}>
         <View className={cn('w-24 items-center', placeHeights[place], className)}>
-          <View className='flex-row items-center gap-1'>
-            <Flame size={20} color='#000' />
-            <Text className='text-lg font-bold text-black'>{points}</Text>
+          <View className='flex-row items-center'>
+            <PointsIcon size={20} color='#000' />
+            <Text allowFontScaling={false} className='text-2xl font-black text-black'>{points}</Text>
           </View>
         </View>
       </LinearGradient>

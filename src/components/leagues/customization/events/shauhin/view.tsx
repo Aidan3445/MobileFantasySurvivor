@@ -16,6 +16,7 @@ import { type ScoringBaseEventName } from '~/types/events';
 import SearchableMultiSelect from '~/components/common/searchableMultiSelect';
 import SearchableSelect from '~/components/common/searchableSelect';
 import ColorRow from '~/components/shared/colorRow';
+import { PointsIcon } from '~/components/icons/generated';
 
 export default function ShauhinMode() {
   const {
@@ -211,9 +212,12 @@ export default function ShauhinMode() {
                 <View className='flex-row items-center'>
                   <Text className='font-bold text-foreground mr-2'>Max Per Bet</Text>
                   {locked && (
-                    <Text className='text-lg font-bold text-positive'>
-                      {maxBet === 0 ? 'Unlimited' : maxBet}
-                    </Text>
+                    <>
+                      <Text className='text-lg font-bold text-positive'>
+                        {maxBet === 0 ? 'Unlimited' : maxBet}
+                      </Text>
+                      <PointsIcon size={14} color={colors.positive} />
+                    </>
                   )}
                 </View>
                 {!locked && (

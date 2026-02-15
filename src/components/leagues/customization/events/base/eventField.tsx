@@ -1,4 +1,3 @@
-import { Flame } from 'lucide-react-native';
 import { Controller, type UseFormReturn } from 'react-hook-form';
 import { Text, View, TextInput } from 'react-native';
 import { colors, getPointsColor } from '~/lib/colors';
@@ -6,6 +5,7 @@ import { BaseEventDescriptions, BaseEventFullName } from '~/lib/events';
 import { cn } from '~/lib/utils';
 import { BasePredictions } from '~/components/leagues/customization/events/base/predictions';
 import { type ScoringBaseEventName } from '~/types/events';
+import { PointsIcon } from '~/components/icons/generated';
 
 interface EventFieldProps {
   reactForm: UseFormReturn<any>;
@@ -38,7 +38,7 @@ export default function EventField({
           <View className='flex-row items-center'>
             <Text
               className={cn(
-                'text-base font-bold',
+                'text-lg font-bold',
                 currentValue === 0
                   ? 'text-neutral'
                   : currentValue > 0
@@ -47,7 +47,7 @@ export default function EventField({
               )}>
               {currentValue > 0 ? `+${currentValue}` : currentValue}
             </Text>
-            <Flame size={14} color={getPointsColor(currentValue)} />
+            <PointsIcon size={14} color={getPointsColor(currentValue)} />
           </View>
         ) : (
           <Controller
@@ -79,7 +79,7 @@ export default function EventField({
                     }}
                     placeholder='0'
                     placeholderTextColor={colors['muted-foreground']} />
-                  <Flame size={20} color={getPointsColor(numericValue)} />
+                  <PointsIcon size={18} color={getPointsColor(numericValue)} />
                 </View>
               );
             }} />

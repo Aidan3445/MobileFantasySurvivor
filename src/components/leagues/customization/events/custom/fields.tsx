@@ -9,7 +9,7 @@ import { cn } from '~/lib/utils';
 import { colors, getPointsColor } from '~/lib/colors';
 import { type EventType, type PredictionTiming, type ReferenceType } from '~/types/events';
 import PredictionTimingHelp from '~/components/leagues/actions/events/predictions/timingHelp';
-import { Flame } from 'lucide-react-native';
+import { PointsIcon } from '~/components/icons/generated';
 
 interface CustomEventFieldsProps {
   reactForm: UseFormReturn<CustomEventRuleInsert>;
@@ -129,7 +129,7 @@ export default function CustomEventFields({
                     }}
                     placeholder='0'
                     placeholderTextColor={colors['muted-foreground']} />
-                  <Flame size={20} color={getPointsColor(numericValue)} />
+                  <PointsIcon size={18} color={getPointsColor(numericValue)} />
                 </View>
               );
             }} />

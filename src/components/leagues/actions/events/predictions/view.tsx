@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
 import { View, Text } from 'react-native';
-import { Flame } from 'lucide-react-native';
 import { colors } from '~/lib/colors';
 import { cn } from '~/lib/utils';
 import { useLeagueData } from '~/hooks/leagues/enrich/useLeagueData';
@@ -9,6 +8,7 @@ import PredictionCards from '~/components/leagues/actions/events/predictions/car
 import { type LeagueRules } from '~/types/leagues';
 import AirStatus from '~/components/shared/episodes/airStatus';
 import { type Prediction } from '~/types/events';
+import { PointsIcon } from '~/components/icons/generated';
 
 export interface MakePredictionsProps {
   predictionRuleCount?: number;
@@ -86,24 +86,28 @@ export default function MakePredictions() {
       <View className='p-3 gap-2'>
         {/* Bet Balance (Shauhin Mode) */}
         {rules?.shauhinMode?.enabled && rules.shauhinMode.enabledBets.length > 0 && (
-          <View className='absolute top-3 right-2 items-end'>
-            <View className='flex-row items-center'>
-              <Text className='text-sm italic text-muted-foreground'>
+          <View className='absolute top-2 right-2 items-end'>
+            <View className='flex-row items-center px-1'>
+              <Text
+                allowFontScaling={false}
+                className='text-sm italic text-muted-foreground'>
                 Bet Balance: {balance}
               </Text>
-              <Flame size={14} color={colors.mutedForeground} />
+              <PointsIcon size={11} color={colors.secondary} />
             </View>
             {formBetTotal !== submittedBetTotal && (
               <View
                 className={cn(
-                  'flex-row items-center rounded-sm px-1 bg-amber-400',
+                  'flex-row items-center rounded-md px-1 bg-amber-400',
                   balance - formBetTotal < 0 && 'bg-red-400',
                   formBetTotal < submittedBetTotal && 'bg-green-400'
                 )}>
-                <Text className='text-base text-muted-foreground'>
+                <Text
+                  allowFontScaling={false}
+                  className='text-sm text-primary italic'>
                   Pending: {balance - formBetTotal}
                 </Text>
-                <Flame size={12} color={colors.mutedForeground} />
+                <PointsIcon size={11} color={colors.primary} />
               </View>
             )}
           </View>

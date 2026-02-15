@@ -1,4 +1,3 @@
-import { Flame } from 'lucide-react-native';
 import { Text, View, TextInput, Switch } from 'react-native';
 import { Controller, type UseFormReturn } from 'react-hook-form';
 import { colors } from '~/lib/colors';
@@ -7,6 +6,7 @@ import { type PredictionTiming } from '~/types/events';
 import { PredictionTimings } from '~/lib/events';
 import { type SearchableOption } from '~/hooks/ui/useSearchableSelect';
 import SearchableMultiSelect from '~/components/common/searchableMultiSelect';
+import { PointsIcon } from '~/components/icons/generated';
 
 interface BasePredictionFormFieldProps {
   eventName: string;
@@ -81,7 +81,7 @@ export function BasePredictions({ eventName, reactForm, disabled }: BasePredicti
                     keyboardType='numeric' />
                 )} />
             )}
-            <Flame size={20} color={colors.positive} />
+            <PointsIcon size={14} color={colors.positive} />
           </View>
         )}
       </View>

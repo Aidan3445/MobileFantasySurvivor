@@ -1,8 +1,9 @@
 import { View, Text } from 'react-native';
-import { Flame, TrendingUp } from 'lucide-react-native';
+import { TrendingUp } from 'lucide-react-native';
 import { useLeagueData } from '~/hooks/leagues/enrich/useLeagueData';
 import MemberRow from '~/components/leagues/hub/scoreboard/row';
 import { type EnrichedCastaway } from '~/types/castaways';
+import { PointsIcon } from '~/components/icons/generated';
 
 interface ScoreboardProps {
   overrideHash?: string;
@@ -36,7 +37,7 @@ export default function Scoreboard({ overrideHash, maxRows, className }: Scorebo
           </Text>
         </View>
         <View className='w-10 -ml-2 items-center justify-center'>
-          <Flame size={14} className='text-muted-foreground' />
+          <PointsIcon size={12} color='black' />
         </View>
         <View className='flex-1 justify-center pl-1'>
           <Text
