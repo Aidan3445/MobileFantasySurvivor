@@ -31,7 +31,7 @@ export function SignUpWithGoogle() {
     try {
       const { createdSessionId, setActive } = await startSSOFlow({
         strategy: 'oauth_google',
-        redirectUrl: AuthSession.makeRedirectUri(),
+        redirectUrl: AuthSession.makeRedirectUri({ scheme: 'trialbyfire', path: 'callback' }),
       });
 
       if (createdSessionId) {
