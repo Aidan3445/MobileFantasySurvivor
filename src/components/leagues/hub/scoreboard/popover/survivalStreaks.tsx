@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
-import { Flame, Skull, ShieldCheck, Dices } from 'lucide-react-native';
+import { Skull, ShieldCheck, Dices } from 'lucide-react-native';
 import { colors } from '~/lib/colors';
 import Modal from '~/components/common/modal';
+import { PointsIcon } from '~/components/icons/generated';
 
 interface SurvivalStreaksProps {
   survivalCap: number;
@@ -56,8 +57,8 @@ export default function SurvivalStreaks({
       <Modal visible={isVisible} onClose={() => setIsVisible(false)}>
         <View className='gap-3'>
           {/* Header */}
-          <View className='flex-row items-center justify-center gap-2'>
-            <Flame size={20} color={colors.primary} />
+          <View className='flex-row items-center justify-center gap-1'>
+            <PointsIcon size={16} color={colors.primary} />
             <Text className='text-base font-bold uppercase tracking-wider text-foreground'>
               Survival Streak
             </Text>
@@ -70,11 +71,11 @@ export default function SurvivalStreaks({
             <Text className='text-base text-foreground'>
               Current streak: <Text className='font-bold'>{currentStreak ?? 0}</Text>
             </Text>
-            <View className='flex-row items-center gap-1'>
+            <View className='flex-row items-center gap-0'>
               <Text className='text-base text-foreground'>
                 Point cap: <Text className='font-bold'>{survivalCap}</Text>
               </Text>
-              <Flame size={16} color={colors.primary} />
+              <PointsIcon size={12} color={colors.primary} />
             </View>
           </View>
 

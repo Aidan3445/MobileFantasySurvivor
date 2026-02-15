@@ -63,10 +63,12 @@ export function useCreateLeague(onSubmit?: () => void) {
         const leagueData = await leagueResponse.json();
         await queryClient.setQueryData(['leagues', newHash], leagueData);
       }
-      router.prefetch({ pathname: '/leagues/[hash]', params: { hash: newHash } });
+      router.prefetch({ pathname: '/leagues/[hash]/predraft', params: { hash: newHash } });
 
       Alert.alert('Success', `League created: ${data.leagueName}`);
-      router.replace({ pathname: '/leagues/[hash]', params: { hash: newHash } });
+      router.replace({ pathname: '/leagues/[hash]/predraft', params: { hash: newHash } });
+      // eslint-disable-next-line no-undef
+      setTimeout(() => router.push('/tutorial'), 1000);
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Failed to create league');

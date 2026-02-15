@@ -1,10 +1,10 @@
-# [YourFantasySurvivor.com](YourFantasySurvivor.com)
+# [Trial By Fire](https://trialbyfiresurvivor.com)
 
 #### The most customizable Fantasy Survivor league hosting service.
 
-## Welcome to Your Fantasy Survivor!
+## Welcome to Trial by Fire
 
-Compete with friends in _Your Fantasy Survivor_, the ultimate Survivor fantasy league.
+Compete with friends in _Trial by Fire_, the ultimate Survivor fantasy league.
 
 ### How It Works
 

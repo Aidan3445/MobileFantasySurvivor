@@ -7,7 +7,7 @@ import { type BaseEventRules } from '~/types/leagues';
 import ScoreboardBody from '~/components/home/scoreboard/body';
 import SelectSeason from '~/components/home/scoreboard/selectSeason';
 import { cn } from '~/lib/utils';
-import { Flame } from 'lucide-react-native';
+import { PointsIcon } from '~/components/icons/generated';
 
 export interface ScoreboardTableProps {
   scoreData: SeasonsDataQuery[];
@@ -131,12 +131,12 @@ export default function ScoreboardTable({
                 <View className='w-11 justify-center'>
                   <Text
                     allowFontScaling={false}
-                    className='text-base text-center font-medium'>
+                    className='text-base text-center font-bold'>
                     Place
                   </Text>
                 </View>
                 <View className='w-10 -ml-2 items-center justify-center'>
-                  <Flame size={14} className='text-muted-foreground' />
+                  <PointsIcon size={12} color='black' />
                 </View>
               </>
             )}
@@ -144,7 +144,7 @@ export default function ScoreboardTable({
               <Text
                 allowFontScaling={false}
                 className={cn(
-                  'text-base text-left font-medium',
+                  'text-base text-left font-bold',
                   allZero && 'text-center'
                 )}>
                 Castaway

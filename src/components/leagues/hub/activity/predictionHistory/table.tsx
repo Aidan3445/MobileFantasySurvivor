@@ -4,8 +4,8 @@ import type { PredictionWithEvent, EventReference } from '~/types/events';
 import PredictionRow from '~/components/leagues/hub/activity/predictionHistory/row';
 import { useCastaways } from '~/hooks/seasons/useCastaways';
 import { useTribes } from '~/hooks/seasons/useTribes';
-import { Flame } from 'lucide-react-native';
 import { colors } from '~/lib/colors';
+import { PointsIcon } from '~/components/icons/generated';
 
 interface PredictionTableProps {
   predictions: PredictionWithEvent[];
@@ -61,7 +61,7 @@ export default function PredictionTable({
           Event
         </Text>
         <View className='items-center w-12 text-sm font-bold uppercase tracking-wider text-muted-foreground text-center'>
-          <Flame size={14} color={colors['muted-foreground']} />
+          <PointsIcon size={14} color={colors['muted-foreground']} />
         </View>
         {hasBets && (
           <Text className='w-12 text-sm font-bold uppercase tracking-wider text-muted-foreground text-center'>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter, useSegments } from 'expo-router';
-import { ArrowLeft } from 'lucide-react-native';
+import { ArrowLeft, HelpCircle } from 'lucide-react-native';
 import { Text, View } from 'react-native';
 import { HeaderButton } from '~/components/leagues/shared/header/button';
 import { useAnimatedVisibility } from '~/hooks/ui/useAnimatedVisibility';
@@ -14,6 +14,7 @@ export default function ProfileHeader() {
 
   const showBack = segments.includes('account');
   const backOpacity = useAnimatedVisibility(showBack);
+  const helpOpacity = useAnimatedVisibility(true);
 
   return (
     <View
@@ -34,6 +35,12 @@ export default function ProfileHeader() {
             Profile
           </Text>
           <View className='h-6 w-1 bg-primary rounded-full' />
+          <HeaderButton
+            icon={HelpCircle}
+            position='right'
+            onPress={() => router.push('/tutorial')}
+            opacity={helpOpacity}
+            enabled={true} />
         </View>
       </View>
     </View>

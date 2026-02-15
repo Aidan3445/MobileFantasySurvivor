@@ -46,11 +46,13 @@ export default function useLeaguesHeader() {
   const showBack = !isModal && (isPredraft || isDraft || isLeagueHub || isSettings);
   const showSettings = !isModal && (isPredraft || isLeagueHub);
   const showUsers = isDraft || isCastawaysModal;
+  const showTutorial = isIndex || isSettings;
 
   // Animated opacities
   const backOpacity = useAnimatedVisibility(showBack);
   const settingsOpacity = useAnimatedVisibility(showSettings);
   const usersOpacity = useAnimatedVisibility(showUsers);
+  const tutorialOpacity = useAnimatedVisibility(showTutorial);
 
   // Title logic
   const lastNonModalTitle = useRef('My Leagues');
@@ -79,6 +81,10 @@ export default function useLeaguesHeader() {
     if (hashFromPath) router.push(`/castaways?hash=${hashFromPath}`);
   }, [router, hashFromPath]);
 
+  const handleTutorialPress = useCallback(() => {
+    router.push('/tutorial');
+  }, [router]);
+
   return {
     height,
     title,
@@ -86,6 +92,7 @@ export default function useLeaguesHeader() {
       back: { opacity: backOpacity, enabled: showBack, onPress: handleBackPress },
       settings: { opacity: settingsOpacity, enabled: showSettings, onPress: handleSettingsPress },
       users: { opacity: usersOpacity, enabled: showUsers, onPress: handleUsersPress },
+      tutorial: { opacity: tutorialOpacity, enabled: showTutorial, onPress: handleTutorialPress },
     },
   };
 }

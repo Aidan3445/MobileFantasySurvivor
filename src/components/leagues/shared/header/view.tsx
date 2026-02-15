@@ -1,7 +1,7 @@
 'use client';
 
 import { View } from 'react-native';
-import { ArrowLeft, Settings, Users } from 'lucide-react-native';
+import { ArrowLeft, HelpCircle, Settings, Users } from 'lucide-react-native';
 import MarqueeText from '~/components/common/marquee';
 import useLeaguesHeader from '~/hooks/ui/useLeaguesHeader';
 import { HeaderButton } from '~/components/leagues/shared/header/button';
@@ -29,6 +29,7 @@ export default function UnifiedLeagueHeader() {
         <HeaderButton {...buttons.back} icon={ArrowLeft} position='left' />
         <HeaderButton {...buttons.settings} icon={Settings} position='right' />
         <HeaderButton {...buttons.users} icon={Users} position='right' />
+        <HeaderButton {...buttons.tutorial} icon={HelpCircle} position='right' />
       </View>
     </View>
   );

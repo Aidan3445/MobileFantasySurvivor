@@ -1,15 +1,15 @@
 'use client';
 import { useIsFetching } from '@tanstack/react-query';
 import { Tabs, usePathname, useRouter } from 'expo-router';
-import { BookUser, Flame, Trophy, UserCircle2 } from 'lucide-react-native';
 import { Animated, Image, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import LoadingScreen from '~/components/auth/loadingScreen';
+import { LeaguesIcon, PlaygroundIcon, SeasonsIcon, UserIcon } from '~/components/icons/generated';
 import { useNotificationRouting } from '~/hooks/routing/useNotificationRouting';
 import useFadeLoading from '~/hooks/ui/useFadeLoading';
 import { colors } from '~/lib/colors';
 
-const HomeImage = require('~/assets/Icon.png');
+const HomeImage = require('~/assets/LogoTorch.png');
 
 export default function TabLayout() {
   useNotificationRouting();
@@ -50,7 +50,7 @@ export default function TabLayout() {
             title: 'Home',
             tabBarIcon: ({ color }) => (
               <Image
-                className='h-8 w-8'
+                className='h-9 w-9'
                 resizeMode='contain'
                 source={HomeImage}
                 style={{ tintColor: color }} />
@@ -61,7 +61,7 @@ export default function TabLayout() {
           options={{
             title: 'Seasons',
             tabBarIcon: ({ color }) => (
-              <BookUser color={color} size={32} />
+              <SeasonsIcon color={color} size={32} allowFontScaling={false} />
             ),
           }} />
         <Tabs.Screen
@@ -69,7 +69,7 @@ export default function TabLayout() {
           options={{
             title: 'Playground',
             tabBarIcon: ({ color }) => (
-              <Flame color={color} size={32} />
+              <PlaygroundIcon color={color} size={32} allowFontScaling={false} />
             ),
           }} />
         <Tabs.Screen
@@ -87,7 +87,7 @@ export default function TabLayout() {
           options={{
             title: 'Leagues',
             tabBarIcon: ({ color }) => (
-              <Trophy color={isLeaguesPath ? colors!.primary : color} size={32} />
+              <LeaguesIcon color={isLeaguesPath ? colors!.primary : color} size={32} allowFontScaling={false} />
             ),
             tabBarLabelStyle: {
               fontSize: 12,
@@ -99,7 +99,7 @@ export default function TabLayout() {
           options={{
             title: 'Profile',
             tabBarIcon: ({ color }) => (
-              <UserCircle2 color={color} size={32} />
+              <UserIcon color={color} size={32} strokeWidth={0.5} allowFontScaling={false} />
             ),
           }} />
       </Tabs>

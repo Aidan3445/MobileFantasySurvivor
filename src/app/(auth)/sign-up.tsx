@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Platform, Text, TextInput, TouchableOpacity, View, type TextInputEndEditingEvent, } from 'react-native';
 import { useSignUp } from '@clerk/clerk-expo';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import Header from '~/components/auth/header';
+import Logo from '~/components/shared/logo';
 import { SignUpWithGoogle } from '~/components/auth/signUpWithGoogle';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useHeaderHeight from '~/hooks/ui/useHeaderHeight';
@@ -112,7 +112,7 @@ export default function SignUpScreen() {
         <View
           className='absolute w-full items-center'
           style={{ top: height }}>
-          <Header />
+          <Logo />
         </View>
 
         <KeyboardAwareScrollView
@@ -175,7 +175,7 @@ export default function SignUpScreen() {
       <View
         className='absolute w-full items-center'
         style={{ top: height }}>
-        <Header />
+        <Logo />
       </View>
       <KeyboardAwareScrollView
         contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-end', paddingHorizontal: 24 }}

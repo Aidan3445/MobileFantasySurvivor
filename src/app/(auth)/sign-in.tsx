@@ -2,11 +2,11 @@ import { useSignIn } from '@clerk/clerk-expo';
 import { Link, useLocalSearchParams, useRouter } from 'expo-router';
 import { Platform, Text, TextInput, TouchableOpacity, View, type TextInputEndEditingEvent, } from 'react-native';
 import React, { useCallback, useRef } from 'react';
-import Header from '~/components/auth/header';
 import { SignInWithGoogle } from '~/components/auth/signInWithGoogle';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useHeaderHeight from '~/hooks/ui/useHeaderHeight';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
+import Logo from '~/components/shared/logo';
 
 export default function Page() {
   const height = useHeaderHeight();
@@ -19,7 +19,6 @@ export default function Page() {
 
   const passwordRef = useRef<TextInput>(null);
 
-  // iOS autofill bypasses onChangeText — onEndEditing fires with the correct native value
   const handlePasswordEndEditing = useCallback(
     (e: TextInputEndEditingEvent) => {
       if (Platform.OS === 'ios') {
@@ -67,7 +66,7 @@ export default function Page() {
       <View
         className='absolute w-full items-center'
         style={{ top: height }}>
-        <Header />
+        <Logo />
       </View>
 
       <KeyboardAwareScrollView

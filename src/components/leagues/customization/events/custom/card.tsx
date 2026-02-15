@@ -1,4 +1,4 @@
-import { Flame, Settings2, Trash2 } from 'lucide-react-native';
+import { Settings2, Trash2 } from 'lucide-react-native';
 import { Text, View, Alert } from 'react-native';
 import Button from '~/components/common/button';
 import { useState } from 'react';
@@ -12,6 +12,7 @@ import {
   CustomEventRuleInsertZod
 } from '~/types/leagues';
 import CustomEventModal from '~/components/leagues/customization/events/custom/modal';
+import { PointsIcon } from '~/components/icons/generated';
 
 interface CustomEventCardProps {
   rule: CustomEventRule;
@@ -77,8 +78,8 @@ export default function CustomEventCard({
               )}>
               {rule.points}
             </Text>
-            <Flame
-              size={16}
+            <PointsIcon
+              size={12}
               color={rule.points <= 0 ? colors.destructive : colors.positive}
             />
           </View>

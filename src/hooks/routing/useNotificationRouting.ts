@@ -129,6 +129,12 @@ export function useNotificationRouting() {
 
     switch (data.type) {
       case 'league_admission':
+        if (data.leagueHash) {
+          navigateToLeague(data.leagueHash, 'predraft');
+          // eslint-disable-next-line no-undef
+          setTimeout(() => router.push('/tutorial?showCustomization=false'), 1000);
+        }
+        break;
       case 'member_joined':
       case 'draft_date_changed':
       case 'draft_date_changed_soon':

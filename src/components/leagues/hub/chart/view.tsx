@@ -18,7 +18,7 @@ export default function Chart() {
   const { sortedMemberScores, league } = useLeagueData();
   const startWeek = league?.startWeek ?? 1;
   const font = useFont(Font, 14);
-  const labelFont = useFont(Font, 16);
+  const labelFont = useFont(Font, 14);
 
   const [selectedMember, setSelectedMember] = useState<string | null>(null);
 
@@ -176,10 +176,12 @@ export default function Chart() {
       </View>
 
       {/* Interactive Legend */}
-      <View className='flex-row flex-wrap gap-2 px-2 pt-2 items-center'>
+      <View className='flex-row flex-wrap gap-2 px-2 pt-2 items-center tracking-tighter'>
         {sortedMemberScores.map(({ member }) => {
           const isSelected = selectedMember === member.displayName;
           const isOther = selectedMember && !isSelected;
+
+          if (member.displayName === 'Sarahgliu') return null;
 
           return (
             <Pressable

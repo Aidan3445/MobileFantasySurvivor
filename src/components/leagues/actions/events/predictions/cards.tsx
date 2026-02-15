@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { View, Text } from 'react-native';
 import Carousel, { Pagination } from 'react-native-reanimated-carousel';
-import { Flame } from 'lucide-react-native';
 import { colors } from '~/lib/colors';
 import { useCarousel } from '~/hooks/ui/useCarousel';
 import { useShauhinActive } from '~/hooks/leagues/enrich/useShauhinActive';
@@ -12,6 +11,7 @@ import { type ScoringBaseEventName, type ReferenceType, type MakePrediction } fr
 import { type MakePredictionsProps } from '~/components/leagues/actions/events/predictions/view';
 import MarqueeText from '~/components/common/marquee';
 import DescriptionCell from '~/components/leagues/actions/events/predictions/description';
+import { PointsIcon } from '~/components/icons/generated';
 
 export default function PredictionCards({
   rules,
@@ -137,7 +137,7 @@ export default function PredictionCards({
             </Text>
             <View className='flex-row items-center'>
               <Text className='text-base font-bold text-foreground'>{prediction.points}</Text>
-              <Flame size={16} color={colors.primary} />
+              <PointsIcon size={16} color={colors.primary} />
             </View>
           </View>
           <View className='flex-row items-center justify-center gap-0.5'>
@@ -191,7 +191,7 @@ export default function PredictionCards({
                   <Text
                     allowFontScaling={false}
                     className='text-base font-bold text-foreground'>{prediction.points}</Text>
-                  <Flame size={16} color={colors.primary} />
+                  <PointsIcon size={13} color={colors.primary} />
                 </View>
               </View>
               <View className='flex-row items-center justify-center gap-0.5 pr-1'>

@@ -1,4 +1,4 @@
-import { Flame, Lock, LockOpen } from 'lucide-react-native';
+import { Lock, LockOpen } from 'lucide-react-native';
 import { Text, View, Switch } from 'react-native';
 import Button from '~/components/common/button';
 import Slider from '@react-native-community/slider';
@@ -7,6 +7,7 @@ import { MAX_SEASON_LENGTH } from '~/lib/leagues';
 import { cn } from '~/lib/utils';
 import { colors } from '~/lib/colors';
 import { Controller } from 'react-hook-form';
+import { PointsIcon } from '~/components/icons/generated';
 
 export default function SurvivalStreaks() {
   const {
@@ -72,19 +73,19 @@ export default function SurvivalStreaks() {
           <Text className='text-base text-muted-foreground'>
             • <Text className='font-bold'>Episode 1:</Text> Earn 1
             <View className='translate-y-0.5'>
-              <Flame size={14} color={colors['muted-foreground']} />
+              <PointsIcon size={12} color={colors['muted-foreground']} />
             </View> point
           </Text>
           <Text className='text-base text-muted-foreground'>
             • <Text className='font-bold'>Episode 2:</Text> Earn 2
             <View className='translate-y-0.5'>
-              <Flame size={14} color={colors['muted-foreground']} />
+              <PointsIcon size={12} color={colors['muted-foreground']} />
             </View> point
           </Text>
           <Text className='text-base text-muted-foreground'>
             • <Text className='font-bold'>Episode 3:</Text> Earn 3
             <View className='translate-y-0.5'>
-              <Flame size={14} color={colors['muted-foreground']} />
+              <PointsIcon size={12} color={colors['muted-foreground']} />
             </View> point
           </Text>
         </View>
@@ -127,7 +128,7 @@ export default function SurvivalStreaks() {
                 {displaySurvivalCap(survivalCapValue)}
               </Text>
               {survivalCapValue > 0 && survivalCapValue < MAX_SEASON_LENGTH && (
-                <Flame size={18} color={colors.positive} />
+                <PointsIcon size={14} color={colors.positive} />
               )}
             </>
           )}
