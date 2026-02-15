@@ -5,6 +5,8 @@ import { type Tribe } from '~/types/tribes';
 import TribeHistoryCircles from '~/components/shared/castaways/tribeHistoryCircles';
 import { divideY } from '~/lib/ui';
 import CastawayModal from '~/components/shared/castaways/castawayModal';
+import { PlaceIcon } from '~/components/icons/generated';
+import { rankBadgeColor, rankTextColor } from '~/lib/colors';
 
 interface CastawayRowProps {
   place: number;
@@ -25,23 +27,6 @@ export default function CastawayRow({
   splitIndex = 0,
   bottomBorder = false,
 }: CastawayRowProps) {
-  const rankBadgeColor =
-    place === 1
-      ? 'bg-yellow-500/20 border-yellow-500/40'
-      : place === 2
-        ? 'bg-gray-400/20 border-gray-400/40'
-        : place === 3
-          ? 'bg-amber-700/20 border-amber-700/40'
-          : 'bg-primary/10 border-primary/30';
-  const rankTextColor =
-    place === 1
-      ? 'text-yellow-600'
-      : place === 2
-        ? 'text-gray-600'
-        : place === 3
-          ? 'text-amber-700'
-          : 'text-primary';
-
   return (
     <View
       className={cn(
@@ -51,17 +36,16 @@ export default function CastawayRow({
       )}>
       {!allZero && (
         <>
-          <View className='w-11 items-center justify-center'>
-            <View
-              className={cn(
-                'flex h-8 w-8 items-center justify-center rounded-md border-2',
-                rankBadgeColor
-              )}>
-              <Text className={cn('font-black', rankTextColor)}>{place}</Text>
-            </View>
+          <View className='w-11 inline-flex items-center justify-center'>
+            <PlaceIcon size={28} color={rankBadgeColor(place)} />
+            <Text className={cn('absolute font-black tracking-tighter', rankTextColor(place))}>
+              {place}
+            </Text>
           </View>
           <View className='-ml-2 w-10 items-center justify-center'>
-            <Text className='text-center font-black'>{points}</Text>
+            <Text className='text-center font-black tracking-tighter text-primary'>
+              {points}
+            </Text>
           </View>
         </>
       )}

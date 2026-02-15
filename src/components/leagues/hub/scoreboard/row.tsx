@@ -8,6 +8,8 @@ import ColorRow from '~/components/shared/colorRow';
 import SurvivalStreaks from '~/components/leagues/hub/scoreboard/popover/survivalStreaks';
 import MarqueeText from '~/components/common/marquee';
 import CastawayModal from '~/components/shared/castaways/castawayModal';
+import { PlaceIcon } from '~/components/icons/generated';
+import { rankBadgeColor, rankTextColor } from '~/lib/colors';
 
 interface MemberRowProps {
   place: number;
@@ -40,21 +42,6 @@ export default function MemberRow({
 }: MemberRowProps) {
   const { data: leagueSettings } = useLeagueSettings(overrideHash);
 
-  const rankBadgeColor = place === 1
-    ? 'bg-yellow-500/50 border-yellow-500/40'
-    : place === 2
-      ? 'bg-gray-400/50 border-gray-400/40'
-      : place === 3
-        ? 'bg-amber-700/50 border-amber-700/40'
-        : 'bg-primary/10 border-primary/30';
-  const rankTextColor = place === 1
-    ? 'text-yellow-800'
-    : place === 2
-      ? 'text-gray-800'
-      : place === 3
-        ? 'text-amber-900'
-        : 'text-primary';
-
   return (
     <View
       className={cn(
@@ -63,17 +50,13 @@ export default function MemberRow({
         doubleBelow && 'border-dashed'
       )}>
       <View className='w-11 inline-flex items-center justify-center'>
-        <View className={cn(
-          'w-8 h-8 rounded-md font-black text-sm border-2 transition-all flex items-center justify-center',
-          rankBadgeColor,
-        )}>
-          <Text className={cn('font-black', rankTextColor)}>
-            {place}
-          </Text>
-        </View>
+        <PlaceIcon size={30} color={rankBadgeColor(place)} />
+        <Text className={cn('absolute font-black tracking-tighter', rankTextColor(place))}>
+          {place}
+        </Text>
       </View>
       <View className='w-10 -ml-2 items-center justify-center'>
-        <Text className='text-center font-black'>
+        <Text className='text-center font-black tracking-tighter text-primary'>
           {points}
         </Text>
       </View>
