@@ -57,22 +57,6 @@ export default function TabLayout() {
             ),
           }} />
         <Tabs.Screen
-          name='seasons'
-          options={{
-            title: 'Seasons',
-            tabBarIcon: ({ color }) => (
-              <SeasonsIcon color={color} size={32} allowFontScaling={false} />
-            ),
-          }} />
-        <Tabs.Screen
-          name='playground'
-          options={{
-            title: 'Playground',
-            tabBarIcon: ({ color }) => (
-              <PlaygroundIcon color={color} size={32} allowFontScaling={false} />
-            ),
-          }} />
-        <Tabs.Screen
           name='leagues'
           listeners={{
             tabPress: (e) => {
@@ -93,6 +77,22 @@ export default function TabLayout() {
               fontSize: 12,
               color: isLeaguesPath ? colors!.primary : colors!.secondary,
             }
+          }} />
+        <Tabs.Screen
+          name='seasons'
+          options={{
+            title: 'Seasons',
+            tabBarIcon: ({ color }) => (
+              <SeasonsIcon color={color} size={32} allowFontScaling={false} />
+            ),
+          }} />
+        <Tabs.Screen
+          name='playground'
+          options={{
+            title: 'Playground',
+            tabBarIcon: ({ color }) => (
+              <PlaygroundIcon color={color} size={32} allowFontScaling={false} />
+            ),
           }} />
         <Tabs.Screen
           name='profile'
