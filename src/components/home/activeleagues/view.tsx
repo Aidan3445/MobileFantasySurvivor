@@ -37,16 +37,17 @@ export default function ActiveLeagues() {
   }, [leagues, setCarouselData]);
 
   const { carouselHeight, maxLeagueMembers } = useMemo(() => {
-    const maxLeagueMembers =
-      leagues?.reduce((max, league) =>
+    const maxRows =
+      props.data?.reduce((max, league) =>
         league?.league.status === 'Active'
           ? Math.max(max, league.memberCount)
-          : max, 0) ?? 0;
-    if (maxLeagueMembers < MAX_LEAGUE_MEMBERS_HOME_DISPLAY) {
-      return { carouselHeight: 35 * maxLeagueMembers + 130, maxLeagueMembers };
+          : Math.max(max, 2.5), // Min height for draft status is 2.5 rows
+        0) ?? 0;
+    if (maxRows < MAX_LEAGUE_MEMBERS_HOME_DISPLAY) {
+      return { carouselHeight: 35 * maxRows + 130, maxLeagueMembers: maxRows };
     }
-    return { carouselHeight: 35 * MAX_LEAGUE_MEMBERS_HOME_DISPLAY + 130, maxLeagueMembers };
-  }, [leagues]);
+    return { carouselHeight: 35 * MAX_LEAGUE_MEMBERS_HOME_DISPLAY + 130, maxLeagueMembers: maxRows };
+  }, [props.data]);
 
   if ((!props.data || props.data.length === 0) && inactive.length === 0) {
     return (
