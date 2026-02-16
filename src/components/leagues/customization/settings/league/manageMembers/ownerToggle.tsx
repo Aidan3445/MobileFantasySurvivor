@@ -71,9 +71,8 @@ export default function OwnerToggle({ member, loggedInMember }: CurrentMemberPro
           <Switch
             value={iUnderstand}
             onValueChange={setIUnderstand}
-            trackColor={{ false: colors.muted, true: colors.destructive }}
-            thumbColor='white'
-            ios_backgroundColor={colors.destructive} />
+            trackColor={{ false: colors.destructive, true: colors.destructive }}
+            thumbColor='white' />
           <Text className='flex-1 text-sm text-muted-foreground'>
             I understand that this will transfer ownership rights to this member and only they will
             be able to undo this action.

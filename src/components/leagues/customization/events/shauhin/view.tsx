@@ -137,8 +137,7 @@ export default function ShauhinMode() {
                 <Switch
                   value={field.value}
                   onValueChange={field.onChange}
-                  trackColor={{ false: colors.muted, true: colors.positive }}
-                  ios_backgroundColor={colors.destructive}
+                  trackColor={{ false: colors.destructive, true: colors.positive }}
                   thumbColor='white' />
               )} />
           )}

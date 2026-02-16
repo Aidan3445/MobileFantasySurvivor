@@ -47,7 +47,6 @@ export function BasePredictions({ eventName, reactForm, disabled }: BasePredicti
                   value={field.value}
                   onValueChange={field.onChange}
                   trackColor={{ false: colors.destructive, true: colors.positive }}
-                  ios_backgroundColor={colors.destructive}
                   thumbColor={colors.muted} />
               )} />
           )}

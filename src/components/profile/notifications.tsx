@@ -87,9 +87,8 @@ export default function NotificationSettings() {
               value={settings.reminders}
               onValueChange={(value) => updateSetting('reminders', value)}
               disabled={!settings.enabled}
-              trackColor={{ false: colors.muted, true: colors.positive }}
-              thumbColor='white'
-              ios_backgroundColor={colors.destructive} />
+              trackColor={{ false: colors.destructive, true: colors.positive }}
+              thumbColor='white' />
           </View>
           <Text className='text-sm text-muted-foreground'>
             Predictions and secondary pick reminders before episodes air.
@@ -104,9 +103,8 @@ export default function NotificationSettings() {
               value={settings.leagueActivity}
               onValueChange={(value) => updateSetting('leagueActivity', value)}
               disabled={!settings.enabled}
-              trackColor={{ false: colors.muted, true: colors.positive }}
-              thumbColor='white'
-              ios_backgroundColor={colors.destructive} />
+              trackColor={{ false: colors.destructive, true: colors.positive }}
+              thumbColor='white' />
           </View>
           <Text className='text-sm text-muted-foreground'>
             League admission and draft start notifications.
@@ -121,9 +119,8 @@ export default function NotificationSettings() {
               value={settings.episodeUpdates}
               onValueChange={(value) => updateSetting('episodeUpdates', value)}
               disabled={!settings.enabled}
-              trackColor={{ false: colors.muted, true: colors.positive }}
-              thumbColor='white'
-              ios_backgroundColor={colors.destructive} />
+              trackColor={{ false: colors.destructive, true: colors.positive }}
+              thumbColor='white' />
           </View>
           <Text className='text-sm text-muted-foreground'>
             Get notified when episodes finish airing.
@@ -138,9 +135,8 @@ export default function NotificationSettings() {
               value={settings.liveScoring}
               onValueChange={(value) => updateSetting('liveScoring', value)}
               disabled={!settings.enabled}
-              trackColor={{ false: colors.muted, true: colors.positive }}
-              thumbColor='white'
-              ios_backgroundColor={colors.destructive} />
+              trackColor={{ false: colors.destructive, true: colors.positive }}
+              thumbColor='white' />
           </View>
           <Text className='text-sm text-muted-foreground'>
             Get a prompt when each episode starts to opt into real-time scoring
