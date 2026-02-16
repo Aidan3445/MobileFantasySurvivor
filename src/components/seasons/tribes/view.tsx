@@ -54,7 +54,7 @@ export default function TribesTimeline({ seasonData }: TimelineViewProps) {
   };
 
   return (
-    <View className='w-full gap-4'>
+    <View className='relative w-full overflow-hidden rounded-xl bg-card border-2 border-primary/20'>
       <View className='rounded-lg bg-card p-4 shadow-lg shadow-primary/10'>
         {/* Header */}
         <View className='mb-4 flex-row items-center gap-2'>

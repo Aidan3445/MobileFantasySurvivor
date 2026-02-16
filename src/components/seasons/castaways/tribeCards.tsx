@@ -8,7 +8,7 @@ interface TribeCardsProps {
 
 export default function TribeCards({ tribes }: TribeCardsProps) {
   return (
-    <View className='rounded-lg bg-card px-4 pt-4 pb-3 shadow-lg shadow-primary/10 border-2 border-primary/20'>
+    <View className='relative w-full overflow-hidden rounded-xl bg-card border-2 border-primary/20 px-4 pt-4 pb-3'>
       {/* Header */}
       <View className='mb-2 w-full flex-row items-center gap-2'>
         <View className='h-5 w-0.5 rounded-full bg-primary' />

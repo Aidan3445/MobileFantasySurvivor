@@ -39,7 +39,7 @@ export default function CastawayCard({
     <View className='gap-2 rounded-lg border-2 border-primary/20 bg-primary/5 p-3'>
       {/* Header with Image and Name */}
       <ColorRow
-        className='relative h-16 justify-start gap-2 px-2 py-2'
+        className='relative h-16 justify-start gap-2 p py-2'
         color={castaway.tribe!.color}>
         <View className='flex-row items-center gap-2'>
           <Grayscale amount={+(castaway.eliminatedEpisode || !!member)}>
@@ -54,7 +54,6 @@ export default function CastawayCard({
               }} />
           </Grayscale>
           <Text className='font-bold text-foreground'>{castaway.fullName}</Text>
-
         </View>
 
         {/* Member Badge */}
