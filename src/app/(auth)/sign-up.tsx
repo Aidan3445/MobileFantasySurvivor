@@ -4,6 +4,7 @@ import { useSignUp } from '@clerk/clerk-expo';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { SignUpWithGoogle } from '~/components/auth/signUpWithGoogle';
 import AuthCard from '~/components/auth/wrapper';
+import { SignUpWithApple } from '~/components/auth/signUpWithApple';
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -229,7 +230,12 @@ export default function SignUpScreen() {
           </Text>
         </TouchableOpacity>
 
-        <SignUpWithGoogle />
+        <Text className='text-center text-secondary'>Or</Text>
+
+        <View className='w-full flex-row items-center gap-2'>
+          <SignUpWithApple />
+          <SignUpWithGoogle />
+        </View>
       </View>
 
       <View className='mt-8 flex-row items-center justify-center'>

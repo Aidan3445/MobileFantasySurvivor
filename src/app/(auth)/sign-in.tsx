@@ -4,6 +4,7 @@ import { Platform, Text, TextInput, TouchableOpacity, View, type TextInputEndEdi
 import React, { useCallback, useRef } from 'react';
 import { SignInWithGoogle } from '~/components/auth/signInWithGoogle';
 import AuthCard from '~/components/auth/wrapper';
+import { SignInWithApple } from '~/components/auth/signInWithApple';
 
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -91,7 +92,10 @@ export default function Page() {
           onEndEditing={handlePasswordEndEditing}
           returnKeyType='done'
           onSubmitEditing={onSignInPress} />
-        <SignInWithGoogle />
+        <View className='w-full flex-row items-center gap-2'>
+          <SignInWithApple />
+          <SignInWithGoogle />
+        </View>
         <TouchableOpacity
           onPress={onSignInPress}
           className='mb-8 rounded-full bg-primary h-12 justify-center'>
@@ -99,7 +103,7 @@ export default function Page() {
         </TouchableOpacity>
       </View>
 
-      <Link href='/forgot-password'>
+      <Link href='/forgot-password' className='self-start'>
         <Text className='text-base font-semibold text-primary'>Forgot password?</Text>
       </Link>
       <View className='flex-row items-center justify-start'>

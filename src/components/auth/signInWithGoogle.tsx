@@ -88,7 +88,7 @@ export default function GoogleSignInButton({
 
   return (
     <Button
-      className='bg-[#F2F2F2] active:bg-[#EDD9BF] transition-all h-[40px] items-center justify-center rounded-full'
+      className='flex-1 bg-[#F2F2F2] active:bg-[#EDD9BF] transition-all h-[40px] items-center justify-center rounded-full'
       onPress={onPress}
       disabled={disabled}>
       <View className='flex-row items-center'>
@@ -118,7 +118,7 @@ export default function GoogleSignInButton({
             fontSize: 14,
             fontFamily: 'Roboto_500Medium',
           }}>
-          Continue with Google
+          Google
         </Text>
       </View>
     </Button>
