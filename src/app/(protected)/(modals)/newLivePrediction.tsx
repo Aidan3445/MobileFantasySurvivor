@@ -3,7 +3,6 @@ import { useRouter } from 'expo-router';
 import { View, Text, Platform } from 'react-native';
 import { useSysAdmin } from '~/hooks/user/useSysAdmin';
 import { useMemo, useState } from 'react';
-import BaseEventHeader from '~/components/leagues/actions/events/base/header/view';
 import { useSeasonsData } from '~/hooks/seasons/useSeasonsData';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { cn } from '~/lib/utils';
@@ -54,7 +53,7 @@ export default function NewLivePredictionScreen() {
     <SafeAreaRefreshView
       className={cn('pt-8', refreshing && Platform.OS === 'ios' && 'pt-12')}
       header={
-        <BaseEventHeader
+        <NewLivePredictionHeader
           seasons={scoreData ?? []}
           value={selectedSeason}
           setValue={setSelectedSeason} />

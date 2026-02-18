@@ -1,7 +1,9 @@
 import z from 'zod';
 import {
   type PredictionTimings, ReferenceTypes, BaseEventNames,
-  type ScoringBaseEventNames, type EliminationEventNames, EventSources, type EventTypes
+  type ScoringBaseEventNames, type EliminationEventNames, EventSources, type EventTypes,
+  type LivePredictionStatuses,
+  type LivePredictionOptionTypes
 } from '~/lib/events';
 import { type Tribe } from '~/types/tribes';
 import { type EnrichedCastaway } from '~/types/castaways';
@@ -182,3 +184,110 @@ export type Scores = Record<ReferenceType | 'Member', Record<number, number[]>>;
   * Record<memberId, streakCount>
   */
 export type Streaks = Record<number, number>;
+
+
+export type LivePredictionStatus = (typeof LivePredictionStatuses)[number];
+
+export type LivePrediction = {
+  status: LivePredictionStatus;
+  livePredictionId: number;
+  seasonId: number;
+  created_at: Date;
+  updated_at: Date;
+  episodeId: number;
+  title: string;
+  description: string | null;
+  closedAt: Date | null;
+  resolvedAt: Date | null;
+  paused: boolean;
+}
+export type LivePredictionInsert = {
+  seasonId: number;
+  episodeId: number;
+  title: string;
+  status: LivePredictionStatus;
+  livePredictionId?: number;
+  created_at?: Date;
+  updated_at?: Date;
+  description?: string | null;
+  closedAt?: Date | null;
+  resolvedAt?: Date | null;
+  paused?: boolean;
+}
+
+export type LivePredictionOption = {
+  livePredictionId: number;
+  created_at: Date;
+  updated_at: Date;
+  livePredictionOptionId: number;
+  label: string;
+  referenceType: ReferenceType | null;
+  referenceId: number | null;
+  isCorrect: boolean | null;
+}
+
+export type LivePredictionOptionInsert = {
+  livePredictionId: number;
+  label: string;
+  created_at?: Date | undefined;
+  updated_at?: Date | undefined;
+  livePredictionOptionId?: number;
+  referenceType?: ReferenceType | null;
+  referenceId?: number | null;
+  isCorrect?: boolean | null;
+}
+
+export type LivePredictionResponse = {
+  livePredictionResponseId: number;
+  livePredictionId: number;
+  created_at: Date;
+  updated_at: Date;
+  optionId: number;
+  userId: string;
+}
+
+export type LivePredictionResponseInsert = {
+  livePredictionId: number;
+  optionId: number;
+  userId: string;
+  livePredictionResponseId?: number;
+  created_at?: Date;
+  updated_at?: Date;
+}
+
+export interface LivePredictionWithOptions extends LivePrediction {
+  options: LivePredictionOption[];
+  responses: LivePredictionResponse[];
+  userResponse?: LivePredictionResponse | null;
+}
+
+export interface LivePredictionResult {
+  livePredictionId: number;
+  title: string;
+  totalResponses: number;
+  correctResponses: number;
+  userCorrect: boolean | null;
+}
+
+export interface LivePredictionUserStats {
+  userId: string;
+  totalAnswered: number;
+  totalCorrect: number;
+  accuracy: number;
+  currentStreak: number;
+  bestStreak: number;
+}
+
+export interface LivePredictionOptionInput {
+  label: string;
+  referenceType?: ReferenceType;
+  referenceId?: number;
+}
+
+export type LivePredictionOptionType = (typeof LivePredictionOptionTypes)[number];
+
+export interface LivePredictionTemplate {
+  title: string;
+  description?: string;
+  optionType: LivePredictionOptionType;
+}

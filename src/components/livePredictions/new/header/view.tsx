@@ -44,7 +44,7 @@ export default function NewLivePredictionHeader({ seasons, value, setValue }: Ne
           <Text
             allowFontScaling={false}
             className='text-2xl font-black uppercase tracking-tight text-foreground'>
-            Live Prediction Manager
+            Live Predictions
           </Text>
           <View className='h-6 w-1 bg-primary rounded-full' />
           <SelectSeason
