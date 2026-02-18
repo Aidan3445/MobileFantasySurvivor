@@ -68,9 +68,8 @@ export default function SecondaryPickSettings() {
                 <Switch
                   value={field.value}
                   onValueChange={field.onChange}
-                  trackColor={{ false: colors.muted, true: colors.positive }}
-                  thumbColor='white'
-                  ios_backgroundColor={colors.destructive} />
+                  trackColor={{ false: colors.destructive, true: colors.positive }}
+                  thumbColor='white' />
               )} />
           )}
         </View>
@@ -100,9 +99,8 @@ export default function SecondaryPickSettings() {
                     <Switch
                       value={field.value}
                       onValueChange={field.onChange}
-                      trackColor={{ false: colors.muted, true: colors.positive }}
-                      thumbColor='white'
-                      ios_backgroundColor={colors.destructive} />
+                      trackColor={{ false: colors.destructive, true: colors.positive }}
+                      thumbColor='white' />
                   )} />
               )}
             </View>
@@ -179,9 +177,8 @@ export default function SecondaryPickSettings() {
                     <Switch
                       value={field.value}
                       onValueChange={field.onChange}
-                      trackColor={{ false: colors.muted, true: colors.positive }}
-                      thumbColor='white'
-                      ios_backgroundColor={colors.destructive} />
+                      trackColor={{ false: colors.destructive, true: colors.positive }}
+                      thumbColor='white' />
                   )} />
               )}
             </View>

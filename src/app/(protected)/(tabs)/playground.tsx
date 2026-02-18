@@ -5,7 +5,6 @@ import { cn } from '~/lib/utils';
 import { useRefresh } from '~/hooks/helpers/refresh/useRefresh';
 import PlaygroundHeader from '~/components/playground/header/view';
 import { useSeasonsData } from '~/hooks/seasons/useSeasonsData';
-import ScoreboardTable from '~/components/home/scoreboard/table';
 import { useBaseEventRules } from '~/hooks/leagues/mutation/useBaseEventRules';
 import ChallengeScoreSettings from '~/components/leagues/customization/events/base/challenges';
 import AdvantageScoreSettings from '~/components/leagues/customization/events/base/advantages';
@@ -14,6 +13,7 @@ import { BaseEventRulesZod } from '~/types/leagues';
 import Button from '~/components/common/button';
 import { colors } from '~/lib/colors';
 import SafeAreaRefreshView from '~/components/common/refresh/safeAreaRefreshView';
+import PlaygroundScores from '~/components/playground/scores/view';
 
 export default function PlaygroundScreen() {
   const { refreshing, onRefresh, scrollY, handleScroll } = useRefresh([['seasons']]);
@@ -81,8 +81,7 @@ export default function PlaygroundScreen() {
 
         {/* Scoreboard */}
         {selectedSeasonData ? (
-          <ScoreboardTable
-            className='relative overflow-hidden rounded-xl border-2 border-primary/20 bg-card'
+          <PlaygroundScores
             scoreData={[selectedSeasonData]}
             overrideBaseRules={BaseEventRulesZod.parse(reactForm.watch('baseEventRules'))} />
         ) : (

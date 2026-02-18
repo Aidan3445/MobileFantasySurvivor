@@ -61,8 +61,7 @@ export default function ChooseMembers({
                     onValueChange={() => toggleMember(member.memberId, member.loggedIn)}
                     disabled={member.loggedIn}
                     trackColor={{ false: colors.destructive, true: colors.positive }}
-                    thumbColor='white'
-                    ios_backgroundColor={colors.destructive} />
+                    thumbColor='white' />
                 </ColorRow>
               </Pressable>
             ))}

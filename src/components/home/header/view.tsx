@@ -23,7 +23,7 @@ export default function HomeHeader() {
           <Text
             allowFontScaling={false}
             className='text-2xl font-black uppercase tracking-tight text-foreground'>
-            Trial by Fire
+            Home
           </Text>
           <View className='h-6 w-1 bg-primary rounded-full' />
           <HeaderButton

@@ -53,11 +53,7 @@ export function SignUpWithGoogle() {
     }
   }, [router, startSSOFlow]);
 
-  return (
-    <View className='my-2'>
-      <GoogleSignUpButton onPress={onPress} />
-    </View>
-  );
+  return <GoogleSignUpButton onPress={onPress} />;
 }
 
 interface GoogleSignUpButtonProps {
@@ -73,7 +69,7 @@ export default function GoogleSignUpButton({
 
   return (
     <Button
-      className='bg-[#F2F2F2] active:bg-[#EDD9BF] transition-all h-[40px] items-center justify-center rounded-full'
+      className='flex-1 bg-[#F2F2F2] active:bg-[#EDD9BF] transition-all h-[40px] items-center justify-center rounded-full'
       onPress={onPress}
       disabled={disabled}>
       <View className='flex-row items-center'>
@@ -99,7 +95,7 @@ export default function GoogleSignUpButton({
             fontSize: 14,
             fontFamily: 'Roboto_500Medium',
           }}>
-          Sign up with Google
+          Google
         </Text>
       </View>
     </Button>

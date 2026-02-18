@@ -26,7 +26,7 @@ export default function CastawaysView({ seasonData, leagueData }: CastawaysViewP
   const seasonCastaways = castaways.filter((c) => c.seasonId !== null);
 
   return (
-    <View className='relative w-full overflow-hidden rounded-lg'>
+    <View className='flex-1 gap-4 items-center justify-center'>
       <TribeCards tribes={tribes} />
       <CastawayGrid
         castaways={seasonCastaways}

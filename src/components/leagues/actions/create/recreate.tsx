@@ -77,7 +77,6 @@ export default function RecreateLeague({ hash }: RecreateLeagueProps) {
                       onValueChange={() => toggleMember(member.memberId, member.loggedIn)}
                       disabled={member.loggedIn}
                       trackColor={{ false: '#00000030', true: colors.primary }}
-                      ios_backgroundColor={colors.destructive}
                       thumbColor='white' />
                   </ColorRow>
                 </Pressable>

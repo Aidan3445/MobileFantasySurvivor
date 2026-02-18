@@ -85,7 +85,7 @@ export default function TutorialScreen() {
                       !isFirst && 'mr-16'
                     )}>
                     <Text className='text-center text-base font-bold text-white'>
-                      {item.cta ? 'Get Started' : 'Next'}
+                      {item.cta ? 'Go!' : 'Next'}
                     </Text>
                   </Button>
                 </View>

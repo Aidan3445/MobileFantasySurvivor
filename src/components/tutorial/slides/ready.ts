@@ -11,7 +11,7 @@ export const readySlide: SlideConfig = {
   borderClass: 'border-primary/20',
   badgeClass: 'bg-primary/15',
   badgeBorderClass: 'border-primary/30',
-  title: 'You\'re Ready',
+  title: 'Survivors Ready...',
   subtitle: 'Time to outwatch, outpredict, outscore',
   body: 'Join a league, draft your survivor, and start competing. May the best fantasy player win.',
   cta: true,

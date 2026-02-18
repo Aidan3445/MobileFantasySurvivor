@@ -90,7 +90,7 @@ export default function Slide({ slide, showCustomization = true }: SlideProps) {
       {/* Customizable callout */}
       {showCustomization && slide.customizable && (
         <View className={cn(
-          'flex-row items-start gap-2.5 rounded-lg border-2 border-dashed p-3 bg-card',
+          'flex-row items-start gap-2.5 rounded-md border-2 border-dashed p-3 bg-card',
           slide.borderClass
         )}>
           <Settings size={16} color={slide.color} className='mt-0.5' />

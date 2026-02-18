@@ -2,14 +2,11 @@ import * as React from 'react';
 import { Platform, Text, TextInput, TouchableOpacity, View, type TextInputEndEditingEvent, } from 'react-native';
 import { useSignUp } from '@clerk/clerk-expo';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import Logo from '~/components/shared/logo';
 import { SignUpWithGoogle } from '~/components/auth/signUpWithGoogle';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import useHeaderHeight from '~/hooks/ui/useHeaderHeight';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
+import AuthCard from '~/components/auth/wrapper';
+import { SignUpWithApple } from '~/components/auth/signUpWithApple';
 
 export default function SignUpScreen() {
-  const height = useHeaderHeight();
   const { isLoaded, signUp, setActive } = useSignUp();
   const { redirectTo } = useLocalSearchParams<{ redirectTo?: string }>();
   const router = useRouter();
@@ -28,8 +25,6 @@ export default function SignUpScreen() {
   const emailRef = React.useRef<TextInput>(null);
   const passwordRef = React.useRef<TextInput>(null);
   const confirmRef = React.useRef<TextInput>(null);
-
-  const [fieldFocused, setFieldFocused] = React.useState(false);
 
   // iOS autofill bypasses onChangeText — onEndEditing fires with the correct native value
   const makeEndEditingHandler = React.useCallback(
@@ -108,182 +103,151 @@ export default function SignUpScreen() {
 
   if (pendingVerification) {
     return (
-      <SafeAreaView className='relative flex-1 bg-background'>
-        <View
-          className='absolute w-full items-center'
-          style={{ top: height }}>
-          <Logo />
+      <AuthCard>
+        <View className='mb-8 items-center'>
+          <Text className='mb-2 text-3xl font-bold text-primary'>
+            Check Your Email
+          </Text>
+          <Text className='text-center text-lg text-secondary'>
+            We sent you a verification code
+          </Text>
         </View>
 
-        <KeyboardAwareScrollView
-          contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-end', paddingHorizontal: 24 }}
-          keyboardShouldPersistTaps='handled'
-          showsVerticalScrollIndicator={false}
-          scrollEnabled={false}
-          automaticallyAdjustKeyboardInsets>
-          <View className='rounded-3xl bg-white p-8 shadow-lg mb-2'>
-            <View className='mb-8 items-center'>
-              <Text className='mb-2 text-3xl font-bold text-primary'>
-                Check Your Email
-              </Text>
-              <Text className='text-center text-lg text-secondary'>
-                We sent you a verification code
-              </Text>
-            </View>
+        <View className='gap-y-4'>
+          <TextInput
+            value={code}
+            autoFocus
+            placeholder='Enter verification code'
+            className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
+            autoComplete='one-time-code'
+            textContentType='oneTimeCode'
+            onChangeText={setCode}
+            returnKeyType='done'
+            onSubmitEditing={onVerifyPress} />
 
-            <View className='gap-y-4'>
-              <TextInput
-                value={code}
-                autoFocus
-                placeholder='Enter verification code'
-                className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
-                autoComplete='one-time-code'
-                textContentType='oneTimeCode'
-                onChangeText={setCode}
-                returnKeyType='done'
-                onSubmitEditing={onVerifyPress} />
+          {clerkError && (
+            <Text className='text-center text-sm text-red-600'>
+              {clerkError}
+            </Text>
+          )}
 
-              {clerkError && (
-                <Text className='text-center text-sm text-red-600'>
-                  {clerkError}
-                </Text>
-              )}
-
-              <TouchableOpacity
-                onPress={onVerifyPress}
-                className='mt-6 rounded-2xl bg-primary py-4'>
-                <Text className='text-center text-lg font-semibold text-white'>
-                  Verify
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => setPendingVerification(false)}
-                className='mt-4 rounded-2xl bg-accent/20 py-4'>
-                <Text className='text-center text-lg font-semibold text-primary'>
-                  Back
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </KeyboardAwareScrollView>
-      </SafeAreaView>
+          <TouchableOpacity
+            onPress={onVerifyPress}
+            className='mt-6 rounded-2xl bg-primary py-4'>
+            <Text className='text-center text-lg font-semibold text-white'>
+              Verify
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setPendingVerification(false)}
+            className='mt-4 rounded-2xl bg-accent/20 py-4'>
+            <Text className='text-center text-lg font-semibold text-primary'>
+              Back
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </AuthCard>
     );
   }
 
   return (
-    <SafeAreaView className='relative flex-1 bg-background'>
-      <View
-        className='absolute w-full items-center'
-        style={{ top: height }}>
-        <Logo />
+    <AuthCard>
+      <View className='items-center'>
+        <Text className='mb-2 text-3xl font-bold text-primary'>
+          Join Us!
+        </Text>
+        <Text className='text-lg text-secondary'>
+          Create your account
+        </Text>
       </View>
-      <KeyboardAwareScrollView
-        contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-end', paddingHorizontal: 24 }}
-        keyboardShouldPersistTaps='handled'
-        scrollEnabled={fieldFocused}
-        automaticallyAdjustKeyboardInsets>
-        <View className='rounded-3xl bg-white p-8 shadow-lg mb-2'>
-          <View className='items-center'>
-            <Text className='mb-2 text-3xl font-bold text-primary'>
-              Join Us!
-            </Text>
-            <Text className='text-lg text-secondary'>
-              Create your account
-            </Text>
-          </View>
 
-          <View className='gap-y-2'>
-            <TextInput
-              autoCapitalize='none'
-              value={username}
-              placeholder='Enter username'
-              className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
-              autoComplete='username-new'
-              textContentType='username'
-              onChangeText={setUsername}
-              onEndEditing={makeEndEditingHandler(username, setUsername)}
-              returnKeyType='next'
-              onFocus={() => setFieldFocused(true)}
-              onBlur={() => setFieldFocused(false)}
-              onSubmitEditing={() => emailRef.current?.focus()} />
-            <TextInput
-              ref={emailRef}
-              autoCapitalize='none'
-              value={emailAddress}
-              placeholder='Enter email'
-              className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
-              autoComplete='email'
-              textContentType='emailAddress'
-              importantForAutofill='yes'
-              onChangeText={setEmailAddress}
-              onEndEditing={makeEndEditingHandler(emailAddress, setEmailAddress)}
-              returnKeyType='next'
-              onFocus={() => setFieldFocused(true)}
-              onBlur={() => setFieldFocused(false)}
-              onSubmitEditing={() => passwordRef.current?.focus()} />
-            <TextInput
-              ref={passwordRef}
-              value={password}
-              placeholder='Enter password'
-              secureTextEntry
-              className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
-              autoComplete='new-password'
-              textContentType='newPassword'
-              importantForAutofill='yes'
-              passwordRules='minlength: 8;'
-              onChangeText={setPassword}
-              onEndEditing={makeEndEditingHandler(password, setPassword)}
-              returnKeyType='next'
-              onFocus={() => setFieldFocused(true)}
-              onBlur={() => setFieldFocused(false)}
-              onSubmitEditing={() => confirmRef.current?.focus()} />
-            <TextInput
-              ref={confirmRef}
-              value={confirmPassword}
-              placeholder='Confirm password'
-              secureTextEntry
-              className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
-              autoComplete='new-password'
-              textContentType='newPassword'
-              importantForAutofill='yes'
-              onChangeText={setConfirmPassword}
-              onEndEditing={makeEndEditingHandler(confirmPassword, setConfirmPassword)}
-              returnKeyType='done'
-              onFocus={() => setFieldFocused(true)}
-              onBlur={() => setFieldFocused(false)}
-              onSubmitEditing={onSignUpPress} />
+      <View className='gap-y-2'>
+        <TextInput
+          autoCapitalize='none'
+          value={username}
+          placeholder='Enter username'
+          className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
+          autoComplete='username-new'
+          textContentType='username'
+          onChangeText={setUsername}
+          onEndEditing={makeEndEditingHandler(username, setUsername)}
+          returnKeyType='next'
+          onSubmitEditing={() => emailRef.current?.focus()} />
+        <TextInput
+          ref={emailRef}
+          autoCapitalize='none'
+          value={emailAddress}
+          placeholder='Enter email'
+          className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
+          autoComplete='email'
+          textContentType='emailAddress'
+          importantForAutofill='yes'
+          onChangeText={setEmailAddress}
+          onEndEditing={makeEndEditingHandler(emailAddress, setEmailAddress)}
+          returnKeyType='next'
+          onSubmitEditing={() => passwordRef.current?.focus()} />
+        <TextInput
+          ref={passwordRef}
+          value={password}
+          placeholder='Enter password'
+          secureTextEntry
+          className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
+          autoComplete='new-password'
+          textContentType='newPassword'
+          importantForAutofill='yes'
+          passwordRules='minlength: 8;'
+          onChangeText={setPassword}
+          onEndEditing={makeEndEditingHandler(password, setPassword)}
+          returnKeyType='next'
+          onSubmitEditing={() => confirmRef.current?.focus()} />
+        <TextInput
+          ref={confirmRef}
+          value={confirmPassword}
+          placeholder='Confirm password'
+          secureTextEntry
+          className='rounded-2xl border border-accent bg-accent/20 px-4 py-0 h-10 text-lg placeholder:text-secondary leading-tight overflow-hidden'
+          autoComplete='new-password'
+          textContentType='newPassword'
+          importantForAutofill='yes'
+          onChangeText={setConfirmPassword}
+          onEndEditing={makeEndEditingHandler(confirmPassword, setConfirmPassword)}
+          returnKeyType='done'
+          onSubmitEditing={onSignUpPress} />
 
-            {formError && (
-              <Text className='text-sm text-red-600'>{formError}</Text>
-            )}
+        {formError && (
+          <Text className='text-sm text-red-600'>{formError}</Text>
+        )}
 
-            {clerkError && (
-              <Text className='text-sm text-red-600'>{clerkError}</Text>
-            )}
+        {clerkError && (
+          <Text className='text-sm text-red-600'>{clerkError}</Text>
+        )}
 
-            <TouchableOpacity
-              onPress={onSignUpPress}
-              className='mt-6 rounded-full bg-primary h-10 justify-center'>
-              <Text className='text-center text-lg font-semibold text-white'>
-                Continue
-              </Text>
-            </TouchableOpacity>
+        <TouchableOpacity
+          onPress={onSignUpPress}
+          className='mt-6 rounded-full bg-primary h-10 justify-center'>
+          <Text className='text-center text-lg font-semibold text-white'>
+            Continue
+          </Text>
+        </TouchableOpacity>
 
-            <SignUpWithGoogle />
-          </View>
+        <Text className='text-center text-secondary'>Or</Text>
 
-          <View className='mt-8 flex-row items-center justify-center'>
-            <Text className='text-base text-secondary'>
-              Already have an account?{' '}
-            </Text>
-            <TouchableOpacity onPress={() => router.back()}>
-              <Text className='text-base font-semibold text-primary'>
-                Sign in
-              </Text>
-            </TouchableOpacity>
-          </View>
+        <View className='w-full flex-row items-center gap-2'>
+          <SignUpWithApple />
+          <SignUpWithGoogle />
         </View>
-      </KeyboardAwareScrollView>
-    </SafeAreaView>
+      </View>
+
+      <View className='mt-8 flex-row items-center justify-center'>
+        <Text className='text-base text-secondary'>
+          Already have an account?{' '}
+        </Text>
+        <TouchableOpacity onPress={() => router.back()}>
+          <Text className='text-base font-semibold text-primary'>
+            Sign in
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </AuthCard >
   );
 }

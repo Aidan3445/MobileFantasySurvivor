@@ -13,7 +13,7 @@ export const shotInTheDarkSlide: SlideConfig = {
   badgeBorderClass: 'border-red-500/30',
   title: 'Shot in the Dark',
   subtitle: 'A last-ditch play to save your streak',
-  body: 'Think your survivor is going home? Play your Shot in the Dark before the episode airs. If they do get voted out, you keep your streak bonus when you pick a new player. You only get one per season, use it wisely.',
+  body: 'Think your survivor is going home? Play your Shot in the Dark before the episode airs. If they do get voted out, you keep your streak bonus when you pick a new player. You only get one per league, use it wisely.',
   customizable: 'Your league can enable or disable Shot in the Dark. It requires survival streaks to be active.',
   tag: 'NEW',
 };
