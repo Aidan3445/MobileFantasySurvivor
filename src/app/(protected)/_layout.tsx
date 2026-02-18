@@ -5,6 +5,9 @@ import { StatusBar } from 'react-native';
 import { useEffect, useRef } from 'react';
 import { registerPushToken } from '~/lib/notifications';
 import { useFetch } from '~/hooks/helpers/useFetch';
+import { Asset } from 'expo-asset';
+
+const LogoImage = require('~/assets/LogoFull.png');
 
 function NotificationManager() {
   const postData = useFetch('POST');
@@ -15,6 +18,14 @@ function NotificationManager() {
     registerPushToken(postRef.current).catch((err) =>
       console.error('Failed to register push token:', err),
     );
+
+    (async () => {
+      try {
+        await Asset.loadAsync(LogoImage);
+      } catch (e) {
+        console.warn('Logo prefetch failed', e);
+      }
+    })();
   }, []);
 
   return null;

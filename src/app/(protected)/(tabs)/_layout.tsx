@@ -1,12 +1,11 @@
 'use client';
-import { useIsFetching } from '@tanstack/react-query';
 import { Tabs, usePathname, useRouter } from 'expo-router';
 import { Animated, Image, Platform } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import LoadingScreen from '~/components/auth/loadingScreen';
 import { LeaguesIcon, PlaygroundIcon, SeasonsIcon, UserIcon } from '~/components/icons/generated';
 import { useNotificationRouting } from '~/hooks/routing/useNotificationRouting';
 import useFadeLoading from '~/hooks/ui/useFadeLoading';
+import { useLeagues } from '~/hooks/user/useLeagues';
 import { colors } from '~/lib/colors';
 
 const HomeImage = require('~/assets/LogoTorch.png');
@@ -15,12 +14,8 @@ export default function TabLayout() {
   useNotificationRouting();
   const pathname = usePathname();
   const router = useRouter();
-  const isFetching = useIsFetching();
-  const { showLoading, fadeAnim } = useFadeLoading({ isLoading: isFetching > 0 });
-
-  const insets = useSafeAreaInsets();
-  const isAndroid = Platform.OS === 'android';
-
+  const { isLoading } = useLeagues();
+  const { showLoading, fadeAnim } = useFadeLoading({ isLoading });
 
   const isLeaguesPath = pathname.startsWith('/leagues');
   const isOnLeaguesIndex = pathname === '/leagues';
@@ -30,18 +25,18 @@ export default function TabLayout() {
     <>
       <Tabs
         screenOptions={{
+          lazy: false,
           headerShown: false,
           tabBarActiveTintColor: colors.primary,
           tabBarInactiveTintColor: colors.secondary,
           tabBarStyle: {
             backgroundColor: colors.navigation,
-            height: isAndroid ? 60 : 80,
+            height: Platform.OS === 'android' ? 60 : 80,
             paddingBottom: 0,
-            paddingTop: isAndroid ? 4 : 0,
-            marginBottom: isAndroid ? insets.bottom : 0,
+            paddingTop: Platform.OS === 'android' ? 4 : 0,
             shadowColor: 'transparent',
           },
-          tabBarLabelStyle: { fontSize: 12, },
+          tabBarLabelStyle: { fontSize: 12 },
           tabBarAllowFontScaling: false,
         }}>
         <Tabs.Screen
