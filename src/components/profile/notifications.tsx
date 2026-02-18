@@ -1,4 +1,4 @@
-import { View, Text, Switch, Pressable } from 'react-native';
+import { View, Text, Switch, Pressable, AppState } from 'react-native';
 import { Bell, BellOff } from 'lucide-react-native';
 import * as Notifications from 'expo-notifications';
 import { useNotificationSettings } from '~/hooks/user/useNotificationSettings';
@@ -7,6 +7,7 @@ import { cn } from '~/lib/utils';
 import { useEffect, useState } from 'react';
 import { registerPushToken } from '~/lib/notifications';
 import { useFetch } from '~/hooks/helpers/useFetch';
+import { Linking } from 'react-native';
 
 export default function NotificationSettings() {
   const postData = useFetch('POST');
@@ -18,16 +19,28 @@ export default function NotificationSettings() {
     Notifications.getPermissionsAsync().then(({ status }) =>
       setPermissionStatus(status),
     );
+
+    const sub = AppState.addEventListener('change', (state) => {
+      if (state === 'active') {
+        Notifications.getPermissionsAsync().then(({ status }) =>
+          setPermissionStatus(status),
+        );
+      }
+    });
+
+    return () => sub.remove();
   }, []);
+
 
   const requestPermissions = async () => {
     const { status } = await Notifications.requestPermissionsAsync();
     setPermissionStatus(status);
     if (status === 'granted') {
       await registerPushToken(postData);
+    } else {
+      void Linking.openSettings();
     }
   };
-
   if (isLoading) {
     return (
       <View className='w-full rounded-xl border-2 border-primary/20 bg-card p-2'>

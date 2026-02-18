@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import LoadingScreen from '~/components/auth/loadingScreen';
 import { useDeepLinkHandler } from '~/hooks/routing/useDeepLinkHandler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
+import { useRequestPushPermission } from '~/hooks/user/useRequestPushPermissions';
 
 // Suppress specific warning from react-native-reanimated-carousel
 const originalWarn = console.warn;
@@ -19,6 +20,7 @@ console.warn = (...args) => {
 
 function InitialLayout() {
   const { isSignedIn, isLoaded } = useAuth();
+  useRequestPushPermission();
   const segments = useSegments();
   const router = useRouter();
   useDeepLinkHandler();
