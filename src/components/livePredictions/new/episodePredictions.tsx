@@ -40,8 +40,7 @@ export default function EpisodePredictions({
   };
 
   // Reverse order — most recent first
-  const sortedEpisodes = useMemo(
-    () => [...episodes].reverse(),
+  const sortedEpisodes = useMemo(() => [...episodes].reverse(),
     [episodes]
   );
 

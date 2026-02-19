@@ -123,14 +123,15 @@ export type CustomEvents = {
   predictions: Predictions;
 };
 
+const minIdValue = process.env.NODE_ENV === 'production' ? 0 : -100; // allow negative for testing
 export const BaseEventInsertZod = z.object({
-  episodeId: z.coerce.number().int().min(0),
+  episodeId: z.coerce.number().int().min(minIdValue),
   eventName: z.enum(BaseEventNames),
   label: z.string().max(64).nullable().optional(),
   notes: z.string().array().max(10).nullable().optional(),
   references: z.object({
     type: z.enum(ReferenceTypes),
-    id: z.coerce.number().int().min(0),
+    id: z.coerce.number().int().min(minIdValue),
   }).array().min(1)
 }).refine((data) => {
   // If eventName is 'tribeUpdate', we need at least one tribe and at least one castaway
@@ -144,20 +145,20 @@ export const BaseEventInsertZod = z.object({
 export type BaseEventInsert = z.infer<typeof BaseEventInsertZod>;
 
 export const CustomEventInsertZod = z.object({
-  episodeId: z.coerce.number().int().min(0),
-  customEventRuleId: z.coerce.number().int().min(0),
+  episodeId: z.coerce.number().int().min(minIdValue),
+  customEventRuleId: z.coerce.number().int().min(minIdValue),
   label: z.string().max(64).nullable().optional(),
   notes: z.string().array().max(10).nullable().optional(),
   references: z.object({
     type: z.enum(ReferenceTypes),
-    id: z.coerce.number().int().min(0),
+    id: z.coerce.number().int().min(minIdValue),
   }).array().min(1)
 });
 export type CustomEventInsert = z.infer<typeof CustomEventInsertZod>;
 
 export const PredictionInsertZod = z.object({
   eventSource: z.enum(EventSources),
-  referenceId: z.coerce.number().int().min(0),
+  referenceId: z.coerce.number().int().min(minIdValue),
   referenceType: z.enum(ReferenceTypes),
   eventName: z.string().max(64),
   bet: z.coerce.number().int().min(0).nullable(),

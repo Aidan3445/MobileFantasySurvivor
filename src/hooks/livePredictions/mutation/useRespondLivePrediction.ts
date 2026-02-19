@@ -12,8 +12,8 @@ export function useRespondLivePrediction(episodeId: number | undefined) {
     void (async () => {
       setIsSubmitting(true);
       try {
-        const res = await postData(`/api/live/[${livePredictionId}]`, {
-          body: JSON.stringify({ optionId }),
+        const res = await postData(`/api/live/${livePredictionId}`, {
+          body: { optionId },
         });
         if (!res.ok) {
           const err = await res.json();

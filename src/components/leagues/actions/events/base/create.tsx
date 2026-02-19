@@ -37,6 +37,7 @@ export default function CreateBaseEvent({ seasonId }: CreateBaseEventProps) {
   } = useCreateBaseEvent(seasonId);
 
   const onSubmit = () => {
+    console.log('Submitting with values:', form.getValues());
     void handleCreate();
   };
 
@@ -172,8 +173,7 @@ export default function CreateBaseEvent({ seasonId }: CreateBaseEventProps) {
                 textAlignVertical='top'
                 editable={!!selectedReferences && selectedReferences.length > 0}
                 returnKeyType='default' />
-            )}
-          />
+            )} />
         </View>
 
         {/* Submit Button */}
