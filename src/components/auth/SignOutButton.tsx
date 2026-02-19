@@ -7,6 +7,7 @@ import { LogOut } from 'lucide-react-native';
 import { colors } from '~/lib/colors';
 import { useFetch } from '~/hooks/helpers/useFetch';
 import { unregisterPushToken } from '~/lib/notifications';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SignOutButton() {
   const { signOut } = useClerk();
@@ -27,6 +28,7 @@ export default function SignOutButton() {
             try {
               await unregisterPushToken(deleteData);
               queryClient.clear();
+              await AsyncStorage.clear();
               await signOut();
               router.replace('/(auth)/sign-in');
             } catch (err) {

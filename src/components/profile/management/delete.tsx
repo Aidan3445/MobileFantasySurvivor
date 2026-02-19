@@ -7,6 +7,9 @@ import { Trash2 } from 'lucide-react-native';
 
 import Modal from '~/components/common/modal';
 import { colors } from '~/lib/colors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { unregisterPushToken } from '~/lib/notifications';
+import { useFetch } from '~/hooks/helpers/useFetch';
 
 export default function DeleteAccountButton() {
   const { user } = useClerk();
@@ -14,13 +17,16 @@ export default function DeleteAccountButton() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const deleteData = useFetch('DELETE');
 
   const handleDelete = () => {
     void (async () => {
       setIsDeleting(true);
       try {
-        await user?.delete();
-        queryClient.clear();
+        await unregisterPushToken(deleteData);
+        await user?.delete(),
+          queryClient.clear();
+        await AsyncStorage.clear();
         router.replace('/(auth)/sign-in');
       } catch (err) {
         console.error('Error deleting account:', err);

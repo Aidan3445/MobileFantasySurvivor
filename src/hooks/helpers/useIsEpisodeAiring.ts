@@ -9,6 +9,7 @@ import { useLeague } from '~/hooks/leagues/query/useLeague';
 export function useIsEpisodeAiringForSeason(seasonId: number | null) {
   const { data: keyEpisodes } = useKeyEpisodes(seasonId);
 
+
   return useMemo(() => {
     return (
       keyEpisodes?.previousEpisode?.airStatus === 'Airing'

@@ -67,6 +67,7 @@ export default function MemberRow({
             'text-base font-bold transition-all text-black cursor-pointer',
             member.loggedIn && 'text-primary'
           )}
+          marqueeThreshold={0}
           containerClassName='flex-row'>
         </MarqueeText>
       </ColorRow>

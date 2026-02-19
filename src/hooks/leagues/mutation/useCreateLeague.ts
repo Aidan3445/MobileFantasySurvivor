@@ -66,7 +66,7 @@ export function useCreateLeague(onSubmit?: () => void) {
       router.prefetch({ pathname: '/leagues/[hash]/predraft', params: { hash: newHash } });
 
       Alert.alert('Success', `League created: ${data.leagueName}`);
-      router.replace({ pathname: '/leagues/[hash]/predraft', params: { hash: newHash } });
+      router.dismissTo({ pathname: '/leagues/[hash]/predraft', params: { hash: newHash } });
       // eslint-disable-next-line no-undef
       setTimeout(() => router.push('/tutorial'), 1000);
     } catch (error) {

@@ -1,4 +1,3 @@
-// components/leagues/hub/scoreboard/podium/Tier.tsx
 import { View, Text } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { cn } from '~/lib/utils';

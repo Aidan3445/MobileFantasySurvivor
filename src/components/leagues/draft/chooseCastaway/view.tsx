@@ -6,6 +6,7 @@ import { type DraftDetails } from '~/types/leagues';
 import { useChooseCastaway } from '~/hooks/leagues/mutation/useChooseCastaway';
 import SearchableSelect from '~/components/common/searchableSelect';
 import ColorRow from '~/components/shared/colorRow';
+import { getContrastingColor } from '@uiw/color-convert';
 
 interface ChooseCastawayProps {
   hash: string;
@@ -34,9 +35,15 @@ export default function ChooseCastaway({ hash, draftDetails, onDeck }: ChooseCas
             className='flex-1 flex-row items-center gap-2 rounded-md p-1'
             style={isDisabled ? { backgroundColor: member?.color ?? colors.neutral } : undefined}>
             <ColorRow className='w-min' color={tribe.tribeColor}>
-              <Text className='text-base font-medium leading-tight'>{tribe.tribeName}</Text>
+              <Text
+                className='text-base font-medium leading-tight'
+                style={isDisabled ? { color: getContrastingColor(member.color ?? colors.neutral) } : undefined}>
+                {tribe.tribeName}
+              </Text>
             </ColorRow>
-            <Text className='text-base'>
+            <Text
+              className='text-base'
+              style={isDisabled ? { color: getContrastingColor(member.color ?? colors.neutral) } : undefined}>
               {castaway.fullName}
               {member && ` (${member.displayName})`}
             </Text>

@@ -7,6 +7,7 @@ import ColorRow from '~/components/shared/colorRow';
 import ShotInTheDark from '~/components/leagues/hub/picks/shotInTheDark';
 import { useChangeCastaway } from '~/hooks/leagues/mutation/useChangeCastaway';
 import Modal from '~/components/common/modal';
+import { getContrastingColor } from '@uiw/color-convert';
 
 export default function ChangeCastaway() {
   const {
@@ -87,12 +88,16 @@ export default function ChangeCastaway() {
           style={isDisabled ? { backgroundColor: castaway.pickedBy?.color ?? colors.neutral } : undefined}>
           {castaway.tribe && (
             <ColorRow className='w-min' color={castaway.tribe.color}>
-              <Text className='text-base font-medium'>
+              <Text
+                className='text-base font-medium'
+                style={isDisabled ? { color: getContrastingColor(castaway.pickedBy?.color ?? colors.neutral!) } : undefined}>
                 {castaway.tribe.name}
               </Text>
             </ColorRow>
           )}
-          <Text className='text-base'>
+          <Text
+            className='text-base'
+            style={isDisabled ? { color: getContrastingColor(castaway.pickedBy?.color ?? colors.neutral!) } : undefined}>
             {castaway.fullName}
             {castaway.pickedBy && ` (${castaway.pickedBy.displayName})`}
           </Text>

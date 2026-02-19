@@ -101,6 +101,7 @@ export default function PredictionRow({
                 className='leading-tight'
                 color={castaway.tribe?.color ?? '#AAAAAA'}>
                 <MarqueeText
+                  marqueeThreshold={0}
                   text={castaway.shortName}
                   className='text-base text-foreground font-medium' />
               </ColorRow>
@@ -118,6 +119,7 @@ export default function PredictionRow({
               <View key={index} className='flex-row items-center gap-1'>
                 <ColorRow className='leading-tight w-min' color={hit.member.color}>
                   <MarqueeText
+                    marqueeThreshold={0}
                     text={hit.member.displayName}
                     className={cn(
                       'text-base transition-all text-black font-medium',
@@ -131,6 +133,7 @@ export default function PredictionRow({
                     <MoveRight size={12} color='#000000' />
                     <ColorRow className='leading-tight font-medium w-20' color={hit.reference.color}>
                       <MarqueeText
+                        marqueeThreshold={0}
                         text={hit.reference.shortName}
                         className='text-xs text-foreground font-medium' />
                     </ColorRow>
@@ -154,6 +157,7 @@ export default function PredictionRow({
                     <View key={index} className='flex-row items-center gap-1 opacity-60'>
                       <ColorRow className='leading-tight w-min' color={miss.member.color}>
                         <MarqueeText
+                          marqueeThreshold={0}
                           text={miss.member.displayName}
                           className={cn(
                             'text-base transition-all text-black font-medium',
@@ -167,6 +171,7 @@ export default function PredictionRow({
                           <MoveRight size={12} color='#000000' />
                           <ColorRow className='leading-tight font-medium w-20' color={miss.reference.color}>
                             <MarqueeText
+                              marqueeThreshold={0}
                               text={miss.reference.shortName}
                               className='text-xs text-foreground font-medium' />
                           </ColorRow>

@@ -87,7 +87,7 @@ export default function ActiveLeagues() {
           <View className='flex-row items-center gap-1'>
             <View className='h-8 w-1 bg-primary rounded-full' />
             <Text className='text-2xl font-black tracking-tight uppercase text-foreground'>
-              Your Leagues {inactive.length}
+              Your Leagues
             </Text>
           </View>
           <Button

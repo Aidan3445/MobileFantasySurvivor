@@ -43,6 +43,11 @@ export default function SysAdminScreen() {
             onPress={() => router.push('/baseEvent')}>
             <Text className='text-white text-xl'>Create Base Event</Text>
           </Button>
+          <Button
+            className='w-full bg-primary p-4 rounded-lg items-center justify-center'
+            onPress={() => router.push('/newLivePrediction')}>
+            <Text className='text-white text-xl'>Create Live Prediction</Text>
+          </Button>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

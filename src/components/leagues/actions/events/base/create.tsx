@@ -1,4 +1,5 @@
-import { View, Text, TextInput, Pressable } from 'react-native';
+import { View, Text, TextInput } from 'react-native';
+import Button from '~/components/common/button';
 import { Controller } from 'react-hook-form';
 import { useCreateBaseEvent } from '~/hooks/seasons/mutation/useCreateBaseEvent';
 import { cn } from '~/lib/utils';
@@ -67,10 +68,8 @@ export default function CreateBaseEvent({ seasonId }: CreateBaseEventProps) {
                   onChange(v);
                   clearReferences();
                 }}
-                placeholder='Select Episode'
-              />
-            )}
-          />
+                placeholder='Select Episode' />
+            )} />
         </View>
 
         {/* Event Name Select */}
@@ -87,8 +86,7 @@ export default function CreateBaseEvent({ seasonId }: CreateBaseEventProps) {
                 selectedValue={value}
                 onSelect={(v) => handleEventChange(v as BaseEventName)}
                 placeholder='Select Event'
-                disabled={form.watch('episodeId') === undefined}
-              />
+                disabled={form.watch('episodeId') === undefined} />
             )}
           />
         </View>
@@ -103,8 +101,7 @@ export default function CreateBaseEvent({ seasonId }: CreateBaseEventProps) {
             selectedValue={eventSubtype}
             onSelect={handleSubtypeChange}
             placeholder='Event Subtype'
-            disabled={!selectedEventName}
-          />
+            disabled={!selectedEventName} />
         </View>
 
         {/* Label Input */}
@@ -127,8 +124,7 @@ export default function CreateBaseEvent({ seasonId }: CreateBaseEventProps) {
                 onChangeText={onChange}
                 onBlur={onBlur}
                 editable={eventSubtype !== ''}
-                returnKeyType='done'
-              />
+                returnKeyType='done' />
             )}
           />
         </View>
@@ -175,14 +171,12 @@ export default function CreateBaseEvent({ seasonId }: CreateBaseEventProps) {
                 multiline
                 textAlignVertical='top'
                 editable={!!selectedReferences && selectedReferences.length > 0}
-                returnKeyType='default'
-              />
-            )}
-          />
+                returnKeyType='default' />
+            )} />
         </View>
 
         {/* Submit Button */}
-        <Pressable
+        <Button
           onPress={onSubmit}
           disabled={!canSubmit}
           className={cn(
@@ -192,7 +186,7 @@ export default function CreateBaseEvent({ seasonId }: CreateBaseEventProps) {
           <Text className='text-center text-base font-bold uppercase tracking-wider text-white'>
             {isSubmitting ? 'Creating...' : 'Create'}
           </Text>
-        </Pressable>
+        </Button>
       </View>
 
       {/* Preview */}
@@ -204,8 +198,7 @@ export default function CreateBaseEvent({ seasonId }: CreateBaseEventProps) {
             seasonData={season}
             mockEvents={mockEvent ? [mockEvent] : []}
             edit
-            filters={{ castaway: [], tribe: [], member: [], event: [] }}
-          />
+            filters={{ castaway: [], tribe: [], member: [], event: [] }} />
         </View>
       )}
     </View>

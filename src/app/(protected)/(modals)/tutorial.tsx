@@ -19,6 +19,7 @@ import { secondarySlide } from '~/components/tutorial/slides/secondary';
 import { shotInTheDarkSlide } from '~/components/tutorial/slides/shotInTheDark';
 import { switchPickSlide } from '~/components/tutorial/slides/switchPick';
 import { readySlide } from '~/components/tutorial/slides/ready';
+import { livePredictionsSlide } from '~/components/tutorial/slides/livePredictions';
 
 const SLIDES: SlideConfig[] = [
   welcomeSlide,
@@ -29,6 +30,7 @@ const SLIDES: SlideConfig[] = [
   secondarySlide,
   shotInTheDarkSlide,
   switchPickSlide,
+  livePredictionsSlide,
   readySlide,
 ];
 

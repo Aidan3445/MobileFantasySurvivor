@@ -141,3 +141,23 @@ export const defaultSecondaryPickSettings: SecondaryPickSettings = {
   multiplier: DEFAULT_SECONDARY_PICK_MULTIPLIER,
 };
 
+export function displayNameRemap(name: string) {
+  switch (name) {
+    case 'Aidan+Minnow':
+      return 'Aidan';
+    case 'molly':
+      return 'Molly';
+    case 'emma':
+      return 'Emma';
+    case 'jeffy':
+      return 'Jeffy';
+    case 'robyn-will':
+      return 'Robyn-Will';
+    case 'Jason & Iris 🏆':
+      return 'Jason & Iris';
+    case 'shulie':
+      return 'Shulie';
+    default:
+      return name;
+  }
+}
