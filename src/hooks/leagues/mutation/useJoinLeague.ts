@@ -101,7 +101,7 @@ export function useJoinLeague(onSubmit?: () => void) {
         const errorData = await response.json();
         console.error('Conflict joining league:', errorData);
         Alert.alert('Error', errorData.message || 'You are already a member of this league');
-        router.replace(`/leagues/${submittedHash}`);
+        router.dismissTo(`/leagues/${submittedHash}`);
         return;
       }
       if (response.status !== 201) {
@@ -127,7 +127,7 @@ export function useJoinLeague(onSubmit?: () => void) {
           await queryClient.setQueryData(['leagues', submittedHash], leagueData);
         }
         router.prefetch({ pathname: '/leagues/[hash]/predraft', params: { hash: submittedHash } });
-        router.replace(`/leagues/${submittedHash}/predraft`);
+        router.dismissTo(`/leagues/${submittedHash}/predraft`);
         // eslint-disable-next-line no-undef
         setTimeout(() => router.push('/tutorial?showCustomization=false'), 1000);
 
@@ -135,7 +135,7 @@ export function useJoinLeague(onSubmit?: () => void) {
       } else {
         await queryClient.invalidateQueries({ queryKey: ['pendingLeagues'] });
         Alert.alert('Pending', `Your request to join "${getPublicLeague.data.name}" is pending approval from the league admin.`);
-        router.replace('/leagues');
+        router.dismissTo('/leagues');
       }
     } catch (error) {
       console.error(error);
