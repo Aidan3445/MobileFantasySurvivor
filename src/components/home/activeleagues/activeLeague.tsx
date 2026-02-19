@@ -73,7 +73,7 @@ export default function ActiveLeague({ league, memberCount, maxMembers }: Active
           // eslint-disable-next-line no-undef
           setTimeout(() => {
             router.navigate({ pathname: '/leagues/[hash]', params: { hash: league.hash } });
-          }, 10);
+          }, 100);
         }}>
         {/* League Name */}
         <Text
