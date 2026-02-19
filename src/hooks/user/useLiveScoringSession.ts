@@ -26,7 +26,7 @@ export function useLiveScoringSession(episodeId: number | undefined) {
     void (async () => {
       setIsOptingIn(true);
       try {
-        const res = await postData('/api/live/session', {
+        const res = await postData('/api/notifications/liveScoring', {
           body: { episodeId },
         });
         if (!res.ok) {
