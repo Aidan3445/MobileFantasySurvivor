@@ -6,7 +6,9 @@ export function useChangeLeaderboardUsername() {
 
   return useMutation({
     mutationFn: async (newUsername: string) => {
-      const res = await postData(`/api/live/leaderboard?newUsername=${encodeURIComponent(newUsername)}`);
+      const res = await postData('/api/live/leaderboard?newUsername', {
+        body: { newUsername }
+      });
       if (!res.ok) {
         const err = await res.json();
         throw new Error(err.message || 'Failed to change username');
