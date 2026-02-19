@@ -170,6 +170,9 @@ export function useNotificationRouting() {
         await handleLiveScoringTap(data);
         break;
 
+      case 'live_prediction':
+        if (data.episodeId) router.push('/live');
+        break;
       default:
         console.log('Unhandled notification type:', data.type);
     }

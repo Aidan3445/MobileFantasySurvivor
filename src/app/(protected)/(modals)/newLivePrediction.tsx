@@ -1,14 +1,16 @@
-
 import { useRouter } from 'expo-router';
 import { View, Text, Platform } from 'react-native';
 import { useSysAdmin } from '~/hooks/user/useSysAdmin';
 import { useMemo, useState } from 'react';
 import { useSeasonsData } from '~/hooks/seasons/useSeasonsData';
+import { useEpisodes } from '~/hooks/seasons/useEpisodes';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { cn } from '~/lib/utils';
 import SafeAreaRefreshView from '~/components/common/refresh/safeAreaRefreshView';
 import { useRefresh } from '~/hooks/helpers/refresh/useRefresh';
 import NewLivePredictionHeader from '~/components/livePredictions/new/header/view';
+import CreateLivePredictionForm from '~/components/livePredictions/new/createForm';
+import EpisodePredictions from '~/components/livePredictions/new/episodePredictions';
 
 export default function NewLivePredictionScreen() {
   const { data: userId, isLoading, isError } = useSysAdmin();
@@ -28,8 +30,20 @@ export default function NewLivePredictionScreen() {
     return null;
   }, [scoreData, selectedSeason]);
 
+  const seasonId = selectedSeasonData?.season.seasonId ?? null;
+  const { data: episodes } = useEpisodes(seasonId);
+
+  // Find currently airing episode
+  const currentEpisode = useMemo(
+    () => episodes?.find((ep) => ep.airStatus === 'Airing'),
+    [episodes]
+  );
+
   const { refreshing, onRefresh, scrollY, handleScroll } = useRefresh(
-    [['seasons', undefined, true], ['episodes', selectedSeasonData?.season.seasonId]]
+    [
+      ['seasons', undefined, true],
+      ['episodes', seasonId ?? undefined],
+      ['livePredictions']]
   );
 
   if (isLoading) {
@@ -64,9 +78,20 @@ export default function NewLivePredictionScreen() {
       onRefresh={onRefresh}
       scrollY={scrollY}
       handleScroll={handleScroll}>
-      <View className={cn('page justify-start gap-y-4 px-1.5 pb-12',
-        Platform.OS === 'ios' && 'pt-12')}>
-        <Text>Live Prediction Creation Coming Soon!</Text>
+      <View className={cn(
+        'page justify-start gap-y-4 px-1.5 pb-12',
+        Platform.OS === 'ios' && 'pt-12'
+      )}>
+        {/* Create Form */}
+        <CreateLivePredictionForm seasonData={selectedSeasonData ?? null} />
+
+        {/* Episode Predictions */}
+        {seasonId && episodes && episodes.length > 0 && (
+          <EpisodePredictions
+            episodes={episodes}
+            seasonId={seasonId}
+            currentEpisodeId={currentEpisode?.episodeId} />
+        )}
       </View>
     </SafeAreaRefreshView>
   );

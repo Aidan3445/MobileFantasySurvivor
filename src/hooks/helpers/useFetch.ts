@@ -8,13 +8,13 @@ import { useAuth } from '@clerk/clerk-expo';
  * @param debug - If true, logs debug information to the console (default is false).
  * @returns A function that takes an endpoint and options, performs the fetch, and returns the response.
  */
-export function useFetch(fetchMethod: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET', debug = false) {
+export function useFetch(fetchMethod: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' = 'GET', debug = false) {
   const { getToken } = useAuth();
 
   return async (
     endpoint: string,
     options?: {
-      method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
+      method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
       headers?: Record<string, string>;
       body?: any;
     }
