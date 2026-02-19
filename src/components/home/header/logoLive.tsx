@@ -143,7 +143,7 @@ export default function LogoLive({ className }: LogoLiveProps) {
                     {stats.currentStreak > 1 && (
                       <View className='flex-row items-center justify-center'>
                         <View style={{ marginTop: -2 }}>
-                          <PointsIcon size={12} color='#Ff8040' />
+                          <PointsIcon size={12} color='#ff8040' />
                         </View>
                         <Text className='text-sm font-bold text-amber-500'>
                           {stats.currentStreak} in a row!
