@@ -56,15 +56,17 @@ export default function Slide({ slide, showCustomization = true }: SlideProps) {
 
       {/* Tag badge */}
       {slide.tag && (
-        <View className={cn(
-          'rounded-full px-3 py-1 border',
-          slide.badgeClass, slide.badgeBorderClass
-        )}>
-          <Text
-            className='text-base font-bold uppercase tracking-wider'
-            style={{ color: slide.color }}>
-            {slide.tag}
-          </Text>
+        <View className='rounded-full bg-card'>
+          <View className={cn(
+            'rounded-full px-3 py-1 border',
+            slide.badgeClass, slide.badgeBorderClass
+          )}>
+            <Text
+              className='text-base font-bold uppercase tracking-wider'
+              style={{ color: slide.color }}>
+              {slide.tag}
+            </Text>
+          </View>
         </View>
       )}
 
