@@ -6,13 +6,13 @@ import { useRouter } from 'expo-router';
 import { Bell, BellOff, Radio, ChevronRight, Zap } from 'lucide-react-native';
 import * as Notifications from 'expo-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import SysAdminHeader from '~/components/auth/sys/header';
 import Button from '~/components/common/button';
 import { colors } from '~/lib/colors';
 import { cn } from '~/lib/utils';
 import { useLivePredictions } from '~/hooks/livePredictions/query/useLivePredictions';
 import { useLiveScoringSession } from '~/hooks/user/useLiveScoringSession';
 import { useNotificationSettings } from '~/hooks/user/useNotificationSettings';
+import LivePredictionsHeader from '~/components/livePredictions/play/header/view';
 
 const DISMISSED_KEY = 'live_opt_in_dismissed_ep';
 
@@ -63,7 +63,7 @@ export default function LivePredictionsScreen() {
 
   return (
     <SafeAreaView className='flex-1 bg-background py-16'>
-      <SysAdminHeader />
+      <LivePredictionsHeader episodeId={episodeId} />
 
       <KeyboardAvoidingView
         className='flex-1'
