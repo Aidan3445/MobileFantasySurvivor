@@ -99,6 +99,7 @@ export default function EventRow({
                 className='leading-tight'
                 color={castaway.tribe?.color ?? '#AAAAAA'}>
                 <MarqueeText
+                  marqueeThreshold={0}
                   text={castaway.shortName}
                   className='text-base text-foreground font-medium' />
               </ColorRow>
@@ -118,6 +119,7 @@ export default function EventRow({
                 {member ? (
                   <ColorRow className='leading-tight' color={member.color}>
                     <MarqueeText
+                      marqueeThreshold={0}
                       text={member.displayName}
                       className={cn(
                         'text-base transition-all text-black font-medium',
