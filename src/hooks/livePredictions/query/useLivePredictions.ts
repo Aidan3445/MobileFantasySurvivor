@@ -18,10 +18,10 @@ export function useLivePredictions() {
   // Find the currently airing episode across all active seasons
   const airingEpisode = useMemo<Episode | null>(() => {
     for (const seasonId of seasonIds) {
-      const next = keyEpisodesByseason[seasonId]?.nextEpisode;
-      if (!next) continue;
-      const status = getAirStatus(next.airDate, next.runtime);
-      if (status === 'Airing') return next;
+      const prev = keyEpisodesByseason[seasonId]?.previousEpisode;
+      if (!prev) continue;
+      const status = getAirStatus(prev.airDate, prev.runtime);
+      if (status === 'Airing') return prev;
     }
     return null;
   }, [seasonIds, keyEpisodesByseason]);
