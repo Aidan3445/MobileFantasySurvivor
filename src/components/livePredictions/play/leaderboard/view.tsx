@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { View, Text } from 'react-native';
-import { Flame, Users, Globe } from 'lucide-react-native';
+import { Flame } from 'lucide-react-native';
 import Button from '~/components/common/button';
 import { cn } from '~/lib/utils';
 import { colors, rankBadgeColor, rankTextColor } from '~/lib/colors';
-import { PlaceIcon } from '~/components/icons/generated';
+import { LeaguesIcon, PlaceIcon, PlaygroundIcon } from '~/components/icons/generated';
 import { useLiveLeaderboard } from '~/hooks/livePredictions/query/useLiveLeaderboard';
 import { useLivePredictionStats } from '~/hooks/livePredictions/query/useLivePredictionStats';
 import { useAuth } from '@clerk/clerk-expo';
@@ -44,12 +44,12 @@ export default function LiveLeaderboard({ seasonId }: LiveLeaderboardProps) {
               'flex-row items-center gap-1 rounded-md px-2.5 py-1.5',
               type === 'friends' ? 'bg-primary' : 'bg-transparent'
             )}>
-            <Users size={14} color={type === 'friends' ? 'white' : colors.mutedForeground} />
+            <LeaguesIcon size={28} color={type === 'friends' ? 'white' : colors.mutedForeground} />
             <Text className={cn(
               'text-sm font-bold',
               type === 'friends' ? 'text-white' : 'text-muted-foreground'
             )}>
-              Friends
+              Leagues
             </Text>
           </Button>
           <Button
@@ -58,7 +58,7 @@ export default function LiveLeaderboard({ seasonId }: LiveLeaderboardProps) {
               'flex-row items-center gap-1 rounded-md px-2.5 py-1.5',
               type === 'global' ? 'bg-primary' : 'bg-transparent'
             )}>
-            <Globe size={14} color={type === 'global' ? 'white' : colors.mutedForeground} />
+            <PlaygroundIcon size={32} color={type === 'global' ? 'white' : colors.mutedForeground} />
             <Text className={cn(
               'text-sm font-bold',
               type === 'global' ? 'text-white' : 'text-muted-foreground'

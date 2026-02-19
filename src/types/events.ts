@@ -292,3 +292,11 @@ export interface LivePredictionTemplate {
   description?: string;
   optionType: LivePredictionOptionType;
 }
+
+export interface LeaderboardEntry {
+  userId: string;
+  username: string;
+  totalAnswered: number;
+  totalCorrect: number;
+  accuracy: number;
+}

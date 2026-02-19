@@ -1,12 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useFetch } from '~/hooks/helpers/useFetch';
-
-export interface LeaderboardEntry {
-  userId: string;
-  totalAnswered: number;
-  totalCorrect: number;
-  accuracy: number;
-}
+import { type LeaderboardEntry } from '~/types/events';
 
 export function useLiveLeaderboard(seasonId: number | null, type: 'global' | 'friends' = 'global') {
   const getData = useFetch();
