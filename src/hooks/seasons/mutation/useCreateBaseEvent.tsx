@@ -154,7 +154,6 @@ export function useCreateBaseEvent(seasonId: number | null) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleCreate = form.handleSubmit(async (data) => {
-    console.log('Creating base event with data:', seasonId, data, selectedReferences);
     if (!seasonId) return { success: false, error: 'No season found' };
 
     setIsSubmitting(true);

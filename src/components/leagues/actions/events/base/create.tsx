@@ -37,7 +37,6 @@ export default function CreateBaseEvent({ seasonId }: CreateBaseEventProps) {
   } = useCreateBaseEvent(seasonId);
 
   const onSubmit = () => {
-    console.log('Submitting with values:', form.getValues());
     void handleCreate();
   };
 
