@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text } from 'react-native';
 import { CartesianChart, Line } from 'victory-native';
 import { type AnimatedProp, Circle, RoundedRect, Text as SkiaText, useFont } from '@shopify/react-native-skia';
 import { colors } from '~/lib/colors';
 import { cn } from '~/lib/utils';
+import Button from '~/components/common/button';
+import { Pointer } from 'lucide-react-native';
 
 const Font = require('~/assets/fonts/segoe-ui-semibold.ttf');
 
@@ -219,10 +221,16 @@ export default function ScoreChart({
           const isOther = selectedKey && !isSelected;
 
           return (
-            <Pressable
+            <Button
               key={s.key}
               onPress={() => setSelectedKey((prev) => (prev === s.key ? null : s.key))}
               className='flex-row items-center gap-1 py-1 active:opacity-70'>
+              {s.highlight && (
+                <View
+                  className='-mr-0.5 rotate-90 animate-pulse'>
+                  <Pointer size={16} color={colors.primary} />
+                </View>
+              )}
               <View
                 className={cn(
                   'w-4 h-4 rounded-full border border-primary',
@@ -238,10 +246,10 @@ export default function ScoreChart({
                   {s.label}
                 </Text>
               </View>
-            </Pressable>
+            </Button>
           );
         })}
       </View>
-    </View >
+    </View>
   );
 }
