@@ -10,13 +10,25 @@ function EpisodeScrollContainer({
   children,
   stickyLeft,
 }: {
-  children: (_onSectionLayout: (_label: string, _y: number) => void) => ReactNode;
+  children: (
+    _onSectionLayout: (_label: string, _y: number) => void,
+    _onRowLayout: (_id: string, _y: number, _height: number, _node: ReactNode) => void,
+  ) => ReactNode;
   stickyLeft?: ReactNode;
 }) {
   const [labels, setLabels] = useState<Record<string, number>>({});
+  const [rowOverlays, setRowOverlays] = useState<Record<string, { y: number; height: number; node: ReactNode }>>({});
 
   const onSectionLayout = useCallback((label: string, y: number) => {
     setLabels((prev) => (prev[label] === y ? prev : { ...prev, [label]: y }));
+  }, []);
+
+  const onRowLayout = useCallback((id: string, y: number, height: number, node: ReactNode) => {
+    setRowOverlays((prev) => {
+      const ex = prev[id];
+      if (ex?.y === y && ex?.height === height) return prev;
+      return { ...prev, [id]: { y, height, node } };
+    });
   }, []);
 
   return (
@@ -28,9 +40,19 @@ function EpisodeScrollContainer({
         alwaysBounceVertical={false}
         alwaysBounceHorizontal={false}>
         <View className='min-w-full'>
-          {children(onSectionLayout)}
+          {children(onSectionLayout, onRowLayout)}
         </View>
       </ScrollView>
+
+      {/* Sticky event name overlays — zIndex 5 so section labels (10) appear on top */}
+      {Object.entries(rowOverlays).map(([id, { y, height, node }]) => (
+        <View
+          key={id}
+          style={{ position: 'absolute', top: y, left: 0, height, zIndex: 5 }}
+          pointerEvents='none'>
+          {node}
+        </View>
+      ))}
 
       {/* Sticky left header columns — sits over the scrollable header row */}
       {stickyLeft && (
@@ -46,11 +68,13 @@ function EpisodeScrollContainer({
       {Object.entries(labels).map(([label, y]) => (
         <View
           key={label}
-          className='bg-gray-100 px-4 justify-center border-b border-primary/20 w-full'
+          className='bg-gray-100 pl-4 justify-center border-b border-primary/20 w-full'
           style={{ position: 'absolute', top: y, left: 0, right: 0, height: 29, zIndex: 10 }}
           pointerEvents='none'>
-          <View className='w-40 border-r border-primary h-full justify-center'>
-            <Text className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+          <View className='w-40 h-full justify-center'>
+            <Text
+              allowFontScaling={false}
+              className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
               {label}
             </Text>
           </View>
@@ -268,13 +292,17 @@ export default function EpisodeEvents({
     <View className='flex-row items-center gap-4 pl-4'>
       {edit && (
         <View className='w-8'>
-          <Text className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+          <Text
+            allowFontScaling={false}
+            className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
             Edit
           </Text>
         </View>
       )}
-      <View className='w-40 border-r border-primary py-1'>
-        <Text className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+      <View className='w-40 border-r border-secondary py-2'>
+        <Text
+          allowFontScaling={false}
+          className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
           Event
         </Text>
       </View>
@@ -296,7 +324,7 @@ export default function EpisodeEvents({
             )}
 
             <EpisodeScrollContainer stickyLeft={stickyLeft}>
-              {(onSectionLayout) => (
+              {(onSectionLayout, onRowLayout) => (
                 <EpisodeEventsTableBody
                   seasonId={episode.seasonId}
                   episodeNumber={episode.episodeNumber}
@@ -310,7 +338,8 @@ export default function EpisodeEvents({
                   noMembers={noMembers}
                   seasonData={seasonData}
                   leagueData={leagueData}
-                  onSectionLayout={onSectionLayout} />
+                  onSectionLayout={onSectionLayout}
+                  onRowLayout={onRowLayout} />
               )}
             </EpisodeScrollContainer>
           </Fragment>

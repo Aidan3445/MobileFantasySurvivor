@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import { useMemo } from 'react';
+import { type ReactNode, useMemo } from 'react';
 import {
   type EventWithReferencesAndPredOnly,
   type EpisodeEventsProps,
@@ -21,6 +21,7 @@ interface EpisodeEventsTableBodyProps extends EpisodeEventsProps {
   noMembers: boolean;
   noTribes?: boolean;
   onSectionLayout?: (_label: string, _y: number) => void;
+  onRowLayout: (_id: string, _y: number, _height: number, _node: ReactNode) => void
 }
 
 // Invisible spacer — reserves the same height as the floating label overlay in view.tsx.
@@ -53,6 +54,7 @@ export default function EpisodeEventsTableBody({
   noMembers,
   noTribes,
   onSectionLayout,
+  onRowLayout,
 }: EpisodeEventsTableBodyProps) {
   const enrichedEvents = useEnrichEvents(seasonData, filteredEvents, leagueData);
   const enrichedMockEvents = useEnrichEvents(seasonData, mockEvents ?? [], leagueData);
@@ -133,44 +135,58 @@ export default function EpisodeEventsTableBody({
       <View className='w-full flex-row items-center gap-4 border-b-2 border-primary/20 bg-white px-4'>
         {edit && (
           <View className='w-8'>
-            <Text className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+            <Text
+              allowFontScaling={false}
+              className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
               Edit
             </Text>
           </View>
         )}
-        <View className='flex-1 max-w-40 border-r border-primary py-1'>
-          <Text className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+        <View className='w-40 border-r border-secondary py-2'>
+          <Text
+            allowFontScaling={false}
+            className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
             Event
           </Text>
         </View>
         {leagueData && (
           <View className='w-16 items-center'>
-            <Text className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+            <Text
+              allowFontScaling={false}
+              className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
               Points
             </Text>
           </View>
         )}
         {!noTribes && (
           <View className='w-24'>
-            <Text className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+            <Text
+              allowFontScaling={false}
+              className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
               Tribes
             </Text>
           </View>
         )}
         <View className='w-32'>
-          <Text className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+          <Text
+            allowFontScaling={false}
+            className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
             Castaways
           </Text>
         </View>
         {!noMembers && (
           <View className='w-36'>
-            <Text className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+            <Text
+              allowFontScaling={false}
+              className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
               Members
             </Text>
           </View>
         )}
         <View className='w-20'>
-          <Text className='text-right text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+          <Text
+            allowFontScaling={false}
+            className='text-right text-xs font-bold uppercase tracking-wider text-muted-foreground'>
             Notes
           </Text>
         </View>
@@ -185,7 +201,8 @@ export default function EpisodeEventsTableBody({
           isMock
           noPoints={!leagueData}
           noTribes={noTribes}
-          noMembers={noMembers} />
+          noMembers={noMembers}
+          onRowLayout={onRowLayout} />
       ))}
 
       {baseEvents
@@ -198,7 +215,8 @@ export default function EpisodeEventsTableBody({
             noPoints={!leagueData}
             noTribes={noTribes}
             noMembers={noMembers}
-            seasonId={seasonData.season.seasonId} />
+            seasonId={seasonData.season.seasonId}
+            onRowLayout={onRowLayout} />
         ))}
 
       {customEvents.length > 0 && (
@@ -213,7 +231,8 @@ export default function EpisodeEventsTableBody({
             editCol={edit}
             noPoints={!leagueData}
             noTribes={noTribes}
-            noMembers={noMembers} />
+            noMembers={noMembers}
+            onRowLayout={onRowLayout} />
         ))}
 
       {enrichedPredictions.length + enrichedMockPredictions.length > 0 && (
@@ -226,7 +245,8 @@ export default function EpisodeEventsTableBody({
           prediction={mock}
           editCol={edit}
           noMembers={noMembers}
-          noTribes={noTribes} />
+          noTribes={noTribes}
+          onRowLayout={onRowLayout} />
       ))}
       {enrichedPredictions.map((prediction, idx) => (
         <PredictionRow
@@ -241,7 +261,8 @@ export default function EpisodeEventsTableBody({
               (miss.reference?.type === 'Castaway' &&
                 filters.castaway.includes(miss.reference.id)) ||
               (miss.reference?.type === 'Tribe' && filters.tribe.includes(miss.reference.id))
-          )} />
+          )}
+          onRowLayout={onRowLayout} />
       ))}
 
       {!edit && Object.keys(streakGroups).length > 0 && (

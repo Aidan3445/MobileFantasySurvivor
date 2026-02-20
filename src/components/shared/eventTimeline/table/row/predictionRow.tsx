@@ -1,5 +1,5 @@
 import { View, Text, Pressable } from 'react-native';
-import { useMemo, useState } from 'react';
+import { type ReactNode, useMemo, useState } from 'react';
 import { MoveRight, ChevronDown } from 'lucide-react-native';
 import Animated, {
   useSharedValue,
@@ -23,6 +23,7 @@ interface PredictionRowProps {
   defaultOpenMisses?: boolean;
   noMembers?: boolean;
   noTribes?: boolean;
+  onRowLayout?: (_id: string, _y: number, _height: number, _node: ReactNode) => void;
 }
 
 export default function PredictionRow({
@@ -32,6 +33,7 @@ export default function PredictionRow({
   defaultOpenMisses,
   noMembers,
   noTribes,
+  onRowLayout,
 }: PredictionRowProps) {
   const isBaseEvent = useMemo(
     () => prediction.event.eventSource === 'Base',
@@ -41,7 +43,6 @@ export default function PredictionRow({
 
   const event = prediction.event;
 
-  // Accordion state for misses
   const [missesExpanded, setMissesExpanded] = useState(defaultOpenMisses ?? false);
   const expandProgress = useSharedValue(defaultOpenMisses ? 1 : 0);
 
@@ -56,16 +57,36 @@ export default function PredictionRow({
 
   const contentStyle = useAnimatedStyle(() => ({
     opacity: expandProgress.value,
-    maxHeight: interpolate(expandProgress.value, [0, 1], [0, 300]),
+    maxHeight: interpolate(expandProgress.value, [0, 1], [0, 3000]),
   }));
 
+  const stickyCell = useMemo<ReactNode>(() => (
+    <View className={cn('h-full flex-row items-center gap-4 border-b border-primary/10 pl-4', className ?? 'bg-card')}>
+      <View className='w-40 h-full flex-row border-r border-secondary'>
+        <View className='py-2 flex-1 justify-center pr-0.5'>
+          {isBaseEvent && (
+            <Text className='text-xs text-muted-foreground'>
+              {BaseEventFullName[event.eventName as BaseEventName]}
+            </Text>
+          )}
+          <Text className='text-base text-foreground'>{label}</Text>
+        </View>
+      </View>
+    </View>
+  ), [className, isBaseEvent, event.eventName, label]);
+
   return (
-    <View className={cn('flex-row items-center gap-4 border-b border-primary/10 bg-card px-4', className)}>
+    <View
+      className={cn('flex-row items-center gap-4 border-b border-primary/10 bg-card px-4', className)}
+      onLayout={(e) => {
+        const { y, height } = e.nativeEvent.layout;
+        onRowLayout?.(`pred-${prediction.event.eventId}`, y, height, stickyCell);
+      }}>
       {/* Edit Column (empty spacer) */}
       {editCol && <View className='w-8' />}
 
       {/* Event Name */}
-      <View className='flex-1 flex-row max-w-40 h-full'>
+      <View className='flex-row w-40 h-full'>
         <View className='py-2 w-full my-auto'>
           {isBaseEvent && (
             <Text className='text-sm text-muted-foreground'>
@@ -74,7 +95,7 @@ export default function PredictionRow({
           )}
           <Text className='text-base text-foreground'>{label}</Text>
         </View>
-        <View className='h-full w-[1px] -translate-x-[1px] bg-primary' />
+        <View className='h-full w-[1px] -translate-x-[1px] bg-secondary' />
       </View>
 
       {/* Points */}
@@ -116,7 +137,6 @@ export default function PredictionRow({
       {/* Members (Hits & Misses) */}
       {!noMembers && (
         <View className='w-36 justify-center gap-0.5'>
-          {/* Hits */}
           {prediction.hits.length > 0 &&
             prediction.hits.map((hit, index) => (
               <View key={index} className='flex-row items-center gap-1'>
@@ -145,7 +165,6 @@ export default function PredictionRow({
               </View>
             ))}
 
-          {/* Misses Accordion */}
           {prediction.misses.length > 0 && (
             <View>
               <Pressable onPress={toggleMisses} className='flex-row items-center py-1'>
@@ -185,10 +204,9 @@ export default function PredictionRow({
                 </View>
               </Animated.View>
             </View>
-          )
-          }
-        </View >
+          )}
+        </View>
       )}
-    </View >
+    </View>
   );
 }
