@@ -63,8 +63,8 @@ export default function EventRow({
       ) : null}
 
       {/* Event Name */}
-      <View className='flex-1 flex-row max-w-40 h-full'>
-        <View className='py-2 w-full my-auto'>
+      <View className='lex-1 flex-row w-40 h-full'>
+        <View className='py-2 w-full my-auto pr-0.5'>
           {isBaseEvent && (
             <Text className='text-xs text-muted-foreground'>
               {BaseEventFullName[event.eventName as BaseEventName]}
