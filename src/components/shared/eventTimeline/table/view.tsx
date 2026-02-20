@@ -1,10 +1,55 @@
-import { Fragment, useMemo } from 'react';
+import { Fragment, useMemo, useState, useCallback, type ReactNode } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import EpisodeEventsTableBody from '~/components/shared/eventTimeline/table/body';
 import { cn, findTribeCastaways } from '~/lib/utils';
 import { type Prediction, type EventWithReferences } from '~/types/events';
 import { type SeasonsDataQuery } from '~/types/seasons';
 import type { LeagueData } from '~/components/shared/eventTimeline/filters';
+
+
+// Wraps one episode's ScrollView. Renders floating labels as absolute siblings
+// so they never enter the horizontal scroll content tree.
+function EpisodeScrollContainer({
+  children,
+}: {
+  children: (_onSectionLayout: (_label: string, _y: number) => void) => ReactNode;
+}) {
+  const [labels, setLabels] = useState<Record<string, number>>({});
+
+  const onSectionLayout = useCallback((label: string, y: number) => {
+    setLabels((prev) => (prev[label] === y ? prev : { ...prev, [label]: y }));
+  }, []);
+
+  return (
+    <View style={{ position: 'relative' }}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        bounces={false}
+        alwaysBounceVertical={false}
+        alwaysBounceHorizontal={false}>
+        <View className='min-w-full'>
+          {children(onSectionLayout)}
+        </View>
+      </ScrollView>
+
+      {/* Floating labels — absolute siblings to the ScrollView, immune to horizontal scroll */}
+      {Object.entries(labels).map(([label, y]) => (
+        <View
+          key={label}
+          className='bg-gray-100 px-4 justify-center border-b border-primary/20 w-full'
+          style={{ position: 'absolute', top: y, left: 0, right: 0, height: 29, zIndex: 10 }}
+          pointerEvents='none'>
+          <View className='w-40 border-r border-primary h-full justify-center'>
+            <Text className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+              {label}
+            </Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+}
 
 export interface EpisodeEventsProps {
   episodeNumber: number;
@@ -283,7 +328,6 @@ export default function EpisodeEvents({
         ?.filter((episode) => episodeNumber === -1 || episode.episodeNumber === episodeNumber)
         .map((episode) => (
           <Fragment key={`timeline-${episode.episodeNumber}`}>
-            {/* Episode Title - Fixed, doesn't scroll horizontally */}
             {episodeNumber === -1 && (
               <View className='border-t-2 border-primary/20 bg-primary/10 px-4 py-3'>
                 <Text className='text-center text-sm font-black uppercase tracking-wider text-foreground'>
@@ -292,14 +336,8 @@ export default function EpisodeEvents({
               </View>
             )}
 
-            {/* Horizontally Scrollable Table Content */}
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              bounces={false}
-              alwaysBounceVertical={false}
-              alwaysBounceHorizontal={false}>
-              <View className='min-w-full'>
+            <EpisodeScrollContainer>
+              {(onSectionLayout) => (
                 <EpisodeEventsTableBody
                   seasonId={episode.seasonId}
                   episodeNumber={episode.episodeNumber}
@@ -312,9 +350,10 @@ export default function EpisodeEvents({
                   filters={filters}
                   noMembers={noMembers}
                   seasonData={seasonData}
-                  leagueData={leagueData} />
-              </View>
-            </ScrollView>
+                  leagueData={leagueData}
+                  onSectionLayout={onSectionLayout} />
+              )}
+            </EpisodeScrollContainer>
           </Fragment>
         ))}
     </View>

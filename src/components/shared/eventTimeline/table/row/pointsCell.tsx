@@ -5,11 +5,12 @@ import { PointsIcon } from '~/components/icons/generated';
 interface PointsCellProps {
   points: number | null;
   neutral?: boolean;
+  className?: string;
 }
 
-export default function PointsCell({ points, neutral }: PointsCellProps) {
+export default function PointsCell({ points, neutral, className }: PointsCellProps) {
   return (
-    <View className='w-16 items-center justify-center'>
+    <View className={cn('w-16 items-center justify-center', className)}>
       <ColoredPoints points={points} neutral={neutral} />
     </View>
   );

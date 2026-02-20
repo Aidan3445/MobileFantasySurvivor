@@ -20,6 +20,24 @@ interface EpisodeEventsTableBodyProps extends EpisodeEventsProps {
   predictionEnrichmentEvents?: EventWithReferencesAndPredOnly[];
   noMembers: boolean;
   noTribes?: boolean;
+  onSectionLayout?: (_label: string, _y: number) => void;
+}
+
+// Invisible spacer — reserves the same height as the floating label overlay in view.tsx.
+// Fires onLayout once so the parent knows where to position the label.
+function SectionSpacer({
+  label,
+  onSectionLayout,
+}: {
+  label: string;
+  onSectionLayout?: (_label: string, _y: number) => void;
+}) {
+  return (
+    <View
+      className='bg-gray-100'
+      style={{ height: 29 }}
+      onLayout={(e) => onSectionLayout?.(label, e.nativeEvent.layout.y)} />
+  );
 }
 
 export default function EpisodeEventsTableBody({
@@ -34,6 +52,7 @@ export default function EpisodeEventsTableBody({
   filters,
   noMembers,
   noTribes,
+  onSectionLayout,
 }: EpisodeEventsTableBodyProps) {
   const enrichedEvents = useEnrichEvents(seasonData, filteredEvents, leagueData);
   const enrichedMockEvents = useEnrichEvents(seasonData, mockEvents ?? [], leagueData);
@@ -81,15 +100,14 @@ export default function EpisodeEventsTableBody({
       filters.tribe.length > 0;
 
     return (
-      <View className='bg-card px-4 py-3'>
-        <Text className='text-center text-muted-foreground'>
+      <View className='bg-card px-4 py-3 min-w-full'>
+        <Text className='text-muted-foreground'>
           No events for episode {episodeNumber} {hasFilters ? 'with the selected filters' : ''}
         </Text>
       </View>
     );
   }
 
-  // Group members by their streak value for this episode
   const streakGroups = Object.entries(leagueData?.streaks ?? {}).reduce(
     (acc, [memberId, episodeStreaks]) => {
       const streakValue = episodeStreaks[episodeNumber] ?? 0;
@@ -111,16 +129,16 @@ export default function EpisodeEventsTableBody({
   );
 
   return (
-    <View>
-      <View className='flex-row items-center gap-4 border-b-2 border-primary/20 bg-white px-4 py-2'>
+    <View className='min-w-full'>
+      <View className='w-full flex-row items-center gap-4 border-b-2 border-primary/20 bg-white px-4'>
         {edit && (
-          <View className='w-12'>
+          <View className='w-8'>
             <Text className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
               Edit
             </Text>
           </View>
         )}
-        <View className='flex-1 max-w-40'>
+        <View className='flex-1 max-w-40 border-r border-primary py-1'>
           <Text className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
             Event
           </Text>
@@ -158,7 +176,6 @@ export default function EpisodeEventsTableBody({
         </View>
       </View>
 
-      {/* Mock Events */}
       {enrichedMockEvents.map((mock, idx) => (
         <EventRow
           key={`mock-${idx}`}
@@ -171,7 +188,6 @@ export default function EpisodeEventsTableBody({
           noMembers={noMembers} />
       ))}
 
-      {/* Base Events */}
       {baseEvents
         .filter((event) => !filteredEvents.some((fe) => fe.eventId === event.eventId && fe.predOnly))
         .map((event, idx) => (
@@ -185,13 +201,8 @@ export default function EpisodeEventsTableBody({
             seasonId={seasonData.season.seasonId} />
         ))}
 
-      {/* Custom Events Section */}
       {customEvents.length > 0 && (
-        <View className='bg-gray-100 px-4 py-2'>
-          <Text className='text-center text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-            Custom Events
-          </Text>
-        </View>
+        <SectionSpacer label='Custom Events' onSectionLayout={onSectionLayout} />
       )}
       {customEvents
         .filter((event) => !filteredEvents.some((fe) => fe.eventId === event.eventId && fe.predOnly))
@@ -205,13 +216,8 @@ export default function EpisodeEventsTableBody({
             noMembers={noMembers} />
         ))}
 
-      {/* Predictions Section */}
       {enrichedPredictions.length + enrichedMockPredictions.length > 0 && (
-        <View className='bg-gray-100 px-4 py-2'>
-          <Text className='text-center text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-            Predictions
-          </Text>
-        </View>
+        <SectionSpacer label='Predictions' onSectionLayout={onSectionLayout} />
       )}
       {enrichedMockPredictions.map((mock, idx) => (
         <PredictionRow
@@ -238,14 +244,9 @@ export default function EpisodeEventsTableBody({
           )} />
       ))}
 
-      {/* Survival Streaks Section */}
       {!edit && Object.keys(streakGroups).length > 0 && (
         <>
-          <View className='bg-gray-100 px-4 py-2'>
-            <Text className='text-center text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-              Survival Streaks
-            </Text>
-          </View>
+          <SectionSpacer label='Survival Streaks' onSectionLayout={onSectionLayout} />
           {Object.entries(streakGroups)
             .sort(([a], [b]) => Number(b) - Number(a))
             .map(([streakPointValue, members]) => (

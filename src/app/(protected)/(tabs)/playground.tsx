@@ -52,7 +52,7 @@ export default function PlaygroundScreen() {
           refreshing && Platform.OS === 'ios' && 'pt-12'
         )}>
         {/* Scoring Settings Card */}
-        <View className='rounded-lg border-2 border-primary/20 bg-card p-4 shadow-lg shadow-primary/10'>
+        <View className='w-full rounded-lg border-2 border-primary/20 bg-card p-4 shadow-lg shadow-primary/10'>
           {/* Description */}
           <View className='mb-4'>
             <Text className='text-center font-medium text-muted-foreground'>

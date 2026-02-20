@@ -50,26 +50,29 @@ export default function EventRow({
   };
 
   return (
-    <View className={cn('flex-row items-center gap-4 border-b border-primary/10 bg-card px-4 py-2', className)}>
+    <View className={cn('flex-row items-center gap-4 border-b border-primary/10 bg-card px-4', className)}>
       {/* Edit Column */}
       {edit ? (
         isMock ? (
-          <View className='w-12' />
+          <View className='w-8' />
         ) : (
-          <View className='w-12'>
+          <View className='w-8'>
             <EditEvent event={event} overrideSeasonId={seasonId} />
           </View>
         )
       ) : null}
 
       {/* Event Name */}
-      <View className='flex-1 max-w-40'>
-        {isBaseEvent && (
-          <Text className='text-xs text-muted-foreground'>
-            {BaseEventFullName[event.eventName as BaseEventName]}
-          </Text>
-        )}
-        <Text className='text-base text-foreground'>{label}</Text>
+      <View className='flex-1 flex-row max-w-40 h-full'>
+        <View className='py-2 w-full my-auto'>
+          {isBaseEvent && (
+            <Text className='text-xs text-muted-foreground'>
+              {BaseEventFullName[event.eventName as BaseEventName]}
+            </Text>
+          )}
+          <Text className='text-base text-foreground'>{label}</Text>
+        </View>
+        <View className='h-full w-[1px] -translate-x-[1px] bg-primary' />
       </View>
 
       {/* Points */}
