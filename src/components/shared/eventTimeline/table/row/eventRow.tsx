@@ -11,6 +11,8 @@ import { useEventLabel } from '~/hooks/helpers/useEventLabel';
 import CastawayModal from '~/components/shared/castaways/castawayModal';
 import Modal from '~/components/common/modal';
 import MarqueeText from '~/components/common/marquee';
+import { Pencil } from 'lucide-react-native';
+import { colors } from '~/lib/colors';
 
 interface EventRowProps {
   className?: string;
@@ -54,7 +56,14 @@ export default function EventRow({
   // Uses h-full so it fills the measured height the container provides.
   const stickyCell = useMemo<ReactNode>(() => (
     <View className={cn('h-full flex-row items-center gap-4 border-b border-primary/10 pl-4', className ?? 'bg-card')}>
-      {edit && <View className='w-8' />}
+      {edit && (
+        isMock ? (
+          <View className='w-8' />
+        ) : (
+          <View className='w-8'>
+            <Pencil size={20} color={colors.mutedForeground} />
+          </View>
+        ))}
       <View className='w-40 h-full flex-row border-r border-secondary'>
         <View className='py-2 flex-1 justify-center pr-0.5'>
           {isBaseEvent && (
@@ -66,7 +75,7 @@ export default function EventRow({
         </View>
       </View>
     </View>
-  ), [className, edit, isBaseEvent, event.eventName, label]);
+  ), [className, edit, isMock, isBaseEvent, event, label]);
 
   return (
     <View

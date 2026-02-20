@@ -286,8 +286,6 @@ export default function EpisodeEvents({
 
   const noMembers = useMemo(() => !selectionTimeline || !league, [selectionTimeline, league]);
 
-  // The sticky portion of the column header — Edit (optional) + Event.
-  // Must exactly match the styling of those cells in body.tsx's header row.
   const stickyLeft = (
     <View className='flex-row items-center gap-4 pl-4'>
       {edit && (
