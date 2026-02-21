@@ -268,8 +268,9 @@ export default function EpisodeEvents({
             )}
 
             <EpisodeScrollContainer
-              filteredRowIds={filteredRowIds}
-              hideAll={filteredEvents[episode.episodeNumber]?.length === 0 && filteredPredictions[episode.episodeNumber]?.length === 0}>
+              edit={edit}
+              hideAll={filteredEvents[episode.episodeNumber]?.length === 0 && filteredPredictions[episode.episodeNumber]?.length === 0}
+              filteredRowIds={filteredRowIds}>
               {(onSectionLayout, onRowLayout) => (
                 <EpisodeEventsTableBody
                   seasonId={episode.seasonId}

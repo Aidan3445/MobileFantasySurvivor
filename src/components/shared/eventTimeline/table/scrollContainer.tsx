@@ -8,11 +8,12 @@ interface ScrollContainerProps {
     _onSectionLayout: (_label: string, _y: number) => void,
     _onRowLayout: (_id: string, _y: number, _height: number, _node: ReactNode) => void,
   ) => ReactNode;
+  edit?: boolean;
   hideAll?: boolean;
   filteredRowIds: Set<string>;
 }
 
-export default function EpisodeScrollContainer({ children, hideAll, filteredRowIds }: ScrollContainerProps) {
+export default function EpisodeScrollContainer({ children, edit, hideAll, filteredRowIds }: ScrollContainerProps) {
   const [labels, setLabels] = useState<Record<string, number>>({});
   const [rowOverlays, setRowOverlays] = useState<Record<string, { y: number; height: number; node: ReactNode }>>({});
 
@@ -59,10 +60,13 @@ export default function EpisodeScrollContainer({ children, hideAll, filteredRowI
           {Object.entries(labels).map(([label, y]) => (
             <View
               key={label}
-              className='bg-white pl-4 justify-center border-b-2 border-primary/20 w-44'
+              className={cn('bg-white pl-4 justify-center border-b-2 border-primary/20',
+                edit ? 'w-56' : 'w-44')}
               style={{ position: 'absolute', top: y, left: 0, right: 0, height: 29, zIndex: 10 }}
               pointerEvents='none'>
-              <View className={cn('w-40 h-full justify-center Streaks border-r border-secondary')}>
+              <View className={cn('h-full justify-center Streaks border-r border-secondary',
+                edit ? 'w-52' : 'w-40'
+              )}>
                 <Text
                   allowFontScaling={false}
                   className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
