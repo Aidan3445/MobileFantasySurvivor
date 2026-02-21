@@ -48,10 +48,7 @@ export default function EpisodeScrollContainer({ children, edit, hideAll, filter
           {Object.entries(rowOverlays)
             .filter(([id]) => filteredRowIds.has(id))
             .map(([id, { y, height, node }]) => (
-              <View
-                key={id}
-                style={{ position: 'absolute', top: y, left: 0, height, zIndex: 5 }}
-                pointerEvents='none'>
+              <View key={id} style={{ position: 'absolute', top: y, left: 0, height, zIndex: 5 }}>
                 {node}
               </View>
             ))}
