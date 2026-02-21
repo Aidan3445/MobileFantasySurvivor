@@ -9,6 +9,7 @@ interface SectionSpacerProps {
   noTribes?: boolean;
   noMembers?: boolean;
   noLabels?: boolean;
+  noNotes?: boolean;
 }
 
 export default function HeaderRow({
@@ -19,6 +20,7 @@ export default function HeaderRow({
   noTribes,
   noMembers,
   noLabels,
+  noNotes,
 }: SectionSpacerProps) {
   return (
     <View
@@ -78,11 +80,13 @@ export default function HeaderRow({
             </View>
           )}
           <View className='w-20'>
-            <Text
-              allowFontScaling={false}
-              className='text-right text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-              Notes
-            </Text>
+            {!noNotes && (
+              <Text
+                allowFontScaling={false}
+                className='text-right text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+                Notes
+              </Text>
+            )}
           </View>
         </View>
       )}

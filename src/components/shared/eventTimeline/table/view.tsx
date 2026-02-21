@@ -6,6 +6,8 @@ import { type Prediction, type EventWithReferences } from '~/types/events';
 import { type SeasonsDataQuery } from '~/types/seasons';
 import type { LeagueData } from '~/components/shared/eventTimeline/filters';
 import EpisodeScrollContainer from '~/components/shared/eventTimeline/table/scrollContainer';
+import StreakRow from '~/components/shared/eventTimeline/table/row/streakRow';
+import { type LeagueMember } from '~/types/leagueMembers';
 
 export interface EpisodeEventsProps {
   episodeNumber: number;
@@ -231,6 +233,26 @@ export default function EpisodeEvents({
     return ids;
   }, [allEvents, filteredEvents, filteredPredictions, filters.event]);
 
+  const streakGroups = Object.entries(leagueData?.streaks ?? {}).reduce(
+    (acc, [memberId, episodeStreaks]) => {
+      const streakValue = episodeStreaks[episodeNumber] ?? 0;
+      if (streakValue > 0) {
+        const mid = Number(memberId);
+        const member = leagueData?.leagueMembers?.members.find((m) => m.memberId === mid);
+        if (member) {
+          const streakPointValue = Math.min(
+            streakValue,
+            leagueData?.leagueSettings?.survivalCap ?? streakValue
+          );
+          acc[streakPointValue] ??= [];
+          acc[streakPointValue].push(member);
+        }
+      }
+      return acc;
+    },
+    {} as Record<number, LeagueMember[]>
+  );
+
   return (
     <View className={cn('bg-card', className)}>
       {episodes
@@ -245,7 +267,9 @@ export default function EpisodeEvents({
               </View>
             )}
 
-            <EpisodeScrollContainer filteredRowIds={filteredRowIds}>
+            <EpisodeScrollContainer
+              filteredRowIds={filteredRowIds}
+              hideAll={filteredEvents[episode.episodeNumber]?.length === 0 && filteredPredictions[episode.episodeNumber]?.length === 0}>
               {(onSectionLayout, onRowLayout) => (
                 <EpisodeEventsTableBody
                   seasonId={episode.seasonId}
@@ -264,6 +288,31 @@ export default function EpisodeEvents({
                   onRowLayout={onRowLayout} />
               )}
             </EpisodeScrollContainer>
+
+            {!edit && Object.keys(streakGroups).length > 0 && (
+              <>
+                <View
+                  className='w-full bg-white pl-4 justify-center border-b-2 border-primary/20'
+                  pointerEvents='none'>
+                  <Text
+                    allowFontScaling={false}
+                    className='text-xs font-bold uppercase tracking-wider text-muted-foreground py-2'>
+                    Survival Streaks
+                  </Text>
+                </View>
+                {Object.entries(streakGroups)
+                  .sort(([a], [b]) => Number(b) - Number(a))
+                  .map(([streakPointValue, members]) => (
+                    <StreakRow
+                      key={streakPointValue}
+                      streakPointValue={Number(streakPointValue)}
+                      members={members}
+                      streaksMap={leagueData!.streaks!}
+                      episodeNumber={episodeNumber}
+                      shotInTheDarkStatus={leagueData?.shotInTheDarkStatus} />
+                  ))}
+              </>
+            )}
           </Fragment>
         ))}
     </View>

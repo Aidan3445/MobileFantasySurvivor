@@ -8,10 +8,11 @@ interface ScrollContainerProps {
     _onSectionLayout: (_label: string, _y: number) => void,
     _onRowLayout: (_id: string, _y: number, _height: number, _node: ReactNode) => void,
   ) => ReactNode;
+  hideAll?: boolean;
   filteredRowIds: Set<string>;
 }
 
-export default function EpisodeScrollContainer({ children, filteredRowIds }: ScrollContainerProps) {
+export default function EpisodeScrollContainer({ children, hideAll, filteredRowIds }: ScrollContainerProps) {
   const [labels, setLabels] = useState<Record<string, number>>({});
   const [rowOverlays, setRowOverlays] = useState<Record<string, { y: number; height: number; node: ReactNode }>>({});
 
@@ -41,33 +42,37 @@ export default function EpisodeScrollContainer({ children, filteredRowIds }: Scr
       </ScrollView>
 
       {/* Sticky event name overlays — zIndex 5 so section labels (10) appear on top */}
-      {Object.entries(rowOverlays)
-        .filter(([id]) => filteredRowIds.has(id))
-        .map(([id, { y, height, node }]) => (
-          <View
-            key={id}
-            style={{ position: 'absolute', top: y, left: 0, height, zIndex: 5 }}
-            pointerEvents='none'>
-            {node}
-          </View>
-        ))}
+      {!hideAll && (
+        <>
+          {Object.entries(rowOverlays)
+            .filter(([id]) => filteredRowIds.has(id))
+            .map(([id, { y, height, node }]) => (
+              <View
+                key={id}
+                style={{ position: 'absolute', top: y, left: 0, height, zIndex: 5 }}
+                pointerEvents='none'>
+                {node}
+              </View>
+            ))}
 
-      {/* Floating section labels */}
-      {Object.entries(labels).map(([label, y]) => (
-        <View
-          key={label}
-          className='bg-white pl-4 justify-center border-b-2 border-primary/20 w-44'
-          style={{ position: 'absolute', top: y, left: 0, right: 0, height: 29, zIndex: 10 }}
-          pointerEvents='none'>
-          <View className={cn('w-40 h-full justify-center', label !== 'Survival Streaks' && 'border-r border-secondary')}>
-            <Text
-              allowFontScaling={false}
-              className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-              {label}
-            </Text>
-          </View>
-        </View>
-      ))}
+          {/* Floating section labels */}
+          {Object.entries(labels).map(([label, y]) => (
+            <View
+              key={label}
+              className='bg-white pl-4 justify-center border-b-2 border-primary/20 w-44'
+              style={{ position: 'absolute', top: y, left: 0, right: 0, height: 29, zIndex: 10 }}
+              pointerEvents='none'>
+              <View className={cn('w-40 h-full justify-center Streaks border-r border-secondary')}>
+                <Text
+                  allowFontScaling={false}
+                  className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+                  {label}
+                </Text>
+              </View>
+            </View>
+          ))}
+        </>
+      )}
     </View>
   );
 }

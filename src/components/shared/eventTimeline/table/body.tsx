@@ -10,8 +10,6 @@ import { useEnrichEvents } from '~/hooks/seasons/enrich/useEnrichEvents';
 import { useEnrichPredictions } from '~/hooks/seasons/enrich/useEnrichPredictions';
 import PredictionRow from '~/components/shared/eventTimeline/table/row/predictionRow';
 import EventRow from '~/components/shared/eventTimeline/table/row/eventRow';
-import { type LeagueMember } from '~/types/leagueMembers';
-import StreakRow from '~/components/shared/eventTimeline/table/row/streakRow';
 import HeaderRow from '~/components/shared/eventTimeline/table/row/headerRow';
 
 interface EpisodeEventsTableBodyProps extends EpisodeEventsProps {
@@ -93,26 +91,6 @@ export default function EpisodeEventsTableBody({
     );
   }
 
-  const streakGroups = Object.entries(leagueData?.streaks ?? {}).reduce(
-    (acc, [memberId, episodeStreaks]) => {
-      const streakValue = episodeStreaks[episodeNumber] ?? 0;
-      if (streakValue > 0) {
-        const mid = Number(memberId);
-        const member = leagueData?.leagueMembers?.members.find((m) => m.memberId === mid);
-        if (member) {
-          const streakPointValue = Math.min(
-            streakValue,
-            leagueData?.leagueSettings?.survivalCap ?? streakValue
-          );
-          acc[streakPointValue] ??= [];
-          acc[streakPointValue].push(member);
-        }
-      }
-      return acc;
-    },
-    {} as Record<number, LeagueMember[]>
-  );
-
   return (
     <View className='min-w-full'>
       {enrichedEvents.length + enrichedMockEvents.length > 0 && (
@@ -180,6 +158,7 @@ export default function EpisodeEventsTableBody({
           leagueData={!!leagueData}
           noTribes={noTribes}
           noMembers={noMembers}
+          noNotes
           label='Predictions'
           onSectionLayout={onSectionLayout} />
       )}
@@ -209,26 +188,6 @@ export default function EpisodeEventsTableBody({
           )}
           onRowLayout={onRowLayout} />
       ))}
-
-      {!edit && Object.keys(streakGroups).length > 0 && (
-        <>
-          <HeaderRow
-            label='Survival Streaks'
-            onSectionLayout={onSectionLayout}
-            noLabels />
-          {Object.entries(streakGroups)
-            .sort(([a], [b]) => Number(b) - Number(a))
-            .map(([streakPointValue, members]) => (
-              <StreakRow
-                key={streakPointValue}
-                streakPointValue={Number(streakPointValue)}
-                members={members}
-                streaksMap={leagueData!.streaks!}
-                episodeNumber={episodeNumber}
-                shotInTheDarkStatus={leagueData?.shotInTheDarkStatus} />
-            ))}
-        </>
-      )}
     </View>
   );
 }
