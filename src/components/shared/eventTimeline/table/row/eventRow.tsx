@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from 'react-native';
+import { View, Text } from 'react-native';
 import { type ReactNode, useMemo, useState } from 'react';
 import { cn } from '~/lib/utils';
 import ColorRow from '~/components/shared/colorRow';
@@ -13,6 +13,7 @@ import Modal from '~/components/common/modal';
 import MarqueeText from '~/components/common/marquee';
 import { Pencil } from 'lucide-react-native';
 import { colors } from '~/lib/colors';
+import Button from '~/components/common/button';
 
 interface EventRowProps {
   className?: string;
@@ -79,7 +80,7 @@ export default function EventRow({
 
   return (
     <View
-      className={cn('flex-row items-center gap-4 border-b border-primary/10 bg-card px-4', className)}
+      className={cn('flex-row items-center gap-4 border-b border-primary/10 bg-card px-4 py-2', className)}
       onLayout={(e) => {
         const { y, height } = e.nativeEvent.layout;
         onRowLayout?.(`event-${event.eventId}`, y, height, stickyCell);
@@ -176,13 +177,13 @@ export default function EventRow({
                   </ColorRow>
                 )}
                 {secondaries && secondaries.length > 0 && !!event.points && (
-                  <Pressable
+                  <Button
                     onPress={() => openSecondaryModal(secondaries)}
                     className='rounded border border-primary/20 px-1'>
                     <Text className='text-xs text-muted-foreground font-medium'>
                       2<Text className='text-[10px] font-medium'>nd</Text>
                     </Text>
-                  </Pressable>
+                  </Button>
                 )}
               </View>
             ))

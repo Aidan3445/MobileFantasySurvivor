@@ -68,7 +68,7 @@ function EpisodeScrollContainer({
       {Object.entries(labels).map(([label, y]) => (
         <View
           key={label}
-          className='bg-gray-100 pl-4 justify-center border-b border-primary/20 w-full'
+          className='bg-gray-100 pl-4 justify-center border-b border-primary/20'
           style={{ position: 'absolute', top: y, left: 0, right: 0, height: 29, zIndex: 10 }}
           pointerEvents='none'>
           <View className='w-40 h-full justify-center'>

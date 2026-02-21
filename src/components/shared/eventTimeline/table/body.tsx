@@ -132,65 +132,7 @@ export default function EpisodeEventsTableBody({
 
   return (
     <View className='min-w-full'>
-      <View className='w-full flex-row items-center gap-4 border-b-2 border-primary/20 bg-white px-4'>
-        {edit && (
-          <View className='w-8'>
-            <Text
-              allowFontScaling={false}
-              className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-              Edit
-            </Text>
-          </View>
-        )}
-        <View className='w-40 border-r border-secondary py-2'>
-          <Text
-            allowFontScaling={false}
-            className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-            Event
-          </Text>
-        </View>
-        {leagueData && (
-          <View className='w-16 items-center'>
-            <Text
-              allowFontScaling={false}
-              className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-              Points
-            </Text>
-          </View>
-        )}
-        {!noTribes && (
-          <View className='w-24'>
-            <Text
-              allowFontScaling={false}
-              className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-              Tribes
-            </Text>
-          </View>
-        )}
-        <View className='w-32'>
-          <Text
-            allowFontScaling={false}
-            className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-            Castaways
-          </Text>
-        </View>
-        {!noMembers && (
-          <View className='w-36'>
-            <Text
-              allowFontScaling={false}
-              className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-              Members
-            </Text>
-          </View>
-        )}
-        <View className='w-20'>
-          <Text
-            allowFontScaling={false}
-            className='text-right text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-            Notes
-          </Text>
-        </View>
-      </View>
+      <SectionHeader edit={edit} leagueData={!!leagueData} noTribes={noTribes} noMembers={noMembers} />
 
       {enrichedMockEvents.map((mock, idx) => (
         <EventRow
@@ -220,7 +162,7 @@ export default function EpisodeEventsTableBody({
         ))}
 
       {customEvents.length > 0 && (
-        <SectionSpacer label='Custom Events' onSectionLayout={onSectionLayout} />
+        <SectionHeader edit={edit} leagueData={!!leagueData} noTribes={noTribes} noMembers={noMembers} />
       )}
       {customEvents
         .filter((event) => !filteredEvents.some((fe) => fe.eventId === event.eventId && fe.predOnly))
@@ -281,6 +223,77 @@ export default function EpisodeEventsTableBody({
             ))}
         </>
       )}
+    </View>
+  );
+}
+
+interface SectionHeaderProps {
+  edit?: boolean;
+  leagueData?: boolean;
+  noTribes?: boolean;
+  noMembers?: boolean;
+}
+
+export function SectionHeader({ edit, leagueData, noTribes, noMembers }: SectionHeaderProps) {
+  return (
+    <View className='w-full flex-row items-center gap-4 border-b-2 border-primary/20 bg-white px-4'>
+      {edit && (
+        <View className='w-8'>
+          <Text
+            allowFontScaling={false}
+            className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+            Edit
+          </Text>
+        </View>
+      )}
+      <View className='w-40 border-r border-secondary py-2'>
+        <Text
+          allowFontScaling={false}
+          className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+          Event
+        </Text>
+      </View>
+      {leagueData && (
+        <View className='w-16 items-center'>
+          <Text
+            allowFontScaling={false}
+            className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+            Points
+          </Text>
+        </View>
+      )}
+      {!noTribes && (
+        <View className='w-24'>
+          <Text
+            allowFontScaling={false}
+            className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+            Tribes
+          </Text>
+        </View>
+      )}
+      <View className='w-32'>
+        <Text
+          allowFontScaling={false}
+          className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+          Castaways
+        </Text>
+      </View>
+      {!noMembers && (
+        <View className='w-36'>
+          <Text
+            allowFontScaling={false}
+            className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+            Members
+          </Text>
+        </View>
+      )}
+      <View className='w-20'>
+        <Text
+          allowFontScaling={false}
+          className='text-right text-xs font-bold uppercase tracking-wider text-muted-foreground'>
+          Notes
+        </Text>
+      </View>
     </View>
   );
 }
