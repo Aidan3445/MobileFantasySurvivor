@@ -12,6 +12,7 @@ import PredictionRow from '~/components/shared/eventTimeline/table/row/predictio
 import EventRow from '~/components/shared/eventTimeline/table/row/eventRow';
 import { type LeagueMember } from '~/types/leagueMembers';
 import StreakRow from '~/components/shared/eventTimeline/table/row/streakRow';
+import HeaderRow from '~/components/shared/eventTimeline/table/row/headerRow';
 
 interface EpisodeEventsTableBodyProps extends EpisodeEventsProps {
   seasonId: number;
@@ -22,23 +23,6 @@ interface EpisodeEventsTableBodyProps extends EpisodeEventsProps {
   noTribes?: boolean;
   onSectionLayout?: (_label: string, _y: number) => void;
   onRowLayout: (_id: string, _y: number, _height: number, _node: ReactNode) => void
-}
-
-// Invisible spacer — reserves the same height as the floating label overlay in view.tsx.
-// Fires onLayout once so the parent knows where to position the label.
-function SectionSpacer({
-  label,
-  onSectionLayout,
-}: {
-  label: string;
-  onSectionLayout?: (_label: string, _y: number) => void;
-}) {
-  return (
-    <View
-      className='bg-gray-100'
-      style={{ height: 29 }}
-      onLayout={(e) => onSectionLayout?.(label, e.nativeEvent.layout.y)} />
-  );
 }
 
 export default function EpisodeEventsTableBody({
@@ -82,15 +66,14 @@ export default function EpisodeEventsTableBody({
     leagueData
   );
 
-  const { baseEvents, customEvents } = enrichedEvents.reduce(
-    (acc, event) => {
-      if (event.eventSource === 'Base') {
-        acc.baseEvents.push(event);
-      } else if (event.eventType === 'Direct') {
-        acc.customEvents.push(event);
-      }
-      return acc;
-    },
+  const { baseEvents, customEvents } = enrichedEvents.reduce((acc, event) => {
+    if (event.eventSource === 'Base') {
+      acc.baseEvents.push(event);
+    } else if (event.eventType === 'Direct') {
+      acc.customEvents.push(event);
+    }
+    return acc;
+  },
     { baseEvents: [] as EnrichedEvent[], customEvents: [] as EnrichedEvent[] }
   );
 
@@ -132,7 +115,15 @@ export default function EpisodeEventsTableBody({
 
   return (
     <View className='min-w-full'>
-      <SectionHeader edit={edit} leagueData={!!leagueData} noTribes={noTribes} noMembers={noMembers} />
+      {enrichedEvents.length + enrichedMockEvents.length > 0 && (
+        <HeaderRow
+          edit={edit}
+          leagueData={!!leagueData}
+          noTribes={noTribes}
+          noMembers={noMembers}
+          label='Events'
+          onSectionLayout={onSectionLayout} />
+      )}
 
       {enrichedMockEvents.map((mock, idx) => (
         <EventRow
@@ -162,7 +153,13 @@ export default function EpisodeEventsTableBody({
         ))}
 
       {customEvents.length > 0 && (
-        <SectionHeader edit={edit} leagueData={!!leagueData} noTribes={noTribes} noMembers={noMembers} />
+        <HeaderRow
+          edit={edit}
+          leagueData={!!leagueData}
+          noTribes={noTribes}
+          noMembers={noMembers}
+          label='Custom Events'
+          onSectionLayout={onSectionLayout} />
       )}
       {customEvents
         .filter((event) => !filteredEvents.some((fe) => fe.eventId === event.eventId && fe.predOnly))
@@ -178,7 +175,13 @@ export default function EpisodeEventsTableBody({
         ))}
 
       {enrichedPredictions.length + enrichedMockPredictions.length > 0 && (
-        <SectionSpacer label='Predictions' onSectionLayout={onSectionLayout} />
+        <HeaderRow
+          edit={edit}
+          leagueData={!!leagueData}
+          noTribes={noTribes}
+          noMembers={noMembers}
+          label='Predictions'
+          onSectionLayout={onSectionLayout} />
       )}
       {enrichedMockPredictions.map((mock, idx) => (
         <PredictionRow
@@ -209,7 +212,10 @@ export default function EpisodeEventsTableBody({
 
       {!edit && Object.keys(streakGroups).length > 0 && (
         <>
-          <SectionSpacer label='Survival Streaks' onSectionLayout={onSectionLayout} />
+          <HeaderRow
+            label='Survival Streaks'
+            onSectionLayout={onSectionLayout}
+            noLabels />
           {Object.entries(streakGroups)
             .sort(([a], [b]) => Number(b) - Number(a))
             .map(([streakPointValue, members]) => (
@@ -223,77 +229,6 @@ export default function EpisodeEventsTableBody({
             ))}
         </>
       )}
-    </View>
-  );
-}
-
-interface SectionHeaderProps {
-  edit?: boolean;
-  leagueData?: boolean;
-  noTribes?: boolean;
-  noMembers?: boolean;
-}
-
-export function SectionHeader({ edit, leagueData, noTribes, noMembers }: SectionHeaderProps) {
-  return (
-    <View className='w-full flex-row items-center gap-4 border-b-2 border-primary/20 bg-white px-4'>
-      {edit && (
-        <View className='w-8'>
-          <Text
-            allowFontScaling={false}
-            className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-            Edit
-          </Text>
-        </View>
-      )}
-      <View className='w-40 border-r border-secondary py-2'>
-        <Text
-          allowFontScaling={false}
-          className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-          Event
-        </Text>
-      </View>
-      {leagueData && (
-        <View className='w-16 items-center'>
-          <Text
-            allowFontScaling={false}
-            className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-            Points
-          </Text>
-        </View>
-      )}
-      {!noTribes && (
-        <View className='w-24'>
-          <Text
-            allowFontScaling={false}
-            className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-            Tribes
-          </Text>
-        </View>
-      )}
-      <View className='w-32'>
-        <Text
-          allowFontScaling={false}
-          className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-          Castaways
-        </Text>
-      </View>
-      {!noMembers && (
-        <View className='w-36'>
-          <Text
-            allowFontScaling={false}
-            className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-            Members
-          </Text>
-        </View>
-      )}
-      <View className='w-20'>
-        <Text
-          allowFontScaling={false}
-          className='text-right text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-          Notes
-        </Text>
-      </View>
     </View>
   );
 }

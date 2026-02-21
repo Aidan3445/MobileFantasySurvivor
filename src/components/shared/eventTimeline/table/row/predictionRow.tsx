@@ -40,7 +40,7 @@ export default function PredictionRow({
 
   const stickyCell = useMemo<ReactNode>(() => (
     <View className={cn('h-full flex-row items-center gap-4 border-b border-primary/10 pl-4', className ?? 'bg-card')}>
-      <View className='w-40 h-full flex-row border-r border-secondary'>
+      <View className='w-40 h-full border-r border-secondary'>
         <View className='py-2 flex-1 justify-center pr-0.5'>
           {isBaseEvent && (
             <Text className='text-xs text-muted-foreground'>
@@ -64,15 +64,14 @@ export default function PredictionRow({
 
       {/* Event Name */}
       <View className='flex-row w-40 h-full'>
-        <View className='py-2 w-full my-auto'>
+        <View className='py-2 flex-1 justify-center pr-0.5'>
           {isBaseEvent && (
-            <Text className='text-sm text-muted-foreground'>
+            <Text className='text-xs text-muted-foreground'>
               {BaseEventFullName[event.eventName as BaseEventName]}
             </Text>
           )}
           <Text className='text-base text-foreground'>{label}</Text>
         </View>
-        <View className='h-full w-[1px] -translate-x-[1px] bg-secondary' />
       </View>
 
       {/* Points */}

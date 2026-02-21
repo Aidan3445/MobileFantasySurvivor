@@ -97,8 +97,8 @@ export default function EventRow({
       ) : null}
 
       {/* Event Name */}
-      <View className='flex-row w-40 h-full'>
-        <View className='py-2 w-full my-auto pr-0.5'>
+      <View className='w-40 h-full'>
+        <View className='py-2 flex-1 justify-center pr-0.5'>
           {isBaseEvent && (
             <Text className='text-xs text-muted-foreground'>
               {BaseEventFullName[event.eventName as BaseEventName]}
@@ -106,8 +106,8 @@ export default function EventRow({
           )}
           <Text className='text-base text-foreground'>{label}</Text>
         </View>
-        <View className='h-full w-[1px] -translate-x-[1px] bg-primary' />
       </View>
+
 
       {/* Points */}
       {!noPoints && <PointsCell points={event.points} />}

@@ -1,88 +1,11 @@
-import { Fragment, useMemo, useState, useCallback, type ReactNode } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { Fragment, useMemo } from 'react';
+import { View, Text } from 'react-native';
 import EpisodeEventsTableBody from '~/components/shared/eventTimeline/table/body';
 import { cn, findTribeCastaways } from '~/lib/utils';
 import { type Prediction, type EventWithReferences } from '~/types/events';
 import { type SeasonsDataQuery } from '~/types/seasons';
 import type { LeagueData } from '~/components/shared/eventTimeline/filters';
-
-function EpisodeScrollContainer({
-  children,
-  stickyLeft,
-}: {
-  children: (
-    _onSectionLayout: (_label: string, _y: number) => void,
-    _onRowLayout: (_id: string, _y: number, _height: number, _node: ReactNode) => void,
-  ) => ReactNode;
-  stickyLeft?: ReactNode;
-}) {
-  const [labels, setLabels] = useState<Record<string, number>>({});
-  const [rowOverlays, setRowOverlays] = useState<Record<string, { y: number; height: number; node: ReactNode }>>({});
-
-  const onSectionLayout = useCallback((label: string, y: number) => {
-    setLabels((prev) => (prev[label] === y ? prev : { ...prev, [label]: y }));
-  }, []);
-
-  const onRowLayout = useCallback((id: string, y: number, height: number, node: ReactNode) => {
-    setRowOverlays((prev) => {
-      const ex = prev[id];
-      if (ex?.y === y && ex?.height === height) return prev;
-      return { ...prev, [id]: { y, height, node } };
-    });
-  }, []);
-
-  return (
-    <View style={{ position: 'relative' }}>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        bounces={false}
-        alwaysBounceVertical={false}
-        alwaysBounceHorizontal={false}>
-        <View className='min-w-full'>
-          {children(onSectionLayout, onRowLayout)}
-        </View>
-      </ScrollView>
-
-      {/* Sticky event name overlays — zIndex 5 so section labels (10) appear on top */}
-      {Object.entries(rowOverlays).map(([id, { y, height, node }]) => (
-        <View
-          key={id}
-          style={{ position: 'absolute', top: y, left: 0, height, zIndex: 5 }}
-          pointerEvents='none'>
-          {node}
-        </View>
-      ))}
-
-      {/* Sticky left header columns — sits over the scrollable header row */}
-      {stickyLeft && (
-        <View
-          className='absolute bg-white border-b-2 border-primary/20'
-          style={{ top: 0, left: 0, zIndex: 10 }}
-          pointerEvents='none'>
-          {stickyLeft}
-        </View>
-      )}
-
-      {/* Floating section labels */}
-      {Object.entries(labels).map(([label, y]) => (
-        <View
-          key={label}
-          className='bg-gray-100 pl-4 justify-center border-b border-primary/20'
-          style={{ position: 'absolute', top: y, left: 0, right: 0, height: 29, zIndex: 10 }}
-          pointerEvents='none'>
-          <View className='w-40 h-full justify-center'>
-            <Text
-              allowFontScaling={false}
-              className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-              {label}
-            </Text>
-          </View>
-        </View>
-      ))}
-    </View>
-  );
-}
+import EpisodeScrollContainer from '~/components/shared/eventTimeline/table/scrollContainer';
 
 export interface EpisodeEventsProps {
   episodeNumber: number;
@@ -286,26 +209,27 @@ export default function EpisodeEvents({
 
   const noMembers = useMemo(() => !selectionTimeline || !league, [selectionTimeline, league]);
 
-  const stickyLeft = (
-    <View className='flex-row items-center gap-4 pl-4'>
-      {edit && (
-        <View className='w-8'>
-          <Text
-            allowFontScaling={false}
-            className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-            Edit
-          </Text>
-        </View>
-      )}
-      <View className='w-40 border-r border-secondary py-2'>
-        <Text
-          allowFontScaling={false}
-          className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-          Event
-        </Text>
-      </View>
-    </View>
-  );
+  const filteredRowIds = useMemo(() => {
+    const ids = new Set<string>();
+    Object.values(filteredEvents).forEach((events) =>
+      events?.forEach((event) => {
+        if (filters.event.length === 0 || filters.event.includes(event.eventName)) {
+          ids.add(`event-${event.eventId}`);
+        }
+      })
+    );
+    Object.values(filteredPredictions).forEach((predictions) =>
+      predictions?.forEach((prediction) => {
+        const event = allEvents[prediction.eventEpisodeNumber ?? -1]?.find(
+          (e) => e.eventName === prediction.eventName
+        );
+        if (event && (filters.event.length === 0 || filters.event.includes(event.eventName))) {
+          ids.add(`pred-${prediction.eventId}`);
+        }
+      })
+    );
+    return ids;
+  }, [allEvents, filteredEvents, filteredPredictions, filters.event]);
 
   return (
     <View className={cn('bg-card', className)}>
@@ -321,7 +245,7 @@ export default function EpisodeEvents({
               </View>
             )}
 
-            <EpisodeScrollContainer stickyLeft={stickyLeft}>
+            <EpisodeScrollContainer filteredRowIds={filteredRowIds}>
               {(onSectionLayout, onRowLayout) => (
                 <EpisodeEventsTableBody
                   seasonId={episode.seasonId}
