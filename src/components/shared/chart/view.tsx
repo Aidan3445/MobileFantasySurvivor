@@ -103,8 +103,8 @@ export default function ScoreChart({
   }
 
   return (
-    <View className='w-full rounded-lg bg-card'>
-      <View style={{ height }}>
+    <View className='w-full rounded-lg overflow-hidden' style={{ overflow: 'hidden' }}>
+      <View className='w-full overflow-hidden' style={{ height, overflow: 'hidden' }}>
         <CartesianChart
           data={paddedChartData}
           xKey='episode'
@@ -224,7 +224,7 @@ export default function ScoreChart({
             <Button
               key={s.key}
               onPress={() => setSelectedKey((prev) => (prev === s.key ? null : s.key))}
-              className='flex-row items-center gap-1 py-1 active:opacity-70'>
+              className='h-8 flex-row items-center gap-1 py-1 active:opacity-70'>
               {s.highlight && (
                 <View
                   className='-mr-0.5 rotate-90 animate-pulse'>
@@ -239,6 +239,7 @@ export default function ScoreChart({
                 style={{ backgroundColor: s.color }} />
               <View className={cn('px-0.5', isSelected && 'bg-primary/30 rounded')}>
                 <Text
+                  allowFontScaling={false}
                   className={cn(
                     'text-base transition-all',
                     isOther ? 'text-muted-foreground' : 'text-primary'
