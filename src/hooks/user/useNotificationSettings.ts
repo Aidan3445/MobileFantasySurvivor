@@ -18,7 +18,7 @@ const defaultSettings: NotificationSettings = {
   reminders: true,
   leagueActivity: true,
   episodeUpdates: true,
-  liveScoring: false,
+  liveScoring: true,
 };
 
 export function useNotificationSettings() {
