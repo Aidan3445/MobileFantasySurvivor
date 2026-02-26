@@ -9,6 +9,7 @@ import { PlaceIcon } from '~/components/icons/generated';
 import { rankBadgeColor, rankTextColor } from '~/lib/colors';
 
 interface CastawayRowProps {
+  colIndex: number;
   place: number;
   castaway?: EnrichedCastaway;
   points?: number;
@@ -19,6 +20,7 @@ interface CastawayRowProps {
 }
 
 export default function CastawayRow({
+  colIndex,
   place,
   castaway,
   points,
@@ -31,7 +33,7 @@ export default function CastawayRow({
     <View
       className={cn(
         'h-10 flex-row gap-0.5 px-0.5 py-1',
-        divideY(place - splitIndex - 1),
+        divideY(colIndex - splitIndex),
         bottomBorder && 'border-b !h-[36px]'
       )}>
       {!allZero && (
@@ -61,7 +63,7 @@ export default function CastawayRow({
             {castaway?.fullName}
           </Text>
         </CastawayModal>
-        <View className='ml-auto flex-row items-center gap-0.5'>
+        <View className='ml-auto flex-row items-center gap-0.5 mr-3'>
           <TribeHistoryCircles tribeTimeline={tribeTimeline ?? []} />
         </View>
       </View>
