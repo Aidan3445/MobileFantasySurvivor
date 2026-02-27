@@ -161,6 +161,8 @@ export function useNotificationRouting() {
         break;
 
       case 'reminder':
+      case 'reminder_secondary':
+      case 'reminder_both':
       case 'episode_finished':
         navigateToLeagues();
         break;
