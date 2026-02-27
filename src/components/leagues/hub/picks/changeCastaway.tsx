@@ -75,9 +75,14 @@ export default function ChangeCastaway() {
     );
   }
 
+  // Helper: is castaway currently active after redemption?
+  const isActiveAfterRedemption = (castaway: typeof availableCastaways[number]) =>
+    castaway.redemption?.some((r) => r.secondEliminationEpisode === null) ?? false;
+
   // Build select options for main pick
   const mainPickOptions = availableCastaways.map((castaway) => {
-    const isDisabled = !!(castaway.pickedBy || castaway.eliminatedEpisode);
+    const isFinallyEliminated = !!(castaway.eliminatedEpisode && !isActiveAfterRedemption(castaway));
+    const isDisabled = !!(castaway.pickedBy || isFinallyEliminated);
     return {
       value: castaway.castawayId,
       label: castaway.fullName,

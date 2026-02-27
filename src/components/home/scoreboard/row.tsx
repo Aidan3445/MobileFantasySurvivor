@@ -57,7 +57,9 @@ export default function CastawayRow({
             className={cn(
               'text-base font-bold',
               allZero && 'w-full text-center',
-              castaway?.eliminatedEpisode && 'line-through opacity-40'
+              castaway?.eliminatedEpisode
+              && !castaway.redemption?.some((r) => r.secondEliminationEpisode === null)
+              && 'line-through opacity-40'
             )}
             numberOfLines={1}>
             {castaway?.fullName}
