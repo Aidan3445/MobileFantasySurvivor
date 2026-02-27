@@ -11,12 +11,14 @@ interface PredictionTableProps {
   predictions: PredictionWithEvent[];
   previousEpisodeNumber: number;
   seasonId: number;
+  noCarousel?: boolean;
 }
 
 export default function PredictionTable({
   predictions,
   previousEpisodeNumber,
   seasonId,
+  noCarousel = false,
 }: PredictionTableProps) {
   const { data: castaways } = useCastaways(seasonId);
   const { data: tribes } = useTribes(seasonId);
@@ -86,7 +88,7 @@ export default function PredictionTable({
             findReferenceNames={findReferenceNames}
             previousEpisodeNumber={previousEpisodeNumber} />
         ))}
-        {sortedPredictions.length > 3 && (
+        {!noCarousel && sortedPredictions.length > 3 && (
           <View className='h-5' />
         )}
       </ScrollView>

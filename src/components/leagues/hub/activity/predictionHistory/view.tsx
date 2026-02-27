@@ -80,6 +80,7 @@ export default function PredictionHistory() {
             </Text>
           </View>
           <PredictionTable
+            noCarousel
             predictions={predictions}
             previousEpisodeNumber={keyEpisodes?.previousEpisode?.episodeNumber ?? 0}
             seasonId={league!.seasonId} />
