@@ -126,8 +126,6 @@ export default function LivePredictionsScreen() {
     <SafeAreaRefreshView
       className={cn('pt-8', refreshing && Platform.OS === 'ios' && 'pt-12')}
       header={<LivePredictionsHeader episodeId={episodeId} />}
-      alreadySafe={Platform.OS === 'ios'}
-      extraHeight={Platform.OS === 'ios' ? 0 : undefined}
       refreshing={refreshing}
       onRefresh={onRefresh}
       scrollY={scrollY}
