@@ -39,7 +39,7 @@ export default function ScoreboardBody({
           ref={ref}
           height={(castawaySplitIndex) * ROW_HEIGHT}
           {...props}
-          width={props.width - 10}
+          width={props.width - 17}
           renderItem={({ item, index: col }) => (
             <View className='flex-1'>
               {item.map(([castawayId, scores], index) => {

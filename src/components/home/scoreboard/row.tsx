@@ -17,6 +17,7 @@ interface CastawayRowProps {
   allZero?: boolean;
   splitIndex?: number;
   bottomBorder?: boolean;
+  maxWidth?: number;
 }
 
 export default function CastawayRow({
@@ -28,6 +29,7 @@ export default function CastawayRow({
   allZero,
   splitIndex = 0,
   bottomBorder = false,
+  maxWidth
 }: CastawayRowProps) {
   return (
     <View
@@ -35,7 +37,8 @@ export default function CastawayRow({
         'h-10 flex-row gap-0.5 px-0.5 py-1',
         divideY(colIndex - splitIndex),
         bottomBorder && 'border-b !h-[36px]'
-      )}>
+      )}
+      style={maxWidth ? { maxWidth } : undefined}>
       {!allZero && (
         <>
           <View className='w-11 inline-flex items-center justify-center'>

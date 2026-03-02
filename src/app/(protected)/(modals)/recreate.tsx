@@ -39,7 +39,7 @@ export default function RecreateLeagueScreen() {
     { name: 'selectMembers', optional: false, isLast: true },
   ];
 
-  const { props, ref, progress } = useCarousel<PageConfig>(pages);
+  const { props, ref, progress, container: { width, onLayout } } = useCarousel<PageConfig>(pages);
 
   const leagueSelected = selectedHash !== null;
   const membersSelected = selectedMembers.size > 0;
@@ -85,11 +85,12 @@ export default function RecreateLeagueScreen() {
         className='flex-1'
         behavior={progress === 1 ? undefined : Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}>
-        <View className='flex-1 px-1.5 pt-8'>
+        <View className='flex-1 px-1.5 pt-8' onLayout={onLayout}>
           {/* Carousel */}
           <Carousel
             ref={ref}
             {...props}
+            width={width - 12}
             enabled={false}
             renderItem={({ item }) => {
               const isSelectPage = item.name === 'selectLeague';
