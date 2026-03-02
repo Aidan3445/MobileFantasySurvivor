@@ -11,6 +11,7 @@ import { rankBadgeColor, rankTextColor } from '~/lib/colors';
 interface CastawayRowProps {
   colIndex: number;
   place: number;
+  index: number;
   castaway?: EnrichedCastaway;
   points?: number;
   tribeTimeline?: { episode: number; tribe: Tribe }[];
@@ -23,6 +24,7 @@ interface CastawayRowProps {
 export default function CastawayRow({
   colIndex,
   place,
+  index,
   castaway,
   points,
   tribeTimeline,
@@ -42,7 +44,10 @@ export default function CastawayRow({
       {!allZero && (
         <>
           <View className='w-11 inline-flex items-center justify-center'>
-            <PlaceIcon size={28} color={rankBadgeColor(place)} />
+            <PlaceIcon
+              size={28}
+              color={rankBadgeColor(place)}
+              style={{ transform: [{ rotate: `${115 * index}deg` }] }} />
             <Text className={cn('absolute font-black tracking-tighter', rankTextColor(place))}>
               {place}
             </Text>

@@ -60,6 +60,7 @@ export default function ScoreboardBody({
                     castaway={castaway}
                     points={points}
                     place={place}
+                    index={globalIndex}
                     allZero={allZero}
                     tribeTimeline={tribeTimeline}
                     splitIndex={col * castawaySplitIndex}

@@ -58,7 +58,10 @@ export default function MemberRow({
         doubleBelow && 'border-dashed'
       )}>
       <View className='w-11 inline-flex items-center justify-center'>
-        <PlaceIcon size={30} color={rankBadgeColor(place)} />
+        <PlaceIcon
+          size={30}
+          color={rankBadgeColor(place)}
+          style={{ transform: [{ rotate: `${115 * index}deg` }] }} />
         <Text className={cn('absolute font-black tracking-tighter', rankTextColor(place))}>
           {place}
         </Text>
