@@ -15,7 +15,7 @@
     "production": { 
       "autoIncrement": true, 
       "environment": "production",
-      "node": "24"
+      "node": "24.14.0"
     }
   },
   "submit": {
