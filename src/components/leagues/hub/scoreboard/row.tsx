@@ -25,6 +25,7 @@ interface MemberRowProps {
   overrideHash?: string;
   dashedAbove?: boolean;
   shotInTheDarkStatus?: { episodeNumber: number, status: 'pending' | 'saved' | 'wasted' } | null;
+  isAiring?: boolean;
 }
 
 export default function MemberRow({
@@ -38,7 +39,8 @@ export default function MemberRow({
   color,
   dashedAbove: doubleBelow,
   overrideHash,
-  shotInTheDarkStatus
+  shotInTheDarkStatus,
+  isAiring
 }: MemberRowProps) {
   const { data: leagueSettings } = useLeagueSettings(overrideHash);
 
@@ -121,7 +123,7 @@ export default function MemberRow({
       ) : (
         <View className='w-24 justify-center'>
           <Text className='text-base md:text-lg font-medium text-muted-foreground'>
-            {secondaryPick === null ? 'Hidden' : 'Pending'}...
+            {secondaryPick === null ? 'Hidden' : isAiring ? 'No Pick' : 'Pending'}...
           </Text>
         </View>
       ))}

@@ -23,7 +23,7 @@ export default function ColorRow({ color, opaque, className, children }: ColorRo
         className
       )}
       style={{
-        backgroundColor: `${color ?? '#AAAAAA'}${opaque ? '80' : '20'}`,
+        backgroundColor: `${color ?? '#AAAAAA'}${opaque ? '80' : '40'}`,
         borderLeftColor: color ?? '#000000',
         borderLeftWidth: 4,
       }}>

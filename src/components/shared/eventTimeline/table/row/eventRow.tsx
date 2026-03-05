@@ -11,8 +11,6 @@ import { useEventLabel } from '~/hooks/helpers/useEventLabel';
 import CastawayModal from '~/components/shared/castaways/castawayModal';
 import Modal from '~/components/common/modal';
 import MarqueeText from '~/components/common/marquee';
-import { Pencil } from 'lucide-react-native';
-import { colors } from '~/lib/colors';
 import Button from '~/components/common/button';
 
 interface EventRowProps {
@@ -62,7 +60,7 @@ export default function EventRow({
           <View className='w-8' />
         ) : (
           <View className='w-8'>
-            <Pencil size={20} color={colors.mutedForeground} />
+            <EditEvent event={event} overrideSeasonId={seasonId} />
           </View>
         ))}
       <View className='w-40 h-full flex-row border-r border-secondary'>
@@ -72,11 +70,13 @@ export default function EventRow({
               {BaseEventFullName[event.eventName as BaseEventName]}
             </Text>
           )}
-          <Text className='text-base text-foreground'>{label}</Text>
+          {label.split('#/').map((part, index) => (
+            <Text key={index} className='text-base text-foreground'>{part}</Text>
+          ))}
         </View>
       </View>
     </View>
-  ), [className, edit, isMock, isBaseEvent, event, label]);
+  ), [className, edit, isMock, event, seasonId, isBaseEvent, label]);
 
   return (
     <View
@@ -104,7 +104,9 @@ export default function EventRow({
               {BaseEventFullName[event.eventName as BaseEventName]}
             </Text>
           )}
-          <Text className='text-base text-foreground'>{label}</Text>
+          {label.split('#/').map((part, index) => (
+            <Text key={index} className='text-base text-foreground'>{part}</Text>
+          ))}
         </View>
       </View>
 

@@ -72,7 +72,7 @@ export function useEditEvent(event: EnrichedEvent, seasonIdOverride?: number) {
 
       if (isBaseEvent) {
         response = await putEvent('/api/seasons/baseEvents', {
-          body: { eventId: event.eventId, event: data },
+          body: { baseEventId: event.eventId, baseEvent: data },
         });
       } else {
         if (!event.customEventRuleId) throw new Error('Missing customEventRuleId');
