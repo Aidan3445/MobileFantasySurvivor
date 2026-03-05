@@ -39,7 +39,13 @@
       "expo-apple-authentication",
       "expo-secure-store",
       "expo-web-browser",
-      "@react-native-community/datetimepicker"
+      "@react-native-community/datetimepicker",
+      "expo-build-properties",
+      ["expo-build-properties", {
+        "ios": {
+          "deploymentTarget": "18.0"
+        }
+      }]
     ],
     "extra": {
       "router": {
@@ -55,7 +61,8 @@
       "requireFullScreen": true,
       "bundleIdentifier": "com.aidan3445.mobilefantasysurvivor",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "MinimumOSVersion": "18.0",
       },
       "associatedDomains": [
         "applinks:trialbyfiresurvivor.com",
