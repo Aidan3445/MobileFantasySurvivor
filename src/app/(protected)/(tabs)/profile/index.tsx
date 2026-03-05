@@ -1,5 +1,5 @@
 import { ScrollView, View } from 'react-native';
-import SignOutButton from '~/components/auth/SignOutButton';
+import SignOutButton from '~/components/auth/signOutButton';
 import AccountSettings from '~/components/profile/management/view';
 import NotificationSettings from '~/components/profile/notifications';
 

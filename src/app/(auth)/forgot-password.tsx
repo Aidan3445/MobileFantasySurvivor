@@ -1,13 +1,21 @@
 import React, { useRef, useState, useCallback } from 'react';
-import { Keyboard, Platform, Text, TextInput, TouchableOpacity, View, type TextInputEndEditingEvent } from 'react-native';
-import { useSignIn } from '@clerk/clerk-expo';
+import {
+  Keyboard,
+  Platform,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  type TextInputEndEditingEvent,
+} from 'react-native';
+import { useSignIn } from '@clerk/expo';
 import { useRouter } from 'expo-router';
 import AuthCard from '~/components/auth/wrapper';
 
 type Step = 'email' | 'code' | 'reset';
 
 export default function ForgotPasswordScreen() {
-  const { isLoaded, signIn, setActive } = useSignIn();
+  const { signIn, errors, fetchStatus } = useSignIn();
   const router = useRouter();
 
   const [step, setStep] = useState<Step>('email');
@@ -15,9 +23,10 @@ export default function ForgotPasswordScreen() {
   const [code, setCode] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
+  const [formError, setFormError] = useState('');
 
   const confirmRef = useRef<TextInput>(null);
+  const isLoading = fetchStatus === 'fetching';
 
   const handleEndEditing = useCallback(
     (currentValue: string, setter: (_v: string) => void) =>
@@ -33,75 +42,71 @@ export default function ForgotPasswordScreen() {
   );
 
   const onRequestReset = async () => {
-    if (!isLoaded) return;
-    setError('');
+    setFormError('');
 
-    try {
-      await signIn.create({
-        strategy: 'reset_password_email_code',
-        identifier: email.trim().toLowerCase(),
-      });
-      Keyboard.dismiss();
-      setStep('code');
-    } catch (err: any) {
-      setError(
-        err?.errors?.[0]?.longMessage ||
-        err?.errors?.[0]?.message ||
-        'Something went wrong. Please try again.'
-      );
+    const { error: createError } = await signIn.create({
+      identifier: email.trim().toLowerCase(),
+    });
+
+    if (createError) {
+      console.error(JSON.stringify(createError, null, 2));
+      return;
     }
+
+    const { error: sendCodeError } = await signIn.resetPasswordEmailCode.sendCode();
+
+    if (sendCodeError) {
+      console.error(JSON.stringify(sendCodeError, null, 2));
+      return;
+    }
+
+    Keyboard.dismiss();
+    setStep('code');
   };
 
   const onVerifyCode = () => {
     if (!code.trim()) {
-      setError('Please enter the reset code.');
+      setFormError('Please enter the reset code.');
       return;
     }
-    setError('');
+    setFormError('');
     setStep('reset');
   };
 
   const onResetPassword = async () => {
-    if (!isLoaded) return;
-    setError('');
+    setFormError('');
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setFormError('Passwords do not match');
       return;
     }
 
-    try {
-      const result = await signIn.attemptFirstFactor({
-        strategy: 'reset_password_email_code',
-        code,
-        password,
-      });
+    const { error } = await signIn.resetPasswordEmailCode.verifyCode({
+      code,
+    });
 
-      if (result.status === 'needs_second_factor') {
-        setError('2FA is required but not yet supported here.');
-      } else if (result.status === 'complete') {
-        await setActive({
-          session: result.createdSessionId,
-          navigate: async ({ session }) => {
-            if (session?.currentTask) {
-              console.log(session?.currentTask);
-              return;
-            }
-            router.replace('/');
-          },
-        });
-      }
-    } catch (err: any) {
-      setError(
-        err?.errors?.[0]?.longMessage ||
-        err?.errors?.[0]?.message ||
-        'Invalid code or password. Please try again.'
-      );
+    if (error) {
+      console.error(JSON.stringify(error, null, 2));
+      return;
+    }
+
+    if (signIn.status === 'complete') {
+      await signIn.finalize({
+        navigate: ({ session }) => {
+          if (session?.currentTask) {
+            console.log(session?.currentTask);
+            return;
+          }
+          router.replace('/');
+        },
+      });
+    } else {
+      console.error('Password reset not complete:', signIn);
     }
   };
 
   const goBack = () => {
-    setError('');
+    setFormError('');
     if (step === 'reset') {
       setPassword('');
       setConfirmPassword('');
@@ -142,13 +147,20 @@ export default function ForgotPasswordScreen() {
               returnKeyType='done'
               onSubmitEditing={onRequestReset} />
 
-            {error ? (
-              <Text className='text-sm text-red-600'>{error}</Text>
+            {errors.fields.identifier && (
+              <Text className='text-sm text-red-600'>
+                {errors.fields.identifier.message}
+              </Text>
+            )}
+
+            {formError ? (
+              <Text className='text-sm text-red-600'>{formError}</Text>
             ) : null}
 
             <TouchableOpacity
               onPress={onRequestReset}
-              className='mb-2 rounded-full bg-primary h-12 justify-center'>
+              disabled={isLoading}
+              className={`mb-2 rounded-full bg-primary h-12 justify-center ${isLoading ? 'opacity-50' : ''}`}>
               <Text className='text-center text-lg font-semibold text-white'>
                 Send Reset Code
               </Text>
@@ -188,13 +200,20 @@ export default function ForgotPasswordScreen() {
               returnKeyType='done'
               onSubmitEditing={onVerifyCode} />
 
-            {error ? (
-              <Text className='text-sm text-red-600'>{error}</Text>
+            {errors.fields.code && (
+              <Text className='text-sm text-red-600'>
+                {errors.fields.code.message}
+              </Text>
+            )}
+
+            {formError ? (
+              <Text className='text-sm text-red-600'>{formError}</Text>
             ) : null}
 
             <TouchableOpacity
               onPress={onVerifyCode}
-              className='mb-2 rounded-full bg-primary h-12 justify-center'>
+              disabled={isLoading}
+              className={`mb-2 rounded-full bg-primary h-12 justify-center ${isLoading ? 'opacity-50' : ''}`}>
               <Text className='text-center text-lg font-semibold text-white'>
                 Continue
               </Text>
@@ -239,6 +258,12 @@ export default function ForgotPasswordScreen() {
               returnKeyType='next'
               onSubmitEditing={() => confirmRef.current?.focus()} />
 
+            {errors.fields.password && (
+              <Text className='text-sm text-red-600'>
+                {errors.fields.password.message}
+              </Text>
+            )}
+
             <TextInput
               ref={confirmRef}
               value={confirmPassword}
@@ -254,13 +279,14 @@ export default function ForgotPasswordScreen() {
               returnKeyType='done'
               onSubmitEditing={onResetPassword} />
 
-            {error ? (
-              <Text className='text-sm text-red-600'>{error}</Text>
+            {formError ? (
+              <Text className='text-sm text-red-600'>{formError}</Text>
             ) : null}
 
             <TouchableOpacity
               onPress={onResetPassword}
-              className='mb-2 rounded-full bg-primary h-12 justify-center'>
+              disabled={isLoading}
+              className={`mb-2 rounded-full bg-primary h-12 justify-center ${isLoading ? 'opacity-50' : ''}`}>
               <Text className='text-center text-lg font-semibold text-white'>
                 Reset Password
               </Text>

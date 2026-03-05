@@ -1,13 +1,20 @@
-import { useSignIn } from '@clerk/clerk-expo';
-import { Link, useLocalSearchParams, useRouter } from 'expo-router';
-import { Platform, Text, TextInput, TouchableOpacity, View, type TextInputEndEditingEvent, } from 'react-native';
+import { useSignIn } from '@clerk/expo';
+import { type Href, Link, useLocalSearchParams, useRouter } from 'expo-router';
+import {
+  Platform,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  type TextInputEndEditingEvent,
+} from 'react-native';
 import React, { useCallback, useRef } from 'react';
-import { SignInWithGoogle } from '~/components/auth/signInWithGoogle';
 import AuthCard from '~/components/auth/wrapper';
-import { SignInWithApple } from '~/components/auth/signInWithApple';
+import AppleAuth from '~/components/auth/appleAuth';
+import GoogleAuth from '~/components/auth/googleAuth';
 
 export default function Page() {
-  const { signIn, setActive, isLoaded } = useSignIn();
+  const { signIn, errors, fetchStatus } = useSignIn();
   const { redirectTo } = useLocalSearchParams<{ redirectTo?: string }>();
   const router = useRouter();
 
@@ -15,6 +22,7 @@ export default function Page() {
   const [password, setPassword] = React.useState('');
 
   const passwordRef = useRef<TextInput>(null);
+  const isLoading = fetchStatus === 'fetching';
 
   const handlePasswordEndEditing = useCallback(
     (e: TextInputEndEditingEvent) => {
@@ -40,20 +48,46 @@ export default function Page() {
     [emailAddress],
   );
 
+  const destination = (redirectTo ?? '/') as Href;
+
+  const finalize = async () => {
+    await signIn.finalize({
+      navigate: ({ session }) => {
+        if (session?.currentTask) {
+          console.log(session?.currentTask);
+          router.push('/sign-in/tasks');
+          return;
+        }
+        router.replace(destination);
+      },
+    });
+  };
+
   const onSignInPress = async () => {
-    if (!isLoaded) return;
+    const { error } = await signIn.password({
+      emailAddress,
+      password,
+    });
 
-    try {
-      const signInAttempt = await signIn.create({ identifier: emailAddress, password });
+    if (error) {
+      console.error(JSON.stringify(error, null, 2));
+      return;
+    }
 
-      if (signInAttempt.status === 'complete') {
-        await setActive({ session: signInAttempt.createdSessionId });
-        router.replace(redirectTo ?? '/');
-      } else {
-        console.error(JSON.stringify(signInAttempt, null, 2));
+    if (signIn.status === 'complete') {
+      await finalize();
+    } else if (signIn.status === 'needs_second_factor') {
+      // Handle MFA if you add it later
+      console.error('MFA required but not implemented');
+    } else if (signIn.status === 'needs_client_trust') {
+      const emailCodeFactor = signIn.supportedSecondFactors.find(
+        (factor) => factor.strategy === 'email_code',
+      );
+      if (emailCodeFactor) {
+        await signIn.mfa.sendEmailCode();
       }
-    } catch (err) {
-      console.error(JSON.stringify(err, null, 2));
+    } else {
+      console.error('Sign-in attempt not complete:', signIn);
     }
   };
 
@@ -78,6 +112,12 @@ export default function Page() {
           onEndEditing={handleEmailEndEditing}
           returnKeyType='next'
           onSubmitEditing={() => passwordRef.current?.focus()} />
+        {errors.fields.identifier && (
+          <Text className='text-sm text-red-600'>
+            {errors.fields.identifier.message}
+          </Text>
+        )}
+
         <TextInput
           ref={passwordRef}
           value={password}
@@ -92,13 +132,21 @@ export default function Page() {
           onEndEditing={handlePasswordEndEditing}
           returnKeyType='done'
           onSubmitEditing={onSignInPress} />
+        {errors.fields.password && (
+          <Text className='text-sm text-red-600'>
+            {errors.fields.password.message}
+          </Text>
+        )}
+
         <View className='w-full flex-row items-center gap-2'>
-          <SignInWithApple />
-          <SignInWithGoogle />
+          <AppleAuth type='sign-in' />
+          <GoogleAuth type='sign-in' />
         </View>
+
         <TouchableOpacity
           onPress={onSignInPress}
-          className='mb-8 rounded-full bg-primary h-12 justify-center'>
+          disabled={isLoading}
+          className={`mb-8 rounded-full bg-primary h-12 justify-center ${isLoading ? 'opacity-50' : ''}`}>
           <Text className='text-center text-lg font-semibold text-white'>Continue</Text>
         </TouchableOpacity>
       </View>

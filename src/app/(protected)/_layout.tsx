@@ -8,7 +8,7 @@ import { useFetch } from '~/hooks/helpers/useFetch';
 import { Asset } from 'expo-asset';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useChangeLeaderboardUsername } from '~/hooks/livePredictions/mutation/useChangeLeaderboardUsername';
-import { useAuth } from '@clerk/clerk-expo';
+import { useAuth } from '@clerk/expo';
 
 export const FIRST_LOGIN_KEY = 'hasEstablishedLeaderboardUsername';
 const LogoImage = require('~/assets/LogoFull.png');

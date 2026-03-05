@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Alert, Pressable, Text, View } from 'react-native';
-import { useClerk } from '@clerk/clerk-expo';
+import { useClerk } from '@clerk/expo';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import { Trash2 } from 'lucide-react-native';
@@ -24,8 +24,8 @@ export default function DeleteAccountButton() {
       setIsDeleting(true);
       try {
         await unregisterPushToken(deleteData);
-        await user?.delete(),
-          queryClient.clear();
+        await user?.delete();
+        queryClient.clear();
         await AsyncStorage.clear();
         router.replace('/(auth)/sign-in');
       } catch (err) {

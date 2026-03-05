@@ -1,7 +1,7 @@
 import * as Linking from 'expo-linking';
 import { useRouter, usePathname, useSegments, useRootNavigationState } from 'expo-router';
 import { useEffect, useRef } from 'react';
-import { useAuth } from '@clerk/clerk-expo';
+import { useAuth } from '@clerk/expo';
 import {
   setPendingDeepLink,
   getPendingDeepLink,

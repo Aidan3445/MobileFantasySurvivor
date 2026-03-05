@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import { useUser } from '@clerk/clerk-expo';
+import { useUser } from '@clerk/expo';
 
 interface EmailFieldProps {
   locked: boolean;

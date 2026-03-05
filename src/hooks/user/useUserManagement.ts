@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Alert } from 'react-native';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useUser } from '@clerk/clerk-expo';
+import { useUser } from '@clerk/expo';
 import { z } from 'zod';
 
 const UserSettingsSchema = z

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useRouter, usePathname, useSegments, useRootNavigationState } from 'expo-router';
-import { useAuth } from '@clerk/clerk-expo';
+import { useAuth } from '@clerk/expo';
 import * as Notifications from 'expo-notifications';
 import {
   setPendingDeepLink,
