@@ -50,6 +50,9 @@ export default function MemberRow({
     secondaryPick?.eliminatedEpisode &&
     !secondaryPick?.redemption?.some(r => r.secondEliminationEpisode === null);
 
+  const wholePoints = Math.floor(points);
+  const isHalfPoint = points - wholePoints > 0;
+
   return (
     <View
       className={cn(
@@ -66,10 +69,20 @@ export default function MemberRow({
           {place}
         </Text>
       </View>
-      <View className='w-10 -ml-2 items-center justify-center'>
+      <View className='w-10 -ml-2 items-center justify-center flex-row'>
         <Text className='text-center font-black tracking-tighter text-primary'>
-          {points}
+          {wholePoints}
         </Text>
+        {isHalfPoint && (
+          <View className='scale-75'>
+            <Text className='text-center font-black tracking-tighter text-primary border-b-2 border-primary'>
+              1
+            </Text>
+            <Text className='text-center font-black tracking-tighter text-primary'>
+              2
+            </Text>
+          </View>
+        )}
       </View>
       <ColorRow color={color} className='flex-1 items-center'>
         <MarqueeText
