@@ -47,13 +47,13 @@ export default function CastawayRow({
             <PlaceIcon
               size={28}
               color={rankBadgeColor(place)}
-              style={{ transform: [{ rotate: `${115 * index}deg` }] }} />
-            <Text className={cn('absolute font-black tracking-tighter', rankTextColor(place))}>
+              style={{ transform: [{ rotate: `${105 * index}deg` }] }} />
+            <Text className={cn('absolute font-black tracking-tightest', rankTextColor(place))}>
               {place}
             </Text>
           </View>
           <View className='-ml-2 w-10 items-center justify-center'>
-            <Text className='text-center font-black tracking-tighter text-primary'>
+            <Text className='text-center font-black tracking-tightest text-primary'>
               {points}
             </Text>
           </View>
