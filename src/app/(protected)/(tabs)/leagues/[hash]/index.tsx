@@ -26,7 +26,6 @@ export default function LeagueHubScreen() {
   return (
     <Fragment>
       <SafeAreaRefreshView
-        extraHeight={Platform.OS === 'ios' ? -45 : 0}
         alreadySafe
         refreshing={refreshing}
         onRefresh={onRefresh}

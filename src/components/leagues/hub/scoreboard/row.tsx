@@ -42,6 +42,17 @@ export default function MemberRow({
 }: MemberRowProps) {
   const { data: leagueSettings } = useLeagueSettings(overrideHash);
 
+  const isFullyEliminated =
+    castaway?.eliminatedEpisode &&
+    !castaway?.redemption?.some(r => r.secondEliminationEpisode === null);
+
+  const isSecondaryPickEliminated =
+    secondaryPick?.eliminatedEpisode &&
+    !secondaryPick?.redemption?.some(r => r.secondEliminationEpisode === null);
+
+  const wholePoints = Math.floor(points);
+  const isHalfPoint = points - wholePoints > 0;
+
   return (
     <View
       className={cn(
@@ -50,15 +61,28 @@ export default function MemberRow({
         doubleBelow && 'border-dashed'
       )}>
       <View className='w-11 inline-flex items-center justify-center'>
-        <PlaceIcon size={30} color={rankBadgeColor(place)} />
+        <PlaceIcon
+          size={30}
+          color={rankBadgeColor(place)}
+          style={{ transform: [{ rotate: `${115 * index}deg` }] }} />
         <Text className={cn('absolute font-black tracking-tighter', rankTextColor(place))}>
           {place}
         </Text>
       </View>
-      <View className='w-10 -ml-2 items-center justify-center'>
+      <View className='w-10 -ml-2 items-center justify-center flex-row'>
         <Text className='text-center font-black tracking-tighter text-primary'>
-          {points}
+          {wholePoints}
         </Text>
+        {isHalfPoint && (
+          <View className='scale-75'>
+            <Text className='text-center font-black tracking-tighter text-primary border-b-2 border-primary'>
+              1
+            </Text>
+            <Text className='text-center font-black tracking-tighter text-primary'>
+              2
+            </Text>
+          </View>
+        )}
       </View>
       <ColorRow color={color} className='flex-1 items-center'>
         <MarqueeText
@@ -76,7 +100,7 @@ export default function MemberRow({
           <Text
             className={cn(
               'text-base font-medium transition-all text-black text-nowrap',
-              castaway?.eliminatedEpisode && 'line-through opacity-40'
+              isFullyEliminated && 'line-through opacity-40'
             )}>
             {castaway?.shortName || 'None'}
           </Text>
@@ -88,7 +112,7 @@ export default function MemberRow({
             <Text
               className={cn(
                 'text-base font-medium transition-all text-black text-nowrap',
-                secondaryPick.eliminatedEpisode && 'line-through opacity-40'
+                isSecondaryPickEliminated && 'line-through opacity-40'
               )}>
               {secondaryPick?.shortName || 'None'}
             </Text>

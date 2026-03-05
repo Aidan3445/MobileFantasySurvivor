@@ -72,8 +72,6 @@ export default function NewLivePredictionScreen() {
           value={selectedSeason}
           setValue={setSelectedSeason} />
       }
-      alreadySafe={Platform.OS === 'ios'}
-      extraHeight={Platform.OS === 'ios' ? 0 : undefined}
       refreshing={refreshing}
       onRefresh={onRefresh}
       scrollY={scrollY}

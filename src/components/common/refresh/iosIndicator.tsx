@@ -8,12 +8,14 @@ export default function IOSRefreshIndicator({
   refreshing,
   scrollY,
   logoSize = 60,
-  extraHeight
+  extraHeight,
+  alreadySafe
 }: {
   refreshing: boolean;
   scrollY: Animated.Value;
   logoSize?: number;
   extraHeight?: number;
+  alreadySafe?: boolean;
 }) {
   const height = useHeaderHeight(extraHeight);
   const logoOpacity = useRef(new Animated.Value(0)).current;
@@ -114,7 +116,7 @@ export default function IOSRefreshIndicator({
         position: 'absolute',
         left: 0,
         right: 0,
-        top: height + 4,
+        top: height + (alreadySafe ? -(height / 2 + 20) : 4),
         zIndex: 9,
         opacity: logoOpacity,
         transform: [{ translateY: logoTranslateY }]

@@ -1,5 +1,5 @@
-import { View, Text, Pressable } from 'react-native';
-import { useMemo, useState } from 'react';
+import { View, Text } from 'react-native';
+import { type ReactNode, useMemo, useState } from 'react';
 import { cn } from '~/lib/utils';
 import ColorRow from '~/components/shared/colorRow';
 import PointsCell from '~/components/shared/eventTimeline/table/row/pointsCell';
@@ -11,6 +11,9 @@ import { useEventLabel } from '~/hooks/helpers/useEventLabel';
 import CastawayModal from '~/components/shared/castaways/castawayModal';
 import Modal from '~/components/common/modal';
 import MarqueeText from '~/components/common/marquee';
+import { Pencil } from 'lucide-react-native';
+import { colors } from '~/lib/colors';
+import Button from '~/components/common/button';
 
 interface EventRowProps {
   className?: string;
@@ -21,6 +24,7 @@ interface EventRowProps {
   noTribes?: boolean;
   noMembers?: boolean;
   noPoints?: boolean;
+  onRowLayout?: (_id: string, _y: number, _height: number, _node: ReactNode) => void;
 }
 
 export default function EventRow({
@@ -32,11 +36,11 @@ export default function EventRow({
   noTribes,
   noMembers,
   noPoints,
+  onRowLayout,
 }: EventRowProps) {
   const isBaseEvent = useMemo(() => event.eventSource === 'Base', [event.eventSource]);
   const label = useEventLabel(event.eventName, isBaseEvent, event.label);
 
-  // State for secondary picks modal
   const [secondaryModalVisible, setSecondaryModalVisible] = useState(false);
   const [secondaryModalMembers, setSecondaryModalMembers] = useState<
     Array<{ memberId: number; displayName: string; color: string }>
@@ -49,28 +53,61 @@ export default function EventRow({
     setSecondaryModalVisible(true);
   };
 
+  // Sticky overlay cell — rendered outside the ScrollView by EpisodeScrollContainer.
+  // Uses h-full so it fills the measured height the container provides.
+  const stickyCell = useMemo<ReactNode>(() => (
+    <View className={cn('h-full flex-row items-center gap-4 border-b border-primary/10 pl-4', className ?? 'bg-card')}>
+      {edit && (
+        isMock ? (
+          <View className='w-8' />
+        ) : (
+          <View className='w-8'>
+            <Pencil size={20} color={colors.mutedForeground} />
+          </View>
+        ))}
+      <View className='w-40 h-full flex-row border-r border-secondary'>
+        <View className='py-2 flex-1 justify-center pr-0.5'>
+          {isBaseEvent && (
+            <Text className='text-xs text-muted-foreground'>
+              {BaseEventFullName[event.eventName as BaseEventName]}
+            </Text>
+          )}
+          <Text className='text-base text-foreground'>{label}</Text>
+        </View>
+      </View>
+    </View>
+  ), [className, edit, isMock, isBaseEvent, event, label]);
+
   return (
-    <View className={cn('flex-row items-center gap-4 border-b border-primary/10 bg-card px-4 py-2', className)}>
+    <View
+      className={cn('flex-row items-center gap-4 border-b border-primary/10 bg-card px-4 py-2', className)}
+      onLayout={(e) => {
+        const { y, height } = e.nativeEvent.layout;
+        onRowLayout?.(`event-${event.eventId}`, y, height, stickyCell);
+      }}>
       {/* Edit Column */}
       {edit ? (
         isMock ? (
-          <View className='w-12' />
+          <View className='w-8' />
         ) : (
-          <View className='w-12'>
+          <View className='w-8'>
             <EditEvent event={event} overrideSeasonId={seasonId} />
           </View>
         )
       ) : null}
 
       {/* Event Name */}
-      <View className='flex-1 max-w-40'>
-        {isBaseEvent && (
-          <Text className='text-xs text-muted-foreground'>
-            {BaseEventFullName[event.eventName as BaseEventName]}
-          </Text>
-        )}
-        <Text className='text-base text-foreground'>{label}</Text>
+      <View className='w-40 h-full'>
+        <View className='py-2 flex-1 justify-center pr-0.5'>
+          {isBaseEvent && (
+            <Text className='text-xs text-muted-foreground'>
+              {BaseEventFullName[event.eventName as BaseEventName]}
+            </Text>
+          )}
+          <Text className='text-base text-foreground'>{label}</Text>
+        </View>
       </View>
+
 
       {/* Points */}
       {!noPoints && <PointsCell points={event.points} />}
@@ -140,13 +177,13 @@ export default function EventRow({
                   </ColorRow>
                 )}
                 {secondaries && secondaries.length > 0 && !!event.points && (
-                  <Pressable
+                  <Button
                     onPress={() => openSecondaryModal(secondaries)}
                     className='rounded border border-primary/20 px-1'>
                     <Text className='text-xs text-muted-foreground font-medium'>
                       2<Text className='text-[10px] font-medium'>nd</Text>
                     </Text>
-                  </Pressable>
+                  </Button>
                 )}
               </View>
             ))

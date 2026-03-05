@@ -30,7 +30,8 @@ export default function PredictionRow({
   const showNoResult =
     isWeekly && previousEpisodeNumber >= pred.predictionEpisodeNumber && !pred.event;
 
-  const differentEpisode = pred.eventEpisodeNumber !== pred.predictionEpisodeNumber;
+  const differentEpisode = pred.eventEpisodeNumber !== null
+    && pred.eventEpisodeNumber !== pred.predictionEpisodeNumber;
 
   return (
     <>

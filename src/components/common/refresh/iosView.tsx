@@ -12,6 +12,7 @@ export default function IOSRefreshView({
   scrollY,
   header,
   extraHeight,
+  alreadySafe,
   children,
 }: SafeAreaRefreshViewProps) {
   return (
@@ -19,6 +20,7 @@ export default function IOSRefreshView({
       {header}
       {scrollY && (
         <IOSRefreshIndicator
+          alreadySafe={alreadySafe}
           refreshing={refreshing}
           scrollY={scrollY}
           extraHeight={extraHeight} />

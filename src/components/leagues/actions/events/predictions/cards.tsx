@@ -82,7 +82,8 @@ export default function PredictionCards({
       : 'Direct Castaway';
 
     castaways.forEach((castaway) => {
-      if (castaway.eliminatedEpisode) return;
+      if (castaway.eliminatedEpisode
+        && !castaway.redemption?.some((r) => r.secondEliminationEpisode === null)) return;
       const tribe = castaway.tribe;
       options[castawayKey][castaway.fullName] = {
         id: castaway.castawayId,
@@ -117,7 +118,6 @@ export default function PredictionCards({
   const { ref, props, progressProps, scrollNext, setCarouselData } = useCarousel(allPredictions);
 
   useEffect(() => {
-    // Reset Carousel content when predictions change
     setCarouselData(allPredictions);
   }, [allPredictions, scrollNext, setCarouselData]);
 
@@ -129,7 +129,6 @@ export default function PredictionCards({
 
     return (
       <View className='mx-2 mb-2 rounded-lg border-2 border-primary/20 bg-accent/50 overflow-hidden'>
-        {/* Header */}
         <View className='bg-primary/10 py-2 px-3'>
           <View className='flex-row items-center justify-center gap-2'>
             <Text className='text-lg font-bold uppercase tracking-wider text-foreground'>
@@ -148,14 +147,12 @@ export default function PredictionCards({
           </View>
         </View>
 
-        {/* Description */}
         <View className='bg-secondary py-1 px-2'>
           <Text className='text-base font-medium text-foreground text-left leading-none'>
             {prediction.description}
           </Text>
         </View>
 
-        {/* Submission */}
         <SubmissionCard
           prediction={prediction}
           options={getOptions(prediction.referenceTypes)}
@@ -179,7 +176,6 @@ export default function PredictionCards({
         data={allPredictions}
         renderItem={({ item: prediction }) => (
           <View className='flex-1 ml-1.5 mr-2.5 rounded-lg border-2 border-primary/20 bg-accent/50 overflow-hidden'>
-            {/* Header */}
             <View className='bg-primary/10 py-2 px-3'>
               <View className='flex-row items-center justify-center gap-2'>
                 <Text
@@ -205,10 +201,8 @@ export default function PredictionCards({
               </View>
             </View>
 
-            {/* Description */}
             <DescriptionCell label={prediction.label} description={prediction.description} />
 
-            {/* Submission */}
             <SubmissionCard
               prediction={prediction}
               options={getOptions(prediction.referenceTypes)}
@@ -221,7 +215,6 @@ export default function PredictionCards({
         )}
         loop={false} />
 
-      {/* Pagination */}
       <View className='items-center'>
         <Pagination.Basic {...progressProps} containerStyle={{ marginBottom: 4 }} />
       </View>

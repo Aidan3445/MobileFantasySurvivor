@@ -26,11 +26,23 @@ export default function SelectionHistory({ selectionList, secondaryPickList }: S
         acc[acc.length - 1]!.end = index;
         return acc;
       }
-      return [...acc, {
-        castaway,
-        start: acc.length === 0 ? 'Draft' : index,
-        end: castaway.eliminatedEpisode
-      }];
+
+      const start = acc.length === 0 ? 'Draft' : index;
+      const isReEntry = typeof start === 'number'
+        && castaway.eliminatedEpisode !== null
+        && start >= castaway.eliminatedEpisode;
+
+      let end: number | null;
+      if (isReEntry && castaway.redemption?.length) {
+        const relevantRedemption = [...castaway.redemption]
+          .sort((a, b) => b.reentryEpisode - a.reentryEpisode)
+          .find(r => typeof start === 'number' && r.reentryEpisode <= start);
+        end = relevantRedemption?.secondEliminationEpisode ?? null;
+      } else {
+        end = castaway.eliminatedEpisode ?? null;
+      }
+
+      return [...acc, { castaway, start, end }];
     }, [] as { castaway: EnrichedCastaway, start: number | string, end: number | null }[]),
     [selectionList]);
 

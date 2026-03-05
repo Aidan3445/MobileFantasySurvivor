@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import { useMemo } from 'react';
+import { type ReactNode, useMemo } from 'react';
 import {
   type EventWithReferencesAndPredOnly,
   type EpisodeEventsProps,
@@ -10,8 +10,7 @@ import { useEnrichEvents } from '~/hooks/seasons/enrich/useEnrichEvents';
 import { useEnrichPredictions } from '~/hooks/seasons/enrich/useEnrichPredictions';
 import PredictionRow from '~/components/shared/eventTimeline/table/row/predictionRow';
 import EventRow from '~/components/shared/eventTimeline/table/row/eventRow';
-import { type LeagueMember } from '~/types/leagueMembers';
-import StreakRow from '~/components/shared/eventTimeline/table/row/streakRow';
+import HeaderRow from '~/components/shared/eventTimeline/table/row/headerRow';
 
 interface EpisodeEventsTableBodyProps extends EpisodeEventsProps {
   seasonId: number;
@@ -20,6 +19,8 @@ interface EpisodeEventsTableBodyProps extends EpisodeEventsProps {
   predictionEnrichmentEvents?: EventWithReferencesAndPredOnly[];
   noMembers: boolean;
   noTribes?: boolean;
+  onSectionLayout?: (_label: string, _y: number) => void;
+  onRowLayout: (_id: string, _y: number, _height: number, _node: ReactNode) => void
 }
 
 export default function EpisodeEventsTableBody({
@@ -34,6 +35,8 @@ export default function EpisodeEventsTableBody({
   filters,
   noMembers,
   noTribes,
+  onSectionLayout,
+  onRowLayout,
 }: EpisodeEventsTableBodyProps) {
   const enrichedEvents = useEnrichEvents(seasonData, filteredEvents, leagueData);
   const enrichedMockEvents = useEnrichEvents(seasonData, mockEvents ?? [], leagueData);
@@ -61,15 +64,14 @@ export default function EpisodeEventsTableBody({
     leagueData
   );
 
-  const { baseEvents, customEvents } = enrichedEvents.reduce(
-    (acc, event) => {
-      if (event.eventSource === 'Base') {
-        acc.baseEvents.push(event);
-      } else if (event.eventType === 'Direct') {
-        acc.customEvents.push(event);
-      }
-      return acc;
-    },
+  const { baseEvents, customEvents } = enrichedEvents.reduce((acc, event) => {
+    if (event.eventSource === 'Base') {
+      acc.baseEvents.push(event);
+    } else if (event.eventType === 'Direct') {
+      acc.customEvents.push(event);
+    }
+    return acc;
+  },
     { baseEvents: [] as EnrichedEvent[], customEvents: [] as EnrichedEvent[] }
   );
 
@@ -81,84 +83,26 @@ export default function EpisodeEventsTableBody({
       filters.tribe.length > 0;
 
     return (
-      <View className='bg-card px-4 py-3'>
-        <Text className='text-center text-muted-foreground'>
+      <View className='bg-card px-4 py-3 min-w-full'>
+        <Text className='text-muted-foreground'>
           No events for episode {episodeNumber} {hasFilters ? 'with the selected filters' : ''}
         </Text>
       </View>
     );
   }
 
-  // Group members by their streak value for this episode
-  const streakGroups = Object.entries(leagueData?.streaks ?? {}).reduce(
-    (acc, [memberId, episodeStreaks]) => {
-      const streakValue = episodeStreaks[episodeNumber] ?? 0;
-      if (streakValue > 0) {
-        const mid = Number(memberId);
-        const member = leagueData?.leagueMembers?.members.find((m) => m.memberId === mid);
-        if (member) {
-          const streakPointValue = Math.min(
-            streakValue,
-            leagueData?.leagueSettings?.survivalCap ?? streakValue
-          );
-          acc[streakPointValue] ??= [];
-          acc[streakPointValue].push(member);
-        }
-      }
-      return acc;
-    },
-    {} as Record<number, LeagueMember[]>
-  );
-
   return (
-    <View>
-      <View className='flex-row items-center gap-4 border-b-2 border-primary/20 bg-white px-4 py-2'>
-        {edit && (
-          <View className='w-12'>
-            <Text className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-              Edit
-            </Text>
-          </View>
-        )}
-        <View className='flex-1 max-w-40'>
-          <Text className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-            Event
-          </Text>
-        </View>
-        {leagueData && (
-          <View className='w-16 items-center'>
-            <Text className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-              Points
-            </Text>
-          </View>
-        )}
-        {!noTribes && (
-          <View className='w-24'>
-            <Text className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-              Tribes
-            </Text>
-          </View>
-        )}
-        <View className='w-32'>
-          <Text className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-            Castaways
-          </Text>
-        </View>
-        {!noMembers && (
-          <View className='w-36'>
-            <Text className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-              Members
-            </Text>
-          </View>
-        )}
-        <View className='w-20'>
-          <Text className='text-right text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-            Notes
-          </Text>
-        </View>
-      </View>
+    <View className='min-w-full'>
+      {enrichedEvents.length + enrichedMockEvents.length > 0 && (
+        <HeaderRow
+          edit={edit}
+          leagueData={!!leagueData}
+          noTribes={noTribes}
+          noMembers={noMembers}
+          label='Events'
+          onSectionLayout={onSectionLayout} />
+      )}
 
-      {/* Mock Events */}
       {enrichedMockEvents.map((mock, idx) => (
         <EventRow
           key={`mock-${idx}`}
@@ -168,10 +112,10 @@ export default function EpisodeEventsTableBody({
           isMock
           noPoints={!leagueData}
           noTribes={noTribes}
-          noMembers={noMembers} />
+          noMembers={noMembers}
+          onRowLayout={onRowLayout} />
       ))}
 
-      {/* Base Events */}
       {baseEvents
         .filter((event) => !filteredEvents.some((fe) => fe.eventId === event.eventId && fe.predOnly))
         .map((event, idx) => (
@@ -182,16 +126,18 @@ export default function EpisodeEventsTableBody({
             noPoints={!leagueData}
             noTribes={noTribes}
             noMembers={noMembers}
-            seasonId={seasonData.season.seasonId} />
+            seasonId={seasonData.season.seasonId}
+            onRowLayout={onRowLayout} />
         ))}
 
-      {/* Custom Events Section */}
       {customEvents.length > 0 && (
-        <View className='bg-gray-100 px-4 py-2'>
-          <Text className='text-center text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-            Custom Events
-          </Text>
-        </View>
+        <HeaderRow
+          edit={edit}
+          leagueData={!!leagueData}
+          noTribes={noTribes}
+          noMembers={noMembers}
+          label='Custom Events'
+          onSectionLayout={onSectionLayout} />
       )}
       {customEvents
         .filter((event) => !filteredEvents.some((fe) => fe.eventId === event.eventId && fe.predOnly))
@@ -202,16 +148,19 @@ export default function EpisodeEventsTableBody({
             editCol={edit}
             noPoints={!leagueData}
             noTribes={noTribes}
-            noMembers={noMembers} />
+            noMembers={noMembers}
+            onRowLayout={onRowLayout} />
         ))}
 
-      {/* Predictions Section */}
       {enrichedPredictions.length + enrichedMockPredictions.length > 0 && (
-        <View className='bg-gray-100 px-4 py-2'>
-          <Text className='text-center text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-            Predictions
-          </Text>
-        </View>
+        <HeaderRow
+          edit={edit}
+          leagueData={!!leagueData}
+          noTribes={noTribes}
+          noMembers={noMembers}
+          noNotes
+          label='Predictions'
+          onSectionLayout={onSectionLayout} />
       )}
       {enrichedMockPredictions.map((mock, idx) => (
         <PredictionRow
@@ -220,7 +169,8 @@ export default function EpisodeEventsTableBody({
           prediction={mock}
           editCol={edit}
           noMembers={noMembers}
-          noTribes={noTribes} />
+          noTribes={noTribes}
+          onRowLayout={onRowLayout} />
       ))}
       {enrichedPredictions.map((prediction, idx) => (
         <PredictionRow
@@ -235,30 +185,9 @@ export default function EpisodeEventsTableBody({
               (miss.reference?.type === 'Castaway' &&
                 filters.castaway.includes(miss.reference.id)) ||
               (miss.reference?.type === 'Tribe' && filters.tribe.includes(miss.reference.id))
-          )} />
+          )}
+          onRowLayout={onRowLayout} />
       ))}
-
-      {/* Survival Streaks Section */}
-      {!edit && Object.keys(streakGroups).length > 0 && (
-        <>
-          <View className='bg-gray-100 px-4 py-2'>
-            <Text className='text-center text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-              Survival Streaks
-            </Text>
-          </View>
-          {Object.entries(streakGroups)
-            .sort(([a], [b]) => Number(b) - Number(a))
-            .map(([streakPointValue, members]) => (
-              <StreakRow
-                key={streakPointValue}
-                streakPointValue={Number(streakPointValue)}
-                members={members}
-                streaksMap={leagueData!.streaks!}
-                episodeNumber={episodeNumber}
-                shotInTheDarkStatus={leagueData?.shotInTheDarkStatus} />
-            ))}
-        </>
-      )}
     </View>
   );
 }

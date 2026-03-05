@@ -37,7 +37,7 @@ const SLIDES: SlideConfig[] = [
 export default function TutorialScreen() {
   const { showCustomization } = useLocalSearchParams<{ showCustomization?: string }>();
   const router = useRouter();
-  const { props, progressProps, PAGE_WIDTH, ref } = useCarousel<SlideConfig>(SLIDES);
+  const { props, progressProps, container: { width, onLayout }, ref } = useCarousel<SlideConfig>(SLIDES);
 
   const goNext = useCallback(() => {
     ref.current?.next();
@@ -51,11 +51,11 @@ export default function TutorialScreen() {
     <SafeAreaView className='flex-1 bg-background'>
       <TutorialHeader />
 
-      <View className='flex-1 pt-16'>
+      <View className='flex-1 pt-16' onLayout={onLayout}>
         <Carousel
           ref={ref}
           {...props}
-          width={PAGE_WIDTH}
+          width={width}
           enabled={false}
           renderItem={({ item, index }) => {
             const isFirst = index === 0;

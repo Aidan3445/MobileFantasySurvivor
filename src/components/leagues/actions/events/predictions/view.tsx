@@ -7,6 +7,7 @@ import { useLeagueActionDetails } from '~/hooks/leagues/enrich/useActionDetails'
 import PredictionCards from '~/components/leagues/actions/events/predictions/cards';
 import { type LeagueRules } from '~/types/leagues';
 import AirStatus from '~/components/shared/episodes/airStatus';
+import { type EnrichedCastaway } from '~/types/castaways';
 import { type Prediction } from '~/types/events';
 import { PointsIcon } from '~/components/icons/generated';
 
@@ -14,12 +15,7 @@ export interface MakePredictionsProps {
   predictionRuleCount?: number;
   rules?: LeagueRules;
   predictionsMade: Prediction[];
-  castaways: Array<{
-    castawayId: number;
-    fullName: string;
-    eliminatedEpisode?: number | null;
-    tribe?: { name: string; color: string } | null;
-  }>;
+  castaways: EnrichedCastaway[];
   tribes: Array<{ tribeId: number; tribeName: string; tribeColor: string }>;
   wallet?: number;
   totalBet?: number;

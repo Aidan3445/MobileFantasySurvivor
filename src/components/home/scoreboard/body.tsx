@@ -1,5 +1,4 @@
 'use client';
-
 import { View } from 'react-native';
 import { useEffect, useState } from 'react';
 import { type SeasonsDataQuery } from '~/types/seasons';
@@ -23,7 +22,7 @@ export default function ScoreboardBody({
   data,
   allZero
 }: ScoreboardBodyProps) {
-  const { ref, setCarouselData, props, progressProps, } = useCarousel<[number, number[]][]>([]);
+  const { ref, setCarouselData, props, progressProps } = useCarousel<[number, number[]][]>([]);
   const [castawayData, setCastawayData] = useState<SeasonsDataQuery | null>(null);
 
   useEffect(() => {
@@ -40,23 +39,28 @@ export default function ScoreboardBody({
           ref={ref}
           height={(castawaySplitIndex) * ROW_HEIGHT}
           {...props}
-          width={props.width - 10}
+          width={props.width - 17}
           renderItem={({ item, index: col }) => (
-            <View className='flex-1 mr-3'>
+            <View className='flex-1'>
               {item.map(([castawayId, scores], index) => {
                 const castaway = castawayData?.castaways.find(c => c.castawayId === castawayId);
                 const points = scores.slice().pop() ?? 0;
-                const place = col * castawaySplitIndex + index + 1;
                 const tribeTimeline = castawayData
                   ? getTribeTimeline(castawayId, castawayData.tribesTimeline, castawayData.tribes)
                   : [];
-
+                const globalIndex = col * castawaySplitIndex + index;
+                const numberSameScore = sortedCastaways.slice(0, globalIndex)
+                  .filter(([_cid, s]) => (s.slice().pop() ?? 0) === points)
+                  .length;
+                const place = globalIndex + 1 - numberSameScore;
                 return (
                   <CastawayRow
                     key={castawayId}
+                    colIndex={globalIndex}
                     castaway={castaway}
                     points={points}
                     place={place}
+                    index={globalIndex}
                     allZero={allZero}
                     tribeTimeline={tribeTimeline}
                     splitIndex={col * castawaySplitIndex}

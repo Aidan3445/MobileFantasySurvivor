@@ -1,5 +1,5 @@
 import { useRef, useState, useCallback, useMemo } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, type LayoutChangeEvent } from 'react-native';
 import { type PanGestureType } from 'react-native-gesture-handler/lib/typescript/handlers/gestures/panGesture';
 import { useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
@@ -14,6 +14,17 @@ export function useCarousel<T>(initialData: T[] = []) {
   const ref = useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
   const [progressState, setProgressState] = useState(0);
+
+  const [containerWidth, setContainerWidth] = useState(PAGE_WIDTH);
+  const [containerHeight, setContainerHeight] = useState(PAGE_HEIGHT);
+
+  const onLayout = useCallback((e: LayoutChangeEvent) => {
+    const { width } = e.nativeEvent.layout;
+    if (width > 0) setContainerWidth(width);
+
+    const { height } = e.nativeEvent.layout;
+    if (height > 0) setContainerHeight(height);
+  }, []);
 
   useAnimatedReaction(() => progress.value,
     (value) => {
@@ -47,7 +58,7 @@ export function useCarousel<T>(initialData: T[] = []) {
     data: carouselData,
     progress,
     onProgressChange: progress,
-    width: PAGE_WIDTH - 12,
+    width: PAGE_WIDTH - 15,
     loop: carouselData.length > 2,
     enabled: carouselData.length > 1,
     onConfigurePanGesture: (gesture: PanGestureType) => gesture.activeOffsetX([-10, 10]),
@@ -67,6 +78,7 @@ export function useCarousel<T>(initialData: T[] = []) {
     onPressPagination,
     PAGE_WIDTH,
     PAGE_HEIGHT,
+    container: { width: containerWidth, height: containerHeight, onLayout },
     props,
     progressProps,
     scrollNext,

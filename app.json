@@ -5,7 +5,7 @@
     "orientation": "portrait",
     "name": "Trial by Fire",
     "slug": "mobile-fantasy-survivor",
-    "version": "1.0.0",
+    "version": "1.2.0",
     "owner": "aidan3445",
     "icon": "./src/assets/AppIcon.png",
     "web": {
@@ -37,7 +37,8 @@
         }
       ],
       "expo-secure-store",
-      "expo-web-browser"
+      "expo-web-browser",
+      "@react-native-community/datetimepicker"
     ],
     "extra": {
       "router": {
@@ -48,6 +49,9 @@
       }
     },
     "ios": {
+      "usesAppleSignIn": true,
+      "supportsTablet": true,
+      "requireFullScreen": true,
       "bundleIdentifier": "com.aidan3445.mobilefantasysurvivor",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
@@ -55,7 +59,8 @@
       "associatedDomains": [
         "applinks:trialbyfiresurvivor.com",
         "applinks:www.trialbyfiresurvivor.com"
-      ]
+      ],
+      "appleTeamId": "AXZR9KKTUD"
     },
     "android": {
       "package": "com.aidan3445.mobilefantasysurvivor",

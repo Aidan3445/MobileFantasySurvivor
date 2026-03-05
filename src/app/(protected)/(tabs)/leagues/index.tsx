@@ -14,7 +14,6 @@ export default function LeaguesScreen() {
 
   return (
     <SafeAreaRefreshView
-      extraHeight={Platform.OS === 'ios' ? -45 : 0}
       alreadySafe
       refreshing={refreshing}
       onRefresh={onRefresh}

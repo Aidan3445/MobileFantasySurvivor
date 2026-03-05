@@ -50,7 +50,7 @@ export default function CreateLeagueScreen({ onSubmit }: CreateLeagueFormProps) 
     },
   ];
 
-  const { props, progressProps, ref } = useCarousel<PageConfig>(pages);
+  const { props, progressProps, ref, container: { width, onLayout } } = useCarousel<PageConfig>(pages);
 
   const goNext = useCallback(() => {
     Keyboard.dismiss();
@@ -100,11 +100,12 @@ export default function CreateLeagueScreen({ onSubmit }: CreateLeagueFormProps) 
         behavior='padding'
         keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}
         style={{ flex: 1, justifyContent: 'flex-end' }}>
-        <View className='flex-1 px-1.5 pt-8'>
+        <View className='flex-1 px-1.5 pt-8' onLayout={onLayout}>
           {/* Carousel */}
           <Carousel
             ref={ref}
             {...props}
+            width={width - 12}
             enabled={false}
             renderItem={({ item }) => {
               const fieldValue = reactForm.watch(item.name);

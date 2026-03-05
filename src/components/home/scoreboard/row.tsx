@@ -9,35 +9,45 @@ import { PlaceIcon } from '~/components/icons/generated';
 import { rankBadgeColor, rankTextColor } from '~/lib/colors';
 
 interface CastawayRowProps {
+  colIndex: number;
   place: number;
+  index: number;
   castaway?: EnrichedCastaway;
   points?: number;
   tribeTimeline?: { episode: number; tribe: Tribe }[];
   allZero?: boolean;
   splitIndex?: number;
   bottomBorder?: boolean;
+  maxWidth?: number;
 }
 
 export default function CastawayRow({
+  colIndex,
   place,
+  index,
   castaway,
   points,
   tribeTimeline,
   allZero,
   splitIndex = 0,
   bottomBorder = false,
+  maxWidth
 }: CastawayRowProps) {
   return (
     <View
       className={cn(
         'h-10 flex-row gap-0.5 px-0.5 py-1',
-        divideY(place - splitIndex - 1),
+        divideY(colIndex - splitIndex),
         bottomBorder && 'border-b !h-[36px]'
-      )}>
+      )}
+      style={maxWidth ? { maxWidth } : undefined}>
       {!allZero && (
         <>
           <View className='w-11 inline-flex items-center justify-center'>
-            <PlaceIcon size={28} color={rankBadgeColor(place)} />
+            <PlaceIcon
+              size={28}
+              color={rankBadgeColor(place)}
+              style={{ transform: [{ rotate: `${115 * index}deg` }] }} />
             <Text className={cn('absolute font-black tracking-tighter', rankTextColor(place))}>
               {place}
             </Text>
@@ -55,13 +65,15 @@ export default function CastawayRow({
             className={cn(
               'text-base font-bold',
               allZero && 'w-full text-center',
-              castaway?.eliminatedEpisode && 'line-through opacity-40'
+              castaway?.eliminatedEpisode
+              && !castaway.redemption?.some((r) => r.secondEliminationEpisode === null)
+              && 'line-through opacity-40'
             )}
             numberOfLines={1}>
             {castaway?.fullName}
           </Text>
         </CastawayModal>
-        <View className='ml-auto flex-row items-center gap-0.5'>
+        <View className='ml-auto flex-row items-center gap-0.5 mr-3'>
           <TribeHistoryCircles tribeTimeline={tribeTimeline ?? []} />
         </View>
       </View>

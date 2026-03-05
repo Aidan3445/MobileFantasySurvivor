@@ -35,14 +35,18 @@ export default function CastawayCard({
     await WebBrowser.openBrowserAsync(url);
   };
 
+  const isFullyEliminated =
+    !!castaway.eliminatedEpisode &&
+    !castaway.redemption?.some(r => r.secondEliminationEpisode === null);
+
   return (
     <View className='gap-2 rounded-lg border-2 border-primary/20 bg-primary/5 p-3'>
       {/* Header with Image and Name */}
       <ColorRow
         className='relative h-16 justify-start gap-2 p py-2'
-        color={castaway.tribe!.color}>
+        color={isFullyEliminated ? '#AAAAAA' : castaway.tribe!.color}>
         <View className='flex-row items-center gap-2'>
-          <Grayscale amount={+(castaway.eliminatedEpisode || !!member)}>
+          <Grayscale amount={+(isFullyEliminated || !!member)}>
             <Image
               source={{ uri: castaway.imageUrl }}
               style={{
@@ -50,7 +54,9 @@ export default function CastawayCard({
                 height: 50,
                 borderRadius: 25,
                 borderWidth: 2,
-                borderColor: colors.primary,
+                borderColor: isFullyEliminated
+                  ? colors['muted-foreground']
+                  : colors.primary
               }} />
           </Grayscale>
           <Text className='font-bold text-foreground'>{castaway.fullName}</Text>
@@ -73,15 +79,13 @@ export default function CastawayCard({
         )}
         <Text className='w-12 leading-none text-lg font-black uppercase tracking-tight text-card-foreground'>
           {/* Elimination Indicator */}
-          {castaway.eliminatedEpisode && (
-            <>
-              <View style={{ transform: [{ translateY: 2 }] }}>
-                <FlameKindling size={18} color={colors['muted-foreground']} />
-              </View>
+          {isFullyEliminated && (
+            <View className='flex-row items-center gap-1'>
+              <FlameKindling size={18} color={colors['muted-foreground']} />
               <Text className='italic text-muted-foreground'>
                 {castaway.eliminatedEpisode}
               </Text>
-            </>
+            </View>
           )}
         </Text>
       </ColorRow>

@@ -19,7 +19,7 @@ interface EpisodeMarkerProps {
   tribes: Tribe[];
   castawaysByTribe: Record<number, EnrichedCastaway[]>;
   isKeyEpisode?: boolean;
-  keyEpisodeLabel?: string;
+  keyEpisodeLabels?: string[];
 }
 
 export default function EpisodeMarker({
@@ -28,7 +28,7 @@ export default function EpisodeMarker({
   tribes,
   castawaysByTribe,
   isKeyEpisode,
-  keyEpisodeLabel,
+  keyEpisodeLabels,
 }: EpisodeMarkerProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const expandProgress = useSharedValue(0);
@@ -47,17 +47,19 @@ export default function EpisodeMarker({
     maxHeight: interpolate(expandProgress.value, [0, 1], [0, 1000]),
   }));
 
-  const getBadgeClasses = () => {
-    if (keyEpisodeLabel === 'Premiere') return 'bg-green-500/20 border-green-500/40';
-    if (keyEpisodeLabel === 'Finale') return 'bg-red-500/20 border-red-500/40';
-    if (keyEpisodeLabel === 'Merge') return 'bg-blue-500/20 border-blue-500/40';
-    return 'bg-primary/20 border-primary/40';
+  const getBadgeColor = (keyEpisodeLabel: string) => {
+    if (keyEpisodeLabel === 'Premiere') return 'bg-green-500/20 text-green-600 border-green-500/40';
+    if (keyEpisodeLabel === 'Finale') return 'bg-red-500/20 text-red-600 border-red-500/40';
+    if (keyEpisodeLabel === 'Merge') return 'bg-blue-500/20 text-blue-600 border-blue-500/40';
+    if (keyEpisodeLabel === 'Redemption') return 'bg-black/20 text-black border-black/40';
+    return 'bg-primary/20 text-primary border-primary/40';
   };
 
-  const getBadgeTextColor = () => {
+  const getBadgeTextColor = (keyEpisodeLabel: string) => {
     if (keyEpisodeLabel === 'Premiere') return 'text-green-600';
     if (keyEpisodeLabel === 'Finale') return 'text-red-600';
     if (keyEpisodeLabel === 'Merge') return 'text-blue-600';
+    if (keyEpisodeLabel === 'Redemption') return 'text-black';
     return 'text-primary';
   };
 
@@ -73,13 +75,13 @@ export default function EpisodeMarker({
             <Text className='text-sm font-bold uppercase tracking-wider text-foreground'>
               Episode {episodeNumber}
             </Text>
-            {isKeyEpisode && keyEpisodeLabel && (
-              <View className={cn('rounded border-2 px-2 py-0.5', getBadgeClasses())}>
-                <Text className={cn('text-xs font-black', getBadgeTextColor())}>
-                  {keyEpisodeLabel}
+            {isKeyEpisode && keyEpisodeLabels?.map((label) => (
+              <View key={label} className={cn('rounded border-2 px-2 py-0.5', getBadgeColor(label))}>
+                <Text className={cn('text-xs font-black', getBadgeTextColor(label))}>
+                  {label}
                 </Text>
               </View>
-            )}
+            ))}
           </View>
 
           {/* Episode Title */}

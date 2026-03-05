@@ -41,6 +41,7 @@ export default function SafeAreaRefreshView({
     <SafeAreaView edges={edges} className={cn('flex-1 bg-background', className)}>
       {Platform.OS === 'ios' ? (
         <IOSRefreshView
+          alreadySafe={alreadySafe}
           disableScroll={disableScroll}
           refreshing={refreshing}
           onRefresh={onRefresh}
