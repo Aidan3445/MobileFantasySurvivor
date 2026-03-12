@@ -126,10 +126,15 @@ export default function ChangeCastaway() {
         {/* Main Survivor Section */}
         <View className='gap-2'>
           <View className='flex-row items-center gap-2 px-1'>
-            <View className='h-6 w-1 rounded-full bg-primary' />
-            <Text className='text-xl font-black uppercase tracking-tight text-foreground'>
-              Swap your Survivor Pick
-            </Text>
+            <View className='h-12 w-1 rounded-full bg-primary' />
+            <View>
+              <Text className='text-xl font-black uppercase tracking-tight text-foreground'>
+                Swap Survivor
+              </Text>
+              <Text className='text-sm font-semibold text-muted-foreground'>
+                (Your main castaway)
+              </Text>
+            </View>
           </View>
 
           <View className='gap-2'>
