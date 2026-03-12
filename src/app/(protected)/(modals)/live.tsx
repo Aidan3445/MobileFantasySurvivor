@@ -230,7 +230,7 @@ export default function LivePredictionsScreen() {
                 <View className='flex-row items-center gap-2 px-1'>
                   <View className='h-6 w-1 rounded-full bg-primary' />
                   <Text className='text-xl font-black uppercase tracking-tight text-foreground'>
-                    Predictions
+                    Predictions and Polls
                   </Text>
                 </View>
 
@@ -290,7 +290,7 @@ export default function LivePredictionsScreen() {
               <View className='items-center py-8 gap-2'>
                 <Zap size={32} color={colors.mutedForeground} />
                 <Text className='text-base text-muted-foreground text-center'>
-                  No predictions yet — stay tuned!
+                  No predictions or polls yet — stay tuned!
                 </Text>
               </View>
             )}

@@ -51,7 +51,7 @@ export default function LivePredictionsHeader({ episodeId }: LivePredictionsHead
             <Text
               allowFontScaling={false}
               className='text-2xl font-black uppercase tracking-tight text-foreground'>
-              Live Predictions
+              {'Predictions & Polls'}
             </Text>
             <View className='h-6 w-1 bg-primary rounded-full' />
             <Button
@@ -75,7 +75,7 @@ export default function LivePredictionsHeader({ episodeId }: LivePredictionsHead
 
           {/* Intro */}
           <Text className='text-base text-muted-foreground'>
-            Live predictions are a fun, no-stakes way to test your Survivor instincts while watching episodes in real time.
+            Live predictions and polls are a fun, no-stakes way to test your Survivor instincts while watching episodes in real time.
           </Text>
 
           {/* Info items */}
@@ -100,7 +100,7 @@ export default function LivePredictionsHeader({ episodeId }: LivePredictionsHead
                 <View className='flex-1 gap-0.5'>
                   <Text className='text-base font-bold text-emerald-500'>You're Live</Text>
                   <Text className='text-sm text-muted-foreground leading-snug'>
-                    You'll get notified when predictions drop this episode.
+                    You'll get notified when predictions and polls drop this episode.
                   </Text>
                 </View>
               </View>
@@ -130,7 +130,7 @@ export default function LivePredictionsHeader({ episodeId }: LivePredictionsHead
                   <View className='flex-1 gap-0.5'>
                     <Text className='text-base font-bold text-foreground'>Get Notified</Text>
                     <Text className='text-sm text-muted-foreground leading-snug'>
-                      Opt in to get push notifications when predictions drop this episode.
+                      Opt in to get push notifications when predictions and polls drop this episode.
                     </Text>
                     {liveSettingOff && (
                       <Text className='text-sm text-muted-foreground leading-snug'>
