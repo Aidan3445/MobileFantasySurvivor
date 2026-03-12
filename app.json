@@ -17,6 +17,7 @@
       "backgroundColor": "#E5BC8F"
     },
     "plugins": [
+      "./plugins/xcode-cloud-script.cjs",
       [
         "expo-router",
         {
