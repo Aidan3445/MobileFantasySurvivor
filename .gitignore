@@ -7,6 +7,8 @@ bare-apps
 # Builds
 build
 dist
+ios/*
+!ios/ci_scripts
 android/
 
 
