@@ -11,6 +11,7 @@ import { type LeagueMember } from '~/types/leagueMembers';
 import { MAX_SEASON_LENGTH } from '~/lib/leagues';
 import ColorRow from '~/components/shared/colorRow';
 import { cn } from '~/lib/utils';
+import * as StoreReview from 'expo-store-review';
 
 const formSchema = z.object({
   castawayId: z.coerce.number({ required_error: 'Please select a castaway' }),
@@ -190,6 +191,10 @@ export function useChangeCastaway() {
       form.reset();
       setSelected('');
       Alert.alert('Success', 'Castaway chosen successfully');
+
+      if (await StoreReview.hasAction()) {
+        await StoreReview.requestReview();
+      }
       return { success: true };
     } catch {
       Alert.alert('Error', 'Failed to choose castaway');
