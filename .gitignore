@@ -7,7 +7,6 @@ bare-apps
 # Builds
 build
 dist
-ios/
 android/
 
 
