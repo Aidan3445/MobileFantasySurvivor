@@ -2,19 +2,10 @@ const { withDangerousMod } = require('@expo/config-plugins');
 const fs = require('fs');
 const path = require('path');
 
-const script = `#!/bin/sh
-set -e
-echo "Starting post-clone script..."
-cd "$CI_PRIMARY_REPOSITORY_PATH"
-echo "Installing node modules..."
-npm ci
-cd ios
-echo "Installing pods..."
-pod install
-echo "Post-clone script complete!"
-`;
 
 function withXcodeCloudScript(config) {
+  // eslint-disable-next-line no-undef
+  const script = fs.readFileSync(path.join(__dirname, '../scripts/ci_post_clone.sh'), 'utf8');
   return withDangerousMod(config, [
     'ios',
     async (config) => {
