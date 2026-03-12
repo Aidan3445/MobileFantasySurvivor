@@ -2,8 +2,8 @@
 set -e
 echo "Starting post-clone script..."
 
-# Install Node.js
-brew install node
+# Install Node.js and CocoaPods
+brew install node cocoapods
 
 cd "$CI_PRIMARY_REPOSITORY_PATH"
 echo "Installing node modules..."
