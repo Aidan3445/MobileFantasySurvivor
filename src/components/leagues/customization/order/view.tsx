@@ -116,6 +116,6 @@ export default function DraftOrder({ className }: DraftOrderProps) {
         renderItem={renderItem}
         scrollEnabled={false}
         activationDistance={orderLocked ? 999999 : 2} />
-    </View >
+    </View>
   );
 }

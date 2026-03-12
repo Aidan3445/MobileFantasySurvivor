@@ -25,7 +25,7 @@ type StatusConfig = {
 
 const statusConfig: Record<League['status'], StatusConfig> = {
   Active: {
-    label: 'LIVE',
+    label: 'ACTIVE',
     color: 'bg-green-500/20',
     textColor: 'text-green-600',
     strokeColor: '#16a34a',

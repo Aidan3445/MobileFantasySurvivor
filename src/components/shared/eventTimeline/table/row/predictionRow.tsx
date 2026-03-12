@@ -47,7 +47,9 @@ export default function PredictionRow({
               {BaseEventFullName[event.eventName as BaseEventName]}
             </Text>
           )}
-          <Text className='text-base text-foreground'>{label}</Text>
+          {label.split('#/').map((part, index) => (
+            <Text key={index} className='text-base text-foreground'>{part}</Text>
+          ))}
         </View>
       </View>
     </View>
@@ -70,7 +72,9 @@ export default function PredictionRow({
               {BaseEventFullName[event.eventName as BaseEventName]}
             </Text>
           )}
-          <Text className='text-base text-foreground'>{label}</Text>
+          {label.split('#/').map((part, index) => (
+            <Text key={index} className='text-base text-foreground'>{part}</Text>
+          ))}
         </View>
       </View>
 
@@ -92,8 +96,8 @@ export default function PredictionRow({
 
       {/* Castaways */}
       <View className='w-32 items-end justify-center gap-0.5'>
-        {event.referenceMap.map(({ pairs }) =>
-          pairs.map(({ castaway }) => (
+        {event.referenceMap.filter(({ tribe }) => !tribe).map(({ pairs }) =>
+          pairs.map(({ castaway }) =>
             <CastawayModal key={castaway.castawayId} castaway={castaway}>
               <ColorRow className='leading-tight' color={castaway.tribe?.color ?? '#AAAAAA'}>
                 <MarqueeText
@@ -102,7 +106,7 @@ export default function PredictionRow({
                   className='text-base text-foreground font-medium' />
               </ColorRow>
             </CastawayModal>
-          ))
+          )
         )}
       </View>
 

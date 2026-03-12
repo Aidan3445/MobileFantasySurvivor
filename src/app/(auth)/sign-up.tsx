@@ -1,13 +1,16 @@
 import * as React from 'react';
-import { Platform, Text, TextInput, TouchableOpacity, View, type TextInputEndEditingEvent, } from 'react-native';
-import { useSignUp } from '@clerk/clerk-expo';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { SignUpWithGoogle } from '~/components/auth/signUpWithGoogle';
+import {
+  Platform, Text, TextInput, TouchableOpacity, View, type TextInputEndEditingEvent,
+} from 'react-native';
+import { useAuth, useSignUp } from '@clerk/expo';
+import { type Href, useLocalSearchParams, useRouter } from 'expo-router';
 import AuthCard from '~/components/auth/wrapper';
-import { SignUpWithApple } from '~/components/auth/signUpWithApple';
+import AppleAuth from '~/components/auth/appleAuth';
+import GoogleAuth from '~/components/auth/googleAuth';
 
 export default function SignUpScreen() {
-  const { isLoaded, signUp, setActive } = useSignUp();
+  const { signUp, errors, fetchStatus } = useSignUp();
+  const { isSignedIn } = useAuth();
   const { redirectTo } = useLocalSearchParams<{ redirectTo?: string }>();
   const router = useRouter();
 
@@ -15,16 +18,14 @@ export default function SignUpScreen() {
   const [emailAddress, setEmailAddress] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
-
-  const [pendingVerification, setPendingVerification] = React.useState(false);
   const [code, setCode] = React.useState('');
-
   const [formError, setFormError] = React.useState<string | null>(null);
-  const [clerkError, setClerkError] = React.useState<string | null>(null);
 
   const emailRef = React.useRef<TextInput>(null);
   const passwordRef = React.useRef<TextInput>(null);
   const confirmRef = React.useRef<TextInput>(null);
+
+  const isLoading = fetchStatus === 'fetching';
 
   // iOS autofill bypasses onChangeText — onEndEditing fires with the correct native value
   const makeEndEditingHandler = React.useCallback(
@@ -41,67 +42,57 @@ export default function SignUpScreen() {
   );
 
   const onSignUpPress = async () => {
-    if (!isLoaded) return;
-
     setFormError(null);
-    setClerkError(null);
 
     if (password !== confirmPassword) {
       setFormError('Passwords do not match');
       return;
     }
 
-    try {
-      await signUp.create({
-        username: username.trim(),
-        emailAddress: emailAddress.trim().toLowerCase(),
-        password: password.trim(),
-      });
+    const { error } = await signUp.password({
+      emailAddress: emailAddress.trim().toLowerCase(),
+      password: password.trim(),
+      username: username.trim(),
+    });
 
-      await signUp.prepareEmailAddressVerification({
-        strategy: 'email_code',
-      });
-
-      setPendingVerification(true);
-    } catch (err: any) {
-      const message =
-        err?.errors?.[0]?.longMessage ||
-        err?.errors?.[0]?.message ||
-        'Something went wrong. Please try again.';
-
-      setClerkError(message);
+    if (error) {
+      console.error(JSON.stringify(error, null, 2));
+      return;
     }
+
+    await signUp.verifications.sendEmailCode();
   };
 
   const onVerifyPress = async () => {
-    if (!isLoaded) return;
+    await signUp.verifications.verifyEmailCode({ code });
 
-    setClerkError(null);
-
-    try {
-      const signUpAttempt = await signUp.attemptEmailAddressVerification({
-        code,
+    if (signUp.status === 'complete') {
+      await signUp.finalize({
+        navigate: ({ session }) => {
+          if (session?.currentTask) {
+            console.log(session?.currentTask);
+            router.push('/sign-in/tasks');
+            return;
+          }
+          router.replace((redirectTo ?? '/') as Href);
+        },
       });
-
-      if (signUpAttempt.status === 'complete') {
-        await setActive({
-          session: signUpAttempt.createdSessionId,
-        });
-        router.replace(redirectTo ?? '/');
-      } else {
-        setClerkError('Verification could not be completed.');
-      }
-    } catch (err: any) {
-      const message =
-        err?.errors?.[0]?.longMessage ||
-        err?.errors?.[0]?.message ||
-        'Invalid verification code.';
-
-      setClerkError(message);
+    } else {
+      console.error('Sign-up attempt not complete:', signUp);
     }
   };
 
-  if (pendingVerification) {
+  if (signUp.status === 'complete' || isSignedIn) {
+    return null;
+  }
+
+  // Show verification screen when email needs verifying and no other fields are missing
+  const isPendingVerification =
+    signUp.status === 'missing_requirements' &&
+    signUp.unverifiedFields.includes('email_address') &&
+    signUp.missingFields.length === 0;
+
+  if (isPendingVerification) {
     return (
       <AuthCard>
         <View className='mb-8 items-center'>
@@ -125,24 +116,27 @@ export default function SignUpScreen() {
             returnKeyType='done'
             onSubmitEditing={onVerifyPress} />
 
-          {clerkError && (
+          {errors.fields.code && (
             <Text className='text-center text-sm text-red-600'>
-              {clerkError}
+              {errors.fields.code.message}
             </Text>
           )}
 
           <TouchableOpacity
             onPress={onVerifyPress}
-            className='mt-6 rounded-2xl bg-primary py-4'>
+            disabled={isLoading}
+            className={`mt-6 rounded-2xl bg-primary py-4 ${isLoading ? 'opacity-50' : ''}`}>
             <Text className='text-center text-lg font-semibold text-white'>
               Verify
             </Text>
           </TouchableOpacity>
+
           <TouchableOpacity
-            onPress={() => setPendingVerification(false)}
-            className='mt-4 rounded-2xl bg-accent/20 py-4'>
+            onPress={() => signUp.verifications.sendEmailCode()}
+            disabled={isLoading}
+            className='mt-2 rounded-2xl bg-accent/20 py-4'>
             <Text className='text-center text-lg font-semibold text-primary'>
-              Back
+              Resend Code
             </Text>
           </TouchableOpacity>
         </View>
@@ -173,6 +167,12 @@ export default function SignUpScreen() {
           onEndEditing={makeEndEditingHandler(username, setUsername)}
           returnKeyType='next'
           onSubmitEditing={() => emailRef.current?.focus()} />
+        {errors.fields.username && (
+          <Text className='text-sm text-red-600'>
+            {errors.fields.username.message}
+          </Text>
+        )}
+
         <TextInput
           ref={emailRef}
           autoCapitalize='none'
@@ -186,6 +186,12 @@ export default function SignUpScreen() {
           onEndEditing={makeEndEditingHandler(emailAddress, setEmailAddress)}
           returnKeyType='next'
           onSubmitEditing={() => passwordRef.current?.focus()} />
+        {errors.fields.emailAddress && (
+          <Text className='text-sm text-red-600'>
+            {errors.fields.emailAddress.message}
+          </Text>
+        )}
+
         <TextInput
           ref={passwordRef}
           value={password}
@@ -200,6 +206,12 @@ export default function SignUpScreen() {
           onEndEditing={makeEndEditingHandler(password, setPassword)}
           returnKeyType='next'
           onSubmitEditing={() => confirmRef.current?.focus()} />
+        {errors.fields.password && (
+          <Text className='text-sm text-red-600'>
+            {errors.fields.password.message}
+          </Text>
+        )}
+
         <TextInput
           ref={confirmRef}
           value={confirmPassword}
@@ -218,13 +230,10 @@ export default function SignUpScreen() {
           <Text className='text-sm text-red-600'>{formError}</Text>
         )}
 
-        {clerkError && (
-          <Text className='text-sm text-red-600'>{clerkError}</Text>
-        )}
-
         <TouchableOpacity
           onPress={onSignUpPress}
-          className='mt-6 rounded-full bg-primary h-10 justify-center'>
+          disabled={isLoading}
+          className={`mt-6 rounded-full bg-primary h-10 justify-center ${isLoading ? 'opacity-50' : ''}`}>
           <Text className='text-center text-lg font-semibold text-white'>
             Continue
           </Text>
@@ -233,8 +242,8 @@ export default function SignUpScreen() {
         <Text className='text-center text-secondary'>Or</Text>
 
         <View className='w-full flex-row items-center gap-2'>
-          <SignUpWithApple />
-          <SignUpWithGoogle />
+          <AppleAuth type='sign-up' />
+          <GoogleAuth type='sign-up' />
         </View>
       </View>
 
@@ -248,6 +257,6 @@ export default function SignUpScreen() {
           </Text>
         </TouchableOpacity>
       </View>
-    </AuthCard >
+    </AuthCard>
   );
 }

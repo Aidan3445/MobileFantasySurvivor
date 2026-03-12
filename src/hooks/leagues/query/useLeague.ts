@@ -8,9 +8,10 @@ import { useIsFocused } from '@react-navigation/native';
  * Fetches league data based on the league hash from the URL parameters.
  * Adjusts stale time and fetch intervals based on the league status and episode airing status.
  * @param overrideHash Optional hash to override URL parameter.
- * @returnObj `League & { isEpisodeAiring: boolean }`
+ * @param rapidRefresh Faster refresh during airing episode
+ * @returnObj `League`
  */
-export function useLeague(overrideHash?: string) {
+export function useLeague(overrideHash?: string, rapidRefresh = false) {
   const isFocused = useIsFocused();
   const router = useRouter();
   const fetchData = useFetch();
@@ -53,16 +54,20 @@ export function useLeague(overrideHash?: string) {
     },
     gcTime: 10 * 60 * 1000,
     refetchInterval: query => {
+      if (rapidRefresh) return 10 * 1000; // 10 seconds if rapid refresh is enabled
+
       const data = query.state.data;
       if (!data) return false;
 
       switch (data.status) {
         case 'Draft':
-          return 30 * 1000; // 30 seconds during draft
+          return 5 * 1000; // 5 seconds during draft
         case 'Predraft':
           return 60 * 1000; // 1 minute during predraft (waiting for draft to start)
+        case 'Inactive':
+          return false; // never refetch inactive leagues
         default:
-          return false; // No polling for other states
+          return 5 * 60 * 1000; // 5 minutes for active and other leagues
       }
     },
     refetchOnWindowFocus: query => {

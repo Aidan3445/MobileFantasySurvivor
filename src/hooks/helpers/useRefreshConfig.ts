@@ -23,7 +23,7 @@ export function useRefreshConfig(
         refetchInterval: 30 * 1000, // 30 seconds
         refetchOnWindowFocus: true,
         refetchOnReconnect: true,
-        gcTime: Infinity,
+        gcTime: 30 * 60 * 1000, // 30 minutes
         ...(requireFocus && { enabled: isFocused })
       };
     }
@@ -34,7 +34,7 @@ export function useRefreshConfig(
         refetchInterval: 60 * 1000, // 1 minute
         refetchOnWindowFocus: true,
         refetchOnReconnect: true,
-        gcTime: Infinity,
+        gcTime: 3 * 60 * 1000, // 3 minutes
         ...(requireFocus && { enabled: isFocused })
       };
     } else {
@@ -43,7 +43,7 @@ export function useRefreshConfig(
         refetchInterval: 10 * 60 * 1000, // 10 minutes
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
-        gcTime: Infinity,
+        gcTime: 30 * 60 * 1000, // 30 minutes
         ...(requireFocus && { enabled: isFocused })
       };
     }

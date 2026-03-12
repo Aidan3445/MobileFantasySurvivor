@@ -118,7 +118,6 @@ export default function LivePredictionsScreen() {
   if (!loaded) return null;
 
   const notificationsDisabled = pushPermission !== 'granted' || !settings.enabled;
-  const liveSettingOff = !settings.liveScoring;
   const showBanner = !isOptedIn && !dismissed && !!episodeId;
   const hasPredictions = predictions && predictions.length > 0;
 
@@ -183,13 +182,6 @@ export default function LivePredictionsScreen() {
                 <Text className='text-sm text-muted-foreground'>
                   Opt in to get push notifications for live predictions during this episode.
                 </Text>
-                {liveSettingOff && (
-                  <Text className='text-sm text-muted-foreground'>
-                    Want to be prompted automatically each week? Toggle{' '}
-                    <Text className='font-bold text-primary'>Live Scoring</Text> in your
-                    notification settings.
-                  </Text>
-                )}
                 <View className='flex-row gap-2'>
                   <Button
                     onPress={handleDismiss}
@@ -230,7 +222,7 @@ export default function LivePredictionsScreen() {
                 <View className='flex-row items-center gap-2 px-1'>
                   <View className='h-6 w-1 rounded-full bg-primary' />
                   <Text className='text-xl font-black uppercase tracking-tight text-foreground'>
-                    Predictions
+                    Predictions and Polls
                   </Text>
                 </View>
 
@@ -290,7 +282,7 @@ export default function LivePredictionsScreen() {
               <View className='items-center py-8 gap-2'>
                 <Zap size={32} color={colors.mutedForeground} />
                 <Text className='text-base text-muted-foreground text-center'>
-                  No predictions yet — stay tuned!
+                  No predictions or polls yet — stay tuned!
                 </Text>
               </View>
             )}

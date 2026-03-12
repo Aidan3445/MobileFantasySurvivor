@@ -1,7 +1,7 @@
 import '~/global.css';
 import { Slot, useRouter, useSegments } from 'expo-router';
-import { ClerkLoaded, ClerkProvider, useAuth } from '@clerk/clerk-expo';
-import { tokenCache } from '@clerk/clerk-expo/token-cache';
+import { ClerkLoaded, ClerkProvider, useAuth } from '@clerk/expo';
+import { tokenCache } from '@clerk/expo/token-cache';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { useEffect } from 'react';
 import LoadingScreen from '~/components/auth/loadingScreen';

@@ -1,5 +1,5 @@
 import { type ReactNode, useEffect, useMemo, useState } from 'react';
-import { View, Text, TextInput, Pressable } from 'react-native';
+import { View, Text, TextInput } from 'react-native';
 import { Controller } from 'react-hook-form';
 import { RotateCcw, HelpCircle, X } from 'lucide-react-native';
 import { cn } from '~/lib/utils';
@@ -10,6 +10,7 @@ import ColorRow from '~/components/shared/colorRow';
 import Modal from '~/components/common/modal';
 import { type ReferenceType, type MakePrediction } from '~/types/events';
 import { colors } from '~/lib/colors';
+import Button from '~/components/common/button';
 
 interface SubmissionCardProps {
   prediction: MakePrediction;
@@ -130,12 +131,12 @@ export default function SubmissionCard({
     <View className='gap-2 p-2 bg-card/50 justify-end'>
       <View className='flex-row items-center gap-2'>
         {/* Reset Button */}
-        <Pressable
+        <Button
           onPress={handleReset}
           disabled={!isDirty}
           className={cn('p-2', !isDirty && 'opacity-50')}>
           <RotateCcw size={16} color={colors.foreground} />
-        </Pressable>
+        </Button>
 
         {/* Select */}
         <View className='flex-1'>
@@ -160,9 +161,9 @@ export default function SubmissionCard({
       {/* Bet Input (if shauhin enabled) */}
       {prediction.shauhinEnabled && !!wallet && (
         <View className='flex-row items-center gap-2'>
-          <Pressable onPress={() => setHelpVisible(true)} className='p-2'>
+          <Button onPress={() => setHelpVisible(true)} className='p-2'>
             <HelpCircle size={16} color={colors.mutedForeground} />
-          </Pressable>
+          </Button>
           <Controller
             control={control}
             name='bet'
@@ -187,23 +188,23 @@ export default function SubmissionCard({
       )}
 
       {/* Submit Button */}
-      <Pressable
+      <Button
         onPress={() => void onSubmit()}
         disabled={isSubmitDisabled}
         className={cn('rounded-lg bg-primary p-3 active:opacity-80', isSubmitDisabled && 'opacity-50')}>
         <Text allowFontScaling={false} className='text-center font-bold text-primary-foreground'>
           {prediction.predictionMade ? 'Update' : 'Submit'}
         </Text>
-      </Pressable>
+      </Button>
 
       {/* Shauhin Help Modal */}
       <Modal visible={helpVisible} onClose={() => setHelpVisible(false)}>
         <View className='gap-3'>
           <View className='flex-row items-center justify-between'>
             <Text className='text-lg font-bold text-foreground'>Shauhin Mode</Text>
-            <Pressable onPress={() => setHelpVisible(false)}>
+            <Button onPress={() => setHelpVisible(false)}>
               <X size={20} color={colors.mutedForeground} />
-            </Pressable>
+            </Button>
           </View>
           <Text className='text-base text-foreground'>
             If your prediction is correct, you will earn the bet amount in points. Miss it, and you lose the bet amount.

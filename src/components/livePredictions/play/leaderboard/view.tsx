@@ -7,7 +7,7 @@ import { colors, rankBadgeColor, rankTextColor } from '~/lib/colors';
 import { LeaguesIcon, PlaceIcon, PlaygroundIcon } from '~/components/icons/generated';
 import { useLiveLeaderboard } from '~/hooks/livePredictions/query/useLiveLeaderboard';
 import { useLivePredictionStats } from '~/hooks/livePredictions/query/useLivePredictionStats';
-import { useAuth } from '@clerk/clerk-expo';
+import { useAuth } from '@clerk/expo';
 import LeaderboardRow from '~/components/livePredictions/play/leaderboard/row';
 
 type LeaderboardType = 'friends' | 'global';

@@ -102,8 +102,14 @@ export default function QuickActions({ showClone, pendingLeagues, className }: Q
                   {item.icon}
                 </View>
                 <View className='flex-1'>
-                  <Text className='font-bold text-foreground'>{item.label}</Text>
-                  <Text className='text-xs text-muted-foreground'>{item.subtitle}</Text>
+                  <Text allowFontScaling={false} className='font-bold text-foreground'>
+                    {item.label}
+                  </Text>
+                  <Text
+                    allowFontScaling={false}
+                    className='text-xs text-muted-foreground'>
+                    {item.subtitle}
+                  </Text>
                 </View>
                 <ChevronRight size={20} color={colors.primary} />
               </Button>

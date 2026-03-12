@@ -82,7 +82,7 @@ export default function MakePredictions() {
       <View className='p-3 gap-2'>
         {/* Bet Balance (Shauhin Mode) */}
         {rules?.shauhinMode?.enabled && rules.shauhinMode.enabledBets.length > 0 && (
-          <View className='absolute top-2 right-2 items-end'>
+          <View className='absolute top-0 right-0 items-end'>
             <View className='flex-row items-center px-1'>
               <Text
                 allowFontScaling={false}

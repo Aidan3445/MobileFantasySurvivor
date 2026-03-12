@@ -1,9 +1,19 @@
 import { useMemo } from 'react';
 import { useLeague } from '~/hooks/leagues/query/useLeague';
 import { useRefresh } from '~/hooks/helpers/refresh/useRefresh';
+import { useQueryClient } from '@tanstack/react-query';
+import { useIsEpisodeAiringForSeason } from '~/hooks/helpers/useIsEpisodeAiring';
+import { type League } from '~/types/leagues';
+import { useLocalSearchParams } from 'expo-router';
 
 export function useLeagueRefresh(overrideHash?: string) {
-  const { data: league } = useLeague(overrideHash);
+  const params = useLocalSearchParams();
+  const hash = overrideHash ?? (params.hash as string);
+  const queryClient = useQueryClient();
+  const isEpisodeAiring = useIsEpisodeAiringForSeason(
+    queryClient.getQueryData<League>(['league', hash])?.seasonId ?? null
+  );
+  const { data: league } = useLeague(hash, isEpisodeAiring);
 
   const keysToInvalidate = useMemo(() => [
     ['league', league?.hash],
@@ -18,5 +28,5 @@ export function useLeagueRefresh(overrideHash?: string) {
     ['seasons', league?.seasonId],
   ], [league?.hash, league?.seasonId]);
 
-  return useRefresh(keysToInvalidate);
+  return { ...useRefresh(keysToInvalidate), league };
 }

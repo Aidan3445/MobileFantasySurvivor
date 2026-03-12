@@ -31,6 +31,9 @@ module.exports = {
         '26': '6.5rem',
         '30': '7.5rem',
       },
+      letterSpacing: {
+        'tightest': '-1px',
+      },
       animation: {
         "fade-in": 'fade-in 0.25s ease-in forwards',
       },

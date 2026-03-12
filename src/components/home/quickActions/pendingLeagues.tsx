@@ -25,8 +25,16 @@ export default function PendingLeagues({ pendingLeagues, className }: PendingLea
           <Hourglass size={18} color={colors.primary} />
         </View>
         <View className='flex-1'>
-          <Text className='font-bold text-foreground'>View Pending</Text>
-          <Text className='text-xs text-muted-foreground'>Awaiting approval...</Text>
+          <Text
+            allowFontScaling={false}
+            className='font-bold text-foreground'>
+            View Pending
+          </Text>
+          <Text
+            allowFontScaling={false}
+            className='text-xs text-muted-foreground'>
+            Awaiting approval...
+          </Text>
         </View>
         <ChevronRight size={20} color={colors.primary} />
       </Button>

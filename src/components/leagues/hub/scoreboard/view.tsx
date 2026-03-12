@@ -24,7 +24,9 @@ export default function Scoreboard({ overrideHash, maxRows, className }: Scorebo
     shotInTheDarkStatus
   } = useLeagueData(overrideHash);
 
-  const episodeNum = keyEpisodes?.nextEpisode?.episodeNumber ?? Infinity;
+  const episodeNum = keyEpisodes?.previousEpisode?.airStatus === 'Airing'
+    ? keyEpisodes.previousEpisode.episodeNumber
+    : keyEpisodes?.nextEpisode?.episodeNumber ?? Infinity;
 
   return (
     <View className={className}>
@@ -115,7 +117,8 @@ export default function Scoreboard({ overrideHash, maxRows, className }: Scorebo
               color={member.color}
               dashedAbove={!!maxRows && loggedInIndex > maxRows && member.loggedIn}
               overrideHash={overrideHash}
-              shotInTheDarkStatus={shotInTheDarkStatus?.[member.memberId]} />
+              shotInTheDarkStatus={shotInTheDarkStatus?.[member.memberId]}
+              isAiring={keyEpisodes?.previousEpisode?.airStatus === 'Airing'} />
           );
         })}
       </View>

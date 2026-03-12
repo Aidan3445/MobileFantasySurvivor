@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Platform, Alert, Linking } from 'react-native';
 import * as Notifications from 'expo-notifications';
-import { useAuth } from '@clerk/clerk-expo';
+import { useAuth } from '@clerk/expo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PUSH_PROMPTED_KEY = 'push_permission_prompted';

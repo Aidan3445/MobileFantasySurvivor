@@ -2,7 +2,6 @@
 
 import { Platform, View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
-import { useLeague } from '~/hooks/leagues/query/useLeague';
 import { useLeagueRefresh } from '~/hooks/helpers/refresh/useLeagueRefresh';
 import { cn } from '~/lib/utils';
 import { useSysAdmin } from '~/hooks/user/useSysAdmin';
@@ -18,9 +17,8 @@ import { Fragment } from 'react';
 
 export default function LeagueHubScreen() {
   const { hash } = useLocalSearchParams<{ hash: string }>();
-  const { data: league } = useLeague(hash);
+  const { refreshing, onRefresh, scrollY, handleScroll, league } = useLeagueRefresh();
   const { data: leagueMembers } = useLeagueMembers(hash);
-  const { refreshing, onRefresh, scrollY, handleScroll } = useLeagueRefresh();
   const { data: userId } = useSysAdmin();
 
   return (
