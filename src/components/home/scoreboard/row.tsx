@@ -45,15 +45,20 @@ export default function CastawayRow({
         <>
           <View className='w-11 inline-flex items-center justify-center'>
             <PlaceIcon
+              allowFontScaling={false}
               size={28}
               color={rankBadgeColor(place)}
               style={{ transform: [{ rotate: `${105 * index}deg` }] }} />
-            <Text className={cn('absolute font-black tracking-tightest', rankTextColor(place))}>
+            <Text
+              allowFontScaling={false}
+              className={cn('absolute font-black tracking-tightest', rankTextColor(place))}>
               {place}
             </Text>
           </View>
           <View className='-ml-2 w-10 items-center justify-center'>
-            <Text className='text-center font-black tracking-tightest text-primary'>
+            <Text
+              allowFontScaling={false}
+              className='text-center font-black tracking-tightest text-primary'>
               {points}
             </Text>
           </View>
@@ -62,6 +67,7 @@ export default function CastawayRow({
       <View className='flex-1 flex-row items-center gap-2 pr-2'>
         <CastawayModal castaway={castaway}>
           <Text
+            allowFontScaling={false}
             className={cn(
               'text-base font-bold',
               allZero && 'w-full text-center',

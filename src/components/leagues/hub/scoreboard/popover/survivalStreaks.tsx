@@ -40,7 +40,9 @@ export default function SurvivalStreaks({
     }
 
     return (
-      <Text className='text-base font-bold text-foreground'>
+      <Text
+        allowFontScaling={false}
+        className='text-base font-bold text-foreground'>
         {Math.min(currentStreak ?? Infinity, survivalCap)}
       </Text>
     );
@@ -59,7 +61,9 @@ export default function SurvivalStreaks({
           {/* Header */}
           <View className='flex-row items-center justify-center gap-1'>
             <PointsIcon size={16} color={colors.primary} />
-            <Text className='text-base font-bold uppercase tracking-wider text-foreground'>
+            <Text
+              allowFontScaling={false}
+              className='text-base font-bold uppercase tracking-wider text-foreground'>
               Survival Streak
             </Text>
           </View>
@@ -68,14 +72,18 @@ export default function SurvivalStreaks({
 
           {/* Streak Info */}
           <View className='gap-1'>
-            <Text className='text-base text-foreground'>
+            <Text
+              allowFontScaling={false}
+              className='text-base text-foreground'>
               Current streak: <Text className='font-bold'>{currentStreak ?? 0}</Text>
             </Text>
             <View className='flex-row items-center gap-0'>
-              <Text className='text-base text-foreground'>
+              <Text
+                allowFontScaling={false}
+                className='text-base text-foreground'>
                 Point cap: <Text className='font-bold'>{survivalCap}</Text>
               </Text>
-              <PointsIcon size={12} color={colors.primary} />
+              <PointsIcon allowFontScaling={false} size={12} color={colors.primary} />
             </View>
           </View>
 

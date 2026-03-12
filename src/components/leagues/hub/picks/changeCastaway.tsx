@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from 'react-native';
+import { View, Text } from 'react-native';
 import { Controller } from 'react-hook-form';
 import { cn } from '~/lib/utils';
 import { colors } from '~/lib/colors';
@@ -8,6 +8,7 @@ import ShotInTheDark from '~/components/leagues/hub/picks/shotInTheDark';
 import { useChangeCastaway } from '~/hooks/leagues/mutation/useChangeCastaway';
 import Modal from '~/components/common/modal';
 import { getContrastingColor } from '@uiw/color-convert';
+import Button from '~/components/common/button';
 
 export default function ChangeCastaway() {
   const {
@@ -142,7 +143,7 @@ export default function ChangeCastaway() {
                   onSelect={(value) => handleSelectionChange('survivor', String(value))}
                   placeholder='Select new survivor' />
               )} />
-            <Pressable
+            <Button
               onPress={onSubmitMain}
               disabled={!canSubmitMain}
               className={cn(
@@ -152,7 +153,7 @@ export default function ChangeCastaway() {
               <Text className='text-center text-base font-bold uppercase tracking-wider text-white'>
                 {isEpisodeAiring ? 'Episode Airing' : isSubmitting ? 'Submitting...' : 'Submit'}
               </Text>
-            </Pressable>
+            </Button>
           </View>
         </View>
 
@@ -160,10 +161,15 @@ export default function ChangeCastaway() {
         {secondaryPickSettings?.enabled && keyEpisodes?.nextEpisode && (
           <View className='gap-2'>
             <View className='flex-row items-center gap-2 px-1'>
-              <View className='h-6 w-1 rounded-full bg-primary' />
-              <Text className='text-xl font-black uppercase tracking-tight text-foreground'>
-                Secondary Pick
-              </Text>
+              <View className='h-12 w-1 rounded-full bg-primary' />
+              <View>
+                <Text className='text-xl font-black uppercase tracking-tight text-foreground'>
+                  Secondary Pick
+                </Text>
+                <Text className='text-sm font-semibold text-muted-foreground'>
+                  (Choose weekly for extra points)
+                </Text>
+              </View>
             </View>
 
             <View className='gap-2'>
@@ -173,7 +179,7 @@ export default function ChangeCastaway() {
                 selectedValue={secondarySelected ? parseInt(secondarySelected) : undefined}
                 onSelect={(value) => handleSelectionChange('secondary', String(value))}
                 placeholder='Select secondary pick' />
-              <Pressable
+              <Button
                 onPress={onSubmitSecondary}
                 disabled={!canSubmitSecondary}
                 className={cn(
@@ -183,7 +189,7 @@ export default function ChangeCastaway() {
                 <Text className='text-center text-base font-bold uppercase tracking-wider text-white'>
                   {isEpisodeAiring ? 'Episode Airing' : isSubmittingSecondary ? 'Submitting...' : 'Submit'}
                 </Text>
-              </Pressable>
+              </Button>
             </View>
           </View>
         )}
@@ -204,13 +210,13 @@ export default function ChangeCastaway() {
             {'\n\n'}
             You're still in it, good luck!
           </Text>
-          <Pressable
+          <Button
             onPress={markDialogClosed}
             className='rounded-lg bg-primary p-3 active:opacity-80'>
             <Text className='text-center text-base font-bold uppercase tracking-wider text-primary-foreground'>
               Got it!
             </Text>
-          </Pressable>
+          </Button>
         </View>
       </Modal>
     </>

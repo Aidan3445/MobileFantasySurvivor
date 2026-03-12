@@ -64,23 +64,32 @@ export default function MemberRow({
       )}>
       <View className='w-11 inline-flex items-center justify-center'>
         <PlaceIcon
+          allowFontScaling={false}
           size={30}
           color={rankBadgeColor(place)}
           style={{ transform: [{ rotate: `${105 * index}deg` }] }} />
-        <Text className={cn('absolute font-black tracking-tightest', rankTextColor(place))}>
+        <Text
+          allowFontScaling={false}
+          className={cn('absolute font-black tracking-tightest', rankTextColor(place))}>
           {place}
         </Text>
       </View>
       <View className='w-10 -ml-2 items-center justify-center flex-row'>
-        <Text className='text-center font-black tracking-tightest text-primary'>
+        <Text
+          allowFontScaling={false}
+          className='text-center font-black tracking-tightest text-primary'>
           {wholePoints}
         </Text>
         {isHalfPoint && (
           <View className='scale-75'>
-            <Text className='text-center font-black tracking-tighter text-primary border-b-2 border-primary'>
+            <Text
+              allowFontScaling={false}
+              className='text-center font-black tracking-tighter text-primary border-b-2 border-primary'>
               1
             </Text>
-            <Text className='text-center font-black tracking-tighter text-primary'>
+            <Text
+              allowFontScaling={false}
+              className='text-center font-black tracking-tighter text-primary'>
               2
             </Text>
           </View>
@@ -88,6 +97,7 @@ export default function MemberRow({
       </View>
       <ColorRow color={color} className='flex-1 items-center'>
         <MarqueeText
+          allowFontScaling={false}
           text={member.displayName}
           className={cn(
             'text-base font-bold transition-all text-black cursor-pointer',
@@ -100,6 +110,7 @@ export default function MemberRow({
       <View className='w-24 justify-center'>
         <CastawayModal castaway={castaway}>
           <Text
+            allowFontScaling={false}
             className={cn(
               'text-base font-medium transition-all text-black text-nowrap',
               isFullyEliminated && 'line-through opacity-40'
@@ -112,6 +123,7 @@ export default function MemberRow({
         <View className='w-24 justify-center'>
           <CastawayModal castaway={secondaryPick}>
             <Text
+              allowFontScaling={false}
               className={cn(
                 'text-base font-medium transition-all text-black text-nowrap',
                 isSecondaryPickEliminated && 'line-through opacity-40'
@@ -122,7 +134,9 @@ export default function MemberRow({
         </View>
       ) : (
         <View className='w-24 justify-center'>
-          <Text className='text-base md:text-lg font-medium text-muted-foreground'>
+          <Text
+            allowFontScaling={false}
+            className='text-base md:text-lg font-medium text-muted-foreground'>
             {secondaryPick === null ? 'Hidden' : isAiring ? 'No Pick' : 'Pending'}...
           </Text>
         </View>
