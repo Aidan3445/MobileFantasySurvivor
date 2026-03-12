@@ -64,7 +64,6 @@ export async function registerPushToken(
           reminders: settings.reminders,
           leagueActivity: settings.leagueActivity,
           episodeUpdates: settings.episodeUpdates,
-          liveScoring: settings.liveScoring,
         }
         : undefined,
     },

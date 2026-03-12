@@ -118,7 +118,6 @@ export default function LivePredictionsScreen() {
   if (!loaded) return null;
 
   const notificationsDisabled = pushPermission !== 'granted' || !settings.enabled;
-  const liveSettingOff = !settings.liveScoring;
   const showBanner = !isOptedIn && !dismissed && !!episodeId;
   const hasPredictions = predictions && predictions.length > 0;
 
@@ -183,13 +182,6 @@ export default function LivePredictionsScreen() {
                 <Text className='text-sm text-muted-foreground'>
                   Opt in to get push notifications for live predictions during this episode.
                 </Text>
-                {liveSettingOff && (
-                  <Text className='text-sm text-muted-foreground'>
-                    Want to be prompted automatically each week? Toggle{' '}
-                    <Text className='font-bold text-primary'>Live Scoring</Text> in your
-                    notification settings.
-                  </Text>
-                )}
                 <View className='flex-row gap-2'>
                   <Button
                     onPress={handleDismiss}

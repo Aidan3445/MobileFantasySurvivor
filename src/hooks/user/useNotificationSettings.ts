@@ -10,7 +10,6 @@ export interface NotificationSettings {
   reminders: boolean;
   leagueActivity: boolean;
   episodeUpdates: boolean;
-  liveScoring: boolean;
 }
 
 const defaultSettings: NotificationSettings = {
@@ -18,7 +17,6 @@ const defaultSettings: NotificationSettings = {
   reminders: true,
   leagueActivity: true,
   episodeUpdates: true,
-  liveScoring: true,
 };
 
 export function useNotificationSettings() {
@@ -57,7 +55,6 @@ export function useNotificationSettings() {
               reminders: newSettings.reminders,
               leagueActivity: newSettings.leagueActivity,
               episodeUpdates: newSettings.episodeUpdates,
-              liveScoring: newSettings.liveScoring,
             },
           },
         });

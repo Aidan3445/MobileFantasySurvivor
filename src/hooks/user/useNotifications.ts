@@ -44,7 +44,6 @@ export function useNotifications() {
             reminders: settings.reminders,
             leagueActivity: settings.leagueActivity,
             episodeUpdates: settings.episodeUpdates,
-            liveScoring: settings.liveScoring,
           }
           : undefined,
       },

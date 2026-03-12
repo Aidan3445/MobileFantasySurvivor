@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Alert } from 'react-native';
 import { useFetch } from '~/hooks/helpers/useFetch';
 
-export function useLiveScoringSession(episodeId: number | undefined) {
+export function useLiveScoringSession(episodeId?: number) {
   const getData = useFetch();
   const postData = useFetch('POST');
   const queryClient = useQueryClient();

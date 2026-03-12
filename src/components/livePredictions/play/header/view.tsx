@@ -30,7 +30,6 @@ export default function LivePredictionsHeader({ episodeId }: LivePredictionsHead
   }, []);
 
   const notificationsDisabled = pushPermission !== 'granted' || !settings.enabled;
-  const liveSettingOff = !settings.liveScoring;
 
   return (
     <>
@@ -132,13 +131,6 @@ export default function LivePredictionsHeader({ episodeId }: LivePredictionsHead
                     <Text className='text-sm text-muted-foreground leading-snug'>
                       Opt in to get push notifications when predictions and polls drop this episode.
                     </Text>
-                    {liveSettingOff && (
-                      <Text className='text-sm text-muted-foreground leading-snug'>
-                        Toggle <Text className='font-bold text-primary'>Live Scoring</Text> in
-                        notification settings to get prompted automatically each week.
-                      </Text>
-                    )}
-
                   </View>
                 </View>
                 {!!episodeId && (

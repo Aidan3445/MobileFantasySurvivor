@@ -9,6 +9,8 @@ import {
 } from '~/lib/routing';
 import { useLeagues } from '~/hooks/user/useLeagues';
 import { type NotificationData } from '~/types/notifications';
+import { useLiveScoringSession } from '~/hooks/user/useLiveScoringSession';
+import { useLivePredictions } from '~/hooks/livePredictions/query/useLivePredictions';
 
 /**
  * Handles notification tap routing
@@ -31,10 +33,24 @@ export function useNotificationRouting() {
   const inProtectedGroup = segments[0] === '(protected)';
   const inTabsGroup = segments[1] === '(tabs)';
 
-  // Keep pathname ref in sync
+  const { airingEpisode } = useLivePredictions();
+  const { isOptedIn, optIn, isOptingIn } = useLiveScoringSession(airingEpisode?.episodeId);
+
+  const isOptedInRef = useRef(isOptedIn);
+  const isOptingInRef = useRef(isOptingIn);
+
+  // Keep refs in sync
   useEffect(() => {
     pathnameRef.current = pathname;
   }, [pathname]);
+
+  useEffect(() => {
+    isOptedInRef.current = isOptedIn;
+  }, [isOptedIn]);
+
+  useEffect(() => {
+    isOptingInRef.current = isOptingIn;
+  }, [isOptingIn]);
 
   // Cold start: handle notification that launched the app
   useEffect(() => {
@@ -116,12 +132,12 @@ export function useNotificationRouting() {
   function navigateToLeague(leagueHash: string, subPath?: string) {
     // Don't push if already on this league page
     if (pathnameRef.current.includes(`/leagues/${leagueHash}${subPath ? `/${subPath}` : ''}`)) return;
-    router.push(`/(protected)/(tabs)/leagues/${leagueHash}${subPath ? `/${subPath}` : ''}`);
+    router.navigate(`/(protected)/(tabs)/leagues/${leagueHash}${subPath ? `/${subPath}` : ''}`);
   }
 
   function navigateToLeagues() {
     if (pathnameRef.current.endsWith('/leagues')) return;
-    router.push('/(protected)/(tabs)/leagues');
+    router.navigate('/(protected)/(tabs)/leagues');
   }
 
   async function routeNotification(data: NotificationData) {
@@ -167,17 +183,17 @@ export function useNotificationRouting() {
         navigateToLeagues();
         break;
 
-      case 'live_scoring':
       case 'live_scoring_optin':
+        if (data.episodeId && !isOptedInRef.current && !isOptingInRef.current) {
+          optIn();
+        }
+        break;
+      case 'live_event':
         await handleLiveScoringTap(data);
         break;
 
-      case 'live_scoring_event':
-        navigateToLeagues();
-        break;
-
       case 'live_prediction':
-        if (data.episodeId) router.push('/live');
+        if (data.episodeId) router.navigate('/live');
         break;
       default:
         console.log('Unhandled notification type:', data.type);

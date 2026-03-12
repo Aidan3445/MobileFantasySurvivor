@@ -139,23 +139,6 @@ export default function NotificationSettings() {
             Get notified when episodes finish airing.
           </Text>
         </View>
-
-        {/* Live Scoring */}
-        <View className='rounded-lg border-2 border-primary/10 bg-primary/5 px-3 py-2 gap-1'>
-          <View className='flex-row items-center justify-between'>
-            <Text className='font-bold text-foreground'>Live Scoring</Text>
-            <Switch
-              value={settings.liveScoring}
-              onValueChange={(value) => updateSetting('liveScoring', value)}
-              disabled={!settings.enabled}
-              trackColor={{ false: colors.destructive, true: colors.positive }}
-              thumbColor='white' />
-          </View>
-          <Text className='text-sm text-muted-foreground'>
-            Get a prompt when each episode starts to opt into real-time scoring
-            notifications. You'll need to opt in each week to avoid spoilers.
-          </Text>
-        </View>
       </View>
     </View>
   );
