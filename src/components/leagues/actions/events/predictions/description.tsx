@@ -29,7 +29,7 @@ export default function DescriptionCell({ label, description }: DescriptionCellP
           <Text
             allowFontScaling={false}
             onTextLayout={handleTextLayout}
-            className='text-lg font-medium text-foreground text-left leading-tight'>
+            className='text-lg font-medium text-foreground text-left leading-none'>
             {description}
           </Text>
         </View>
@@ -43,7 +43,7 @@ export default function DescriptionCell({ label, description }: DescriptionCellP
         <Text
           allowFontScaling={false}
           numberOfLines={2}
-          className='text-lg font-medium text-foreground text-left leading-tight flex-1'>
+          className='text-lg font-medium text-foreground text-left leading-none flex-1'>
           {description}
         </Text>
         {truncated && <Info size={16} color={colors.mutedForeground} />}
