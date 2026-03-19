@@ -51,7 +51,7 @@ export default function ProfileScreen() {
 
           {/* Report Issue / Request Feature */}
           <Button
-            className='flex-row items-center gap-3 rounded-xl bg-card p-4 active:opacity-70 border-2 border-primary/20'
+            className='flex-row items-center gap-3 rounded-xl bg-card p-4 border-2 border-primary/20'
             onPress={openIssueReport}>
             <Bug size={22} color={colors.primary} />
             <Text className='text-primary text-base font-medium flex-1'>
@@ -61,7 +61,9 @@ export default function ProfileScreen() {
           </Button>
 
           {/* Support the Developer */}
-          <View className='rounded-xl bg-card p-4 gap-3 border-2 border-primary/20'>
+          <Button
+            className='rounded-xl bg-card p-4 gap-3 border-2 border-primary/20'
+            onPress={openSupportLink}>
             <View className='flex-row items-center gap-2'>
               <Heart size={22} color={colors.primary} />
               <Text className='text-primary text-base font-semibold'>
@@ -75,17 +77,15 @@ export default function ProfileScreen() {
               unlock any features or affect how the app works.
             </Text>
 
-            <Button
-              className='flex-row items-center gap-2 self-start active:opacity-70'
-              onPress={openSupportLink}>
+            <View className='flex-row items-center gap-2 self-start'>
               <Text className='text-primary font-medium'>Buy me a coffee</Text>
               <ExternalLink size={18} color={colors.primary} />
-            </Button>
-          </View>
+            </View>
+          </Button>
 
           <SignOutButton />
         </View>
-      </ScrollView>
-    </View>
+      </ScrollView >
+    </View >
   );
 }

@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { usePredictionTiming } from '~/hooks/leagues/query/usePredictionTiming';
 import { useSelectionTimeline } from '~/hooks/leagues/query/useSelectionTimeline';
 import { useLeagueMembers } from '~/hooks/leagues/query/useLeagueMembers';
-import { type Castaway, type EnrichedCastaway } from '~/types/castaways';
+import { type EnrichedCastaway } from '~/types/castaways';
 import { type LeagueMember } from '~/types/leagueMembers';
 import { useEliminations } from '~/hooks/seasons/useEliminations';
 import { useLeagueSettings } from '~/hooks/leagues/query/useLeagueSettings';
@@ -15,10 +15,6 @@ import { usePredictionsMade } from '~/hooks/leagues/enrich/usePredictionsMade';
 import { type ScoringBaseEventName } from '~/types/events';
 import { useSeasonsData } from '~/hooks/seasons/useSeasonsData';
 
-/**
-  * Custom hook to get league action details
-  * @param {string} overrideHash Optional hash to override the URL parameter.
-  */
 export function useLeagueActionDetails(overrideHash?: string) {
   const { data: league } = useLeague(overrideHash);
   const { data: rules } = useLeagueRules(overrideHash);
@@ -45,72 +41,64 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
   const eliminationLookup = useMemo(() => {
     if (!eliminations) return new Map<number, number>();
-
     const lookup = new Map<number, number>();
     eliminations.forEach((episodeElims, index) => {
       episodeElims.forEach(elim => {
-        if (elim?.castawayId) {
-          lookup.set(elim.castawayId, index + 1);
-        }
+        if (elim?.castawayId) lookup.set(elim.castawayId, index + 1);
       });
     });
     return lookup;
   }, [eliminations]);
 
   const redemptionLookup = useMemo(() =>
-    new Map(castaways?.map(c => [c.castawayId, c.redemption]) ?? []), [castaways]);
+    new Map(castaways?.map(c => [c.castawayId, c.redemption]) ?? []),
+    [castaways]);
 
   const membersWithPicks = useMemo(() => {
-    if (!nextEpisode || !tribeMembers || !leagueMembers || !selectionTimeline) {
-      return [];
-    }
+    if (!nextEpisode || !tribeMembers || !leagueMembers || !selectionTimeline) return [];
 
     const picks: {
       member: LeagueMember;
       castawayFullName: string;
       castawayId: number;
-      secondary?: {
-        castawayFullName: string;
-        castawayId: number;
-      };
-      out: boolean
+      secondary?: { castawayFullName: string; castawayId: number };
+      out: boolean;
     }[] = [];
 
     leagueMembers.members.forEach(member => {
       const selections = selectionTimeline.memberCastaways[member.memberId] ?? [];
-      const selectionId = selections[nextEpisode];
 
-      if (!selectionId) {
-        const lastSelectionId = selections.findLast(id => id !== null);
-        const lastCastaway = castaways?.find(c => c.castawayId === lastSelectionId);
-        picks.push({
-          member,
-          castawayFullName: lastCastaway ? lastCastaway.fullName : 'No Pick',
-          castawayId: lastCastaway ? lastCastaway.castawayId : -1,
-          out: true
-        });
-      }
+      const selectionId = selections[nextEpisode]
+        ?? selections.findLast(id => id !== null)
+        ?? null;
 
       const castaway = castaways?.find(c => c.castawayId === selectionId);
 
-      let secondaryCastaway: Castaway | undefined = undefined;
+      const eliminatedEpisode = selectionId ? eliminationLookup.get(selectionId) : undefined;
+      const redemptionHistory = selectionId ? redemptionLookup.get(selectionId) : undefined;
+      const stillAliveViaRedemption = redemptionHistory?.some(r => r.secondEliminationEpisode === null);
+      const out = !!eliminatedEpisode && !stillAliveViaRedemption;
+
+      let secondary: { castawayFullName: string; castawayId: number } | undefined = undefined;
 
       if (settings?.secondaryPickEnabled) {
         const secondarySelections = selectionTimeline.secondaryPicks?.[member.memberId] ?? [];
-        const secondarySelectionId = secondarySelections[nextEpisode];
-
-        secondaryCastaway = castaways?.find(c => c.castawayId === secondarySelectionId);
+        const secondarySelectionId = secondarySelections[nextEpisode] ?? null;
+        const secondaryCastaway = castaways?.find(c => c.castawayId === secondarySelectionId);
+        if (secondaryCastaway) {
+          secondary = {
+            castawayFullName: secondaryCastaway.fullName,
+            castawayId: secondaryCastaway.castawayId,
+          };
+        }
       }
 
       picks.push({
         member,
-        castawayFullName: castaway ? castaway.fullName : 'No Pick',
-        castawayId: castaway ? castaway.castawayId : -1,
-        secondary: secondaryCastaway ? {
-          castawayFullName: secondaryCastaway.fullName,
-          castawayId: secondaryCastaway.castawayId
-        } : undefined,
-        out: false
+        castawayFullName: castaway?.fullName ?? 'No Pick',
+        castawayId: castaway?.castawayId ?? -1,
+        secondary,
+        out,
       });
     });
 
@@ -121,7 +109,9 @@ export function useLeagueActionDetails(overrideHash?: string) {
     leagueMembers,
     selectionTimeline,
     castaways,
-    settings?.secondaryPickEnabled
+    eliminationLookup,
+    redemptionLookup,
+    settings?.secondaryPickEnabled,
   ]);
 
   const actionDetails = useMemo(() => {
@@ -147,18 +137,14 @@ export function useLeagueActionDetails(overrideHash?: string) {
           ...(redemptionHistory ? { redemption: redemptionHistory } : {})
         };
 
-        const member = selection ? leagueMembers.members.find(m => m.memberId === selection) ?? null : null;
+        const member = selection
+          ? leagueMembers.members.find(m => m.memberId === selection) ?? null
+          : null;
 
-        return {
-          castaway: castawayWithTribe,
-          member
-        };
+        return { castaway: castawayWithTribe, member };
       });
 
-      details[Number(tribeId)] = {
-        tribe,
-        castaways: selections,
-      };
+      details[Number(tribeId)] = { tribe, castaways: selections };
     });
 
     return details;
@@ -180,21 +166,15 @@ export function useLeagueActionDetails(overrideHash?: string) {
     const loggedInId = leagueMembers.loggedIn?.memberId;
 
     return {
-      onTheClock: onTheClock ? {
-        ...onTheClock,
-        loggedIn: onTheClock.memberId === loggedInId,
-      } : null,
-      onDeck: onDeck ? {
-        ...onDeck,
-        loggedIn: onDeck.memberId === loggedInId,
-      } : null,
-      onTheClockIndex: onTheClockIndex
+      onTheClock: onTheClock ? { ...onTheClock, loggedIn: onTheClock.memberId === loggedInId } : null,
+      onDeck: onDeck ? { ...onDeck, loggedIn: onDeck.memberId === loggedInId } : null,
+      onTheClockIndex,
     };
   }, [
     leagueMembers?.members,
     leagueMembers?.loggedIn?.memberId,
     selectionTimeline?.memberCastaways,
-    nextEpisode
+    nextEpisode,
   ]);
 
   useEffect(() => {
@@ -209,11 +189,9 @@ export function useLeagueActionDetails(overrideHash?: string) {
 
   const predictionRuleCount = useMemo(() => {
     if (!rules) return 0;
-
     const enabledBasePredictions = rules.basePrediction
       ? Object.values(rules.basePrediction).reduce((count, event) => count + Number(event.enabled), 0)
       : 0;
-
     return enabledBasePredictions + (rules.custom?.length ?? 0);
   }, [rules]);
 
@@ -221,7 +199,7 @@ export function useLeagueActionDetails(overrideHash?: string) {
     if (!nextEpisode) return [];
     return [
       ...(basePredictionsMade?.[nextEpisode] ?? []),
-      ...(customPredictionsMade?.[nextEpisode] ?? [])
+      ...(customPredictionsMade?.[nextEpisode] ?? []),
     ];
   }, [nextEpisode, basePredictionsMade, customPredictionsMade]);
 
@@ -229,34 +207,21 @@ export function useLeagueActionDetails(overrideHash?: string) {
     if (!rules || !predictionTiming) return rules;
 
     const timingSet = new Set(predictionTiming);
-
     const filteredCustom = rules.custom?.filter(rule =>
       rule.eventType === 'Direct' || rule.timing.some(t => timingSet.has(t))
     ) ?? [];
 
     if (rules.basePrediction) {
       const filteredBase = { ...rules.basePrediction };
-
       Object.entries(filteredBase).forEach(([eventName, rule]) => {
         if (rule.enabled && !rule.timing.some(t => timingSet.has(t))) {
-          filteredBase[eventName as ScoringBaseEventName] = {
-            ...rule,
-            enabled: false
-          };
+          filteredBase[eventName as ScoringBaseEventName] = { ...rule, enabled: false };
         }
       });
-
-      return {
-        ...rules,
-        custom: filteredCustom,
-        basePrediction: filteredBase
-      };
+      return { ...rules, custom: filteredCustom, basePrediction: filteredBase };
     }
 
-    return {
-      ...rules,
-      custom: filteredCustom,
-    };
+    return { ...rules, custom: filteredCustom };
   }, [rules, predictionTiming]);
 
   return {

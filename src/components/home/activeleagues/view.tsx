@@ -109,7 +109,7 @@ export default function ActiveLeagues() {
         height={carouselHeight}
         renderItem={({ item }) => (
           <View
-            className='flex mr-1'
+            className='flex'
             style={{ height: carouselHeight }}>
             <ActiveLeague
               league={item.league}

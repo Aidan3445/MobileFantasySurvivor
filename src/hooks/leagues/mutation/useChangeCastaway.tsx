@@ -41,8 +41,8 @@ export function useChangeCastaway() {
   });
 
   const [selected, setSelected] = useState('');
-  const [secondarySelected, setSecondarySelected] = useState('');
-  const [initialSecondaryPick, setInitialSecondaryPick] = useState('');
+  const [secondarySelected, setSecondarySelected] = useState<string | undefined>(undefined);
+  const [initialSecondaryPick, setInitialSecondaryPick] = useState<string | undefined>(undefined);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [closedDialog, setClosedDialog] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -50,7 +50,6 @@ export function useChangeCastaway() {
 
   const secondaryPickSettings = rules?.secondaryPick;
 
-  // Available castaways for selection
   const availableCastaways = useMemo(() =>
     Object.values(actionDetails ?? {})
       .flatMap(({ castaways }) =>
@@ -62,8 +61,7 @@ export function useChangeCastaway() {
     [actionDetails]
   );
 
-  // Calculate pick priority and eliminated members
-  const { pickPriority } = useMemo(() => {
+  const { pickPriority, elim } = useMemo(() => {
     return membersWithPicks.reduce(
       ({ pickPriority, elim }, memberWPick) => {
         const pickId = memberWPick.castawayId;
@@ -84,7 +82,24 @@ export function useChangeCastaway() {
     );
   }, [eliminations, keyEpisodes, membersWithPicks]);
 
-  // Calculate lockout status for secondary picks
+  // Open elimination dialog if logged-in member's castaway was just eliminated
+  useEffect(() => {
+    if (leagueMembers?.loggedIn && elim.some(m => m.memberId === leagueMembers.loggedIn?.memberId)) {
+      setDialogOpen(true);
+    }
+  }, [elim, leagueMembers]);
+
+  // Set initial primary pick
+  useEffect(() => {
+    if (!leagueMembers?.loggedIn) return;
+    const memberId = leagueMembers.loggedIn.memberId;
+    const currentPick = membersWithPicks.find(mwp => mwp.member.memberId === memberId && !mwp.out);
+    if (currentPick) {
+      setSelected(`${currentPick.castawayId}`);
+      form.setValue('castawayId', currentPick.castawayId);
+    }
+  }, [leagueMembers, membersWithPicks, form]);
+
   const castawayLockoutStatus = useMemo(() => {
     if (
       !secondaryPickSettings?.enabled ||
@@ -131,35 +146,31 @@ export function useChangeCastaway() {
     return lockoutMap;
   }, [secondaryPickSettings, leagueMembers, selectionTimeline, keyEpisodes]);
 
-  // Set initial secondary pick
+  // Secondary init — search all picks regardless of out status
   useEffect(() => {
-    if (!secondaryPickSettings?.enabled || !leagueMembers?.loggedIn || !membersWithPicks.length)
-      return;
+    if (!secondaryPickSettings?.enabled || !leagueMembers?.loggedIn || !membersWithPicks.length) return;
 
     const memberId = leagueMembers.loggedIn.memberId;
-    const currentPick = membersWithPicks.find(
-      (mwp) => mwp.member.memberId === memberId && !mwp.out
-    );
+    const memberPick = membersWithPicks.find(mwp => mwp.member.memberId === memberId);
 
-    if (currentPick?.secondary) {
-      const secondaryId = `${currentPick.secondary.castawayId}`;
+    if (memberPick?.secondary) {
+      const secondaryId = `${memberPick.secondary.castawayId}`;
       setSecondarySelected(secondaryId);
       setInitialSecondaryPick(secondaryId);
-      form.setValue('secondaryCastawayId', currentPick.secondary.castawayId);
+      form.setValue('secondaryCastawayId', memberPick.secondary.castawayId);
     } else {
-      setSecondarySelected('');
-      setInitialSecondaryPick('');
+      setSecondarySelected(undefined);
+      setInitialSecondaryPick(undefined);
       form.setValue('secondaryCastawayId', undefined);
     }
   }, [secondaryPickSettings, membersWithPicks, leagueMembers, form]);
 
-  // Handle selection change (clears other if same)
   const handleSelectionChange = (field: 'survivor' | 'secondary', value: string) => {
     if (field === 'survivor') {
       setSelected(value);
       form.setValue('castawayId', parseInt(value));
       if (value === secondarySelected) {
-        setSecondarySelected('');
+        setSecondarySelected(undefined);
         form.setValue('secondaryCastawayId', undefined);
       }
     } else {
@@ -172,7 +183,6 @@ export function useChangeCastaway() {
     }
   };
 
-  // Submit main castaway pick
   const handleSubmit = form.handleSubmit(async (data) => {
     if (!league) return { success: false };
 
@@ -182,9 +192,7 @@ export function useChangeCastaway() {
         body: { castawayId: data.castawayId },
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to choose castaway');
-      }
+      if (!response.ok) throw new Error('Failed to choose castaway');
 
       await queryClient.invalidateQueries({ queryKey: ['selectionTimeline', league.hash] });
       await queryClient.invalidateQueries({ queryKey: ['leagueMembers', league.hash] });
@@ -204,7 +212,6 @@ export function useChangeCastaway() {
     }
   });
 
-  // Submit secondary pick
   const handleSecondarySubmit = async () => {
     if (!league || !keyEpisodes?.nextEpisode || !secondarySelected) return { success: false };
 
@@ -224,8 +231,7 @@ export function useChangeCastaway() {
       Alert.alert('Success', 'Secondary pick chosen successfully');
       return { success: true };
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : 'Failed to choose secondary pick';
+      const errorMessage = error instanceof Error ? error.message : 'Failed to choose secondary pick';
       Alert.alert('Error', errorMessage);
       return { success: false };
     } finally {
@@ -233,40 +239,41 @@ export function useChangeCastaway() {
     }
   };
 
-  // Mark elimination dialog as closed
   const markDialogClosed = async () => {
     setClosedDialog(true);
     setDialogOpen(false);
   };
 
-  // Calculate hours remaining for pick priority
-  const hoursRemainingForPriority = useMemo(() => {
-    if (!keyEpisodes?.previousEpisode) return 0;
+  // Matches web: 48h window + episode runtime
+  const priorityTimeLeft = useMemo(() => {
+    if (!keyEpisodes?.previousEpisode) return -1;
     const elapsed = Date.now() - keyEpisodes.previousEpisode.airDate.getTime();
-    return Math.floor((1000 * 60 * 60 * 48 - elapsed) / 1000 / 60 / 60);
+    return Math.floor(
+      (1000 * 60 * 60 * 48 - elapsed) / 1000 / 60 / 60
+      + (keyEpisodes.previousEpisode.runtime / 60)
+    );
   }, [keyEpisodes]);
 
-  // Determine current UI state
+  const loggedInMemberId = leagueMembers?.loggedIn?.memberId;
+
   const uiState = useMemo(() => {
     if (league?.status === 'Inactive') return 'inactive';
 
-    if (availableCastaways.every((castaway) => castaway.pickedBy)) {
-      return 'no-castaways';
-    }
+    if (availableCastaways.every((c) => c.pickedBy)) return 'no-castaways';
 
     if (
       keyEpisodes?.previousEpisode &&
       pickPriority.length > 0 &&
+      !pickPriority.some(m => m.memberId === loggedInMemberId) &&
       !dialogOpen &&
-      Date.now() - keyEpisodes.previousEpisode.airDate.getTime() < 1000 * 60 * 60 * 48
+      priorityTimeLeft > 0
     ) {
       return 'wait-for-priority';
     }
 
     return 'can-pick';
-  }, [league, availableCastaways, keyEpisodes, pickPriority, dialogOpen]);
+  }, [league, availableCastaways, keyEpisodes, pickPriority, loggedInMemberId, dialogOpen, priorityTimeLeft]);
 
-  // Validation
   const canSubmitMain =
     formSchema.safeParse(form.watch())?.success &&
     !isSubmitting &&
@@ -280,9 +287,12 @@ export function useChangeCastaway() {
 
   const isEpisodeAiring = keyEpisodes?.previousEpisode?.airStatus === 'Airing';
 
-  // Build select options for secondary pick
+  // Matches web: include redemption-alive castaways
   const secondaryCastawayOptions = availableCastaways
-    .filter((castaway) => !castaway.eliminatedEpisode)
+    .filter((castaway) =>
+      !castaway.eliminatedEpisode ||
+      castaway.redemption?.some((r) => r.secondEliminationEpisode === null)
+    )
     .map((castaway) => {
       const lockoutInfo = castawayLockoutStatus.get(castaway.castawayId);
       const isLockedOut = lockoutInfo?.isLockedOut ?? false;
@@ -298,7 +308,7 @@ export function useChangeCastaway() {
       } else if (isLockedOut && lockoutInfo) {
         const { episodePicked, episodesRemaining } = lockoutInfo;
         if (episodesRemaining !== undefined && episodesRemaining > 0) {
-          disabledText += ` (Picked Ep ${episodePicked} - ${episodesRemaining} more)`;
+          disabledText += ` (unavailable for ${episodesRemaining} more ${episodesRemaining === 1 ? 'episode' : 'episodes'})`;
         } else {
           disabledText += ` (Picked Ep ${episodePicked})`;
         }
@@ -317,7 +327,7 @@ export function useChangeCastaway() {
                 </Text>
               </ColorRow>
             )}
-            <Text className='text-base text-foreground'>
+            <Text className='text-base text-foreground w-5/6'>
               {isDisabled ? disabledText : castaway.fullName}
             </Text>
           </View>
@@ -326,7 +336,6 @@ export function useChangeCastaway() {
     });
 
   return {
-    // Data
     league,
     leagueMembers,
     keyEpisodes,
@@ -335,33 +344,23 @@ export function useChangeCastaway() {
     secondaryCastawayOptions,
     pickPriority,
     castawayLockoutStatus,
-
-    // Form
     form,
     selected,
     secondarySelected,
     initialSecondaryPick,
     handleSelectionChange,
-
-    // Actions
     handleSubmit,
     handleSecondarySubmit,
     isSubmitting,
     isSubmittingSecondary,
-
-    // Validation
     canSubmitMain,
     canSubmitSecondary,
     isEpisodeAiring,
-
-    // Dialog
     dialogOpen,
     closedDialog,
     setDialogOpen,
     markDialogClosed,
-
-    // UI State
     uiState,
-    hoursRemainingForPriority,
+    hoursRemainingForPriority: priorityTimeLeft,
   };
 }

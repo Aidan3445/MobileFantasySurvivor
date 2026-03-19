@@ -33,7 +33,7 @@ export default function LeagueSeasonCarousel({ leagues, refresh }: LeagueSeasonC
         loop={true}
         height={refresh ? CARD_HEIGHT_WITH_REFRESH : CARD_HEIGHT}
         renderItem={({ item }) => (
-          <View className='flex-1 mr-1'>
+          <View className='flex-1'>
             <LeagueCard
               league={item.league}
               member={item.member}
