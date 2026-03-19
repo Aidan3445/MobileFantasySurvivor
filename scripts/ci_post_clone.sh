@@ -2,7 +2,7 @@
 set -e
 echo "Starting post-clone script..."
 
-brew install node cocoapods
+brew install node@24 cocoapods # NODE 24 to match the version used in the project
 
 cd "$CI_PRIMARY_REPOSITORY_PATH"
 echo "Installing node modules..."
