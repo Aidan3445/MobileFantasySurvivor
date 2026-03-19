@@ -21,7 +21,8 @@ export function useSurvivalStreak() {
   const reactForm = useForm<LeagueSurvivalUpdate>({
     defaultValues: {
       survivalCap: settings?.survivalCap ?? DEFAULT_SURVIVAL_CAP,
-      preserveStreak: settings?.preserveStreak ?? true
+      preserveStreak: settings?.preserveStreak ?? true,
+      shotInTheDarkEnabled: settings?.shotInTheDarkEnabled ?? false
     },
     resolver: zodResolver(LeagueSurvivalUpdateZod)
   });
@@ -29,7 +30,8 @@ export function useSurvivalStreak() {
   useEffect(() => {
     reactForm.setValue('survivalCap', settings?.survivalCap ?? DEFAULT_SURVIVAL_CAP);
     reactForm.setValue('preserveStreak', settings?.preserveStreak ?? true);
-  }, [settings?.survivalCap, settings?.preserveStreak, reactForm]);
+    reactForm.setValue('shotInTheDarkEnabled', settings?.shotInTheDarkEnabled ?? false);
+  }, [settings?.survivalCap, settings?.preserveStreak, reactForm, settings?.shotInTheDarkEnabled]);
 
   const settingsChanged = reactForm.formState.isDirty;
 
