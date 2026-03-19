@@ -140,7 +140,7 @@ export default function PredictionHistory() {
         {...props}
         height={180}
         renderItem={({ item }) => (
-          <View className='flex-1 rounded-lg border-2 border-primary/20 bg-accent/50 overflow-hidden mr-2.5 ml-1.5'>
+          <View className='flex-1 rounded-lg border-2 border-primary/20 bg-accent/50 overflow-hidden mx-2'>
             <View className='bg-primary/10 h-6'>
               <Text
                 allowFontScaling={false}
