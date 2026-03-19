@@ -10,5 +10,5 @@ npm ci || (echo "Retrying npm ci..." && npm ci)cd ios
 echo "Setting up CocoaPods CDN..."
 pod repo add-cdn trunk https://cdn.cocoapods.org/
 echo "Installing pods..."
-pod install
+pod install || (echo "Retrying pod install..." && pod install)
 echo "Post-clone script complete!"
