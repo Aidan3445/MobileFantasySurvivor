@@ -74,14 +74,14 @@ export default function MemberRow({
           {place}
         </Text>
       </View>
-      <View className='w-10 -ml-2 items-center justify-center flex-row'>
+      <View className='w-12 -ml-2 items-center justify-center flex-row'>
         <Text
           allowFontScaling={false}
           className='text-center font-black tracking-tightest text-primary'>
           {wholePoints}
         </Text>
         {isHalfPoint && (
-          <View className='scale-75'>
+          <View className='scale-50'>
             <Text
               allowFontScaling={false}
               className='text-center font-black tracking-tighter text-primary border-b-2 border-primary'>

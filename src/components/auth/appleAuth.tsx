@@ -110,8 +110,7 @@ export function AppleAuth({ type }: AppleAuthProps) {
       buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
       cornerRadius={20}
       style={{ width: '50%', height: 40 }}
-      onPress={onPress}
-    />
+      onPress={onPress} />
   );
 }
 

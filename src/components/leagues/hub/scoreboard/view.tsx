@@ -38,7 +38,7 @@ export default function Scoreboard({ overrideHash, maxRows, className }: Scorebo
             Place
           </Text>
         </View>
-        <View className='w-10 -ml-2 items-center justify-center'>
+        <View className='w-12 -ml-2 items-center justify-center'>
           <PointsIcon size={12} color='black' />
         </View>
         <View className='flex-1 justify-center pl-1'>

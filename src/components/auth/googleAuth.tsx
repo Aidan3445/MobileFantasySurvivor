@@ -84,7 +84,10 @@ function GoogleButton({
         <View className='mr-[4px]'>
           <GoogleLogo />
         </View>
-        <Text className='font-semibold tracking-tight' style={{ fontSize: 13 }}>
+        <Text
+          className='font-semibold tracking-tight'
+          allowFontScaling={false}
+          style={{ fontSize: 13 }}>
           {buttonText}
         </Text>
       </View>
