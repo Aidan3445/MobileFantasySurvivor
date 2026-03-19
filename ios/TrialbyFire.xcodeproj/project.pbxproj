@@ -7,26 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00B2838100C3675744B50629 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 288F6016EE4E1A825A6587A2 /* ExpoModulesProvider.swift */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		17F306D28C521288CA754DB3 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB09541A92DC782D8687618 /* ExpoModulesProvider.swift */; };
+		32C98AAD5972A69F0B9782EE /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4EDC3849298BD1C83B9E5D3E /* PrivacyInfo.xcprivacy */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		A4AA47BD1B581CFC71BC3771 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 834E5C5034106CC8308E5072 /* PrivacyInfo.xcprivacy */; };
+		532DA44C5068041E701F089D /* libPods-TrialbyFire.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4872F85B1C806DB7BFFAB257 /* libPods-TrialbyFire.a */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
-		F5EB5934C0C8EE1666B5C2B2 /* libPods-TrialbyFire.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DFC549C959C13EA7E6EAA7C1 /* libPods-TrialbyFire.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		017351219985FC4ADE222680 /* Pods-TrialbyFire.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrialbyFire.debug.xcconfig"; path = "Target Support Files/Pods-TrialbyFire/Pods-TrialbyFire.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* TrialbyFire.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrialbyFire.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TrialbyFire/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = TrialbyFire/Info.plist; sourceTree = "<group>"; };
-		2046CC8E5407F78DCD895D93 /* Pods-TrialbyFire.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrialbyFire.release.xcconfig"; path = "Target Support Files/Pods-TrialbyFire/Pods-TrialbyFire.release.xcconfig"; sourceTree = "<group>"; };
-		288F6016EE4E1A825A6587A2 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-TrialbyFire/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		289D05D1C94C989F59D2C5B5 /* Pods-TrialbyFire.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrialbyFire.debug.xcconfig"; path = "Target Support Files/Pods-TrialbyFire/Pods-TrialbyFire.debug.xcconfig"; sourceTree = "<group>"; };
-		834E5C5034106CC8308E5072 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = TrialbyFire/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		4872F85B1C806DB7BFFAB257 /* libPods-TrialbyFire.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TrialbyFire.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4EDC3849298BD1C83B9E5D3E /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = TrialbyFire/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		50F61E5332512F6D3E3A4C3A /* Pods-TrialbyFire.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrialbyFire.release.xcconfig"; path = "Target Support Files/Pods-TrialbyFire/Pods-TrialbyFire.release.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = TrialbyFire/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
-		DFC549C959C13EA7E6EAA7C1 /* libPods-TrialbyFire.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TrialbyFire.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCB09541A92DC782D8687618 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-TrialbyFire/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = TrialbyFire/AppDelegate.swift; sourceTree = "<group>"; };
 		F11748442D0722820044C1D9 /* TrialbyFire-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "TrialbyFire-Bridging-Header.h"; path = "TrialbyFire/TrialbyFire-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -37,7 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F5EB5934C0C8EE1666B5C2B2 /* libPods-TrialbyFire.a in Frameworks */,
+				532DA44C5068041E701F089D /* libPods-TrialbyFire.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,44 +53,34 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				834E5C5034106CC8308E5072 /* PrivacyInfo.xcprivacy */,
+				4EDC3849298BD1C83B9E5D3E /* PrivacyInfo.xcprivacy */,
 			);
 			name = TrialbyFire;
-			sourceTree = "<group>";
-		};
-		2CB882B03B3A34393DE572AF /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				289D05D1C94C989F59D2C5B5 /* Pods-TrialbyFire.debug.xcconfig */,
-				2046CC8E5407F78DCD895D93 /* Pods-TrialbyFire.release.xcconfig */,
-			);
-			name = Pods;
-			path = Pods;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				DFC549C959C13EA7E6EAA7C1 /* libPods-TrialbyFire.a */,
+				4872F85B1C806DB7BFFAB257 /* libPods-TrialbyFire.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		46A95B1AB2383552C880B2E4 /* ExpoModulesProviders */ = {
+		4C3808E8231F49210247EDBC /* TrialbyFire */ = {
 			isa = PBXGroup;
 			children = (
-				5688E437FFC241D2596405F4 /* TrialbyFire */,
-			);
-			name = ExpoModulesProviders;
-			sourceTree = "<group>";
-		};
-		5688E437FFC241D2596405F4 /* TrialbyFire */ = {
-			isa = PBXGroup;
-			children = (
-				288F6016EE4E1A825A6587A2 /* ExpoModulesProvider.swift */,
+				DCB09541A92DC782D8687618 /* ExpoModulesProvider.swift */,
 			);
 			name = TrialbyFire;
+			sourceTree = "<group>";
+		};
+		64F97A8236CF2D022B622089 /* ExpoModulesProviders */ = {
+			isa = PBXGroup;
+			children = (
+				4C3808E8231F49210247EDBC /* TrialbyFire */,
+			);
+			name = ExpoModulesProviders;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -107,8 +97,8 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				2CB882B03B3A34393DE572AF /* Pods */,
-				46A95B1AB2383552C880B2E4 /* ExpoModulesProviders */,
+				99C1B665BE45D6C4F04F5155 /* Pods */,
+				64F97A8236CF2D022B622089 /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -121,6 +111,16 @@
 				13B07F961A680F5B00A75B9A /* TrialbyFire.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		99C1B665BE45D6C4F04F5155 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				017351219985FC4ADE222680 /* Pods-TrialbyFire.debug.xcconfig */,
+				50F61E5332512F6D3E3A4C3A /* Pods-TrialbyFire.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		BB2F792B24A3F905000567C9 /* Supporting */ = {
@@ -140,13 +140,13 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "TrialbyFire" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				3C259C0A57BF5D4498F1F710 /* [Expo] Configure project */,
+				97ECA992F7C034FF1A8CAF72 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				CF356B39FED9B5C49A60264F /* [CP] Embed Pods Frameworks */,
+				4E08E1441A0941C63E55718C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -196,7 +196,7 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				A4AA47BD1B581CFC71BC3771 /* PrivacyInfo.xcprivacy in Resources */,
+				32C98AAD5972A69F0B9782EE /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,29 +242,27 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		3C259C0A57BF5D4498F1F710 /* [Expo] Configure project */ = {
+		4E08E1441A0941C63E55718C /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
-				"$(SRCROOT)/.xcode.env",
-				"$(SRCROOT)/.xcode.env.local",
-				"$(SRCROOT)/TrialbyFire/TrialbyFire.entitlements",
-				"$(SRCROOT)/Pods/Target Support Files/Pods-TrialbyFire/expo-configure-project.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-TrialbyFire/Pods-TrialbyFire-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/React-Core-prebuilt/React.framework/React",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ReactNativeDependencies/ReactNativeDependencies.framework/ReactNativeDependencies",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
 			);
-			name = "[Expo] Configure project";
-			outputFileListPaths = (
-			);
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"$(SRCROOT)/Pods/Target Support Files/Pods-TrialbyFire/ExpoModulesProvider.swift",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeDependencies.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-TrialbyFire/expo-configure-project.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TrialbyFire/Pods-TrialbyFire-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -322,27 +320,29 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TrialbyFire/Pods-TrialbyFire-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CF356B39FED9B5C49A60264F /* [CP] Embed Pods Frameworks */ = {
+		97ECA992F7C034FF1A8CAF72 /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TrialbyFire/Pods-TrialbyFire-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/React-Core-prebuilt/React.framework/React",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ReactNativeDependencies/ReactNativeDependencies.framework/ReactNativeDependencies",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
+			inputFileListPaths = (
 			);
-			name = "[CP] Embed Pods Frameworks";
+			inputPaths = (
+				"$(SRCROOT)/.xcode.env",
+				"$(SRCROOT)/.xcode.env.local",
+				"$(SRCROOT)/TrialbyFire/TrialbyFire.entitlements",
+				"$(SRCROOT)/Pods/Target Support Files/Pods-TrialbyFire/expo-configure-project.sh",
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactNativeDependencies.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+				"$(SRCROOT)/Pods/Target Support Files/Pods-TrialbyFire/ExpoModulesProvider.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TrialbyFire/Pods-TrialbyFire-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-TrialbyFire/expo-configure-project.sh\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -352,7 +352,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
-				00B2838100C3675744B50629 /* ExpoModulesProvider.swift in Sources */,
+				17F306D28C521288CA754DB3 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,7 +361,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 289D05D1C94C989F59D2C5B5 /* Pods-TrialbyFire.debug.xcconfig */;
+			baseConfigurationReference = 017351219985FC4ADE222680 /* Pods-TrialbyFire.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -398,7 +398,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2046CC8E5407F78DCD895D93 /* Pods-TrialbyFire.release.xcconfig */;
+			baseConfigurationReference = 50F61E5332512F6D3E3A4C3A /* Pods-TrialbyFire.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
