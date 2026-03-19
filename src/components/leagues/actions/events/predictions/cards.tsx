@@ -175,7 +175,7 @@ export default function PredictionCards({
           : 200}
         data={allPredictions}
         renderItem={({ item: prediction }) => (
-          <View className='flex-1 ml-1.5 mr-2.5 rounded-lg border-2 border-primary/20 bg-accent/50 overflow-hidden'>
+          <View className='flex-1 mx-2 rounded-lg border-2 border-primary/20 bg-accent/50 overflow-hidden'>
             <View className='bg-primary/10 py-2 px-3'>
               <View className='flex-row items-center justify-center gap-2'>
                 <Text
